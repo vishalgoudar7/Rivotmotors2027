@@ -1,0 +1,1 @@
+// Add PrismaClient here after PostgreSQL setup. Keep database access server-side.
