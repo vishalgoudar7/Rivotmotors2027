@@ -1,177 +1,294 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import logoMark from "@/asset/images/rivot-logo-transparent.png";
-import logoMarkWhite from "@/asset/images/rivot-logo-white-transparent.png";
+import Link from "next/link";
+import { useState } from "react";
+import logoMark from "@/asset/images/logo (1).webp";
 
 const navItems = [
-  { label: "Products", href: "/products", icon: ProductIcon, active: true },
-  { label: "Technology", href: "/#technology", icon: BoltIcon },
-  { label: "Experience", href: "/#experience", icon: HelmetIcon },
-  { label: "About Us", href: "/#about", icon: PeopleIcon },
-  { label: "Contact", href: "/#contact", icon: MailIcon },
+  { label: "Products", href: "/products" },
+  { label: "Stores", href: "/#stores" },
+  { label: "Explore", href: "/#explore" },
 ];
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 18);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("rivot-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setTheme(savedTheme === "dark" || (!savedTheme && prefersDark) ? "dark" : "light");
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem("rivot-theme", theme);
-  }, [theme]);
 
   return (
-    <>
-      <header className={`nav rivotNav${scrolled ? " isScrolled" : ""}`}>
-        <Link href="/" className="logo rivotLogo" aria-label="RIVOT Motors">
-          <span className="rivotLogoMark">
-            <Image src={theme === "dark" ? logoMarkWhite : logoMark} alt="" priority />
-          </span>
-          <span className="rivotLogoText">
-            <span>RIVOT</span>
-            <small>MOTORS</small>
-          </span>
-        </Link>
+    <header className="rivotHeader">
+      <Link href="/" className="rivotBrand" aria-label="Rivot">
+        <span className="rivotBrandMark">
+          <Image src={logoMark} alt="" priority />
+        </span>
+        <span className="rivotBrandText">Rivot</span>
+      </Link>
 
-        <span className="navDivider" aria-hidden="true" />
-
-        <nav className="rivotNavLinks" aria-label="Primary navigation">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                href={item.href}
-                className={`rivotNavItem${item.active ? " isActive" : ""}`}
-                key={item.label}
-              >
-                <Icon />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <span className="navDivider navDividerRight" aria-hidden="true" />
-
-        <div className="rivotNavActions">
-          <Link href="/book-now" className="rivotTestRide">
-            Book a Test Ride <span aria-hidden="true">{"\u2197"}</span>
+      <nav className="rivotHeaderLinks" aria-label="Primary navigation">
+        {navItems.map((item) => (
+          <Link href={item.href} key={item.label}>
+            {item.label}
           </Link>
-          <button
-            className="rivotCircleBtn"
-            type="button"
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
-          >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-          </button>
-        </div>
+        ))}
+      </nav>
 
-        <button
-          className={`rivotCircleBtn rivotMenuBtn${menuOpen ? " isOpen" : ""}`}
-          type="button"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
-      </header>
+      <Link href="/book-now" className="rivotBook">
+        Book Now
+      </Link>
 
-      <div className={`rivotMobileMenu${menuOpen ? " isOpen" : ""}`} aria-hidden={!menuOpen}>
-        <div className="rivotMobileMenuInner">
-          <button
-            className="rivotMobileClose"
-            type="button"
-            aria-label="Close menu"
-            onClick={() => setMenuOpen(false)}
-          >
-            <span />
-            <span />
-          </button>
+      <button
+        className={`rivotMenuButton${menuOpen ? " isOpen" : ""}`}
+        type="button"
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((open) => !open)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
 
-          <button
-            className="rivotMobileTheme"
-            type="button"
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
-          >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-            <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
-          </button>
-
-          {navItems.map((item, index) => (
-            <Link
-              href={item.href}
-              className={`rivotMobileLink${item.active ? " isActive" : ""}`}
-              key={item.label}
-              onClick={() => setMenuOpen(false)}
-            >
-              <small>{String(index + 1).padStart(2, "0")}</small>
-              <span>{item.label}</span>
-              <b aria-hidden="true">{"\u2197"}</b>
-            </Link>
-          ))}
-
-          <Link href="/book-now" className="rivotMobileCta" onClick={() => setMenuOpen(false)}>
-            Book a Test Ride <span aria-hidden="true">{"\u2197"}</span>
+      <nav className={`rivotMobileLinks${menuOpen ? " isOpen" : ""}`} aria-label="Mobile navigation">
+        {navItems.map((item) => (
+          <Link href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
+            {item.label}
           </Link>
-        </div>
-      </div>
-    </>
+        ))}
+      </nav>
+
+      <style>{`
+        .rivotHeader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          align-items: center;
+          gap: 58px;
+          height: 72px;
+          padding: 0 48px;
+          background: #fff;
+          color: #0b0b0b;
+        }
+
+        .rivotMenuButton,
+        .rivotMobileLinks {
+          display: none;
+        }
+
+        .rivotBrand {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          color: #0b0b0b;
+          line-height: 1;
+          text-decoration: none;
+        }
+
+        .rivotBrandMark {
+          display: grid;
+          width: 54px;
+          height: 54px;
+          place-items: center;
+        }
+
+        .rivotBrandMark img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          filter: invert(1);
+        }
+
+        .rivotBrandText {
+          font-size: 32px;
+          font-weight: 950;
+          letter-spacing: -0.08em;
+        }
+
+        .rivotHeaderLinks {
+          display: flex;
+          justify-self: start;
+          align-items: center;
+          gap: 34px;
+        }
+
+        .rivotHeaderLinks a {
+          color: #6f7378;
+          font-size: 15px;
+          font-weight: 800;
+          text-decoration: none;
+        }
+
+        .rivotBook {
+          display: inline-flex;
+          justify-self: end;
+          align-items: center;
+          justify-content: center;
+          min-width: 108px;
+          height: 40px;
+          padding: 0 18px;
+          border-radius: 999px;
+          background: #ffa52c;
+          color: #050505;
+          font-size: 14px;
+          font-weight: 800;
+          text-decoration: none;
+        }
+
+        @media (max-width: 900px) {
+          .rivotHeader {
+            grid-template-columns: auto 1fr auto;
+            gap: 24px;
+            height: 64px;
+            padding: 0 24px;
+          }
+
+          .rivotBrandMark {
+            width: 44px;
+            height: 44px;
+          }
+
+          .rivotBrandText {
+            font-size: 28px;
+          }
+
+          .rivotHeaderLinks {
+            gap: 22px;
+          }
+        }
+
+        @media (max-width: 680px) {
+          .rivotHeader {
+            grid-template-columns: auto auto auto;
+            justify-content: space-between;
+            gap: 10px;
+            height: 58px;
+            padding: 0 14px;
+          }
+
+          .rivotHeaderLinks {
+            display: none;
+          }
+
+          .rivotBrand {
+            gap: 8px;
+          }
+
+          .rivotBrandMark {
+            width: 36px;
+            height: 36px;
+          }
+
+          .rivotBrandText {
+            font-size: 24px;
+          }
+
+          .rivotBook {
+            min-width: 94px;
+            height: 38px;
+            padding: 0 14px;
+            font-size: 13px;
+          }
+
+          .rivotMenuButton {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            gap: 4px;
+            border: 1px solid rgba(0, 0, 0, .12);
+            border-radius: 50%;
+            background: #fff;
+            color: #0b0b0b;
+            padding: 9px;
+          }
+
+          .rivotMenuButton span {
+            display: block;
+            width: 16px;
+            height: 2px;
+            border-radius: 999px;
+            background: currentColor;
+            transition: transform .2s ease, opacity .2s ease;
+          }
+
+          .rivotMenuButton.isOpen span:first-child {
+            transform: translateY(6px) rotate(45deg);
+          }
+
+          .rivotMenuButton.isOpen span:nth-child(2) {
+            opacity: 0;
+          }
+
+          .rivotMenuButton.isOpen span:last-child {
+            transform: translateY(-6px) rotate(-45deg);
+          }
+
+          .rivotMobileLinks {
+            position: absolute;
+            left: 14px;
+            right: 14px;
+            top: calc(100% + 8px);
+            display: grid;
+            visibility: hidden;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, .1);
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, .14);
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+          }
+
+          .rivotMobileLinks.isOpen {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+          }
+
+          .rivotMobileLinks a {
+            padding: 15px 18px;
+            border-bottom: 1px solid rgba(0, 0, 0, .08);
+            color: #111;
+            font-size: 15px;
+            font-weight: 800;
+            text-decoration: none;
+          }
+
+          .rivotMobileLinks a:last-child {
+            border-bottom: 0;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .rivotHeader {
+            padding: 0 10px;
+            gap: 8px;
+          }
+
+          .rivotBrandText {
+            font-size: 21px;
+          }
+
+          .rivotBrandMark {
+            width: 32px;
+            height: 32px;
+          }
+
+          .rivotBook {
+            min-width: 86px;
+            height: 36px;
+            padding: 0 12px;
+          }
+
+          .rivotMenuButton {
+            width: 36px;
+            height: 36px;
+          }
+        }
+      `}</style>
+    </header>
   );
-}
-
-function ProductIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15h9l2-5h3l2 5" /><path d="M7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" /><path d="M18 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" /><path d="M10 10h4" /></svg>;
-}
-
-function BoltIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-8 12h7l-1 8 8-12h-7l1-8Z" /></svg>;
-}
-
-function HelmetIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a8 8 0 0 1 16 0v3H9a5 5 0 0 1-5-5v-2" /><path d="M13 17h7" /><path d="M8 10h11" /></svg>;
-}
-
-function PeopleIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" /><path d="M17 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" /><path d="M3 20a6 6 0 0 1 12 0" /><path d="M14 19a5 5 0 0 1 7 0" /></svg>;
-}
-
-function MailIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z" /><path d="m4 8 8 6 8-6" /></svg>;
-}
-
-function MoonIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 7 7 0 1 0 20 15.5Z" /></svg>;
-}
-
-function SunIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v2" /><path d="M12 18v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M4 12h2" /><path d="M18 12h2" /><path d="m4.93 19.07 1.41-1.41" /><path d="m17.66 6.34 1.41-1.41" /><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" /></svg>;
 }
