@@ -3,17 +3,36 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import logoMark from "@/asset/images/logo (1).webp";
+import modelPro from "@/asset/Model/Pro.png";
+import modelSport from "@/asset/Model/Sport_NX100.png";
+import logoBlack from "@/asset/images/RIVOT New Logo Back.png";
+import logoWhite from "@/asset/images/RIVOT New Logo White.png";
 
 const navItems = [
-  { label: "Products", href: "/products" },
   { label: "Stores", href: "/#stores" },
   { label: "Explore", href: "/#explore" },
 ];
 
+const productModels = [
+  {
+    name: "RIVOT NX100 Sport",
+    price: "Starting at ₹1,94,999",
+    href: "/products/nx100-sport",
+    image: modelSport,
+  },
+  {
+    name: "RIVOT NX100 Pro",
+    price: "Starting at ₹1,29,000",
+    href: "/products/nx100-pro",
+    image: modelPro,
+  },
+];
+
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const logo = theme === "light" ? logoBlack : logoWhite;
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("rivot-theme-mode");
@@ -35,12 +54,53 @@ export function Navbar() {
     <header className="rivotHeader">
       <Link href="/" className="rivotBrand" aria-label="Rivot">
         <span className="rivotBrandMark">
-          <Image src={logoMark} alt="" priority />
+          <Image src={logo} alt="RIVOT" priority />
         </span>
-        <span className="rivotBrandText">Rivot</span>
       </Link>
 
       <nav className="rivotHeaderLinks" aria-label="Primary navigation">
+        <div
+          className="rivotProductsNav"
+          onMouseEnter={() => setProductsOpen(true)}
+          onMouseLeave={() => setProductsOpen(false)}
+        >
+          <button
+            type="button"
+            className="rivotProductsButton"
+            aria-expanded={productsOpen}
+            aria-controls="rivot-products-menu"
+            onClick={() => setProductsOpen((open) => !open)}
+          >
+            Products
+            <span aria-hidden="true" />
+          </button>
+
+          <div className={`rivotProductsMenu${productsOpen ? " isOpen" : ""}`} id="rivot-products-menu">
+            <div className="rivotProductsMenuInner">
+              {productModels.map((model) => (
+                <Link
+                  href={model.href}
+                  className="rivotProductCard"
+                  key={model.name}
+                  data-model={model.name.includes("Sport") ? "sport" : "pro"}
+                  onClick={() => setProductsOpen(false)}
+                >
+                  <span className="rivotProductImage">
+                    <Image src={model.image} alt={model.name} sizes="(max-width: 900px) 45vw, 280px" />
+                  </span>
+                  <span className="rivotProductName">
+                    {model.name}
+                  </span>
+                  <span className="rivotProductActions">
+                    <span>Book Now</span>
+                    <span>Explore</span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {navItems.map((item) => (
           <Link href={item.href} key={item.label}>
             {item.label}
@@ -72,6 +132,11 @@ export function Navbar() {
       </button>
 
       <nav className={`rivotMobileLinks${menuOpen ? " isOpen" : ""}`} aria-label="Mobile navigation">
+        {productModels.map((model) => (
+          <Link href={model.href} key={model.name} onClick={() => setMenuOpen(false)}>
+            {model.name}
+          </Link>
+        ))}
         {navItems.map((item) => (
           <Link href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
             {item.label}
@@ -107,7 +172,6 @@ export function Navbar() {
   .rivotBrand {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
     color: #fff;
     line-height: 1;
     text-decoration: none;
@@ -115,7 +179,7 @@ export function Navbar() {
 
   .rivotBrandMark {
     display: grid;
-    width: 54px;
+    width: 162px;
     height: 54px;
     place-items: center;
   }
@@ -124,16 +188,6 @@ export function Navbar() {
     width: 100%;
     height: 100%;
     object-fit: contain;
-
-    /* Black logo -> white */
-    filter: brightness(0) invert(1);
-  }
-
-  .rivotBrandText {
-    color: #fff;
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: -0.055em;
   }
 
   .rivotHeaderLinks {
@@ -143,19 +197,200 @@ export function Navbar() {
     gap: 34px;
   }
 
-  .rivotHeaderLinks a {
+  .rivotHeaderLinks a,
+  .rivotProductsButton {
     color: rgba(255, 255, 255, 0.92);
     font-size: 15px;
     font-weight: 600;
     text-decoration: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
 
     transition:
       color 0.2s ease,
       opacity 0.2s ease;
   }
 
-  .rivotHeaderLinks a:hover {
+  .rivotHeaderLinks a:hover,
+  .rivotProductsButton:hover,
+  .rivotProductsButton[aria-expanded="true"] {
     color: #ef7430;
+  }
+
+  .rivotProductsNav {
+    position: relative;
+  }
+
+  .rivotProductsButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rivotProductsButton span {
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform .2s ease;
+  }
+
+  .rivotProductsButton[aria-expanded="true"] span {
+    transform: rotate(225deg) translate(-1px, -1px);
+  }
+
+  .rivotProductsMenu {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 86px;
+    z-index: 999;
+    padding: 4px 50px 0;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-12px);
+    transition:
+      opacity .2s ease,
+      transform .2s ease,
+      visibility .2s ease;
+  }
+
+  .rivotProductsMenu.isOpen {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .rivotProductsMenuInner {
+    display: grid;
+    grid-template-columns: repeat(2, 232px);
+    justify-content: start;
+    gap: 14px;
+    width: 100%;
+    min-height: 264px;
+    padding: 28px 52px 30px;
+    border: 1px solid rgba(17, 17, 17, .06);
+    border-radius: 22px;
+    background: rgba(247, 247, 247, .98);
+    color: #090909;
+    box-shadow: 0 28px 70px rgba(17, 17, 17, .16);
+    backdrop-filter: blur(18px);
+  }
+
+  .rivotProductCard {
+    display: grid;
+    grid-template-rows: 142px auto auto;
+    align-content: start;
+    justify-items: center;
+    gap: 8px;
+    min-width: 0;
+    min-height: 222px;
+    padding: 16px 14px 18px;
+    border: 1px solid rgba(17, 17, 17, .06);
+    border-radius: 8px;
+    background: #fff;
+    color: #090909;
+    overflow: visible;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(17, 17, 17, .04);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+
+  .rivotProductCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(17, 17, 17, .08);
+  }
+
+  .rivotProductImage {
+    position: relative;
+    display: grid;
+    width: 100%;
+    height: 142px;
+    place-items: center;
+    overflow: visible;
+  }
+
+  .rivotProductImage img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+    filter: drop-shadow(0 14px 16px rgba(17, 17, 17, .12));
+    transform: scale(1.04);
+    transition: transform .2s ease;
+  }
+
+  .rivotProductCard:hover .rivotProductImage img {
+    transform: scale(1.08) translateY(-2px);
+  }
+
+  .rivotProductCard[data-model="sport"] .rivotProductImage img {
+    transform: scale(.98);
+  }
+
+  .rivotProductCard[data-model="sport"]:hover .rivotProductImage img {
+    transform: scale(1.02) translateY(-2px);
+  }
+
+  .rivotProductName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #050505;
+    font-size: clamp(19px, 1.45vw, 22px);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -.045em;
+    text-align: center;
+  }
+
+  .rivotProductName small {
+    display: inline-grid;
+    min-height: 17px;
+    place-items: center;
+    padding: 0 10px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #35b55f, rgba(53, 181, 95, .12));
+    color: #fff;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+
+  .rivotProductPrice {
+    color: #5d7181;
+    font-size: clamp(17px, 1.35vw, 22px);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .rivotProductActions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 2px;
+    color: #7b8389;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .rivotProductActions span:first-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 82px;
+    min-height: 34px;
+    border-radius: 5px;
+    background: #4169e1;
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(65, 105, 225, .2);
   }
 
   .rivotBook {
@@ -216,16 +451,16 @@ export function Navbar() {
     line-height: 1;
   }
 
-  html[data-rivot-theme="light"] .rivotBrand,
-  html[data-rivot-theme="light"] .rivotBrandText {
+  html[data-rivot-theme="light"] .rivotBrand {
     color: #0b0b0b;
   }
 
   html[data-rivot-theme="light"] .rivotBrandMark img {
-    filter: brightness(0);
+    filter: none;
   }
 
-  html[data-rivot-theme="light"] .rivotHeaderLinks a {
+  html[data-rivot-theme="light"] .rivotHeaderLinks a,
+  html[data-rivot-theme="light"] .rivotProductsButton {
     color: #111;
   }
 
@@ -257,16 +492,33 @@ export function Navbar() {
     }
 
     .rivotBrandMark {
-      width: 44px;
-      height: 44px;
-    }
-
-    .rivotBrandText {
-      font-size: 28px;
+      width: 142px;
+      height: 48px;
     }
 
     .rivotHeaderLinks {
       gap: 22px;
+    }
+
+    .rivotProductsMenu {
+      top: 70px;
+      padding: 4px 20px 0;
+    }
+
+    .rivotProductsMenuInner {
+      grid-template-columns: repeat(2, minmax(200px, 232px));
+      min-height: 258px;
+      padding: 28px 24px 30px;
+      gap: 12px;
+    }
+
+    .rivotProductImage {
+      height: 136px;
+    }
+
+    .rivotProductCard {
+      grid-template-rows: 136px auto auto;
+      min-height: 218px;
     }
   }
 
@@ -283,17 +535,13 @@ export function Navbar() {
       display: none;
     }
 
-    .rivotBrand {
-      gap: 8px;
+    .rivotProductsMenu {
+      display: none;
     }
 
     .rivotBrandMark {
-      width: 36px;
-      height: 36px;
-    }
-
-    .rivotBrandText {
-      font-size: 24px;
+      width: 124px;
+      height: 42px;
     }
 
     .rivotHeaderActions {
@@ -415,25 +663,17 @@ export function Navbar() {
       gap: 8px;
     }
 
-    .rivotBrandText {
-      font-size: 21px;
-    }
-
     .rivotBrandMark {
-      width: 32px;
-      height: 32px;
+      width: 96px;
+      height: 34px;
     }
 
     .rivotBook {
-      min-width: 86px;
-      height: 36px;
-      padding: 0 12px;
+      display: none;
     }
 
     .rivotThemeToggle {
-      width: 36px;
-      padding: 0;
-      font-size: 0;
+      display: none;
     }
 
     .rivotThemeToggle span {

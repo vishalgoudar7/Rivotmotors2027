@@ -5,6 +5,9 @@ import heroLight from "@/asset/images/Hero2.png";
 import riderAssistanceImage from "@/asset/images/Key features/Riderasistance.png";
 import featureImage from "@/asset/images/Key features/Feature.png";
 import safetyImage from "@/asset/images/Key features/Safeaty.png";
+import bootDetailImage from "@/asset/images/Details/Boot space with helmet.png";
+import floorboardDetailImage from "@/asset/images/Details/Floorboard photo.png";
+import mainDetailImage from "@/asset/images/Details/Main detail photo.png";
 import silhouetteDetailImage from "@/asset/grayscooty/0030.webp";
 import { DashboardRotation } from "@/components/DashboardRotation";
 import { Faqs } from "@/components/Faqs";
@@ -37,7 +40,7 @@ const keyFeatures = [
 
 const engineeringFeatures = [
   {
-    title: "Sonic Mode",
+    title: "Boost Mode",
     copy: "Feel the surge of peak power.",
     status: "GO",
     statusTone: "multi",
@@ -317,6 +320,7 @@ export default function Home() {
           </div>
 
           <div className="rivotHeroNotes">
+            <strong>Starting at just ₹1,94,999*</strong>
             <span>EMI starting at Rs 3,999/month*</span>
             <span>Easy Financing Options</span>
           </div>
@@ -485,14 +489,70 @@ export default function Home() {
 
           <div className="rivotDetailsMedia">
             <div className="rivotDetailsHeroPlaceholder">
-              <span>Main detail photo</span>
+              <Image
+                src={mainDetailImage}
+                alt="RIVOT scooter main design detail"
+                fill
+                sizes="(max-width: 900px) 100vw, 46vw"
+                className="rivotDetailsPhoto"
+              />
+              <div className="rivotDetailsLanguage">
+                <i aria-hidden="true" />
+                <div>
+                  <b>RIVOT Design Language</b>
+                  <small>Purposeful. Functional. Futuristic.</small>
+                </div>
+              </div>
+              <div className="rivotDetailsSlider" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
+              <span className="rivotDetailsCaption">Main detail</span>
             </div>
             <div className="rivotDetailsSideStack">
               <div className="rivotDetailsSmallPlaceholder">
-                <span>Boot detail photo</span>
+                <Image
+                  src={bootDetailImage}
+                  alt="RIVOT scooter boot space with helmet"
+                  fill
+                  sizes="(max-width: 900px) 50vw, 25vw"
+                  className="rivotDetailsPhoto"
+                />
+                <div className="rivotDetailsMiniCaption">
+                  <i aria-hidden="true">
+                    <svg viewBox="0 0 32 32" fill="none">
+                      <path d="M8 14H24L22 23H10L8 14Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                      <path d="M11 14C11 10.7 13 8 16 8C19 8 21 10.7 21 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </i>
+                  <div>
+                    <b>Boot detail</b>
+                    <small>Generous space for your essentials.</small>
+                  </div>
+                </div>
               </div>
               <div className="rivotDetailsSmallPlaceholder">
-                <span>Floorboard photo</span>
+                <Image
+                  src={floorboardDetailImage}
+                  alt="RIVOT scooter floorboard detail"
+                  fill
+                  sizes="(max-width: 900px) 50vw, 25vw"
+                  className="rivotDetailsPhoto"
+                />
+                <div className="rivotDetailsMiniCaption">
+                  <i aria-hidden="true">
+                    <svg viewBox="0 0 32 32" fill="none">
+                      <path d="M10 9H22L20 24H12L10 9Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                      <path d="M13 13H19M13.5 17H18.5M14 21H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </i>
+                  <div>
+                    <b>APU</b>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -555,6 +615,170 @@ export default function Home() {
       </section>
 
       <DashboardRotation />
+
+      <section className="rivotAppConnect" aria-labelledby="app-connect-title">
+        <div className="rivotAppConnectShell">
+          <article className="rivotAppConnectCopy">
+            <p className="rivotAppKicker">02</p>
+            <p className="rivotAppEyebrow">Ride Insights</p>
+            <h2 id="app-connect-title">
+              Understand
+              <br />
+              <span>every journey.</span>
+            </h2>
+            <p className="rivotAppLead">
+              Track your rides, performance
+              <br />
+              and eco score over time.
+            </p>
+
+            <div className="rivotRideInsightList" aria-label="Ride insight features">
+              {[
+                ["Ride Insights", "Track every ride in detail.", "route"],
+                ["Daily Summary", "View your daily ride overview.", "home"],
+                ["Eco Score", "Check your eco performance.", "eco"],
+                ["Compare Rides", "Compare and improve.", "compare"],
+                ["Ride History", "All your past rides.", "history"],
+              ].map(([title, copy, icon], index) => (
+                <div className={index === 0 ? "active" : ""} key={title}>
+                  <i aria-hidden="true" data-icon={icon}>
+                    <svg viewBox="0 0 32 32" fill="none">
+                      {icon === "route" ? (
+                        <>
+                          <path d="M8 23C8 17 13 17 13 12C13 8 8 8 8 12C8 17 13 17 13 23" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                          <path d="M19 9H24V14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M18 15L24 9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                        </>
+                      ) : null}
+                      {icon === "home" ? (
+                        <>
+                          <path d="M7 15L16 8L25 15" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M10 14V24H22V14" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+                        </>
+                      ) : null}
+                      {icon === "eco" ? (
+                        <>
+                          <path d="M8 18C8 11 14 8 24 8C24 18 21 24 14 24C10.7 24 8 21.3 8 18Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+                          <path d="M13 19C16 17 18 15 20 12" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                        </>
+                      ) : null}
+                      {icon === "compare" ? (
+                        <>
+                          <path d="M8 11H18M14 7L18 11L14 15" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M24 21H14M18 17L14 21L18 25" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                        </>
+                      ) : null}
+                      {icon === "history" ? (
+                        <>
+                          <path d="M9 10V16H15" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M8 16C8 11.58 11.58 8 16 8C20.42 8 24 11.58 24 16C24 20.42 20.42 24 16 24C13.4 24 11.1 22.76 9.64 20.84" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                        </>
+                      ) : null}
+                    </svg>
+                  </i>
+                  <span>
+                    <b>{title}</b>
+                    <small>{copy}</small>
+                  </span>
+                  {index === 0 ? <em aria-hidden="true">{"\u203A"}</em> : null}
+                </div>
+              ))}
+            </div>
+
+            <div className="rivotAppConnectDots" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+          </article>
+
+          <article className="rivotRidePhoneCard" aria-label="Ride Insights app screen">
+            <div className="rivotPhoneMockup">
+              <div className="rivotPhoneStatus">
+                <span>9:41</span>
+                <i />
+              </div>
+              <div className="rivotPhoneHeader">
+                <b>Ride Insights</b>
+                <span>This Week <i aria-hidden="true" /></span>
+              </div>
+              <div className="rivotPhoneMetrics">
+                <span>
+                  <b>12.4 km</b>
+                  <small>Distance</small>
+                </span>
+                <span>
+                  <b>34 min</b>
+                  <small>Ride Time</small>
+                </span>
+                <span>
+                  <b>92%</b>
+                  <small>Eco Score</small>
+                </span>
+              </div>
+              <div className="rivotPhoneChart" aria-hidden="true">
+                <svg viewBox="0 0 260 150" fill="none">
+                  <path d="M25 18V122H242" stroke="#dde1e4" strokeWidth="2" />
+                  <path d="M25 38H242M25 66H242M25 94H242" stroke="#edf0f2" strokeWidth="1.5" />
+                  <path d="M42 98L66 88L89 103L112 94L136 54L158 47L181 71L204 56L228 36" stroke="#f3702f" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M42 98L66 88L89 103L112 94L136 54L158 47L181 71L204 56L228 36V122H42V98Z" fill="url(#rideChartFill)" />
+                  <circle cx="158" cy="47" r="5" fill="#f3702f" />
+                  <rect x="145" y="25" width="49" height="20" rx="6" fill="#222" />
+                  <text x="169.5" y="38.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="800">12.4 km</text>
+                  <text x="40" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Mon</text>
+                  <text x="84" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Tue</text>
+                  <text x="128" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Wed</text>
+                  <text x="172" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Thu</text>
+                  <text x="216" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Fri</text>
+                  <defs>
+                    <linearGradient id="rideChartFill" x1="135" y1="36" x2="135" y2="122" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#f3702f" stopOpacity=".22" />
+                      <stop offset="1" stopColor="#f3702f" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div className="rivotPhoneSummary">
+                <b>Today's Summary</b>
+                <div>
+                  <span>
+                    <b>12.4 km</b>
+                    <small>Distance</small>
+                  </span>
+                  <span>
+                    <b>34 min</b>
+                    <small>Ride Time</small>
+                  </span>
+                  <span>
+                    <b>32 km/h</b>
+                    <small>Avg. Speed</small>
+                  </span>
+                  <span>
+                    <b>92%</b>
+                    <small>Eco Score</small>
+                  </span>
+                </div>
+              </div>
+              <div className="rivotPhoneCard">
+                <i aria-hidden="true" />
+                <div>
+                  <b>Eco Feedback</b>
+                  <small>Great job! You rode 12% more efficiently than your last ride.</small>
+                </div>
+              </div>
+              <nav className="rivotPhoneNav" aria-label="App preview navigation">
+                <span className="active">Home</span>
+                <span>Vehicle</span>
+                <span>Map</span>
+                <span>Alerts</span>
+                <span>Profile</span>
+              </nav>
+            </div>
+          </article>
+        </div>
+      </section>
 
       <section className="rivotEngineering" aria-labelledby="engineering-title">
         <div className="rivotEngineeringHeader">
@@ -674,8 +898,6 @@ export default function Home() {
 
       <section className="rivotReach" aria-label="RIVOT access network">
         <div className="rivotReachPanel">
-          <span className="rivotReachNumber">03</span>
-
           <article className="rivotReachCard rivotReachStore">
             <div className="rivotReachCopy">
               <span className="rivotReachIcon" aria-hidden="true">
@@ -936,12 +1158,12 @@ export default function Home() {
           background: rgba(255,255,255,.42);
         }
 
-        .rivotHeroContent {
+.rivotHeroContent {
   position: relative;
   z-index: 1;
   width: min(42vw, 580px);
   margin-top: clamp(105px, 12vh, 125px);
-  margin-left: clamp(32px, 6.5vw, 112px);
+  margin-left: clamp(48px, 3.2vw, 62px);
   text-align: left;
   text-shadow: none;
 }
@@ -1090,6 +1312,14 @@ export default function Home() {
           color: rgba(255, 255, 255, .72);
           font-size: 14px;
           font-weight: 700;
+        }
+
+        .rivotHeroNotes strong {
+          flex: 0 0 100%;
+          color: currentColor;
+          font-size: 18px;
+          font-weight: 900;
+          line-height: 1.2;
         }
 
         .rivotKeyFeatures {
@@ -1926,8 +2156,8 @@ export default function Home() {
 
         .rivotDetailsMedia {
           display: grid;
-          grid-template-columns: minmax(0, 1.45fr) minmax(200px, .85fr);
-          gap: 14px;
+          grid-template-columns: minmax(0, 1.58fr) minmax(220px, .82fr);
+          gap: 12px;
           min-width: 0;
           align-items: stretch;
           min-height: 0;
@@ -1937,24 +2167,26 @@ export default function Home() {
         .rivotDetailsSmallPlaceholder {
           position: relative;
           overflow: hidden;
-          border: 1px solid rgba(20, 20, 20, .08);
-          border-radius: 18px;
+          border: 1px solid rgba(255, 255, 255, .08);
+          border-radius: 15px;
           background:
-            linear-gradient(135deg, rgba(239, 116, 48, .2), transparent 32%),
-            linear-gradient(160deg, #232426 0%, #08090a 62%, #151619 100%);
-          box-shadow: 0 16px 36px rgba(0, 0, 0, .14);
+            radial-gradient(circle at 48% 42%, rgba(255, 255, 255, .05), transparent 34%),
+            #060708;
+          box-shadow:
+            0 20px 44px rgba(0, 0, 0, .18),
+            inset 0 0 0 1px rgba(255, 255, 255, .03);
         }
 
         .rivotDetailsHeroPlaceholder {
           min-height: 0;
-          height: clamp(330px, 34vw, 450px);
-          border-radius: 18px;
+          height: clamp(360px, 38vw, 510px);
+          border-radius: 15px;
         }
 
         .rivotDetailsSideStack {
           display: grid;
-          grid-template-rows: 1fr 1.12fr;
-          gap: 14px;
+          grid-template-rows: 1fr 1fr;
+          gap: 12px;
           min-height: 0;
         }
 
@@ -1962,13 +2194,22 @@ export default function Home() {
           min-height: 0;
         }
 
-        .rivotDetailsHeroPlaceholder::before,
-        .rivotDetailsSmallPlaceholder::before {
-          content: "";
-          position: absolute;
-          inset: 16px;
-          border: 1px dashed rgba(255, 255, 255, .22);
-          border-radius: 14px;
+        .rivotDetailsPhoto {
+          object-fit: cover;
+          object-position: center;
+          transform: scale(1.015);
+        }
+
+        .rivotDetailsHeroPlaceholder .rivotDetailsPhoto {
+          object-position: 50% 48%;
+        }
+
+        .rivotDetailsSmallPlaceholder:first-child .rivotDetailsPhoto {
+          object-position: 50% 42%;
+        }
+
+        .rivotDetailsSmallPlaceholder:last-child .rivotDetailsPhoto {
+          object-position: 50% 58%;
         }
 
         .rivotDetailsHeroPlaceholder::after,
@@ -1976,21 +2217,132 @@ export default function Home() {
           content: "";
           position: absolute;
           inset: auto 0 0;
-          height: 46%;
-          background: linear-gradient(180deg, transparent, rgba(0,0,0,.56));
+          height: 50%;
+          background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .72));
         }
 
-        .rivotDetailsHeroPlaceholder span,
-        .rivotDetailsSmallPlaceholder span {
+        .rivotDetailsCaption {
           position: absolute;
-          left: 24px;
+          left: 22px;
           bottom: 22px;
-          z-index: 1;
-          color: rgba(255,255,255,.78);
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: .18em;
+          z-index: 3;
+          color: rgba(255,255,255,.9);
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: .22em;
           text-transform: uppercase;
+        }
+
+        .rivotDetailsLanguage {
+          position: absolute;
+          left: 22px;
+          top: 22px;
+          z-index: 3;
+          display: inline-grid;
+          grid-template-columns: 10px minmax(0, 1fr);
+          align-items: center;
+          gap: 9px;
+          max-width: 235px;
+          padding: 10px 12px;
+          border: 1px solid rgba(255, 255, 255, .08);
+          border-radius: 8px;
+          background: rgba(16, 17, 19, .78);
+          color: #fff;
+          backdrop-filter: blur(10px);
+        }
+
+        .rivotDetailsLanguage i {
+          display: block;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #ef7430;
+          box-shadow: 0 0 14px rgba(239, 116, 48, .8);
+        }
+
+        .rivotDetailsLanguage b,
+        .rivotDetailsMiniCaption b {
+          display: block;
+          color: #fff;
+          font-size: 8px;
+          font-weight: 900;
+          line-height: 1.1;
+          letter-spacing: .13em;
+          text-transform: uppercase;
+        }
+
+        .rivotDetailsLanguage small,
+        .rivotDetailsMiniCaption small {
+          display: block;
+          margin-top: 3px;
+          color: rgba(255, 255, 255, .58);
+          font-size: 8px;
+          font-weight: 700;
+          line-height: 1.2;
+        }
+
+        .rivotDetailsSlider {
+          position: absolute;
+          left: 22px;
+          right: auto;
+          bottom: 48px;
+          z-index: 3;
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          width: 235px;
+          height: 12px;
+        }
+
+        .rivotDetailsSlider::after {
+          content: "";
+          flex: 1;
+          height: 2px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, .16);
+        }
+
+        .rivotDetailsSlider span {
+          display: block;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, .5);
+        }
+
+        .rivotDetailsSlider span:first-child {
+          width: 36px;
+          height: 3px;
+          border-radius: 999px;
+          background: #ef7430;
+        }
+
+        .rivotDetailsMiniCaption {
+          position: absolute;
+          left: 18px;
+          bottom: 18px;
+          z-index: 3;
+          display: grid;
+          grid-template-columns: 34px minmax(0, 1fr);
+          align-items: center;
+          gap: 10px;
+          width: min(88%, 265px);
+        }
+
+        .rivotDetailsMiniCaption i {
+          display: grid;
+          width: 32px;
+          height: 32px;
+          place-items: center;
+          border: 1px solid rgba(239, 116, 48, .42);
+          border-radius: 50%;
+          background: rgba(239, 116, 48, .08);
+          color: #ef7430;
+        }
+
+        .rivotDetailsMiniCaption svg {
+          width: 18px;
+          height: 18px;
         }
 
         .rivotPerformance {
@@ -2334,6 +2686,914 @@ export default function Home() {
           grid-row: 2;
         }
 
+        .rivotAppConnect {
+          padding: clamp(44px, 5.5vw, 78px) clamp(16px, 4vw, 56px);
+          background: #f3f3f4;
+          color: #080808;
+        }
+
+        .rivotAppConnectShell {
+          width: min(100%, 940px);
+          margin: 0 auto;
+        }
+
+        .rivotAppConnectIntro {
+          max-width: 460px;
+          margin: 0 0 clamp(28px, 3vw, 40px);
+          color: #050505;
+          font-size: clamp(20px, 2.1vw, 28px);
+          font-weight: 850;
+          line-height: 1.14;
+          letter-spacing: -.035em;
+        }
+
+        .rivotAppConnectCards {
+          display: grid;
+          grid-template-columns: minmax(250px, .95fr) minmax(280px, 1fr);
+          gap: 18px;
+        }
+
+        .rivotAppConnectMenu,
+        .rivotAppPhoneCard {
+          min-height: clamp(420px, 36vw, 540px);
+          overflow: hidden;
+          border-radius: 16px;
+        }
+
+        .rivotAppConnectMenu {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: clamp(34px, 3.4vw, 48px);
+          background: #fff;
+          box-shadow: 0 18px 45px rgba(17, 17, 17, .05);
+        }
+
+        .rivotAppConnectMenu b,
+        .rivotAppConnectMenu span {
+          display: block;
+          line-height: 1.2;
+        }
+
+        .rivotAppConnectMenu b {
+          margin-bottom: 13px;
+          color: #070707;
+          font-size: clamp(24px, 2.2vw, 32px);
+          font-weight: 850;
+          letter-spacing: -.04em;
+        }
+
+        .rivotAppConnectMenu span {
+          margin-top: 9px;
+          color: #d4d5d7;
+          font-size: clamp(22px, 2vw, 29px);
+          font-weight: 800;
+          letter-spacing: -.04em;
+        }
+
+        .rivotAppConnectFooter {
+          display: grid;
+          gap: 12px;
+        }
+
+        .rivotAppConnectDots {
+          display: flex;
+          gap: 5px;
+        }
+
+        .rivotAppConnectDots span {
+          width: 5px;
+          height: 5px;
+          margin: 0;
+          border-radius: 50%;
+          background: #cfd1d4;
+        }
+
+        .rivotAppConnectDots span:first-child {
+          background: #080808;
+        }
+
+        .rivotAppConnectFooter p {
+          max-width: 280px;
+          margin: 0;
+          color: #9da1a6;
+          font-size: 10px;
+          font-weight: 700;
+          line-height: 1.35;
+        }
+
+        .rivotAppDownload {
+          display: inline-grid;
+          grid-template-columns: 30px minmax(0, auto);
+          align-items: center;
+          gap: 8px;
+          width: max-content;
+          min-height: 26px;
+          color: #090909;
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1.05;
+        }
+
+        .rivotAppDownload i {
+          position: relative;
+          display: block;
+          width: 28px;
+          height: 18px;
+          border: 1.5px solid #111;
+          border-radius: 999px;
+        }
+
+        .rivotAppDownload i::before {
+          content: "";
+          position: absolute;
+          left: 5px;
+          top: 50%;
+          width: 0;
+          height: 0;
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
+          border-left: 8px solid #111;
+          transform: translateY(-50%);
+        }
+
+        .rivotAppDownload small {
+          display: block;
+          margin-top: 2px;
+          color: #9da1a6;
+          font-size: 8px;
+          font-weight: 800;
+        }
+
+        .rivotAppPhoneCard {
+          position: relative;
+          display: grid;
+          place-items: center;
+          padding: 32px;
+          background: linear-gradient(180deg, #dfe8f4 0%, #bfc2c7 100%);
+          isolation: isolate;
+          box-shadow: 0 18px 45px rgba(17, 17, 17, .08);
+        }
+
+        .rivotAppHand {
+          position: absolute;
+          z-index: 1;
+          bottom: -8%;
+          width: 34%;
+          height: 70%;
+          border-radius: 44% 44% 18% 18%;
+          background: linear-gradient(160deg, rgba(25, 26, 28, .94), rgba(5, 6, 7, .98));
+          filter: blur(.1px);
+          opacity: .96;
+        }
+
+        .rivotAppHandLeft {
+          left: 10%;
+          transform: rotate(-18deg);
+        }
+
+        .rivotAppHandRight {
+          right: 9%;
+          transform: rotate(18deg);
+        }
+
+        .rivotPhoneMockup {
+          position: relative;
+          z-index: 2;
+          width: min(58%, 228px);
+          min-width: 178px;
+          aspect-ratio: 9 / 18.4;
+          padding: 12px 11px 13px;
+          border: 5px solid #070707;
+          border-radius: 32px;
+          background: #f9faf7;
+          box-shadow:
+            0 22px 48px rgba(0, 0, 0, .34),
+            inset 0 0 0 1px rgba(255, 255, 255, .5);
+        }
+
+        .rivotPhoneMockup::before {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 7px;
+          width: 58px;
+          height: 14px;
+          border-radius: 999px;
+          background: #070707;
+          transform: translateX(-50%);
+        }
+
+        .rivotPhoneStatus {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 20px;
+          padding-inline: 4px;
+          color: #111;
+          font-size: 8px;
+          font-weight: 900;
+        }
+
+        .rivotPhoneStatus i {
+          display: block;
+          width: 22px;
+          height: 8px;
+          border-radius: 999px;
+          background: linear-gradient(90deg, #111 50%, transparent 50%);
+          border: 1px solid #111;
+        }
+
+        .rivotPhoneTop {
+          display: flex;
+          justify-content: space-between;
+          align-items: end;
+          margin-top: 10px;
+          color: #171717;
+        }
+
+        .rivotPhoneTop small {
+          font-size: 8px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .rivotPhoneTop b {
+          font-size: 12px;
+          font-weight: 900;
+        }
+
+        .rivotPhoneMap {
+          display: grid;
+          place-items: center;
+          height: 96px;
+          margin-top: 10px;
+          overflow: hidden;
+          border: 1px solid #dde8e3;
+          border-radius: 13px;
+          background:
+            linear-gradient(90deg, rgba(11, 83, 81, .06) 1px, transparent 1px),
+            linear-gradient(0deg, rgba(11, 83, 81, .06) 1px, transparent 1px),
+            #eef6f2;
+          background-size: 18px 18px;
+        }
+
+        .rivotPhoneMap svg {
+          width: 100%;
+          height: 100%;
+        }
+
+        .rivotPhoneTrip {
+          margin-top: 10px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid #eef0ed;
+        }
+
+        .rivotPhoneTrip b,
+        .rivotPhoneCard b {
+          display: block;
+          color: #111;
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1.1;
+        }
+
+        .rivotPhoneTrip small,
+        .rivotPhoneCard small {
+          display: block;
+          margin-top: 3px;
+          color: #8a918d;
+          font-size: 8px;
+          font-weight: 750;
+          line-height: 1.2;
+        }
+
+        .rivotPhoneStats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 7px;
+          margin-top: 10px;
+        }
+
+        .rivotPhoneStats span {
+          display: grid;
+          gap: 2px;
+          min-height: 44px;
+          align-content: center;
+          padding: 7px 5px;
+          border-radius: 10px;
+          background: #f0f1ee;
+          text-align: center;
+        }
+
+        .rivotPhoneStats b {
+          color: #111;
+          font-size: 11px;
+          font-weight: 900;
+        }
+
+        .rivotPhoneStats small {
+          color: #9da1a6;
+          font-size: 7px;
+          font-weight: 800;
+        }
+
+        .rivotPhoneCard {
+          display: grid;
+          grid-template-columns: 28px 1fr;
+          align-items: center;
+          gap: 8px;
+          margin-top: 12px;
+          padding: 9px;
+          border-radius: 13px;
+          background: #fff;
+          box-shadow: 0 10px 24px rgba(17, 17, 17, .08);
+        }
+
+        .rivotPhoneCard i {
+          display: grid;
+          width: 28px;
+          height: 28px;
+          place-items: center;
+          border-radius: 50%;
+          background: #27c769;
+        }
+
+        .rivotPhoneCard i::before {
+          content: "";
+          width: 12px;
+          height: 8px;
+          border-left: 2px solid #fff;
+          border-bottom: 2px solid #fff;
+          transform: rotate(-45deg) translate(1px, -1px);
+        }
+
+        .rivotAppPhoneCard > p {
+          position: absolute;
+          z-index: 3;
+          left: 50%;
+          bottom: 58px;
+          width: 150px;
+          margin: 0;
+          color: rgba(255, 255, 255, .92);
+          font-size: 12px;
+          font-weight: 900;
+          line-height: 1.25;
+          text-align: center;
+          transform: translateX(-50%);
+        }
+
+        .rivotAppConnect {
+          padding: clamp(54px, 6vw, 86px) clamp(16px, 4vw, 62px);
+          background: #f6f5f3;
+          color: #080808;
+        }
+
+        .rivotAppConnectShell {
+          display: grid;
+          grid-template-columns: minmax(280px, .95fr) minmax(320px, .9fr);
+          align-items: center;
+          gap: clamp(34px, 6vw, 92px);
+          width: min(100%, 1080px);
+          margin: 0 auto;
+        }
+
+        .rivotAppConnectCopy {
+          min-width: 0;
+        }
+
+        .rivotAppKicker,
+        .rivotAppEyebrow {
+          margin: 0;
+          color: #ef7430;
+          font-size: 13px;
+          font-weight: 900;
+          line-height: 1.15;
+          letter-spacing: .12em;
+          text-transform: uppercase;
+        }
+
+        .rivotAppKicker {
+          margin-bottom: 12px;
+        }
+
+        .rivotAppEyebrow {
+          margin-bottom: 14px;
+        }
+
+        .rivotAppConnectCopy h2 {
+          margin: 0;
+          color: #060606;
+          font-size: clamp(42px, 5vw, 72px);
+          font-weight: 900;
+          line-height: .95;
+          letter-spacing: -.055em;
+        }
+
+        .rivotAppConnectCopy h2 span {
+          color: #ef7430;
+        }
+
+        .rivotAppLead {
+          margin: clamp(24px, 2.4vw, 34px) 0 0;
+          color: #646b70;
+          font-size: clamp(16px, 1.35vw, 20px);
+          font-weight: 750;
+          line-height: 1.55;
+        }
+
+        .rivotRideInsightList {
+          display: grid;
+          gap: 12px;
+          max-width: 460px;
+          margin-top: clamp(34px, 4vw, 54px);
+        }
+
+        .rivotRideInsightList > div {
+          display: grid;
+          grid-template-columns: 42px minmax(0, 1fr) 18px;
+          align-items: center;
+          gap: 14px;
+          min-height: 58px;
+          padding: 10px 14px;
+          border-radius: 12px;
+          background: transparent;
+          color: #151515;
+        }
+
+        .rivotRideInsightList > div.active {
+          background: #fff;
+          color: #ef7430;
+          box-shadow: 0 16px 40px rgba(239, 116, 48, .08);
+        }
+
+        .rivotRideInsightList i {
+          display: grid;
+          width: 34px;
+          height: 34px;
+          place-items: center;
+          border: 1px solid #e1e1df;
+          border-radius: 9px;
+          background: #fff;
+          color: #151515;
+        }
+
+        .rivotRideInsightList .active i {
+          border-color: rgba(239, 116, 48, .2);
+          background: #fff7f2;
+          color: #ef7430;
+        }
+
+        .rivotRideInsightList svg {
+          width: 19px;
+          height: 19px;
+        }
+
+        .rivotRideInsightList b,
+        .rivotRideInsightList small {
+          display: block;
+        }
+
+        .rivotRideInsightList b {
+          color: #171717;
+          font-size: 14px;
+          font-weight: 900;
+          line-height: 1.15;
+        }
+
+        .rivotRideInsightList small {
+          margin-top: 4px;
+          color: #737b80;
+          font-size: 11px;
+          font-weight: 750;
+          line-height: 1.2;
+        }
+
+        .rivotRideInsightList em {
+          color: #ef7430;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 900;
+        }
+
+        .rivotAppConnectDots {
+          display: flex;
+          gap: 14px;
+          margin-top: clamp(42px, 5vw, 70px);
+        }
+
+        .rivotAppConnectDots span {
+          width: 10px;
+          height: 10px;
+          border: 0;
+          border-radius: 50%;
+          background: #d7d8d8;
+        }
+
+        .rivotAppConnectDots span:first-child,
+        .rivotAppConnectDots span:nth-child(3) {
+          background: #ef7430;
+        }
+
+        .rivotRidePhoneCard {
+          display: grid;
+          justify-items: center;
+          min-width: 0;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneMockup {
+          width: min(100%, 360px);
+          min-width: 0;
+          aspect-ratio: 9 / 18.7;
+          padding: 18px 18px 14px;
+          border: 2px solid rgba(17, 17, 17, .08);
+          border-radius: 44px;
+          background: #fff;
+          box-shadow:
+            0 28px 70px rgba(17, 17, 17, .12),
+            inset 0 0 0 1px rgba(17, 17, 17, .05);
+        }
+
+        .rivotRidePhoneCard .rivotPhoneMockup::before {
+          top: 14px;
+          width: 92px;
+          height: 24px;
+          border-radius: 999px;
+          background: #070707;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneStatus {
+          height: 30px;
+          padding: 0 9px;
+          color: #090909;
+          font-size: 11px;
+          font-weight: 900;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneStatus i {
+          width: 42px;
+          height: 11px;
+          border: 0;
+          background:
+            radial-gradient(circle at 8px 50%, #111 0 3px, transparent 4px),
+            linear-gradient(90deg, #111 0 18px, transparent 18px 24px, #111 24px 42px);
+        }
+
+        .rivotPhoneHeader {
+          margin-top: 18px;
+        }
+
+        .rivotPhoneHeader > b {
+          display: block;
+          color: #111;
+          font-size: 21px;
+          font-weight: 900;
+          line-height: 1.1;
+          letter-spacing: -.04em;
+        }
+
+        .rivotPhoneHeader > span {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          min-height: 38px;
+          margin-top: 18px;
+          padding: 0 13px;
+          border: 1px solid #eceeed;
+          border-radius: 9px;
+          background: #fbfbfa;
+          color: #222;
+          font-size: 12px;
+          font-weight: 850;
+        }
+
+        .rivotPhoneHeader i {
+          width: 7px;
+          height: 7px;
+          border-right: 1.5px solid currentColor;
+          border-bottom: 1.5px solid currentColor;
+          transform: rotate(45deg) translateY(-2px);
+        }
+
+        .rivotPhoneMetrics {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 8px;
+          margin-top: 22px;
+          text-align: center;
+        }
+
+        .rivotPhoneMetrics b,
+        .rivotPhoneSummary b,
+        .rivotPhoneCard b {
+          display: block;
+          color: #111;
+          font-size: 16px;
+          font-weight: 900;
+          line-height: 1.05;
+        }
+
+        .rivotPhoneMetrics small,
+        .rivotPhoneSummary small,
+        .rivotPhoneCard small {
+          display: block;
+          margin-top: 5px;
+          color: #8f969b;
+          font-size: 9px;
+          font-weight: 850;
+          line-height: 1.15;
+          text-transform: uppercase;
+        }
+
+        .rivotPhoneChart {
+          height: 186px;
+          margin-top: 18px;
+        }
+
+        .rivotPhoneChart svg {
+          width: 100%;
+          height: 100%;
+        }
+
+        .rivotPhoneSummary {
+          margin-top: 12px;
+        }
+
+        .rivotPhoneSummary > b {
+          margin-bottom: 14px;
+          font-size: 13px;
+        }
+
+        .rivotPhoneSummary > div {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 7px;
+        }
+
+        .rivotPhoneSummary span {
+          min-width: 0;
+        }
+
+        .rivotPhoneSummary span b {
+          font-size: 13px;
+        }
+
+        .rivotPhoneSummary span small {
+          font-size: 7px;
+          text-transform: none;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard {
+          grid-template-columns: 42px minmax(0, 1fr);
+          gap: 11px;
+          margin-top: 18px;
+          padding: 13px;
+          border-radius: 15px;
+          background: #fff;
+          box-shadow: 0 14px 36px rgba(17, 17, 17, .08);
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard i {
+          width: 38px;
+          height: 38px;
+          background: #dff8e5;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard i::before {
+          width: 20px;
+          height: 20px;
+          border: 0;
+          border-radius: 50%;
+          background:
+            linear-gradient(135deg, transparent 38%, #25c865 39% 60%, transparent 61%),
+            #6fea8b;
+          transform: none;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard b {
+          font-size: 12px;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard small {
+          max-width: 210px;
+          font-size: 9px;
+          text-transform: none;
+        }
+
+        .rivotPhoneNav {
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 2px;
+          margin-top: 18px;
+          padding-top: 12px;
+          border-top: 1px solid #eef0ef;
+          color: #8f969b;
+          font-size: 9px;
+          font-weight: 850;
+          text-align: center;
+        }
+
+        .rivotPhoneNav span.active {
+          color: #ef7430;
+        }
+
+        .rivotAppConnect {
+          padding: clamp(26px, 3vw, 42px) clamp(16px, 4vw, 56px);
+        }
+
+        .rivotAppConnectShell {
+          grid-template-columns: minmax(260px, .9fr) minmax(250px, .64fr);
+          gap: clamp(28px, 4.5vw, 68px);
+          width: min(100%, 980px);
+        }
+
+        .rivotAppKicker {
+          margin-bottom: 6px;
+          font-size: 11px;
+        }
+
+        .rivotAppEyebrow {
+          margin-bottom: 8px;
+          font-size: 11px;
+        }
+
+        .rivotAppConnectCopy h2 {
+          font-size: clamp(34px, 4.2vw, 56px);
+          line-height: .9;
+        }
+
+        .rivotAppLead {
+          margin-top: 18px;
+          font-size: clamp(14px, 1.1vw, 17px);
+          line-height: 1.45;
+        }
+
+        .rivotRideInsightList {
+          gap: 8px;
+          max-width: 410px;
+          margin-top: 28px;
+        }
+
+        .rivotRideInsightList > div {
+          grid-template-columns: 36px minmax(0, 1fr) 16px;
+          min-height: 46px;
+          gap: 10px;
+          padding: 7px 10px;
+          border-radius: 10px;
+        }
+
+        .rivotRideInsightList i {
+          width: 30px;
+          height: 30px;
+          border-radius: 8px;
+        }
+
+        .rivotRideInsightList svg {
+          width: 16px;
+          height: 16px;
+        }
+
+        .rivotRideInsightList b {
+          font-size: 12px;
+        }
+
+        .rivotRideInsightList small {
+          margin-top: 2px;
+          font-size: 9px;
+        }
+
+        .rivotRideInsightList em {
+          font-size: 17px;
+        }
+
+        .rivotAppConnectDots {
+          gap: 11px;
+          margin-top: 28px;
+        }
+
+        .rivotAppConnectDots span {
+          width: 8px;
+          height: 8px;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneMockup {
+          width: min(100%, 270px);
+          padding: 13px 13px 11px;
+          border-radius: 34px;
+          box-shadow:
+            0 20px 48px rgba(17, 17, 17, .12),
+            inset 0 0 0 1px rgba(17, 17, 17, .05);
+        }
+
+        .rivotRidePhoneCard .rivotPhoneMockup::before {
+          top: 10px;
+          width: 68px;
+          height: 17px;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneStatus {
+          height: 23px;
+          padding: 0 7px;
+          font-size: 9px;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneStatus i {
+          width: 34px;
+          height: 9px;
+        }
+
+        .rivotPhoneHeader {
+          margin-top: 12px;
+        }
+
+        .rivotPhoneHeader > b {
+          font-size: 16px;
+        }
+
+        .rivotPhoneHeader > span {
+          min-height: 30px;
+          margin-top: 12px;
+          padding: 0 10px;
+          font-size: 10px;
+        }
+
+        .rivotPhoneMetrics {
+          gap: 6px;
+          margin-top: 14px;
+        }
+
+        .rivotPhoneMetrics b,
+        .rivotPhoneSummary b,
+        .rivotPhoneCard b {
+          font-size: 12px;
+        }
+
+        .rivotPhoneMetrics small,
+        .rivotPhoneSummary small,
+        .rivotPhoneCard small {
+          margin-top: 3px;
+          font-size: 7px;
+        }
+
+        .rivotPhoneChart {
+          height: 120px;
+          margin-top: 10px;
+        }
+
+        .rivotPhoneSummary {
+          margin-top: 8px;
+        }
+
+        .rivotPhoneSummary > b {
+          margin-bottom: 9px;
+          font-size: 10px;
+        }
+
+        .rivotPhoneSummary > div {
+          gap: 5px;
+        }
+
+        .rivotPhoneSummary span b {
+          font-size: 10px;
+        }
+
+        .rivotPhoneSummary span small {
+          font-size: 6px;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard {
+          grid-template-columns: 32px minmax(0, 1fr);
+          gap: 8px;
+          margin-top: 10px;
+          padding: 9px;
+          border-radius: 12px;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard i {
+          width: 30px;
+          height: 30px;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard i::before {
+          width: 16px;
+          height: 16px;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard b {
+          font-size: 10px;
+        }
+
+        .rivotRidePhoneCard .rivotPhoneCard small {
+          max-width: 170px;
+          font-size: 7px;
+        }
+
+        .rivotPhoneNav {
+          margin-top: 10px;
+          padding-top: 8px;
+          font-size: 7px;
+        }
+
         .rivotReach {
           padding: clamp(8px, 1.5vw, 18px) clamp(10px, 2vw, 22px) clamp(64px, 7vw, 92px);
           background: #fff;
@@ -2548,7 +3808,7 @@ export default function Home() {
         }
 
         .rivotBestFit {
-          padding: clamp(54px, 6.4vw, 86px) clamp(16px, 4vw, 48px) clamp(62px, 7vw, 96px);
+          padding: clamp(28px, 3.4vw, 44px) clamp(16px, 4vw, 48px) clamp(34px, 3.8vw, 50px);
           background: #f3f3f4;
           color: #070707;
         }
@@ -2565,16 +3825,16 @@ export default function Home() {
         .rivotBestFitHeader h2 {
           margin: 0;
           color: #080808;
-          font-size: clamp(42px, 4.8vw, 70px);
+          font-size: clamp(34px, 3.5vw, 54px);
           font-weight: 900;
           line-height: .95;
           letter-spacing: -.055em;
         }
 
         .rivotBestFitHeader p {
-          margin: 22px 0 0;
+          margin: 12px 0 0;
           color: #777d84;
-          font-size: clamp(15px, 1.1vw, 18px);
+          font-size: clamp(14px, 1vw, 16px);
           font-weight: 750;
           line-height: 1.35;
         }
@@ -2582,28 +3842,28 @@ export default function Home() {
         .rivotBestFitGrid {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: clamp(22px, 2.4vw, 32px);
-          margin-top: clamp(48px, 5.2vw, 76px);
+          gap: clamp(18px, 2vw, 28px);
+          margin-top: clamp(28px, 3.2vw, 42px);
         }
 
         .rivotBestFitCard {
           display: flex;
-          min-height: clamp(420px, 31vw, 506px);
+          min-height: clamp(330px, 24vw, 390px);
           flex-direction: column;
           align-items: center;
-          padding: clamp(42px, 4vw, 56px) clamp(26px, 3vw, 46px) clamp(40px, 3.6vw, 50px);
-          border-radius: 24px;
+          padding: clamp(28px, 2.8vw, 38px) clamp(22px, 2.4vw, 34px) clamp(26px, 2.6vw, 34px);
+          border-radius: 20px;
           background: #fff;
           text-align: center;
         }
 
         .rivotBestFitEyebrow {
-          margin: 0 0 17px;
+          margin: 0 0 12px;
           color: #0d0d0d;
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 900;
           line-height: 1.1;
-          letter-spacing: .46em;
+          letter-spacing: .42em;
           text-transform: uppercase;
         }
 
@@ -2618,7 +3878,7 @@ export default function Home() {
         .rivotBestFitCard h3 {
           margin: 0;
           color: #050505;
-          font-size: clamp(28px, 2.2vw, 34px);
+          font-size: clamp(24px, 1.9vw, 30px);
           font-weight: 850;
           line-height: 1.08;
           letter-spacing: -.04em;
@@ -2626,28 +3886,28 @@ export default function Home() {
 
         .rivotBestFitCard > p:not(.rivotBestFitEyebrow) {
           max-width: 300px;
-          margin: 16px 0 0;
+          margin: 12px 0 0;
           color: #777d84;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 750;
           line-height: 1.35;
         }
 
         .rivotAccessoryTiles {
           display: grid;
-          grid-template-columns: repeat(3, 104px);
-          gap: 12px;
+          grid-template-columns: repeat(3, 84px);
+          gap: 10px;
           margin-top: auto;
-          padding-top: 64px;
+          padding-top: 34px;
         }
 
         .rivotAccessoryTiles span {
           display: grid;
-          width: 104px;
-          height: 124px;
+          width: 84px;
+          height: 92px;
           place-items: center;
           overflow: hidden;
-          border-radius: 15px;
+          border-radius: 13px;
           background: #f4f4f5;
         }
 
@@ -2658,8 +3918,8 @@ export default function Home() {
         }
 
         .rivotAccessoryGuard {
-          width: 68px;
-          height: 34px;
+          width: 54px;
+          height: 28px;
           transform: rotate(28deg);
           border-radius: 10px 4px 5px 16px;
           background: linear-gradient(135deg, #1d2026, #434852 52%, #131419);
@@ -2675,23 +3935,23 @@ export default function Home() {
 
         .rivotAccessoryGuard::before {
           right: 7px;
-          bottom: -22px;
-          width: 9px;
-          height: 36px;
+          bottom: -18px;
+          width: 8px;
+          height: 30px;
           transform: rotate(-28deg);
         }
 
         .rivotAccessoryGuard::after {
           left: 7px;
-          bottom: -15px;
-          width: 42px;
-          height: 8px;
+          bottom: -12px;
+          width: 34px;
+          height: 7px;
           transform: rotate(-34deg);
         }
 
         .rivotAccessoryPanel {
-          width: 72px;
-          height: 54px;
+          width: 56px;
+          height: 44px;
           transform: rotate(-34deg) skewX(-12deg);
           clip-path: polygon(8% 48%, 72% 0, 100% 30%, 80% 100%, 18% 84%);
           background:
@@ -2711,8 +3971,8 @@ export default function Home() {
         }
 
         .rivotAccessoryGrip {
-          width: 34px;
-          height: 62px;
+          width: 28px;
+          height: 50px;
           transform: rotate(-6deg);
           border-radius: 8px 8px 16px 16px;
           background: linear-gradient(160deg, #272a30, #111317 70%);
@@ -2721,10 +3981,10 @@ export default function Home() {
         .rivotAccessoryGrip::before {
           content: "";
           position: absolute;
-          left: -18px;
+          left: -15px;
           bottom: -4px;
-          width: 58px;
-          height: 20px;
+          width: 48px;
+          height: 17px;
           border-radius: 11px;
           background: #15171b;
           transform: rotate(-20deg);
@@ -2735,15 +3995,15 @@ export default function Home() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-width: 164px;
-          min-height: 58px;
-          margin-top: 52px;
-          padding: 0 28px;
+          min-width: 142px;
+          min-height: 48px;
+          margin-top: 32px;
+          padding: 0 24px;
           border: 0;
           border-radius: 999px;
           background: #f2f2f3;
           color: #080808;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 850;
           line-height: 1;
         }
@@ -2765,10 +4025,10 @@ export default function Home() {
 
         .rivotBestFitShield {
           display: grid;
-          width: clamp(108px, 9.5vw, 136px);
-          height: clamp(108px, 9.5vw, 136px);
+          width: clamp(86px, 7.5vw, 106px);
+          height: clamp(86px, 7.5vw, 106px);
           place-items: center;
-          margin: auto 0 clamp(42px, 3.8vw, 58px);
+          margin: auto 0 clamp(24px, 2.6vw, 34px);
         }
 
         .rivotBestFitShield svg {
@@ -2902,6 +4162,10 @@ export default function Home() {
             min-height: 0;
           }
 
+          .rivotDetailsSlider {
+            width: min(235px, calc(100% - 44px));
+          }
+
           .rivotPerformanceShell {
             grid-template-columns: 1fr;
           }
@@ -2927,6 +4191,33 @@ export default function Home() {
           .rivotSafetyTheftCard {
             grid-column: auto;
             grid-row: auto;
+          }
+
+          .rivotAppConnectShell {
+            grid-template-columns: 1fr;
+            width: min(100%, 720px);
+            gap: 28px;
+          }
+
+          .rivotAppConnectCards {
+            grid-template-columns: 1fr;
+          }
+
+          .rivotAppConnectMenu,
+          .rivotAppPhoneCard {
+            min-height: 430px;
+          }
+
+          .rivotAppPhoneCard {
+            padding: 34px 28px 72px;
+          }
+
+          .rivotPhoneMockup {
+            width: min(42%, 220px);
+          }
+
+          .rivotRidePhoneCard .rivotPhoneMockup {
+            width: min(100%, 270px);
           }
 
           .rivotSafetyIntroCard {
@@ -2968,7 +4259,7 @@ export default function Home() {
           }
 
           .rivotBestFit {
-            padding: 54px 20px 64px;
+            padding: 42px 20px 50px;
           }
 
           .rivotBestFitGrid {
@@ -2978,7 +4269,7 @@ export default function Home() {
           }
 
           .rivotBestFitCard {
-            min-height: 430px;
+            min-height: 360px;
           }
 
           .rivotAccessoryTiles {
@@ -3004,35 +4295,39 @@ export default function Home() {
           }
 
           .rivotHeroContent {
-            width: auto;
-            margin: 28px 0 0;
+            width: 100%;
+            max-width: 100%;
+            margin: 24px 0 0;
             padding-inline: 16px;
+            overflow: hidden;
           }
 
           .rivotEyebrow {
             font-size: 11px;
-            letter-spacing: .42em;
+            letter-spacing: .28em;
           }
 
           .rivotHero h1 {
-            font-size: clamp(42px, 15vw, 64px);
+            max-width: 100%;
+            font-size: clamp(38px, 18vw, 56px);
             line-height: .88;
-            gap: 12px;
+            gap: 8px;
           }
 
           .rivotHero h2 {
-            max-width: 330px;
+            max-width: 100%;
             font-size: 15px;
-            letter-spacing: .12em;
+            letter-spacing: .06em;
           }
 
           .rivotHeroCopy {
+            max-width: 100%;
             font-size: 14px;
           }
 
           .rivotHeroMarks span {
-            width: 14px;
-            height: 38px;
+            width: 10px;
+            height: 30px;
           }
 
           .rivotHeroSpecs {
@@ -3083,6 +4378,10 @@ export default function Home() {
             gap: 10px 18px;
             margin-top: 12px;
             font-size: 12px;
+          }
+
+          .rivotHeroNotes span {
+            max-width: 100%;
           }
 
           .rivotKeyFeatures {
@@ -3254,7 +4553,7 @@ export default function Home() {
           }
 
           .rivotDetailsHeroPlaceholder {
-            height: 330px;
+            height: 320px;
             min-height: 0;
           }
 
@@ -3263,8 +4562,38 @@ export default function Home() {
           }
 
           .rivotDetailsSmallPlaceholder {
-            height: 240px;
+            height: 220px;
             min-height: 0;
+          }
+
+          .rivotDetailsLanguage {
+            left: 16px;
+            top: 16px;
+            max-width: calc(100% - 32px);
+          }
+
+          .rivotDetailsCaption {
+            left: 16px;
+            bottom: 18px;
+            font-size: 10px;
+          }
+
+          .rivotDetailsSlider {
+            left: 16px;
+            bottom: 42px;
+            width: min(210px, calc(100% - 32px));
+          }
+
+          .rivotDetailsMiniCaption {
+            left: 14px;
+            bottom: 14px;
+            grid-template-columns: 30px minmax(0, 1fr);
+            gap: 8px;
+          }
+
+          .rivotDetailsMiniCaption i {
+            width: 28px;
+            height: 28px;
           }
 
           .rivotPerformance {
@@ -3318,6 +4647,106 @@ export default function Home() {
             min-height: 240px;
           }
 
+          .rivotAppConnect {
+            padding: 28px 12px 34px;
+          }
+
+          .rivotAppConnectIntro {
+            font-size: 21px;
+          }
+
+          .rivotAppConnectIntro br {
+            display: none;
+          }
+
+          .rivotAppConnectCards {
+            gap: 12px;
+          }
+
+          .rivotAppConnectMenu {
+            min-height: 330px;
+            padding: 28px 22px;
+          }
+
+          .rivotAppConnectMenu b {
+            font-size: 24px;
+          }
+
+          .rivotAppConnectMenu span {
+            font-size: 22px;
+          }
+
+          .rivotAppPhoneCard {
+            min-height: 420px;
+            padding: 28px 16px 70px;
+          }
+
+          .rivotPhoneMockup {
+            width: min(58%, 190px);
+            min-width: 166px;
+          }
+
+          .rivotRidePhoneCard .rivotPhoneMockup {
+            width: min(100%, 258px);
+            min-width: 0;
+            padding: 12px 12px 10px;
+            border-radius: 32px;
+          }
+
+          .rivotAppConnectCopy h2 {
+            font-size: clamp(32px, 10vw, 44px);
+          }
+
+          .rivotAppLead br {
+            display: none;
+          }
+
+          .rivotRideInsightList {
+            margin-top: 22px;
+          }
+
+          .rivotRideInsightList > div {
+            grid-template-columns: 34px minmax(0, 1fr) 16px;
+            min-height: 44px;
+            padding: 7px 10px;
+          }
+
+          .rivotPhoneHeader > b {
+            font-size: 15px;
+          }
+
+          .rivotPhoneChart {
+            height: 112px;
+          }
+
+          .rivotPhoneMetrics b,
+          .rivotPhoneSummary b,
+          .rivotPhoneCard b {
+            font-size: 13px;
+          }
+
+          .rivotRidePhoneCard .rivotPhoneCard {
+            margin-top: 14px;
+          }
+
+          .rivotAppHand {
+            width: 38%;
+            height: 66%;
+          }
+
+          .rivotAppHandLeft {
+            left: 5%;
+          }
+
+          .rivotAppHandRight {
+            right: 4%;
+          }
+
+          .rivotAppPhoneCard > p {
+            bottom: 40px;
+            font-size: 11px;
+          }
+
           .rivotReach {
             padding: 20px 12px 44px;
           }
@@ -3345,22 +4774,22 @@ export default function Home() {
           }
 
           .rivotBestFit {
-            padding: 42px 12px 52px;
+            padding: 34px 12px 42px;
           }
 
           .rivotBestFitHeader h2 {
-            font-size: clamp(34px, 10vw, 46px);
+            font-size: clamp(30px, 9vw, 40px);
           }
 
           .rivotBestFitGrid {
             gap: 14px;
-            margin-top: 34px;
+            margin-top: 26px;
           }
 
           .rivotBestFitCard {
-            min-height: 382px;
-            padding: 34px 18px 32px;
-            border-radius: 18px;
+            min-height: 328px;
+            padding: 28px 18px 26px;
+            border-radius: 16px;
           }
 
           .rivotBestFitEyebrow {
@@ -3372,23 +4801,23 @@ export default function Home() {
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 8px;
             width: 100%;
-            padding-top: 42px;
+            padding-top: 28px;
           }
 
           .rivotAccessoryTiles span {
-            height: 106px;
+            height: 88px;
           }
 
           .rivotBestFitDisabled,
           .rivotBestFitCta {
             min-width: 152px;
-            min-height: 52px;
-            margin-top: 38px;
-            font-size: 15px;
+            min-height: 46px;
+            margin-top: 28px;
+            font-size: 14px;
           }
 
           .rivotBestFitShield {
-            margin-bottom: 36px;
+            margin-bottom: 26px;
           }
 
         }
