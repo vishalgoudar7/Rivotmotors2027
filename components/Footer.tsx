@@ -11,7 +11,7 @@ const policyLinks = [
   { label: "Terms and Conditions", href: "/legal/terms-and-conditions" },
   { label: "Privacy Policy", href: "/legal/privacy-policy" },
   { label: "Cancellation/Refund", href: "/legal/cancellation-refund" },
-  { label: "FAQs", href: "/#rivot-faqs" },
+  { label: "FAQs", href: "/faqs" },
 ];
 
 const socialLinks = [

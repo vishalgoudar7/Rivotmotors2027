@@ -320,7 +320,7 @@ export default function Home() {
           </div>
 
           <div className="rivotHeroNotes">
-            <strong>Starting at just ₹1,94,999*</strong>
+            <strong>Starting at just ₹1,29,000*</strong>
             <span>EMI starting at Rs 3,999/month*</span>
             <span>Easy Financing Options</span>
           </div>
@@ -1161,7 +1161,7 @@ export default function Home() {
 .rivotHeroContent {
   position: relative;
   z-index: 1;
-  width: min(42vw, 580px);
+  width: min(50vw, 680px);
   margin-top: clamp(105px, 12vh, 125px);
   margin-left: clamp(48px, 3.2vw, 62px);
   text-align: left;
@@ -1210,19 +1210,25 @@ export default function Home() {
         .rivotHeroSpecs {
           display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
-          max-width: 520px;
+          width: min(680px, 100%);
+          max-width: 680px;
           margin-top: clamp(42px, 9vh, 92px);
+          margin-left: -36px;
           margin-bottom: 28px;
         }
 
         .rivotHeroSpecs div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           min-width: 0;
-          padding: 0 18px;
+          padding: 0 20px;
+          text-align: center;
           border-left: 1px solid rgba(255, 255, 255, .14);
         }
 
         .rivotHeroSpecs div:first-child {
-          padding-left: 0;
+          padding-left: 20px;
           border-left: 0;
         }
 
@@ -1230,7 +1236,7 @@ export default function Home() {
   display: grid;
   width: 64px;
   height: 64px;
-  margin-bottom: 12px;
+          margin: 0 auto 12px;
   place-items: center;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
@@ -1307,7 +1313,8 @@ export default function Home() {
         .rivotHeroNotes {
           display: flex;
           flex-wrap: wrap;
-          gap: 28px;
+          row-gap: 8px;
+          column-gap: 28px;
           margin-top: 16px;
           color: rgba(255, 255, 255, .72);
           font-size: 14px;
@@ -4079,6 +4086,12 @@ export default function Home() {
           .rivotHeroSpecs {
             max-width: 480px;
             margin-top: 34px;
+            margin-left: 0;
+          }
+
+          .rivotHeroSpecs div,
+          .rivotHeroSpecs div:first-child {
+            padding-inline: 10px;
           }
 
           .rivotTestRide,
@@ -4334,6 +4347,7 @@ export default function Home() {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 14px 0;
             max-width: 340px;
+            margin-left: 0;
             margin-top: 24px;
             margin-bottom: 18px;
           }

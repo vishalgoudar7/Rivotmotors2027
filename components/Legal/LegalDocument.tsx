@@ -10,13 +10,13 @@ export function LegalDocument({ html }: LegalDocumentProps) {
       <style>{`
         .rivotLegal {
           min-height: 100vh;
-          padding: clamp(112px, 10vw, 140px) clamp(16px, 4vw, 64px) clamp(64px, 8vw, 104px);
-          background: #fff;
-          color: #111;
+          padding: 150px 20px 100px;
+          background: #f7f7f5;
+          color: #151515;
         }
 
         .rivotLegalShell {
-          width: min(100%, 1040px);
+          width: min(100%, 1450px);
           margin: 0 auto;
         }
 
@@ -26,41 +26,35 @@ export function LegalDocument({ html }: LegalDocumentProps) {
         }
 
         .rivotLegalShell .section-title {
-          max-width: 900px;
-          margin: 0 auto clamp(38px, 5vw, 64px);
-          color: #111;
-          font-size: clamp(40px, 5.2vw, 76px);
-          font-weight: 900;
-          line-height: .96;
-          letter-spacing: -.055em;
+          max-width: none;
+          margin: 0 auto 65px;
+          color: #c85a22;
+          font-size: 40px;
+          font-weight: 500;
+          line-height: 1.15;
+          letter-spacing: 0;
           text-align: center;
         }
 
         .rivotLegalShell .section-title::after {
-          content: "";
-          display: block;
-          width: 68px;
-          height: 4px;
-          margin: 24px auto 0;
-          border-radius: 999px;
-          background: #ef7430;
+          display: none;
         }
 
         .rivotLegalShell h3 {
-          margin: clamp(30px, 4vw, 46px) 0 14px;
-          color: #111;
-          font-size: clamp(21px, 1.7vw, 30px);
-          font-weight: 900;
-          line-height: 1.1;
-          letter-spacing: -.035em;
+          margin: 0 0 20px;
+          color: #151515;
+          font-size: 26px;
+          font-weight: 500;
+          line-height: 1.16;
+          letter-spacing: 0;
         }
 
         .rivotLegalShell p,
         .rivotLegalShell li {
-          color: #4f5863;
-          font-size: clamp(15px, 1.05vw, 18px);
-          font-weight: 600;
-          line-height: 1.72;
+          color: #555;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 1.6;
         }
 
         .rivotLegalShell p {
@@ -69,9 +63,8 @@ export function LegalDocument({ html }: LegalDocumentProps) {
 
         .rivotLegalShell ul {
           margin: 0 0 24px;
-          padding: clamp(18px, 2vw, 26px) clamp(20px, 2.2vw, 32px) clamp(12px, 1.6vw, 20px) clamp(34px, 3vw, 46px);
-          border-radius: 16px;
-          background: #f4f4f4;
+          padding: 0 0 0 20px;
+          background: transparent;
         }
 
         .rivotLegalShell li {
@@ -80,7 +73,7 @@ export function LegalDocument({ html }: LegalDocumentProps) {
         }
 
         .rivotLegalShell li::marker {
-          color: #ef7430;
+          color: #c85a22;
         }
 
         .rivotLegalShell a {
@@ -95,29 +88,40 @@ export function LegalDocument({ html }: LegalDocumentProps) {
         }
 
         .rivotLegalShell strong {
-          color: #111;
-          font-weight: 900;
+          color: #151515;
+          font-weight: 700;
         }
 
         .rivotLegalShell br {
           display: none;
         }
 
+        html[data-rivot-theme="dark"] .rivotLegal {
+          background: #080909;
+          color: #f5f5f2;
+        }
+
+        html[data-rivot-theme="dark"] .rivotLegalShell h3,
+        html[data-rivot-theme="dark"] .rivotLegalShell strong {
+          color: #f5f5f2;
+        }
+
+        html[data-rivot-theme="dark"] .rivotLegalShell p,
+        html[data-rivot-theme="dark"] .rivotLegalShell li {
+          color: #c9c9c2;
+        }
+
         @media (max-width: 700px) {
           .rivotLegal {
-            padding: 104px 14px 56px;
+            padding: 110px 16px 64px;
           }
 
           .rivotLegalShell .section-title {
-            text-align: left;
-          }
-
-          .rivotLegalShell .section-title::after {
-            margin-left: 0;
+            font-size: 32px;
           }
 
           .rivotLegalShell ul {
-            border-radius: 12px;
+            padding-left: 20px;
           }
         }
       `}</style>

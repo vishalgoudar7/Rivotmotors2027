@@ -8,9 +8,13 @@ import modelSport from "@/asset/Model/Sport_NX100.png";
 import logoBlack from "@/asset/images/RIVOT New Logo Back.png";
 import logoWhite from "@/asset/images/RIVOT New Logo White.png";
 
-const navItems = [
-  { label: "Stores", href: "/#stores" },
-  { label: "Explore", href: "/#explore" },
+const navItems = [{ label: "Stores", href: "/#stores" }];
+
+const reachItems = [
+  { label: "Connect", href: "/connect" },
+  { label: "Support", href: "/support" },
+  { label: "Where", href: "/where" },
+  { label: "FAQs", href: "/faqs" },
 ];
 
 const productModels = [
@@ -31,6 +35,7 @@ const productModels = [
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
+  const [reachOpen, setReachOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const logo = theme === "light" ? logoBlack : logoWhite;
 
@@ -106,6 +111,31 @@ export function Navbar() {
             {item.label}
           </Link>
         ))}
+
+        <div
+          className="rivotExploreNav"
+          onMouseEnter={() => setReachOpen(true)}
+          onMouseLeave={() => setReachOpen(false)}
+        >
+          <button
+            type="button"
+            className="rivotExploreButton"
+            aria-expanded={reachOpen}
+            aria-controls="rivot-reach-menu"
+            onClick={() => setReachOpen((open) => !open)}
+          >
+            Reach us
+            <span aria-hidden="true" />
+          </button>
+
+          <div className={`rivotExploreMenu${reachOpen ? " isOpen" : ""}`} id="rivot-reach-menu">
+            {reachItems.map((item) => (
+              <Link href={item.href} key={item.label} onClick={() => setReachOpen(false)}>
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
       </nav>
 
       <div className="rivotHeaderActions">
@@ -138,6 +168,11 @@ export function Navbar() {
           </Link>
         ))}
         {navItems.map((item) => (
+          <Link href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
+            {item.label}
+          </Link>
+        ))}
+        {reachItems.map((item) => (
           <Link href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
             {item.label}
           </Link>
@@ -219,8 +254,100 @@ export function Navbar() {
     color: #ef7430;
   }
 
-  .rivotProductsNav {
+  .rivotProductsNav,
+  .rivotExploreNav {
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 86px;
+  }
+
+  .rivotExploreButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 15px;
+    font-weight: 600;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .rivotExploreButton:hover,
+  .rivotExploreButton[aria-expanded="true"] {
+    background: rgba(244, 244, 244, .92);
+    color: #111;
+  }
+
+  .rivotExploreButton span {
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform .2s ease;
+  }
+
+  .rivotExploreButton[aria-expanded="true"] span {
+    transform: rotate(225deg) translate(-1px, -1px);
+  }
+
+  .rivotExploreMenu {
+    position: absolute;
+    top: calc(100% - 8px);
+    left: 0;
+    z-index: 999;
+    display: grid;
+    min-width: 182px;
+    padding: 6px;
+    border: 1px solid rgba(17, 17, 17, .1);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 14px 34px rgba(17, 17, 17, .14);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      opacity .2s ease,
+      transform .2s ease,
+      visibility .2s ease;
+  }
+
+  .rivotExploreMenu::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -12px;
+    height: 12px;
+  }
+
+  .rivotExploreMenu.isOpen {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .rivotExploreMenu a {
+    display: block;
+    padding: 11px 14px;
+    border-radius: 4px;
+    color: #090909;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .rivotExploreMenu a:hover {
+    background: #f1f1f1;
+    color: #090909;
   }
 
   .rivotProductsButton {
@@ -460,7 +587,8 @@ export function Navbar() {
   }
 
   html[data-rivot-theme="light"] .rivotHeaderLinks a,
-  html[data-rivot-theme="light"] .rivotProductsButton {
+  html[data-rivot-theme="light"] .rivotProductsButton,
+  html[data-rivot-theme="light"] .rivotExploreButton {
     color: #111;
   }
 
@@ -498,6 +626,11 @@ export function Navbar() {
 
     .rivotHeaderLinks {
       gap: 22px;
+    }
+
+    .rivotProductsNav,
+    .rivotExploreNav {
+      min-height: 70px;
     }
 
     .rivotProductsMenu {
