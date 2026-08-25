@@ -60,17 +60,16 @@ export function Booking() {
   return (
     <section className="rivotBooking">
       <div className="rivotBookingShell">
-        <div className="rivotBookingIntro">
-          <p>Book Now</p>
-          <h1>
-            Reserve your <span>NX100</span>
-          </h1>
-          <strong>{selectedModel.price}</strong>
-          <small>Booking amount Rs 499. Fully refundable.</small>
-        </div>
-
         <div className="rivotBookingLayout">
         <div className="rivotBookingViewer">
+          <div className="rivotBookingIntro">
+            <p>Book Now</p>
+            <h1>
+              Reserve your <span>NX100</span>
+            </h1>
+            <strong>{selectedModel.price}</strong>
+            <small>Booking amount Rs 499. Fully refundable.</small>
+          </div>
           <ScooterRotation className="rivotBookingScooter" />
           <p className="rivotBookingHint">Drag to explore the NX100</p>
           <div className="rivotBookingSpecs" aria-label="NX100 highlights">
@@ -607,6 +606,245 @@ export function Booking() {
             #080909;
         }
 
+        @media (min-width: 1100px) {
+          .rivotBooking {
+            min-height: 100vh;
+            padding: 86px clamp(18px, 3.2vw, 52px) 18px;
+            overflow: hidden;
+          }
+
+          .rivotBookingShell {
+            width: min(100%, 1580px);
+          }
+
+          .rivotBookingIntro {
+            display: block;
+            max-width: none;
+            width: 100%;
+            margin: 0 0 8px;
+            justify-self: stretch;
+          }
+
+          .rivotBookingIntro p {
+            margin-bottom: 6px;
+            font-size: 11px;
+          }
+
+          .rivotBookingIntro h1 {
+            max-width: none;
+            font-size: clamp(42px, 4.7vw, 74px);
+            line-height: .9;
+            white-space: nowrap;
+          }
+
+          .rivotBookingIntro strong,
+          .rivotBookingIntro small {
+            grid-column: 2;
+            margin-top: 0;
+            font-size: 17px;
+            line-height: 1.3;
+          }
+
+          .rivotBookingIntro strong {
+            grid-row: 2 / span 2;
+            align-self: center;
+            white-space: nowrap;
+          }
+
+          .rivotBookingIntro small {
+            grid-column: 1;
+            grid-row: 3;
+            margin-top: 4px;
+            font-size: 12px;
+          }
+
+          .rivotBookingLayout {
+            display: grid;
+            grid-template-columns: minmax(500px, 1fr) minmax(420px, 600px);
+            gap: 18px;
+            min-height: calc(100vh - 285px);
+            align-items: stretch;
+          }
+
+          .rivotBookingViewer,
+          .rivotBookingPanel {
+            width: auto;
+            min-height: 0;
+            padding: 18px 24px;
+          }
+
+          .rivotBookingViewer {
+            max-height: calc(100vh - 248px);
+            overflow: hidden;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto auto;
+            align-items: center;
+            justify-items: center;
+          }
+
+          .rivotBookingPanel {
+            align-self: stretch;
+            max-height: none;
+            overflow: visible;
+            padding: 18px 22px;
+          }
+
+          .rivotBookingScooter {
+            width: min(100%, 560px);
+            height: min(42vh, 365px);
+          }
+
+          .rivotBookingHint {
+            margin: -8px 0 10px;
+            font-size: 11px;
+          }
+
+          .rivotBookingSpecs {
+            width: min(100%, 500px);
+          }
+
+          .rivotBookingSpecs div {
+            min-height: 54px;
+            padding: 8px;
+          }
+
+          .rivotBookingSpecs b {
+            font-size: 22px;
+          }
+
+          .rivotBookingSpecs span {
+            font-size: 11px;
+          }
+
+          .rivotBookingPanelHeader p {
+            margin-bottom: 5px;
+            font-size: 11px;
+          }
+
+          .rivotBookingPanelHeader h2 {
+            font-size: clamp(28px, 2.2vw, 38px);
+          }
+
+          .rivotBookingModels {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin: 14px 0 12px;
+          }
+
+          .rivotBookingModels button {
+            min-height: 64px;
+            padding: 10px 13px;
+          }
+
+          .rivotBookingModels button span {
+            font-size: 17px;
+          }
+
+          .rivotBookingModels button small {
+            font-size: 11px;
+          }
+
+          .rivotBookingColors {
+            margin: 10px 0 12px;
+          }
+
+          .rivotBookingColors button {
+            width: 24px;
+            height: 24px;
+          }
+
+          .rivotBookingLead {
+            margin-top: 8px;
+            font-size: 12px;
+            line-height: 1.3;
+          }
+
+          .rivotBookingFields {
+            gap: 7px 10px;
+            margin-top: 10px;
+          }
+
+          .rivotBookingFields input,
+          .rivotBookingFields select {
+            min-height: 38px;
+            padding: 8px 11px;
+            font-size: 12px;
+            border-radius: 7px;
+          }
+
+          .rivotBookingTerms {
+            margin: 8px 0 6px;
+            font-size: 10px;
+          }
+
+          .rivotBookingPayment {
+            margin-bottom: 8px;
+          }
+
+          .rivotBookingPayment p {
+            font-size: 13px;
+          }
+
+          .rivotBookingPayment small {
+            font-size: 10px;
+          }
+
+          .rivotBookingSubmit {
+            min-height: 42px;
+            font-size: 15px;
+          }
+
+          .rivotBookingAmount,
+          .rivotBookingFinePrint {
+            display: none;
+          }
+
+          .rivotBookingViewer .rivotBookingIntro {
+            display: grid;
+            grid-template-columns: 1fr;
+            align-self: start;
+            margin-bottom: 0;
+          }
+
+          .rivotBookingViewer .rivotBookingIntro h1 {
+            font-size: clamp(42px, 4vw, 62px);
+            line-height: .9;
+            white-space: nowrap;
+          }
+
+          .rivotBookingViewer .rivotBookingIntro strong {
+            grid-column: 1;
+            grid-row: auto;
+            margin-top: 4px;
+            font-size: 16px;
+            white-space: normal;
+          }
+
+          .rivotBookingViewer .rivotBookingIntro small {
+            grid-column: 1;
+            grid-row: auto;
+            margin-top: 2px;
+            font-size: 11px;
+          }
+
+          .rivotBookingViewer .rivotRotationStage {
+            align-self: center;
+            width: 100%;
+            min-height: 245px;
+            display: grid;
+            place-items: center;
+          }
+
+          .rivotBookingViewer .rivotBookingScooter {
+            width: min(100%, 470px);
+            height: 270px;
+          }
+
+          .rivotBookingViewer .rivotBookingHint {
+            margin: 0 0 8px;
+          }
+        }
+
         @media (max-width: 980px) {
           .rivotBooking {
             padding-top: 112px;
@@ -639,6 +877,107 @@ export function Booking() {
 
           .rivotBookingScooter {
             height: 300px;
+          }
+        }
+
+        @media (min-width: 1100px) {
+          .rivotBooking {
+            overflow: visible;
+          }
+
+          .rivotBookingPanel {
+            max-height: none;
+            overflow: visible;
+            align-self: stretch;
+            padding: 14px 18px;
+          }
+
+          .rivotBookingViewer,
+          .rivotBookingPanel {
+            min-height: 558px;
+          }
+
+          .rivotBookingPanelHeader p {
+            margin-bottom: 4px;
+            font-size: 10px;
+          }
+
+          .rivotBookingPanelHeader h2 {
+            font-size: clamp(28px, 2vw, 36px);
+            line-height: .95;
+          }
+
+          .rivotBookingModels {
+            gap: 8px;
+            margin: 10px 0 8px;
+          }
+
+          .rivotBookingModels button {
+            min-height: 56px;
+            padding: 8px 12px;
+            border-radius: 8px;
+          }
+
+          .rivotBookingModels button span {
+            font-size: 15px;
+          }
+
+          .rivotBookingModels button small {
+            margin-top: 5px;
+            font-size: 10px;
+          }
+
+          .rivotBookingColors {
+            margin: 7px 0 8px;
+          }
+
+          .rivotBookingColors button {
+            width: 22px;
+            height: 22px;
+          }
+
+          .rivotBookingLead {
+            margin-top: 5px;
+            font-size: 11px;
+            line-height: 1.25;
+          }
+
+          .rivotBookingFields {
+            gap: 6px 8px;
+            margin-top: 8px;
+          }
+
+          .rivotBookingFields input,
+          .rivotBookingFields select {
+            min-height: 34px;
+            margin-bottom: 0;
+            padding: 7px 10px;
+            font-size: 11px;
+            border-radius: 7px;
+          }
+
+          .rivotBookingTerms {
+            margin: 7px 0 5px;
+            font-size: 10px;
+            line-height: 1.25;
+          }
+
+          .rivotBookingPayment {
+            margin-bottom: 7px;
+          }
+
+          .rivotBookingPayment p {
+            font-size: 12px;
+          }
+
+          .rivotBookingPayment small {
+            font-size: 9px;
+          }
+
+          .rivotBookingSubmit {
+            min-height: 38px;
+            padding: 8px 14px;
+            font-size: 14px;
           }
         }
       `}</style>

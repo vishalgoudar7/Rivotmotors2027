@@ -8,7 +8,7 @@ import modelSport from "@/asset/Model/Sport_NX100.png";
 import logoBlack from "@/asset/images/RIVOT New Logo Back.png";
 import logoWhite from "@/asset/images/RIVOT New Logo White.png";
 
-const navItems = [{ label: "Stores", href: "/#stores" }];
+const navItems = [{ label: "Stores", href: "/merchandise" }];
 
 const reachItems = [
   { label: "Connect", href: "/connect" },
