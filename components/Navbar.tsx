@@ -8,7 +8,15 @@ import modelSport from "@/asset/Model/Sport_NX100.png";
 import logoBlack from "@/asset/images/RIVOT New Logo Back.png";
 import logoWhite from "@/asset/images/RIVOT New Logo White.png";
 
-const navItems = [{ label: "Merchandise", href: "/merchandise" }];
+const navItems = [
+  { label: "Merchandise", href: "/merchandise" },
+  { label: "Careers", href: "/careers" },
+];
+
+const communityItems = [
+  { label: "Blog", href: "/blog" },
+  { label: "Forum", href: "/forum" },
+];
 
 const reachItems = [
   { label: "Connect", href: "/connect" },
@@ -37,6 +45,7 @@ const productModels = [
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
+  const [communityOpen, setCommunityOpen] = useState(false);
   const [reachOpen, setReachOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const logo = theme === "light" ? logoBlack : logoWhite;
@@ -112,6 +121,31 @@ export function Navbar() {
           </div>
         </div>
 
+        <div
+          className="rivotCommunityNav"
+          onMouseEnter={() => setCommunityOpen(true)}
+          onMouseLeave={() => setCommunityOpen(false)}
+        >
+          <button
+            type="button"
+            className="rivotCommunityButton"
+            aria-expanded={communityOpen}
+            aria-controls="rivot-community-menu"
+            onClick={() => setCommunityOpen((open) => !open)}
+          >
+            Community
+            <span aria-hidden="true" />
+          </button>
+
+          <div className={`rivotCommunityMenu${communityOpen ? " isOpen" : ""}`} id="rivot-community-menu">
+            {communityItems.map((item) => (
+              <Link href={item.href} key={item.label} onClick={() => setCommunityOpen(false)}>
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {navItems.map((item) => (
           <Link href={item.href} key={item.label}>
             {item.label}
@@ -178,6 +212,11 @@ export function Navbar() {
             {item.label}
           </Link>
         ))}
+        {communityItems.map((item) => (
+          <Link href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
+            {item.label}
+          </Link>
+        ))}
         {reachItems.map((item) => (
           <Link href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
             {item.label}
@@ -239,7 +278,8 @@ export function Navbar() {
   }
 
   .rivotHeaderLinks a,
-  .rivotProductsButton {
+  .rivotProductsButton,
+  .rivotCommunityButton {
     color: rgba(255, 255, 255, 0.92);
     font-size: 15px;
     font-weight: 600;
@@ -256,11 +296,14 @@ export function Navbar() {
 
   .rivotHeaderLinks a:hover,
   .rivotProductsButton:hover,
-  .rivotProductsButton[aria-expanded="true"] {
+  .rivotProductsButton[aria-expanded="true"],
+  .rivotCommunityButton:hover,
+  .rivotCommunityButton[aria-expanded="true"] {
     color: #ef7430;
   }
 
   .rivotProductsNav,
+  .rivotCommunityNav,
   .rivotExploreNav {
     position: relative;
     display: inline-flex;
@@ -268,6 +311,7 @@ export function Navbar() {
     min-height: 86px;
   }
 
+  .rivotCommunityButton,
   .rivotExploreButton {
     display: inline-flex;
     align-items: center;
@@ -291,6 +335,12 @@ export function Navbar() {
     color: #111;
   }
 
+  .rivotCommunityButton:hover,
+  .rivotCommunityButton[aria-expanded="true"] {
+    background: transparent;
+  }
+
+  .rivotCommunityButton span,
   .rivotExploreButton span {
     width: 7px;
     height: 7px;
@@ -300,10 +350,12 @@ export function Navbar() {
     transition: transform .2s ease;
   }
 
+  .rivotCommunityButton[aria-expanded="true"] span,
   .rivotExploreButton[aria-expanded="true"] span {
     transform: rotate(225deg) translate(-1px, -1px);
   }
 
+  .rivotCommunityMenu,
   .rivotExploreMenu {
     position: absolute;
     top: calc(100% - 8px);
@@ -314,8 +366,10 @@ export function Navbar() {
     padding: 6px;
     border: 1px solid rgba(17, 17, 17, .1);
     border-radius: 8px;
-    background: #fff;
+    background: rgba(255, 255, 255, .72);
     box-shadow: 0 14px 34px rgba(17, 17, 17, .14);
+    backdrop-filter: blur(20px) saturate(1.35);
+    -webkit-backdrop-filter: blur(20px) saturate(1.35);
     visibility: hidden;
     opacity: 0;
     transform: translateY(-6px);
@@ -325,6 +379,7 @@ export function Navbar() {
       visibility .2s ease;
   }
 
+  .rivotCommunityMenu::before,
   .rivotExploreMenu::before {
     content: "";
     position: absolute;
@@ -334,12 +389,14 @@ export function Navbar() {
     height: 12px;
   }
 
+  .rivotCommunityMenu.isOpen,
   .rivotExploreMenu.isOpen {
     visibility: visible;
     opacity: 1;
     transform: translateY(0);
   }
 
+  .rivotCommunityMenu a,
   .rivotExploreMenu a {
     display: block;
     padding: 11px 14px;
@@ -351,9 +408,10 @@ export function Navbar() {
     transition: background 0.2s ease, color 0.2s ease;
   }
 
+  .rivotCommunityMenu a:hover,
   .rivotExploreMenu a:hover {
-    background: #f1f1f1;
-    color: #090909;
+    background: rgba(239, 116, 48, .12);
+    color: #ef7430;
   }
 
   .rivotProductsButton {
@@ -617,8 +675,17 @@ export function Navbar() {
 
   html[data-rivot-theme="light"] .rivotHeaderLinks a,
   html[data-rivot-theme="light"] .rivotProductsButton,
+  html[data-rivot-theme="light"] .rivotCommunityButton,
   html[data-rivot-theme="light"] .rivotExploreButton {
     color: #111;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeaderLinks a:hover,
+  html[data-rivot-theme="light"] .rivotProductsButton:hover,
+  html[data-rivot-theme="light"] .rivotProductsButton[aria-expanded="true"],
+  html[data-rivot-theme="light"] .rivotCommunityButton:hover,
+  html[data-rivot-theme="light"] .rivotCommunityButton[aria-expanded="true"] {
+    color: #ef7430;
   }
 
   html[data-rivot-theme="light"] .rivotBook {
@@ -658,6 +725,7 @@ export function Navbar() {
     }
 
     .rivotProductsNav,
+    .rivotCommunityNav,
     .rivotExploreNav {
       min-height: 70px;
     }
@@ -744,6 +812,10 @@ export function Navbar() {
     }
 
     .rivotProductsMenu {
+      display: none;
+    }
+
+    .rivotCommunityMenu {
       display: none;
     }
 
