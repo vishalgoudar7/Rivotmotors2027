@@ -1,1 +1,17 @@
-export default async function Product({params}:{params:Promise<{slug:string}>}){const {slug}=await params;return <section className="page"><p className="eyebrow">ELECTRIC SCOOTER</p><h1>RIVOT {slug.toUpperCase()}</h1><p className="heroText">Replace this starter content with your real RIVOT product specifications, gallery and 360 degree experience.</p><div className="stats"><div><b>120+</b><small>KM RANGE</small></div><div><b>80 KM/H</b><small>TOP SPEED</small></div><div><b>4.2 KWH</b><small>BATTERY</small></div></div></section>}
+import { notFound } from "next/navigation";
+import { ProModel } from "@/components/ProModel";
+import { SportModel } from "@/components/SportModel";
+
+export default async function Product({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
+  if (slug === "nx100-pro") {
+    return <ProModel />;
+  }
+
+  if (slug === "nx100-sport") {
+    return <SportModel />;
+  }
+
+  notFound();
+}
