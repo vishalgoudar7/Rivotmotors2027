@@ -331,8 +331,8 @@ export function Navbar() {
 
   .rivotExploreButton:hover,
   .rivotExploreButton[aria-expanded="true"] {
-    background: rgba(244, 244, 244, .92);
-    color: #111;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.92);
   }
 
   .rivotCommunityButton:hover,

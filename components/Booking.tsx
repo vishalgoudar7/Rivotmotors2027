@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ScooterRotation } from "@/components/ScooterRotation";
 
 type Model = "sport" | "pro";
@@ -41,10 +42,12 @@ const cities: Record<string, string[]> = {
 };
 
 export function Booking() {
+  const router = useRouter();
   const [model, setModel] = useState<Model>("sport");
   const [color, setColor] = useState(models[0].colors[0]);
   const [state, setState] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const selectedModel = models.find((item) => item.id === model) ?? models[0];
 
   function chooseModel(nextModel: Model) {
@@ -52,9 +55,41 @@ export function Booking() {
     setColor(models.find((item) => item.id === nextModel)?.colors[0] ?? "#000000");
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+
+    const formData = new FormData(event.currentTarget);
+    formData.set("amount", "499");
+    formData.set("price", "499");
+    formData.set("model", model);
+    formData.set("product_name", selectedModel.label);
+    formData.set("color", color);
+
+    const nextOrderId = `RIVOT-${Date.now()}`;
+    formData.set("orderId", nextOrderId);
+    formData.set("order_id", nextOrderId);
+    formData.set("trackId", nextOrderId);
+
+    try {
+      const response = await fetch("/api/book-now", {
+        method: "POST",
+        body: formData,
+      });
+
+      const payload = (await response.json()) as { success?: boolean; orderId?: string; message?: string };
+
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || "Booking could not be saved.");
+      }
+
+      router.push(`/booking/payment?order_id=${encodeURIComponent(payload.orderId || nextOrderId)}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Booking failed.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -120,10 +155,13 @@ export function Booking() {
           </div>
 
           <p className="rivotBookingLead">Enter your details below and the RIVOT team will contact you for the next step.</p>
-          {submitted ? <div className="rivotBookingSuccess">Your booking details are ready. Our team will contact you shortly.</div> : null}
+          {error ? <div className="rivotBookingError">{error}</div> : null}
           <form onSubmit={handleSubmit}>
             <input type="hidden" name="model" value={model} />
             <input type="hidden" name="color" value={color} />
+            <input type="hidden" name="amount" value="499" />
+            <input type="hidden" name="price" value="499" />
+            <input type="hidden" name="product_name" value={selectedModel.label} />
             <div className="rivotBookingFields">
               <input name="name" placeholder="First Name" required aria-label="First Name" />
               <input name="lastName" placeholder="Last Name" aria-label="Last Name" />
@@ -156,7 +194,7 @@ export function Booking() {
             </div>
             <p className="rivotBookingAmount">Booking Amount: ₹499 Fully Refundable</p>
             <small className="rivotBookingFinePrint">Zaakpay may show the amount in paise format. ₹49900 means ₹499.00 only.</small>
-            <button className="rivotBookingSubmit" type="submit">Next <span aria-hidden="true">→</span></button>
+            <button className="rivotBookingSubmit" type="submit" disabled={loading}>{loading ? "Saving..." : "Next"} <span aria-hidden="true">→</span></button>
           </form>
         </div>
       </div>
@@ -195,6 +233,7 @@ export function Booking() {
         .rivotBookingSubmit:hover { background: #a9471a; }
         .rivotBookingSubmit span { margin-left: 12px; font-size: 22px; }
         .rivotBookingSuccess { margin: 16px 0; padding: 12px; border: 1px solid #2ecc71; border-radius: 4px; color: #2ecc71; font-size: 14px; }
+        .rivotBookingError { margin: 16px 0; padding: 12px; border: 1px solid #f0a3a3; border-radius: 4px; color: #b91c1c; font-size: 14px; }
         @keyframes rivotBookingReveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         html[data-rivot-theme="dark"] .rivotBooking { background: #080909; color: #f5f5f2; }
         html[data-rivot-theme="dark"] .rivotBookingLayout, html[data-rivot-theme="dark"] .rivotBookingViewer { background: #080909; }
