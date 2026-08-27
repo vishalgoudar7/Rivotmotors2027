@@ -349,6 +349,7 @@ export function Connect() {
   const [currentPage, setCurrentPage] = useState<PageState>("selection");
   const [submittingId, setSubmittingId] = useState<ConnectionId | null>(null);
   const [successId, setSuccessId] = useState<ConnectionId | null>(null);
+  const [errorId, setErrorId] = useState<ConnectionId | null>(null);
 
   const goToForm = (connection: ConnectionOption) => {
     if (connection.url) {
@@ -357,6 +358,7 @@ export function Connect() {
     }
     setCurrentPage(connection.id);
     setSuccessId(null);
+    setErrorId(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -365,18 +367,27 @@ export function Connect() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSubmit = (id: ConnectionId, event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (id: ConnectionId, event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
 
     setSubmittingId(id);
-    // Placeholder submission until a backend inquiry endpoint is wired up.
-    setTimeout(() => {
+    setErrorId(null);
+    const formData = new FormData(form);
+    formData.set("formType", id);
+    try {
+      const response = await fetch("/api/contact", { method: "POST", body: formData });
+      const result = await response.json() as { success?: boolean; message?: string };
+      if (!response.ok || !result.success) throw new Error(result.message || "Unable to submit the form.");
       setSubmittingId(null);
       setSuccessId(id);
       form.reset();
       setTimeout(() => setSuccessId((current) => (current === id ? null : current)), 5000);
-    }, 800);
+    } catch (error) {
+      setSubmittingId(null);
+      setErrorId(id);
+      console.error(error);
+    }
   };
 
   return (
@@ -419,6 +430,7 @@ export function Connect() {
           config={formConfigs[currentPage]}
           submitting={submittingId === currentPage}
           success={successId === currentPage}
+          error={errorId === currentPage}
           onBack={goBackToSelection}
           onSubmit={(event) => handleSubmit(currentPage, event)}
         />
@@ -1037,11 +1049,12 @@ type ConnectFormProps = {
   config: FormConfig;
   submitting: boolean;
   success: boolean;
+  error: boolean;
   onBack: () => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-function ConnectForm({ id, config, submitting, success, onBack, onSubmit }: ConnectFormProps) {
+function ConnectForm({ id, config, submitting, success, error, onBack, onSubmit }: ConnectFormProps) {
   return (
     <div className="rivotConnectFormPage">
       <div className="rivotConnectFormHeader">
@@ -1074,6 +1087,7 @@ function ConnectForm({ id, config, submitting, success, onBack, onSubmit }: Conn
 
         <div className="rivotConnectFormContainer">
           {success ? <div className="rivotConnectSuccess">{config.successMessage}</div> : null}
+          {error ? <div className="rivotConnectSuccess" style={{ color: "#a33", borderColor: "#d99" }}>Unable to send your request. Please try again.</div> : null}
 
           <form onSubmit={onSubmit}>
             {config.fields.map((field) => (

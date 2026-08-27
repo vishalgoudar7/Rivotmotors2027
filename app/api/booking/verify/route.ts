@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { prisma } from "@/lib/db";
+import { sendPaymentSuccessEmails } from "@/lib/email";
 
 function quote(name: string) {
   return `\`${name.replace(/`/g, "``")}\``;
@@ -66,11 +67,19 @@ export async function POST(request: Request) {
     const availableUpdates = ["orderId", "transaction_id", "amount", "statid", "payment_status"].filter((name) => names.has(name));
     if (availableUpdates.length) {
       const setSql = availableUpdates.map((name) => `${quote(name)} = ?`).join(", ");
-      await prisma.$executeRawUnsafe(
-        `UPDATE \`orders\` SET ${setSql} WHERE ${quote("trackId")} = ? LIMIT 1`,
+      const updateResult = await prisma.$executeRawUnsafe(
+        `UPDATE \`orders\` SET ${setSql} WHERE ${quote("trackId")} = ?${isSuccess && names.has("payment_status") ? ` AND ${quote("payment_status")} <> 'payment_completed'` : ""} LIMIT 1`,
         ...availableUpdates.map((name) => updates[name]),
         body.product1Description,
       );
+      if (isSuccess && Number(updateResult) > 0) {
+        const rows = (await prisma.$queryRawUnsafe(`SELECT * FROM \`orders\` WHERE ${quote("trackId")} = ? LIMIT 1`, body.product1Description)) as Array<Record<string, unknown>>;
+        try {
+          await sendPaymentSuccessEmails(rows[0] || { ...updates, trackId: body.product1Description, email: "" });
+        } catch (error) {
+          console.error(`Payment confirmation email failed for ${body.orderId}:`, error instanceof Error ? error.message : error);
+        }
+      }
     }
 
     const redirect = isSuccess ? "/booking/thank-you" : "/booking/payment-failed";

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { sendBookingAdminEmail } from "@/lib/email";
 
 function toStringValue(value: FormDataEntryValue | string | null | undefined) {
   if (value === null || value === undefined) return "";
@@ -103,6 +104,12 @@ export async function POST(request: Request) {
       `INSERT INTO \`orders\` (${columnsSql}) VALUES (${valuesSql})`,
       ...columnsToInsert.map((key) => insertData[key]),
     );
+
+    try {
+      await sendBookingAdminEmail(insertData);
+    } catch (error) {
+      console.error(`Booking email failed for ${trackId}:`, error instanceof Error ? error.message : error);
+    }
 
     return Response.json({
       success: true,
