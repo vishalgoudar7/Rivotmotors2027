@@ -10,11 +10,14 @@ export async function POST(request: Request) {
     responseCode?: string;
     orderId?: string;
     paymentId?: string;
+    pgTransId?: string;
+    product1Description?: string;
+    amount?: string;
     checksum?: string;
     bookingData?: unknown;
   } | null;
 
-  if (!body?.responseCode || !body.orderId || !body.paymentId || !body.checksum) {
+  if (!body?.responseCode || !body.orderId || !body.checksum || !body.product1Description) {
     return Response.json({ success: false, redirect: "/booking/payment-failed" }, { status: 400 });
   }
 
@@ -37,36 +40,41 @@ export async function POST(request: Request) {
   const validChecksum = body.checksum.length === calculatedChecksum.length &&
     crypto.timingSafeEqual(Buffer.from(body.checksum), Buffer.from(calculatedChecksum));
 
-  if (body.responseCode !== "100" || !validChecksum) {
+  if (!validChecksum) {
     return Response.json({ success: false, redirect: "/booking/payment-failed", message: "Payment verification failed." }, { status: 400 });
   }
 
   try {
     const columns = (await prisma.$queryRawUnsafe("SHOW COLUMNS FROM `orders`")) as Array<{ Field: string }>;
     const names = new Set(columns.map((column) => column.Field));
-    const matchColumn = ["orderId", "order_id", "trackId"].find((name) => names.has(name));
-    if (!matchColumn) return Response.json({ success: false, message: "Order table has no order identifier." }, { status: 500 });
+    if (!names.has("trackId")) return Response.json({ success: false, message: "Order table has no trackId column." }, { status: 500 });
+
+    const gatewayAmount = Number(body.amount || 0);
+    const amountInRupees = Number.isFinite(gatewayAmount) && gatewayAmount > 0
+      ? (gatewayAmount >= 100 ? gatewayAmount / 100 : gatewayAmount).toFixed(2)
+      : "";
+    const paymentId = body.pgTransId || body.paymentId || "";
+    const isSuccess = body.responseCode === "100";
 
     const updates: Record<string, unknown> = {
-      payment_status: "SUCCESS",
-      status: "Confirmed",
-      statid: "1",
-      transaction_id: body.paymentId,
-      payment_id: body.paymentId,
-      updated_at: new Date(),
-      updatedAt: new Date(),
+      orderId: body.orderId,
+      transaction_id: paymentId,
+      amount: amountInRupees,
+      statid: isSuccess ? "1" : "0",
+      payment_status: isSuccess ? "payment_completed" : "payment_failed",
     };
-    const availableUpdates = Object.keys(updates).filter((name) => names.has(name));
+    const availableUpdates = ["orderId", "transaction_id", "amount", "statid", "payment_status"].filter((name) => names.has(name));
     if (availableUpdates.length) {
       const setSql = availableUpdates.map((name) => `${quote(name)} = ?`).join(", ");
       await prisma.$executeRawUnsafe(
-        `UPDATE \`orders\` SET ${setSql} WHERE ${quote(matchColumn)} = ?`,
+        `UPDATE \`orders\` SET ${setSql} WHERE ${quote("trackId")} = ? LIMIT 1`,
         ...availableUpdates.map((name) => updates[name]),
-        body.orderId,
+        body.product1Description,
       );
     }
 
-    return Response.json({ success: true, redirect: `/booking/thank-you?order_id=${encodeURIComponent(body.orderId)}`, order_id: body.orderId });
+    const redirect = isSuccess ? "/booking/thank-you" : "/booking/payment-failed";
+    return Response.json({ success: isSuccess, redirect: `${redirect}?order_id=${encodeURIComponent(body.orderId)}`, order_id: body.orderId });
   } catch (error) {
     console.error("Payment verification database update failed:", error);
     return Response.json({ success: false, redirect: "/booking/payment-failed", message: "Could not confirm booking." }, { status: 500 });

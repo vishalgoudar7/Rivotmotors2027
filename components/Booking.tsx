@@ -2137,6 +2137,145 @@ export function Booking() {
         @media (max-width: 520px) {
           body:has(.rivotBooking) .rivotBookingFieldError { font-size: 11px; }
         }
+
+        body:has(.rivotBooking) .rivotBookingPanel {
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
+          background: transparent;
+          backdrop-filter: none;
+        }
+
+        @media (max-width: 759px) {
+          body:has(.rivotBooking) .rivotBookingPanel {
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            padding-left: 0;
+            padding-right: 0;
+          }
+        }
+
+        body:has(.rivotBooking) .rivotBookingModels {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 14px;
+          margin: 0 0 28px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingModels button {
+          width: 100%;
+          min-height: 78px;
+          margin: 0;
+          padding: 14px 18px;
+          border-radius: 11px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingColors {
+          position: relative;
+          display: flex;
+          align-items: center;
+          min-height: 76px;
+          margin: 0 0 28px;
+          padding: 30px 0 16px;
+          border-top: 0;
+          border-bottom: 1px solid #ececec;
+        }
+
+        body:has(.rivotBooking) .rivotBookingColors::before {
+          top: 0;
+          left: 0;
+          font-size: 18px;
+          line-height: 1.2;
+        }
+
+        body:has(.rivotBooking) .rivotBookingColors > div {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin-left: 0;
+        }
+
+        body:has(.rivotBooking) .rivotBookingColors button {
+          flex: 0 0 36px;
+          width: 36px;
+          height: 36px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingLead {
+          margin: 0 0 14px;
+          line-height: 1.2;
+        }
+
+        body:has(.rivotBooking) .rivotBookingLead::before {
+          margin: 0 0 14px;
+          font-size: 18px;
+          line-height: 1.2;
+        }
+
+        body:has(.rivotBooking) .rivotBookingFields {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          align-items: start;
+          gap: 10px 12px;
+          margin: 0;
+        }
+
+        body:has(.rivotBooking) .rivotBookingField {
+          display: flex;
+          min-width: 0;
+          flex-direction: column;
+        }
+
+        body:has(.rivotBooking) .rivotBookingFields input,
+        body:has(.rivotBooking) .rivotBookingFields select {
+          width: 100%;
+          min-height: 46px;
+          margin: 0;
+          padding: 0 14px;
+          border-radius: 9px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingFieldError {
+          min-height: 15px;
+          margin: 4px 2px 0;
+          font-size: 12px;
+          line-height: 1.2;
+        }
+
+        body:has(.rivotBooking) .rivotBookingTerms {
+          align-items: center;
+          margin: 16px 0 18px;
+          gap: 9px;
+          font-size: 13px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingTerms input {
+          flex: 0 0 18px;
+          width: 18px;
+          height: 18px;
+          margin: 0;
+        }
+
+        body:has(.rivotBooking) .rivotBookingPayment {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          margin: 0 0 18px;
+          padding-top: 18px;
+          border-top: 1px solid #ececec;
+        }
+
+        body:has(.rivotBooking) .rivotBookingPayment div { display: grid; gap: 3px; }
+        body:has(.rivotBooking) .rivotBookingPayment div small { color: #f05b21; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+        body:has(.rivotBooking) .rivotBookingPayment div strong { color: #111; font-size: 30px; line-height: 1; }
+        body:has(.rivotBooking) .rivotBookingPayment > span { color: #718087; font-size: 13px; }
+
+        @media (max-width: 600px) {
+          body:has(.rivotBooking) .rivotBookingModels { grid-template-columns: 1fr; }
+          body:has(.rivotBooking) .rivotBookingFields { grid-template-columns: 1fr; }
+          body:has(.rivotBooking) .rivotBookingFields .wide { grid-column: auto; }
+        }
       `}</style>
     </section>
   );

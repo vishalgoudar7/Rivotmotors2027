@@ -30,15 +30,13 @@ export async function POST(request: Request) {
     const state = toStringValue(payload.state as FormDataEntryValue | string | null | undefined);
     const country = toStringValue(payload.country as FormDataEntryValue | string | null | undefined) || "India";
     const pincode = toStringValue(payload.pincode as FormDataEntryValue | string | null | undefined);
-    const model = toStringValue(payload.model as FormDataEntryValue | string | null | undefined) || "NX100";
-    const color = toStringValue(payload.color as FormDataEntryValue | string | null | undefined) || "Gray";
-    const productName = toStringValue(payload.product_name as FormDataEntryValue | string | null | undefined) || model;
-    const amount = toStringValue(payload.amount as FormDataEntryValue | string | null | undefined) || "499";
+    const model = toStringValue(payload.model as FormDataEntryValue | string | null | undefined) || "sport";
+    const rawColor = toStringValue(payload.color as FormDataEntryValue | string | null | undefined) || "Gray";
+    const color = ({ "#f26f2f": "Orange", "#ffffff": "White", "#111111": "Black" } as Record<string, string>)[rawColor] || rawColor;
+    const productName = "nx100";
+    const price = "499.00";
     const source = toStringValue(payload.source as FormDataEntryValue | string | null | undefined);
     const referralCode = toStringValue(payload.referralCode as FormDataEntryValue | string | null | undefined);
-    const orderId = toStringValue(payload.orderId as FormDataEntryValue | string | null | undefined) ||
-      toStringValue(payload.order_id as FormDataEntryValue | string | null | undefined) ||
-      `RIVOT-${Date.now()}`;
 
     if (!firstName || !mobile || !email || !pincode) {
       return Response.json(
@@ -57,28 +55,23 @@ export async function POST(request: Request) {
       );
     }
 
+    const trackId = `${productName}-${model}-${color}-${Math.floor(100000 + Math.random() * 900000)}`.toUpperCase();
     const insertData: Record<string, unknown> = {
-      orderId,
-      order_id: orderId,
-      trackId: orderId,
-      name: firstName,
-      buyer_first_name: firstName,
-      first_name: firstName,
-      buyer_last_name: lastName,
-      lastName,
-      last_name: lastName,
-      buyer_email: email,
-      email,
-      mobile,
-      phone: mobile,
-      product_name: productName,
+      price,
       model,
       color,
-      amount,
-      price: amount,
-      payment_status: "PENDING",
-      status: "PENDING",
+      product_name: productName,
+      trackId: trackId,
+      orderId: "",
+      productDescription: `${productName}-${color}-${model}`,
+      transaction_id: "",
+      amount: "",
       statid: "0",
+      payment_status: "order_not_completed",
+      name: firstName,
+      lastName,
+      email,
+      mobile,
       address,
       city,
       state,
@@ -86,17 +79,17 @@ export async function POST(request: Request) {
       pincode,
       source,
       referralCode,
-      transaction_id: `TXN-${Date.now()}`,
-      payment_id: `TXN-${Date.now()}`,
-      created_at: new Date(),
-      createdAt: new Date(),
-      updated_at: new Date(),
-      updatedAt: new Date(),
+      terms: toStringValue(payload.terms as FormDataEntryValue | string | null | undefined) ? "1" : "0",
     };
 
-    const columnsToInsert = Object.keys(insertData).filter((key) => availableColumns.has(key));
+    const requiredColumns = [
+      "price", "model", "color", "product_name", "trackId", "orderId", "productDescription",
+      "transaction_id", "amount", "statid", "payment_status", "name", "lastName", "mobile", "email",
+      "address", "country", "pincode", "state", "city", "source", "referralCode", "terms",
+    ];
+    const columnsToInsert = requiredColumns.filter((key) => availableColumns.has(key));
 
-    if (!columnsToInsert.length) {
+    if (columnsToInsert.length !== requiredColumns.length) {
       return Response.json(
         { success: false, message: "No compatible booking columns were found in the orders table." },
         { status: 500 },
@@ -113,7 +106,8 @@ export async function POST(request: Request) {
 
     return Response.json({
       success: true,
-      orderId,
+      orderId: trackId,
+      trackId,
       message: "Booking saved successfully.",
     });
   } catch (error) {

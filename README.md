@@ -12,13 +12,13 @@ Next.js + React + TypeScript + PostgreSQL + Prisma.
 6. `npm run dev`
 
 ## Booking payment flow
-The booking form creates a `PENDING` row in the existing MySQL `orders` table and redirects to `/booking/payment`. Set these server-only variables before enabling the payment button:
+The booking form creates one `order_not_completed` row in the existing MySQL `orders` table and redirects to `/booking/payment`. The same row is updated to `payment_completed` or `payment_failed` after the Zaakpay callback. Set these server-only variables before enabling the payment button:
 
 - `ZAAKPAY_PAYMENT_URL`: your Zaakpay payment initiation endpoint
 - `ZAAKPAY_SECRET`: the secret used to verify the JSON callback at `/api/booking/verify`
 - `ZAAKPAY_RETURN_URL`: public URL Zaakpay can POST to, ending in `/api/booking/callback`
 
-The verified callback must send `responseCode`, `orderId`, `paymentId`, `bookingData`, and an HMAC-SHA256 `checksum`. A successful callback updates the order and redirects to `/booking/thank-you`, followed by `/booking/success` for the booking details. Failed verification goes to `/booking/payment-failed`.
+The verified callback must send Zaakpay response fields including `responseCode`, `orderId`, `product1Description` (the booking `trackId`), `pgTransId`, `amount`, and an HMAC-SHA256 `checksum`. A successful callback updates the existing order and redirects to `/booking/thank-you`, followed by `/booking/success` for the booking details. A verified non-100 response updates that same order as `payment_failed`; an invalid checksum does not update it.
 
 Open http://localhost:3000
 

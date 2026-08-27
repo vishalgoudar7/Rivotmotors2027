@@ -15,10 +15,11 @@ function checksum(values: Record<string, string>, secret: string) {
 }
 
 export async function POST(request: Request) {
-  const { orderId } = (await request.json().catch(() => ({}))) as { orderId?: string };
+  const payload = (await request.json().catch(() => ({}))) as { orderId?: string; trackId?: string };
+  const trackId = payload.trackId || payload.orderId;
 
-  if (!orderId) {
-    return Response.json({ success: false, message: "Order ID is required." }, { status: 400 });
+  if (!trackId) {
+    return Response.json({ success: false, message: "Track ID is required." }, { status: 400 });
   }
 
   const merchantIdentifier = process.env.ZAAKPAY_MERCHANT_IDENTIFIER;
@@ -33,12 +34,11 @@ export async function POST(request: Request) {
   try {
     const columns = (await prisma.$queryRawUnsafe("SHOW COLUMNS FROM `orders`")) as Array<{ Field: string }>;
     const names = new Set(columns.map((column) => column.Field));
-    const identifier = ["orderId", "order_id", "trackId"].find((name) => names.has(name));
-    if (!identifier) return Response.json({ success: false, message: "Order table has no order identifier." }, { status: 500 });
+    if (!names.has("trackId")) return Response.json({ success: false, message: "Order table has no trackId column." }, { status: 500 });
 
     const rows = (await prisma.$queryRawUnsafe(
-      `SELECT * FROM \`orders\` WHERE ${quote(identifier)} = ? LIMIT 1`,
-      orderId,
+      `SELECT * FROM \`orders\` WHERE ${quote("trackId")} = ? LIMIT 1`,
+      trackId,
     )) as Array<Record<string, unknown>>;
     const booking = rows[0];
     if (!booking) return Response.json({ success: false, message: "Booking not found." }, { status: 404 });
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin;
     const values: Record<string, string> = {
       merchantIdentifier,
-      orderId,
+      orderId: `ZP${Date.now()}`,
       amount: "49900",
       currency: "INR",
       buyerEmail: String(booking.email || booking.buyer_email || ""),
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
       buyerCountry: String(booking.country || "India"),
       buyerPincode: String(booking.pincode || ""),
       productDescription: String(booking.product_name || booking.model || "RIVOT NX100 Booking"),
-      product1Description: `Model: ${String(booking.model || "NX100")}, Color: ${String(booking.color || "Selected")}`,
+      product1Description: trackId,
       returnUrl: process.env.ZAAKPAY_RETURN_URL || `${siteUrl}/api/booking/callback`,
       txnType: "1",
       mode: "0",
