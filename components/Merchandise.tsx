@@ -167,7 +167,8 @@ export function Merchandise() {
 
         .rivotShopCard {
           display: grid;
-          grid-template-rows: 220px 1fr;
+          grid-template-rows: 260px minmax(190px, auto);
+          min-height: 450px;
           min-width: 0;
           overflow: hidden;
           border: 1px solid rgba(17, 17, 17, .08);
@@ -177,23 +178,36 @@ export function Merchandise() {
         }
 
         .rivotShopImage {
+          position: relative;
           display: grid;
           place-items: center;
-          padding: 18px;
-          background: #fff;
+          min-width: 0;
+          min-height: 0;
+          overflow: hidden;
+          padding: 12px;
+          background: #000;
         }
 
         .rivotShopImage img {
+          display: block;
           width: 100%;
           height: 100%;
+          max-width: 100%;
+          max-height: 100%;
           object-fit: contain;
+          object-position: center;
           filter: drop-shadow(0 14px 16px rgba(17, 17, 17, .14));
         }
 
         .rivotShopInfo {
+          position: relative;
+          z-index: 1;
           display: flex;
           flex-direction: column;
+          min-width: 0;
+          min-height: 190px;
           padding: 16px;
+          background: rgba(255, 255, 255, .98);
         }
 
         .rivotShopInfo h2 {
@@ -206,6 +220,7 @@ export function Merchandise() {
 
         .rivotShopInfo p {
           min-height: 58px;
+          overflow-wrap: anywhere;
           margin: 8px 0 14px;
           color: #68747c;
           font-size: 13px;
@@ -231,6 +246,8 @@ export function Merchandise() {
 
         .rivotShopButton {
           display: inline-flex;
+          width: 100%;
+          box-sizing: border-box;
           min-height: 42px;
           align-items: center;
           justify-content: space-between;
@@ -277,7 +294,7 @@ export function Merchandise() {
         }
 
         html[data-rivot-theme="dark"] .rivotShopImage {
-          background: rgba(255, 255, 255, .05);
+          background: #000;
         }
 
         html[data-rivot-theme="dark"] .rivotShopTags span {
@@ -300,7 +317,8 @@ export function Merchandise() {
           }
 
           .rivotShopCard {
-            grid-template-rows: 230px 1fr;
+            grid-template-rows: 260px minmax(190px, auto);
+            min-height: 450px;
           }
         }
       `}</style>

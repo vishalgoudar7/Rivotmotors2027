@@ -390,7 +390,7 @@ export function ProductModelExperience({ model }: { model: ProductModel }) {
           min-height: 100vh;
           background: #000;
           color: #fff;
-          font-family: Montserrat, Arial, sans-serif;
+          font-family: inherit;
           overflow: hidden;
         }
 

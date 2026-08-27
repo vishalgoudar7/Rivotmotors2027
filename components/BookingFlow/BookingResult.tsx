@@ -60,7 +60,7 @@ export function BookingResult({ orderId, failed = false }: { orderId: string; fa
 }
 
 const styles = `
-.bookingResultPage { min-height: 100vh; padding: 140px 20px 70px; background: #080909; color: #fff; font-family: Montserrat, sans-serif; }
+.bookingResultPage { min-height: 100vh; padding: 140px 20px 70px; background: #080909; color: #fff; font-family: inherit; }
 .bookingResultCard { width: min(100%, 650px); margin: auto; padding: clamp(30px, 7vw, 70px); text-align: center; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.05); box-shadow: 0 24px 70px rgba(0,0,0,.35); }
 .bookingResultIcon { width: 76px; height: 76px; margin: 0 auto 24px; display: grid; place-items: center; border-radius: 50%; background: #31864b; color: #fff; font-size: 42px; font-weight: 700; }
 .bookingResultFailed .bookingResultIcon { background: #9f3d32; }

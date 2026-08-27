@@ -472,7 +472,7 @@ export function Connect() {
             radial-gradient(circle at 92% 12%, rgba(239, 116, 48, .18), transparent 28%),
             linear-gradient(180deg, #fff 0%, #f8f8f8 100%);
           color: #080808;
-          font-family: Montserrat, sans-serif;
+          font-family: inherit;
           line-height: 1.45;
           overflow: hidden;
         }

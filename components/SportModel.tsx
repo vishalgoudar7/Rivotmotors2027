@@ -139,7 +139,7 @@ export function SportModel() {
             linear-gradient(180deg, #fff 0%, #f8f8f8 100%);
           color: var(--sport-ink);
           overflow: hidden;
-          font-family: Montserrat, sans-serif;
+          font-family: inherit;
         }
 
         .sportHero {

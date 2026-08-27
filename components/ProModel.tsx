@@ -133,7 +133,7 @@ export function ProModel() {
             radial-gradient(circle at 92% 8%, rgba(239, 116, 48, .14), transparent 28%),
             linear-gradient(180deg, #fff 0%, #f8f8f8 100%);
           color: var(--pro-ink);
-          font-family: Montserrat, sans-serif;
+          font-family: inherit;
         }
 
         .proHero {

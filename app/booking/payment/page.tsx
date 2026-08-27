@@ -89,7 +89,7 @@ function BookingPayment({ orderId }: { orderId: string }) {
 }
 
 const styles = `
-.bookingFlowPage { min-height: 100vh; padding: 150px 20px 80px; background: #090a09; color: #fff; font-family: Montserrat, sans-serif; }
+.bookingFlowPage { min-height: 100vh; padding: 150px 20px 80px; background: #090a09; color: #fff; font-family: inherit; }
 .bookingFlowCard { width: min(100%, 680px); margin: auto; padding: clamp(28px, 6vw, 64px); border: 1px solid rgba(255,255,255,.14); background: linear-gradient(145deg, rgba(255,255,255,.1), rgba(255,255,255,.03)); box-shadow: 0 24px 70px rgba(0,0,0,.3); }
 .bookingFlowEyebrow { color: #ef7430; font-size: 12px; font-weight: 800; letter-spacing: .12em; }
 .bookingFlowCard h1 { margin: 18px 0 28px; font-size: clamp(30px, 5vw, 52px); line-height: 1.05; }

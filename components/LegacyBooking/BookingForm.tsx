@@ -226,7 +226,7 @@ export function LegacyBookingForm() {
       </div>
 
       <style>{`
-        .rivotBooking { min-height: 100vh; padding: 104px 0 0; background: #f7f7f5; color: #151515; font-family: Montserrat, sans-serif; }
+        .rivotBooking { min-height: 100vh; padding: 104px 0 0; background: #f7f7f5; color: #151515; font-family: inherit; }
         .rivotBookingLayout { display: flex; min-height: calc(100vh - 104px); overflow: hidden; background: linear-gradient(120deg, #fff 0%, #f7f7f5 58%, #f4e5dd 100%); }
         .rivotBookingViewer { width: 55%; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 60px; background: transparent; }
         .rivotBookingScooter { width: min(100%, 700px); height: min(78vh, 650px); object-fit: contain; user-select: none; }
