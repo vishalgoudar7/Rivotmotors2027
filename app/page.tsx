@@ -1,7 +1,23 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import heroDark from "@/asset/images/Hero1.png";
 import heroLight from "@/asset/images/Hero2.png";
+import heroWhite from "@/asset/images/Hero.png";
+import heroFeatureDark from "@/asset/images/Hero/1 (3).png";
+import heroFeatureLight from "@/asset/images/Hero/3 (3).png";
+import heroFeatureStudio from "@/asset/images/Hero/ChatGPT Image Aug 26, 2026, 03_15_38 PM.png";
+import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
+import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
+import geofencingAppImage from "@/asset/images/App/Geofencing.png";
+import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring System).png";
+import tripInsightsAppImage from "@/asset/images/App/Trip Insights.png";
+import accelerationImage from "@/asset/images/last/accelaration.png";
+import rangeImage from "@/asset/images/last/IDC Range.png";
+import showroomImage from "@/asset/images/last/Showroom.avif";
+import chargerImage from "@/asset/images/last/Charger.png";
 import riderAssistanceImage from "@/asset/images/Key features/Riderasistance.png";
 import featureImage from "@/asset/images/Key features/Feature.png";
 import safetyImage from "@/asset/images/Key features/Safeaty.png";
@@ -83,6 +99,14 @@ const engineeringFeatures = [
   },
 ];
 
+const rideInsightFeatures = [
+  ["Trip Insights", "Track every trip in detail.", "route", tripInsightsAppImage],
+  ["Geofencing", "Set boundaries for every ride.", "home", geofencingAppImage],
+  ["Diagnostics", "Monitor your scooter health.", "eco", diagnosticsAppImage],
+  ["Flash Charging", "Spend less time waiting to charge.", "compare", flashChargingAppImage],
+  ["TPMS (Tire Pressure Monitoring System)", "Stay informed about tire pressure.", "history", tpmsAppImage],
+] as const;
+
 function EngineeringIcon({ type }: { type: string }) {
   if (type === "bolt") {
     return (
@@ -138,6 +162,8 @@ function EngineeringIcon({ type }: { type: string }) {
 }
 
 export default function Home() {
+  const [selectedRideInsight, setSelectedRideInsight] = useState(2);
+
   return (
     <>
       <section className="rivotHero">
@@ -581,7 +607,13 @@ export default function Home() {
           <div className="rivotPerformanceCards">
             <article className="rivotPerformanceCard">
               <div className="rivotPerformancePlaceholder">
-                <span>Acceleration photo</span>
+                <Image
+                  src={accelerationImage}
+                  alt="RIVOT scooter ready for acceleration"
+                  fill
+                  sizes="(max-width: 900px) 100vw, 28vw"
+                  className="rivotPerformancePhoto"
+                />
               </div>
               <div className="rivotPerformanceCardShade" aria-hidden="true" />
               <div className="rivotPerformanceCardContent">
@@ -597,7 +629,13 @@ export default function Home() {
 
             <article className="rivotPerformanceCard">
               <div className="rivotPerformancePlaceholder">
-                <span>Range photo</span>
+                <Image
+                  src={rangeImage}
+                  alt="RIVOT scooter for long range riding"
+                  fill
+                  sizes="(max-width: 900px) 100vw, 28vw"
+                  className="rivotPerformancePhoto"
+                />
               </div>
               <div className="rivotPerformanceCardShade" aria-hidden="true" />
               <div className="rivotPerformanceCardContent">
@@ -633,14 +671,14 @@ export default function Home() {
             </p>
 
             <div className="rivotRideInsightList" aria-label="Ride insight features">
-              {[
-                ["Ride Insights", "Track every ride in detail.", "route"],
-                ["Daily Summary", "View your daily ride overview.", "home"],
-                ["Eco Score", "Check your eco performance.", "eco"],
-                ["Compare Rides", "Compare and improve.", "compare"],
-                ["Ride History", "All your past rides.", "history"],
-              ].map(([title, copy, icon], index) => (
-                <div className={index === 0 ? "active" : ""} key={title}>
+              {rideInsightFeatures.map(([title, copy, icon], index) => (
+                <button
+                  className={index === selectedRideInsight ? "active" : ""}
+                  key={title}
+                  type="button"
+                  aria-pressed={index === selectedRideInsight}
+                  onClick={() => setSelectedRideInsight(index)}
+                >
                   <i aria-hidden="true" data-icon={icon}>
                     <svg viewBox="0 0 32 32" fill="none">
                       {icon === "route" ? (
@@ -681,7 +719,7 @@ export default function Home() {
                     <small>{copy}</small>
                   </span>
                   {index === 0 ? <em aria-hidden="true">{"\u203A"}</em> : null}
-                </div>
+                </button>
               ))}
             </div>
 
@@ -695,87 +733,13 @@ export default function Home() {
           </article>
 
           <article className="rivotRidePhoneCard" aria-label="Ride Insights app screen">
-            <div className="rivotPhoneMockup">
-              <div className="rivotPhoneStatus">
-                <span>9:41</span>
-                <i />
-              </div>
-              <div className="rivotPhoneHeader">
-                <b>Ride Insights</b>
-                <span>This Week <i aria-hidden="true" /></span>
-              </div>
-              <div className="rivotPhoneMetrics">
-                <span>
-                  <b>12.4 km</b>
-                  <small>Distance</small>
-                </span>
-                <span>
-                  <b>34 min</b>
-                  <small>Ride Time</small>
-                </span>
-                <span>
-                  <b>92%</b>
-                  <small>Eco Score</small>
-                </span>
-              </div>
-              <div className="rivotPhoneChart" aria-hidden="true">
-                <svg viewBox="0 0 260 150" fill="none">
-                  <path d="M25 18V122H242" stroke="#dde1e4" strokeWidth="2" />
-                  <path d="M25 38H242M25 66H242M25 94H242" stroke="#edf0f2" strokeWidth="1.5" />
-                  <path d="M42 98L66 88L89 103L112 94L136 54L158 47L181 71L204 56L228 36" stroke="#f3702f" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M42 98L66 88L89 103L112 94L136 54L158 47L181 71L204 56L228 36V122H42V98Z" fill="url(#rideChartFill)" />
-                  <circle cx="158" cy="47" r="5" fill="#f3702f" />
-                  <rect x="145" y="25" width="49" height="20" rx="6" fill="#222" />
-                  <text x="169.5" y="38.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="800">12.4 km</text>
-                  <text x="40" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Mon</text>
-                  <text x="84" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Tue</text>
-                  <text x="128" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Wed</text>
-                  <text x="172" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Thu</text>
-                  <text x="216" y="140" fill="#a4aaae" fontSize="9" fontWeight="800">Fri</text>
-                  <defs>
-                    <linearGradient id="rideChartFill" x1="135" y1="36" x2="135" y2="122" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#f3702f" stopOpacity=".22" />
-                      <stop offset="1" stopColor="#f3702f" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
-              <div className="rivotPhoneSummary">
-                <b>Today's Summary</b>
-                <div>
-                  <span>
-                    <b>12.4 km</b>
-                    <small>Distance</small>
-                  </span>
-                  <span>
-                    <b>34 min</b>
-                    <small>Ride Time</small>
-                  </span>
-                  <span>
-                    <b>32 km/h</b>
-                    <small>Avg. Speed</small>
-                  </span>
-                  <span>
-                    <b>92%</b>
-                    <small>Eco Score</small>
-                  </span>
-                </div>
-              </div>
-              <div className="rivotPhoneCard">
-                <i aria-hidden="true" />
-                <div>
-                  <b>Eco Feedback</b>
-                  <small>Great job! You rode 12% more efficiently than your last ride.</small>
-                </div>
-              </div>
-              <nav className="rivotPhoneNav" aria-label="App preview navigation">
-                <span className="active">Home</span>
-                <span>Vehicle</span>
-                <span>Map</span>
-                <span>Alerts</span>
-                <span>Profile</span>
-              </nav>
-            </div>
+            <Image
+              src={rideInsightFeatures[selectedRideInsight][3]}
+              alt={`${rideInsightFeatures[selectedRideInsight][0]} RIVOT scooter visual`}
+              width={360}
+              height={760}
+              className="rivotRideInsightPhoto"
+            />
           </article>
         </div>
       </section>
@@ -920,7 +884,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="rivotReachMedia" aria-hidden="true">
-              <Image src={heroLight} alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
+              <Image src={showroomImage} alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
             </div>
           </article>
 
@@ -946,7 +910,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="rivotReachMedia" aria-hidden="true">
-              <Image src={featureImage} alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
+              <Image src={chargerImage} alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
             </div>
           </article>
 
@@ -978,9 +942,9 @@ export default function Home() {
                 </span>
               </div>
 
-              <button type="button" className="rivotBestFitDisabled" disabled>
-                Coming Soon
-              </button>
+              <Link href="/merchandise" className="rivotBestFitCta">
+                Shop accessories <span aria-hidden="true">{"\u2192"}</span>
+              </Link>
             </article>
 
             <article className="rivotBestFitCard">
@@ -3116,7 +3080,7 @@ export default function Home() {
           margin-top: clamp(34px, 4vw, 54px);
         }
 
-        .rivotRideInsightList > div {
+        .rivotRideInsightList > button {
           display: grid;
           grid-template-columns: 42px minmax(0, 1fr) 18px;
           align-items: center;
@@ -3126,9 +3090,13 @@ export default function Home() {
           border-radius: 12px;
           background: transparent;
           color: #151515;
+          border: 0;
+          font: inherit;
+          text-align: left;
+          cursor: pointer;
         }
 
-        .rivotRideInsightList > div.active {
+        .rivotRideInsightList > button.active {
           background: #fff;
           color: #ef7430;
           box-shadow: 0 16px 40px rgba(239, 116, 48, .08);
@@ -3203,9 +3171,26 @@ export default function Home() {
         }
 
         .rivotRidePhoneCard {
+          position: relative;
           display: grid;
           justify-items: center;
+          width: min(100%, 420px);
           min-width: 0;
+          padding: 0;
+        }
+
+        .rivotRideInsightPhoto {
+          z-index: 2;
+          display: block;
+          width: min(100%, 360px);
+          height: auto;
+          aspect-ratio: 9 / 18.7;
+          border: 2px solid rgba(17, 17, 17, .08);
+          border-radius: 44px;
+          object-fit: cover;
+          object-position: center;
+          background: #fff;
+          box-shadow: 0 28px 70px rgba(17, 17, 17, .12);
         }
 
         .rivotRidePhoneCard .rivotPhoneMockup {
@@ -3441,7 +3426,7 @@ export default function Home() {
           margin-top: 28px;
         }
 
-        .rivotRideInsightList > div {
+        .rivotRideInsightList > button {
           grid-template-columns: 36px minmax(0, 1fr) 16px;
           min-height: 46px;
           gap: 10px;
@@ -3770,44 +3755,9 @@ export default function Home() {
           background: #111;
         }
 
-        .rivotReachMedia::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          z-index: 1;
-          background: linear-gradient(90deg, rgba(239, 116, 48, .22), rgba(0, 0, 0, .06) 36%, rgba(0, 0, 0, .16));
-        }
-
-        .rivotReachCharge .rivotReachMedia::after {
-          background: linear-gradient(90deg, rgba(37, 167, 93, .18), rgba(0, 0, 0, .06) 40%, rgba(0, 0, 0, .24));
-        }
-
-        .rivotReachCharge .rivotReachMedia::before {
-          content: "RIVOT";
-          position: absolute;
-          right: 20%;
-          top: 20%;
-          z-index: 2;
-          display: grid;
-          width: clamp(82px, 7vw, 118px);
-          height: clamp(150px, 13vw, 210px);
-          place-items: start center;
-          padding-top: 24px;
-          border-radius: 10px;
-          background:
-            radial-gradient(circle at 50% 48%, transparent 0 16px, #25a75d 17px 21px, transparent 22px),
-            linear-gradient(145deg, #1a1d1c 0%, #050505 72%);
-          color: #fff;
-          font-size: 16px;
-          font-weight: 900;
-          letter-spacing: .12em;
-          box-shadow: 0 18px 35px rgba(0, 0, 0, .35);
-        }
-
         .rivotReachMedia img {
           object-fit: cover;
           object-position: center;
-          filter: saturate(.95) contrast(1.04);
         }
 
         .rivotReachCharge .rivotReachMedia {

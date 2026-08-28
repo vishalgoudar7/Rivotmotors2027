@@ -32,5 +32,5 @@ Open http://localhost:3000
 - public/icons = icons
 - public/fonts = fonts
 
-## Next
-Replace placeholder vehicle visuals with your existing RIVOT assets, then connect bookings, payments, email, blog/forum and admin APIs.
+## Status
+The homepage uses the available RIVOT assets for the hero, design, access-network, and performance visuals. Booking, payment, email, blog/forum, and admin API flows are implemented in their respective app and API routes.
