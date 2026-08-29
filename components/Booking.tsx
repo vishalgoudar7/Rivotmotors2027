@@ -10,7 +10,7 @@ type BookingField = "name" | "mobile" | "email" | "pincode" | "state" | "city" |
 type BookingErrors = Partial<Record<BookingField | "terms", string>>;
 
 const models: { id: Model; label: string; price: string; colors: string[] }[] = [
-  { id: "sport", label: "Sport", price: "₹ 1,94,999", colors: ["#f26f2f", "#ffffff", "#111111"] },
+  { id: "sport", label: "Sport", price: "₹ 1,39,000", colors: ["#f26f2f", "#ffffff", "#111111"] },
   { id: "pro", label: "Pro", price: "₹ 1,29,000", colors: ["#111111", "#ffffff", "#6f7479"] },
 ];
 
@@ -154,7 +154,7 @@ export function Booking() {
               <h1>
                 NX <span>100</span>
               </h1>
-              <strong>Starting at ₹ 1,94,999*</strong>
+              <strong>Starting at ₹ 1,39,000*</strong>
             <small>Booking amount Rs 499. Fully refundable.</small>
           </div>
           <ScooterRotation className="rivotBookingScooter" />

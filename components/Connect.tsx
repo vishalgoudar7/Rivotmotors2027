@@ -639,7 +639,6 @@ export function Connect() {
 
         .rivotConnect.isSelection .rivotConnectHeader h1 {
           color: #080808;
-          font-size: clamp(34px, 4.2vw, 54px);
           font-weight: 950;
           line-height: 1.04;
           letter-spacing: 0;
@@ -740,7 +739,6 @@ export function Connect() {
 
         .rivotConnectFormHeader .rivotConnectTitle {
           color: #24272c;
-          font-size: clamp(42px, 5vw, 64px);
           font-weight: 300;
           line-height: 1.08;
           letter-spacing: .02em;

@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import heroDark from "@/asset/images/Hero1.png";
-import heroLight from "@/asset/images/Hero2.png";
-import heroWhite from "@/asset/images/Hero.png";
+import { useEffect, useState } from "react";
 import heroFeatureDark from "@/asset/images/Hero/1 (3).png";
 import heroFeatureLight from "@/asset/images/Hero/3 (3).png";
 import heroFeatureStudio from "@/asset/images/Hero/ChatGPT Image Aug 26, 2026, 03_15_38 PM.png";
+import heroFolderMain from "@/asset/images/Hero/Hero.png";
+import heroFolderDark from "@/asset/images/Hero/Hero1.png";
+import heroFolderLight from "@/asset/images/Hero/Hero2.png";
 import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
 import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
 import geofencingAppImage from "@/asset/images/App/Geofencing.png";
@@ -18,13 +18,15 @@ import accelerationImage from "@/asset/images/last/accelaration.png";
 import rangeImage from "@/asset/images/last/IDC Range.png";
 import showroomImage from "@/asset/images/last/Showroom.avif";
 import chargerImage from "@/asset/images/last/Charger.png";
+import discImage from "@/asset/images/last/Disc.png";
+import monoshockImage from "@/asset/images/last/Monoshock.png";
+import motorImage from "@/asset/images/last/Motor-card.jpg";
 import riderAssistanceImage from "@/asset/images/Key features/Riderasistance.png";
 import featureImage from "@/asset/images/Key features/Feature.png";
 import safetyImage from "@/asset/images/Key features/Safeaty.png";
 import bootDetailImage from "@/asset/images/Details/Boot space with helmet.png";
 import floorboardDetailImage from "@/asset/images/Details/Floorboard photo.png";
 import mainDetailImage from "@/asset/images/Details/Main detail photo.png";
-import silhouetteDetailImage from "@/asset/grayscooty/0030.webp";
 import { DashboardRotation } from "@/components/DashboardRotation";
 import { Faqs } from "@/components/Faqs";
 import { SavingsCalculator } from "@/components/SavingsCalculator";
@@ -68,6 +70,7 @@ const engineeringFeatures = [
     status: null,
     statusTone: null,
     icon: "hex",
+    image: motorImage,
   },
   {
     title: "Cruise Control",
@@ -82,6 +85,7 @@ const engineeringFeatures = [
     status: null,
     statusTone: null,
     icon: "ring",
+    image: discImage,
   },
   {
     title: "All Tests Cleared",
@@ -96,6 +100,7 @@ const engineeringFeatures = [
     status: null,
     statusTone: null,
     icon: "shock",
+    image: monoshockImage,
   },
 ];
 
@@ -105,6 +110,15 @@ const rideInsightFeatures = [
   ["Diagnostics", "Monitor your scooter health.", "eco", diagnosticsAppImage],
   ["Flash Charging", "Spend less time waiting to charge.", "compare", flashChargingAppImage],
   ["TPMS (Tire Pressure Monitoring System)", "Stay informed about tire pressure.", "history", tpmsAppImage],
+] as const;
+
+const heroCarouselImages = [
+  heroFeatureDark,
+  heroFeatureLight,
+  heroFeatureStudio,
+  heroFolderMain,
+  heroFolderDark,
+  heroFolderLight,
 ] as const;
 
 function EngineeringIcon({ type }: { type: string }) {
@@ -163,26 +177,39 @@ function EngineeringIcon({ type }: { type: string }) {
 
 export default function Home() {
   const [selectedRideInsight, setSelectedRideInsight] = useState(2);
+  const [selectedHeroImage, setSelectedHeroImage] = useState(0);
+
+  useEffect(() => {
+    const heroImageInterval = window.setInterval(() => {
+      setSelectedHeroImage((currentImage) => (currentImage + 1) % heroCarouselImages.length);
+    }, 5000);
+
+    return () => window.clearInterval(heroImageInterval);
+  }, []);
 
   return (
     <>
       <section className="rivotHero">
-        <Image
-          src={heroDark}
-          alt="Rivot NX100 hero image"
-          fill
-          priority
-          sizes="100vw"
-          className="rivotHeroImage rivotHeroImageDark"
-        />
-        <Image
-          src={heroLight}
-          alt=""
-          fill
-          sizes="100vw"
-          className="rivotHeroImage rivotHeroImageLight"
-        />
+        {heroCarouselImages.map((heroImage, index) => (
+          <Image
+            src={heroImage}
+            alt={index === 0 ? "Rivot NX100 hero image" : ""}
+            fill
+            priority={index === 0}
+            sizes="100vw"
+            className={`rivotHeroImage${index === selectedHeroImage ? " isActive" : ""}`}
+            key={heroImage.src}
+          />
+        ))}
         <div className="rivotHeroShade" aria-hidden="true" />
+        <div className="rivotHeroPointers" aria-hidden="true">
+          {heroCarouselImages.map((heroImage, index) => (
+            <span
+              className={index === selectedHeroImage ? "isActive" : ""}
+              key={`pointer-${heroImage.src}`}
+            />
+          ))}
+        </div>
 
         <div className="rivotHeroContent">
           <p className="rivotEyebrow">Meet the future</p>
@@ -617,7 +644,7 @@ export default function Home() {
               </div>
               <div className="rivotPerformanceCardShade" aria-hidden="true" />
               <div className="rivotPerformanceCardContent">
-                <p><span>01</span> Acceleration</p>
+                <p>Acceleration</p>
                 <h3>
                   0-40 km/h
                   <br />
@@ -639,7 +666,7 @@ export default function Home() {
               </div>
               <div className="rivotPerformanceCardShade" aria-hidden="true" />
               <div className="rivotPerformanceCardContent">
-                <p><span>02</span> Range</p>
+                <p>Range</p>
                 <h3>
                   200 km
                   <br />
@@ -657,7 +684,6 @@ export default function Home() {
       <section className="rivotAppConnect" aria-labelledby="app-connect-title">
         <div className="rivotAppConnectShell">
           <article className="rivotAppConnectCopy">
-            <p className="rivotAppKicker">02</p>
             <p className="rivotAppEyebrow">Ride Insights</p>
             <h2 id="app-connect-title">
               Understand
@@ -722,14 +748,6 @@ export default function Home() {
                 </button>
               ))}
             </div>
-
-            <div className="rivotAppConnectDots" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
           </article>
 
           <article className="rivotRidePhoneCard" aria-label="Ride Insights app screen">
@@ -759,6 +777,15 @@ export default function Home() {
         <div className="rivotEngineeringGrid">
           {engineeringFeatures.map((feature, index) => (
             <article className="rivotEngineeringCard" key={feature.title}>
+              {"image" in feature && feature.image ? (
+                <Image
+                  src={feature.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 760px) 100vw, 30vw"
+                  className="rivotEngineeringCardBg"
+                />
+              ) : null}
               <span className="rivotEngineeringIcon" data-tone={feature.statusTone ?? "orange"}>
                 <EngineeringIcon type={feature.icon} />
               </span>
@@ -778,16 +805,6 @@ export default function Home() {
                   {feature.status} <span aria-hidden="true" />
                 </b>
               ) : null}
-              {(index === 1 || index === 3 || index === 5) ? (
-                <Image
-                  src={silhouetteDetailImage}
-                  alt=""
-                  width={122}
-                  height={76}
-                  sizes="122px"
-                  className="rivotEngineeringDetail"
-                />
-              ) : null}
             </article>
           ))}
         </div>
@@ -805,15 +822,15 @@ export default function Home() {
             <Image src={riderAssistanceImage} alt="" fill sizes="(max-width: 900px) 100vw, 320px" />
             <div>
               <span aria-hidden="true"><EngineeringIcon type="shield" /></span>
-              <h3>Drop Safe</h3>
-              <p>Cuts power automatically if the scooter tips.</p>
+              <h3>Fall Guard</h3>
+              <p>Detects a tip-over and cuts power instantly.</p>
             </div>
           </article>
 
           <article className="rivotSafetyCard rivotSafetyIconCard rivotSafetyTractionCard">
             <span className="rivotSafetyTc" aria-hidden="true">TC</span>
             <h3>Traction Control</h3>
-            <p>Command the surface. Four modes to lock in your grip, no matter the road.</p>
+            <p>More grip. More confidence.</p>
           </article>
 
           <article className="rivotSafetyCard rivotSafetyImageCard rivotSafetyHoldCard">
@@ -825,23 +842,23 @@ export default function Home() {
                 <circle cx="15" cy="17" r="1.7" fill="#fff" />
                 <circle cx="23" cy="17" r="1.7" fill="#fff" />
               </svg>
-              <h3>Super Hold</h3>
-              <p>No rotation. Just complete control on inclines.</p>
+              <h3>Roll Protecter</h3>
+              <p>Prevents rollovers. Just complete control on inclines.</p>
             </div>
           </article>
 
           <article className="rivotSafetyCard rivotSafetyIconCard rivotSafetyBrakeCard">
             <EngineeringIcon type="bolt" />
-            <h3>Rapid Brake Alert</h3>
-            <p>Instantly signals urgent braking to the traffic behind you.</p>
+            <h3>Smart Brake Signal</h3>
+            <p>Signals sudden braking instantly to riders behind you.</p>
           </article>
 
           <article className="rivotSafetyCard rivotSafetyImageCard rivotSafetyExitCard">
             <Image src={safetyImage} alt="" fill sizes="(max-width: 900px) 100vw, 380px" />
             <div>
               <EngineeringIcon type="bolt" />
-              <h3>Exit Lights</h3>
-              <p>Clear guidance when it matters most.</p>
+              <h3>Walk Away Lights</h3>
+              <p>“Lights the way when you need them.”</p>
             </div>
           </article>
 
@@ -852,8 +869,9 @@ export default function Home() {
               <circle cx="15" cy="17" r="1.7" fill="#fff" />
               <circle cx="23" cy="17" r="1.7" fill="#fff" />
             </svg>
-            <h3>Theft and Tow Alert</h3>
-            <p>Immediate alerts if your ride moves without your consent.</p>
+            <h3>Anti Theft
+</h3>
+            <p>Instant alerts when unauthorized movement is detected.</p>
           </article>
         </div>
       </section>
@@ -1051,20 +1069,15 @@ export default function Home() {
 
         .rivotHeroImage {
           object-fit: cover;
-          object-position: center bottom;
-          transition: opacity .25s ease;
-        }
-
-        .rivotHeroImageLight {
+          object-position: 68% center;
           opacity: 0;
+          transform: scale(1.06);
+          transition: opacity 1s ease, transform 6s ease;
         }
 
-        html[data-rivot-theme="light"] .rivotHeroImageDark {
-          opacity: 0;
-        }
-
-        html[data-rivot-theme="light"] .rivotHeroImageLight {
+        .rivotHeroImage.isActive {
           opacity: 1;
+          transform: scale(1.035);
         }
 
         .rivotHeroShade {
@@ -1120,6 +1133,40 @@ export default function Home() {
           color: #111;
           border-color: rgba(17,17,17,.28);
           background: rgba(255,255,255,.42);
+        }
+
+        .rivotHeroPointers {
+          position: absolute;
+          right: clamp(54px, 7vw, 132px);
+          bottom: clamp(46px, 7vh, 76px);
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          pointer-events: none;
+        }
+
+        .rivotHeroPointers span {
+          display: block;
+          width: clamp(48px, 4.2vw, 76px);
+          height: 7px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, .34);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .32);
+          transition: background .35s ease, width .35s ease, opacity .35s ease;
+        }
+
+        .rivotHeroPointers span.isActive {
+          width: clamp(58px, 5vw, 88px);
+          background: rgba(255, 255, 255, .94);
+        }
+
+        html[data-rivot-theme="light"] .rivotHeroPointers span {
+          background: rgba(255, 255, 255, .42);
+        }
+
+        html[data-rivot-theme="light"] .rivotHeroPointers span.isActive {
+          background: #fff;
         }
 
 .rivotHeroContent {
@@ -1789,6 +1836,46 @@ export default function Home() {
           border-radius: 18px;
           background: #f4f4f4;
           text-align: center;
+          overflow: hidden;
+        }
+
+        .rivotEngineeringCardBg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          opacity: .92;
+        }
+
+        .rivotEngineeringCard:has(.rivotEngineeringCardBg)::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background:
+            linear-gradient(180deg, rgba(244, 244, 244, .92) 0%, rgba(244, 244, 244, .78) 38%, rgba(244, 244, 244, .2) 100%);
+          pointer-events: none;
+        }
+
+        .rivotEngineeringCard:nth-child(n + 4):has(.rivotEngineeringCardBg)::before {
+          background:
+            linear-gradient(90deg, rgba(244, 244, 244, .95) 0%, rgba(244, 244, 244, .78) 48%, rgba(244, 244, 244, .18) 100%),
+            linear-gradient(180deg, rgba(244, 244, 244, .22), rgba(244, 244, 244, .82));
+        }
+
+        .rivotEngineeringCard:nth-child(2) .rivotEngineeringCardBg {
+          object-position: center bottom;
+        }
+
+        .rivotEngineeringCard:nth-child(4) .rivotEngineeringCardBg {
+          object-position: right center;
+        }
+
+        .rivotEngineeringCard:nth-child(6) .rivotEngineeringCardBg {
+          object-position: right center;
         }
 
         .rivotEngineeringCard:nth-child(2),
@@ -1806,6 +1893,8 @@ export default function Home() {
         }
 
         .rivotEngineeringIcon {
+          position: relative;
+          z-index: 2;
           display: grid;
           width: 46px;
           height: 46px;
@@ -1852,6 +1941,8 @@ export default function Home() {
         }
 
         .rivotEngineeringCard h3 {
+          position: relative;
+          z-index: 2;
           margin: 0;
           color: #121212;
           font-size: clamp(17px, 1.35vw, 22px);
@@ -1861,6 +1952,8 @@ export default function Home() {
         }
 
         .rivotEngineeringCard p {
+          position: relative;
+          z-index: 2;
           max-width: 190px;
           margin: 16px auto 0;
           color: #35383d;
@@ -1875,6 +1968,8 @@ export default function Home() {
         }
 
         .rivotEngineeringModes {
+          position: relative;
+          z-index: 2;
           display: flex;
           gap: 10px;
           margin-top: 24px;
@@ -1918,6 +2013,8 @@ export default function Home() {
         }
 
         .rivotEngineeringStatus {
+          position: relative;
+          z-index: 2;
           display: inline-flex;
           align-items: center;
           gap: 10px;
@@ -1950,25 +2047,6 @@ export default function Home() {
           width: 30px;
           height: 30px;
           box-shadow: 18px 0 0 #2c8dff;
-        }
-
-        .rivotEngineeringDetail {
-          position: absolute;
-          right: clamp(18px, 2.8vw, 40px);
-          bottom: clamp(12px, 1.8vw, 28px);
-          width: clamp(58px, 7vw, 108px);
-          height: auto;
-          object-fit: contain;
-          filter: drop-shadow(0 12px 13px rgba(0, 0, 0, .26));
-          transform: rotate(-4deg);
-        }
-
-        .rivotEngineeringCard:nth-child(4) .rivotEngineeringDetail,
-        .rivotEngineeringCard:nth-child(6) .rivotEngineeringDetail {
-          right: clamp(22px, 3vw, 46px);
-          bottom: clamp(10px, 1.6vw, 22px);
-          width: clamp(58px, 6.5vw, 96px);
-          transform: rotate(8deg);
         }
 
         .rivotDesignDetails {
@@ -3015,21 +3093,27 @@ export default function Home() {
         }
 
         .rivotAppConnect {
-          padding: clamp(54px, 6vw, 86px) clamp(16px, 4vw, 62px);
-          background: #f6f5f3;
+          padding: clamp(52px, 7vw, 108px) clamp(18px, 5vw, 76px);
+          overflow: hidden;
+          background:
+            radial-gradient(circle at 73% 28%, rgba(239, 116, 48, .08), transparent 31%),
+            linear-gradient(180deg, #faf9f7 0%, #f3f2f0 100%);
           color: #080808;
         }
 
         .rivotAppConnectShell {
+          position: relative;
           display: grid;
-          grid-template-columns: minmax(280px, .95fr) minmax(320px, .9fr);
+          grid-template-columns: minmax(300px, .95fr) minmax(300px, .82fr);
           align-items: center;
-          gap: clamp(34px, 6vw, 92px);
-          width: min(100%, 1080px);
+          gap: clamp(36px, 7vw, 116px);
+          width: min(100%, 1180px);
           margin: 0 auto;
         }
 
         .rivotAppConnectCopy {
+          position: relative;
+          z-index: 2;
           min-width: 0;
         }
 
@@ -3055,10 +3139,10 @@ export default function Home() {
         .rivotAppConnectCopy h2 {
           margin: 0;
           color: #060606;
-          font-size: clamp(42px, 5vw, 72px);
+          font-size: clamp(44px, 5.5vw, 78px);
           font-weight: 900;
           line-height: .95;
-          letter-spacing: -.055em;
+          letter-spacing: 0;
         }
 
         .rivotAppConnectCopy h2 span {
@@ -3067,10 +3151,11 @@ export default function Home() {
 
         .rivotAppLead {
           margin: clamp(24px, 2.4vw, 34px) 0 0;
-          color: #646b70;
+          max-width: 390px;
+          color: #5f676c;
           font-size: clamp(16px, 1.35vw, 20px);
           font-weight: 750;
-          line-height: 1.55;
+          line-height: 1.5;
         }
 
         .rivotRideInsightList {
@@ -3088,18 +3173,26 @@ export default function Home() {
           min-height: 58px;
           padding: 10px 14px;
           border-radius: 12px;
-          background: transparent;
+          background: rgba(255, 255, 255, .32);
           color: #151515;
-          border: 0;
+          border: 1px solid transparent;
           font: inherit;
           text-align: left;
           cursor: pointer;
+          transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+        }
+
+        .rivotRideInsightList > button:hover {
+          border-color: rgba(239, 116, 48, .16);
+          background: rgba(255, 255, 255, .74);
+          transform: translateY(-1px);
         }
 
         .rivotRideInsightList > button.active {
           background: #fff;
           color: #ef7430;
-          box-shadow: 0 16px 40px rgba(239, 116, 48, .08);
+          border-color: rgba(239, 116, 48, .18);
+          box-shadow: 0 18px 42px rgba(17, 17, 17, .08);
         }
 
         .rivotRideInsightList i {
@@ -3173,24 +3266,41 @@ export default function Home() {
         .rivotRidePhoneCard {
           position: relative;
           display: grid;
+          place-items: center;
           justify-items: center;
-          width: min(100%, 420px);
+          justify-self: center;
+          width: min(100%, 470px);
           min-width: 0;
-          padding: 0;
+          padding: clamp(18px, 3vw, 34px);
+          isolation: isolate;
+        }
+
+        .rivotRidePhoneCard::before {
+          content: "";
+          position: absolute;
+          inset: clamp(18px, 4vw, 48px) 0;
+          z-index: 1;
+          border-radius: 34px;
+          background:
+            radial-gradient(circle at 50% 16%, rgba(255, 255, 255, .95), rgba(255, 255, 255, .38) 46%, transparent 70%),
+            linear-gradient(180deg, rgba(255, 255, 255, .82), rgba(255, 255, 255, .3));
+          box-shadow:
+            0 32px 90px rgba(17, 17, 17, .1),
+            inset 0 0 0 1px rgba(255, 255, 255, .86);
         }
 
         .rivotRideInsightPhoto {
           z-index: 2;
           display: block;
-          width: min(100%, 360px);
+          width: clamp(238px, 24vw, 336px);
           height: auto;
-          aspect-ratio: 9 / 18.7;
+          max-height: min(620px, 72vh);
           border: 2px solid rgba(17, 17, 17, .08);
-          border-radius: 44px;
-          object-fit: cover;
+          border-radius: clamp(30px, 3vw, 44px);
+          object-fit: contain;
           object-position: center;
           background: #fff;
-          box-shadow: 0 28px 70px rgba(17, 17, 17, .12);
+          box-shadow: 0 28px 72px rgba(17, 17, 17, .16);
         }
 
         .rivotRidePhoneCard .rivotPhoneMockup {
@@ -3389,6 +3499,7 @@ export default function Home() {
           color: #ef7430;
         }
 
+        @media (max-width: 1180px) {
         .rivotAppConnect {
           padding: clamp(26px, 3vw, 42px) clamp(16px, 4vw, 56px);
         }
@@ -3585,6 +3696,7 @@ export default function Home() {
           padding-top: 8px;
           font-size: 7px;
         }
+        }
 
         .rivotReach {
           padding: clamp(8px, 1.5vw, 18px) clamp(10px, 2vw, 22px) clamp(64px, 7vw, 92px);
@@ -3606,24 +3718,6 @@ export default function Home() {
           box-shadow:
             0 12px 34px rgba(17, 17, 17, .08),
             inset 0 0 0 1px rgba(17, 17, 17, .06);
-        }
-
-        .rivotReachNumber {
-          position: absolute;
-          top: 18px;
-          left: 18px;
-          z-index: 4;
-          display: grid;
-          width: 34px;
-          height: 30px;
-          place-items: center;
-          border-radius: 5px;
-          background: #ef7430;
-          color: #fff;
-          font-size: 16px;
-          font-weight: 900;
-          line-height: 1;
-          box-shadow: 0 8px 18px rgba(239, 116, 48, .22);
         }
 
         .rivotReachCard {
@@ -3664,15 +3758,15 @@ export default function Home() {
           flex-direction: column;
           align-items: flex-start;
           justify-content: center;
-          padding: clamp(48px, 4.8vw, 70px) clamp(24px, 3.2vw, 48px) clamp(30px, 3vw, 44px);
+          padding: clamp(42px, 4.2vw, 62px) clamp(24px, 3.2vw, 46px) clamp(28px, 2.8vw, 40px);
         }
 
         .rivotReachIcon {
           display: grid;
-          width: 48px;
-          height: 48px;
+          width: 46px;
+          height: 46px;
           place-items: center;
-          margin-bottom: 18px;
+          margin-bottom: 16px;
           border: 1px solid rgba(239, 116, 48, .18);
           border-radius: 13px;
           color: #ef7430;
@@ -3681,14 +3775,14 @@ export default function Home() {
         }
 
         .rivotReachIcon svg {
-          width: 28px;
-          height: 28px;
+          width: 26px;
+          height: 26px;
         }
 
         .rivotReachCopy > p {
-          margin: 0 0 10px;
+          margin: 0 0 18px;
           color: #ef7430;
-          font-size: clamp(11px, .82vw, 13px);
+          font-size: clamp(13px, .95vw, 16px);
           font-weight: 900;
           letter-spacing: 0;
           line-height: 1.2;
@@ -3698,28 +3792,28 @@ export default function Home() {
         .rivotReachCopy h2 {
           margin: 0;
           color: #050505;
-          font-size: clamp(29px, 2.6vw, 42px);
-          font-weight: 900;
-          line-height: 1;
+          font-size: clamp(30px, 3vw, 50px);
+          font-weight: 800;
+          line-height: .98;
           letter-spacing: -.055em;
         }
 
         .rivotReachCopy small {
           display: block;
-          max-width: 235px;
-          margin-top: 18px;
-          color: #5a616b;
-          font-size: clamp(13px, .92vw, 15px);
-          font-weight: 700;
-          line-height: 1.42;
+          max-width: 255px;
+          margin-top: 16px;
+          color: #42464d;
+          font-size: clamp(15px, 1.15vw, 17px);
+          font-weight: 500;
+          line-height: 1.55;
         }
 
         .rivotReachArrow {
           display: grid;
-          width: 42px;
-          height: 42px;
+          width: 44px;
+          height: 44px;
           place-items: center;
-          margin-top: 22px;
+          margin-top: 24px;
           border-radius: 50%;
           background: #ef7430;
           color: #fff;
@@ -4012,7 +4106,7 @@ export default function Home() {
           }
 
           .rivotHeroImage {
-            object-position: 64% bottom;
+            object-position: 66% center;
           }
 
           .rivotHeroContent {
@@ -4022,6 +4116,21 @@ export default function Home() {
 
           .rivotHeroButtons {
             flex-wrap: wrap;
+          }
+
+          .rivotHeroPointers {
+            right: 6%;
+            bottom: 28px;
+            gap: 8px;
+          }
+
+          .rivotHeroPointers span {
+            width: 42px;
+            height: 6px;
+          }
+
+          .rivotHeroPointers span.isActive {
+            width: 54px;
           }
 
           .rivotHero h1 {
@@ -4158,8 +4267,42 @@ export default function Home() {
 
           .rivotAppConnectShell {
             grid-template-columns: 1fr;
-            width: min(100%, 720px);
-            gap: 28px;
+            width: min(100%, 760px);
+            gap: 38px;
+          }
+
+          .rivotAppConnectCopy {
+            text-align: center;
+          }
+
+          .rivotAppLead {
+            margin-inline: auto;
+          }
+
+          .rivotRideInsightList {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            max-width: 680px;
+            margin-inline: auto;
+          }
+
+          .rivotRideInsightList > button {
+            grid-template-columns: 34px minmax(0, 1fr) 14px;
+            min-height: 54px;
+          }
+
+          .rivotAppConnectDots {
+            justify-content: center;
+          }
+
+          .rivotRidePhoneCard {
+            width: min(100%, 420px);
+            padding: 12px 20px 4px;
+          }
+
+          .rivotRideInsightPhoto {
+            width: clamp(246px, 44vw, 316px);
+            max-height: none;
+            border-radius: 38px;
           }
 
           .rivotAppConnectCards {
@@ -4212,11 +4355,6 @@ export default function Home() {
               inset 0 0 0 1px rgba(17, 17, 17, .05);
           }
 
-          .rivotReachNumber {
-            top: 8px;
-            left: 8px;
-          }
-
           .rivotReachCharge {
             border-left: 0;
           }
@@ -4254,7 +4392,7 @@ export default function Home() {
           }
 
           .rivotHeroImage {
-            object-position: 74% bottom;
+            object-position: 68% center;
           }
 
           .rivotHeroContent {
@@ -4328,6 +4466,21 @@ export default function Home() {
           .rivotHeroButtons {
             width: 100%;
             gap: 10px;
+          }
+
+          .rivotHeroPointers {
+            right: 16px;
+            bottom: 18px;
+            gap: 7px;
+          }
+
+          .rivotHeroPointers span {
+            width: 28px;
+            height: 5px;
+          }
+
+          .rivotHeroPointers span.isActive {
+            width: 36px;
           }
 
           .rivotTestRide,
@@ -4465,12 +4618,6 @@ export default function Home() {
 
           .rivotEngineeringCard p {
             max-width: 240px;
-          }
-
-          .rivotEngineeringDetail {
-            position: static;
-            margin-top: 14px;
-            transform: none;
           }
 
           .rivotColorPicker {
@@ -4612,7 +4759,7 @@ export default function Home() {
           }
 
           .rivotAppConnect {
-            padding: 28px 12px 34px;
+            padding: 34px 14px 44px;
           }
 
           .rivotAppConnectIntro {
@@ -4657,6 +4804,22 @@ export default function Home() {
             border-radius: 32px;
           }
 
+          .rivotRidePhoneCard {
+            width: min(100%, 336px);
+            padding: 4px 6px 0;
+          }
+
+          .rivotRidePhoneCard::before {
+            inset: 22px 0 8px;
+            border-radius: 26px;
+          }
+
+          .rivotRideInsightPhoto {
+            width: min(78vw, 276px);
+            border-radius: 34px;
+            box-shadow: 0 22px 52px rgba(17, 17, 17, .16);
+          }
+
           .rivotAppConnectCopy h2 {
             font-size: clamp(32px, 10vw, 44px);
           }
@@ -4666,10 +4829,11 @@ export default function Home() {
           }
 
           .rivotRideInsightList {
+            grid-template-columns: 1fr;
             margin-top: 22px;
           }
 
-          .rivotRideInsightList > div {
+          .rivotRideInsightList > button {
             grid-template-columns: 34px minmax(0, 1fr) 16px;
             min-height: 44px;
             padding: 7px 10px;

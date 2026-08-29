@@ -7,7 +7,7 @@ import { ScooterRotation } from "@/components/ScooterRotation";
 type Model = "sport" | "pro";
 
 const models: { id: Model; label: string; price: string; colors: string[] }[] = [
-  { id: "sport", label: "RIVOT NX100 Sport", price: "Starting at just Rs 1,94,999*", colors: ["#f26f2f", "#ffffff", "#111111"] },
+  { id: "sport", label: "RIVOT NX100 Sport", price: "Starting at just Rs 1,39,000*", colors: ["#f26f2f", "#ffffff", "#111111"] },
   { id: "pro", label: "RIVOT NX100 Pro", price: "Starting at Rs 1,29,000", colors: ["#111111", "#ffffff", "#6f7479"] },
 ];
 

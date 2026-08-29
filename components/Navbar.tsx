@@ -29,7 +29,7 @@ const productModels = [
   {
     name: "RIVOT NX100 Sport",
     tagline: "Sporty. Stylish. Dynamic.",
-    price: "Starting at ₹1,94,999",
+    price: "Starting at ₹1,39,000",
     href: "/products/nx100-sport",
     image: modelSport,
   },
@@ -180,8 +180,20 @@ export function Navbar() {
 
       <div className="rivotHeaderActions">
         <button className="rivotThemeToggle" type="button" onClick={toggleTheme}>
-          <span aria-hidden="true">{theme === "dark" ? "D" : "L"}</span>
-          {theme === "dark" ? "Dark Mode" : "Light Mode"}
+          <span aria-hidden="true">
+            {theme === "dark" ? (
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M20 15.2A7.4 7.4 0 0 1 8.8 4A8.2 8.2 0 1 0 20 15.2Z" fill="currentColor" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor" />
+                <path d="M12 3V5M12 19V21M3 12H5M19 12H21M5.64 5.64L7.05 7.05M16.95 16.95L18.36 18.36M18.36 5.64L16.95 7.05M7.05 16.95L5.64 18.36" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            )}
+          </span>
+          <b>{theme === "dark" ? "Dark Mode" : "Light Mode"}</b>
+          <i aria-hidden="true" />
         </button>
 
         <Link href="/book-now" className="rivotBook">
@@ -645,9 +657,9 @@ export function Navbar() {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: 8px;
     height: 34px;
-    padding: 0 14px;
+    padding: 0 10px 0 13px;
     border: 1px solid rgba(255, 255, 255, 0.42);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.08);
@@ -660,9 +672,48 @@ export function Navbar() {
     backdrop-filter: blur(8px);
   }
 
+  .rivotThemeToggle b {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+
   .rivotThemeToggle span {
-    font-size: 13px;
-    line-height: 1;
+    display: inline-grid;
+    width: 17px;
+    height: 17px;
+    place-items: center;
+    flex: 0 0 auto;
+    color: currentColor;
+  }
+
+  .rivotThemeToggle svg {
+    display: block;
+    width: 17px;
+    height: 17px;
+  }
+
+  .rivotThemeToggle i {
+    position: relative;
+    display: block;
+    width: 30px;
+    height: 16px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .24);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .26);
+  }
+
+  .rivotThemeToggle i::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: currentColor;
+    transition: transform .24s ease, background .24s ease;
   }
 
   html[data-rivot-theme="light"] .rivotBrand {
@@ -699,6 +750,16 @@ export function Navbar() {
     background: rgba(255, 255, 255, .78);
     color: #111;
     box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+  }
+
+  html[data-rivot-theme="light"] .rivotThemeToggle i {
+    background: rgba(239, 116, 48, .18);
+    box-shadow: inset 0 0 0 1px rgba(239, 116, 48, .22);
+  }
+
+  html[data-rivot-theme="light"] .rivotThemeToggle i::before {
+    background: #ef7430;
+    transform: translateX(14px);
   }
 
   .rivotBook:hover {
