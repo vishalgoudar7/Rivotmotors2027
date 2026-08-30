@@ -29,6 +29,7 @@ import floorboardDetailImage from "@/asset/images/Details/Floorboard photo.png";
 import mainDetailImage from "@/asset/images/Details/Main detail photo.png";
 import { DashboardRotation } from "@/components/DashboardRotation";
 import { Faqs } from "@/components/Faqs";
+import { SafetyTech } from "@/components/SafetyTech";
 import { SavingsCalculator } from "@/components/SavingsCalculator";
 import { ScooterRotation } from "@/components/ScooterRotation";
 
@@ -810,71 +811,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotSafetyTech" aria-label="Safety technology highlights">
-        <div className="rivotSafetyTechPanel">
-          <div className="rivotSafetyIntroCard">
-            <h2>Safety</h2>
-            <p>Advanced systems and features to protect you and your ride.</p>
-            <i aria-hidden="true" />
-          </div>
-
-          <article className="rivotSafetyCard rivotSafetyImageCard rivotSafetyDropCard">
-            <Image src={riderAssistanceImage} alt="" fill sizes="(max-width: 900px) 100vw, 320px" />
-            <div>
-              <span aria-hidden="true"><EngineeringIcon type="shield" /></span>
-              <h3>Fall Guard</h3>
-              <p>Detects a tip-over and cuts power instantly.</p>
-            </div>
-          </article>
-
-          <article className="rivotSafetyCard rivotSafetyIconCard rivotSafetyTractionCard">
-            <span className="rivotSafetyTc" aria-hidden="true">TC</span>
-            <h3>Traction Control</h3>
-            <p>More grip. More confidence.</p>
-          </article>
-
-          <article className="rivotSafetyCard rivotSafetyImageCard rivotSafetyHoldCard">
-            <Image src={featureImage} alt="" fill sizes="(max-width: 900px) 100vw, 320px" />
-            <div>
-              <svg viewBox="0 0 36 36" fill="none">
-                <path d="M7 17C7 10.92 11.92 6 18 6C24.08 6 29 10.92 29 17" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                <path d="M18 17L24 11" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                <circle cx="15" cy="17" r="1.7" fill="#fff" />
-                <circle cx="23" cy="17" r="1.7" fill="#fff" />
-              </svg>
-              <h3>Roll Protecter</h3>
-              <p>Prevents rollovers. Just complete control on inclines.</p>
-            </div>
-          </article>
-
-          <article className="rivotSafetyCard rivotSafetyIconCard rivotSafetyBrakeCard">
-            <EngineeringIcon type="bolt" />
-            <h3>Smart Brake Signal</h3>
-            <p>Signals sudden braking instantly to riders behind you.</p>
-          </article>
-
-          <article className="rivotSafetyCard rivotSafetyImageCard rivotSafetyExitCard">
-            <Image src={safetyImage} alt="" fill sizes="(max-width: 900px) 100vw, 380px" />
-            <div>
-              <EngineeringIcon type="bolt" />
-              <h3>Walk Away Lights</h3>
-              <p>“Lights the way when you need them.”</p>
-            </div>
-          </article>
-
-          <article className="rivotSafetyCard rivotSafetyIconCard rivotSafetyTheftCard">
-            <svg viewBox="0 0 36 36" fill="none">
-              <path d="M9 18C9 12.48 13.48 8 19 8C24.52 8 29 12.48 29 18V21H9V18Z" fill="currentColor" />
-              <path d="M7 21H31M11 25H27" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-              <circle cx="15" cy="17" r="1.7" fill="#fff" />
-              <circle cx="23" cy="17" r="1.7" fill="#fff" />
-            </svg>
-            <h3>Anti Theft
-</h3>
-            <p>Instant alerts when unauthorized movement is detected.</p>
-          </article>
-        </div>
-      </section>
+      <SafetyTech />
 
       <SavingsCalculator />
 
@@ -1568,23 +1505,40 @@ export default function Home() {
         }
 
         .rivotKeyCardPills {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, max-content));
+          justify-content: start;
+          justify-items: start;
+          gap: 10px 12px;
           padding-left: 0;
         }
 
         .rivotKeyCardPills small {
           display: inline-flex;
-          min-height: 24px;
+          width: 100%;
+          min-height: 28px;
           align-items: center;
+          justify-content: center;
           border-radius: 999px;
-          background: rgba(255, 255, 255, .28);
+          background: rgba(105, 105, 105, .88);
           color: #fff;
-          padding: 0 11px;
-          font-size: 10px;
-          font-weight: 700;
-          backdrop-filter: blur(10px);
+          padding: 0 14px;
+          font-size: clamp(10px, .78vw, 12px);
+          font-weight: 850;
+          line-height: 1;
+          text-align: center;
+          white-space: nowrap;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16);
+          backdrop-filter: blur(8px);
+        }
+
+        .rivotKeyCard:nth-child(2) .rivotKeyCardPills {
+          grid-template-columns: repeat(2, minmax(92px, max-content));
+        }
+
+        .rivotKeyCard:nth-child(2) .rivotKeyCardPills small:last-child {
+          grid-column: 1 / -1;
+          justify-self: start;
         }
 
         .rivotDesign {
@@ -1614,7 +1568,7 @@ export default function Home() {
         .rivotDesignCopy h2 {
           margin: 0;
           color: #050505;
-          font-size: clamp(44px, 4.2vw, 74px);
+          font-size: clamp(40px, 4vw, 46px);
           font-weight: 800;
           line-height: 1;
           letter-spacing: -.055em;
@@ -1623,7 +1577,7 @@ export default function Home() {
         .rivotDesignCopy p {
           margin: 16px 0 0;
           color: #050505;
-          font-size: clamp(17px, 1.35vw, 22px);
+          font-size: 15px;
           font-weight: 700;
           line-height: 1.25;
         }
@@ -1786,7 +1740,7 @@ export default function Home() {
         .rivotEngineeringHeader h2 {
           margin: 0;
           color: #050505;
-          font-size: clamp(40px, 3.8vw, 64px);
+          font-size: clamp(36px, 3.8vw, 46px);
           font-weight: 900;
           line-height: .96;
           letter-spacing: -.045em;
@@ -1801,7 +1755,7 @@ export default function Home() {
           max-width: 255px;
           margin-top: 26px;
           color: #5c6267;
-          font-size: clamp(16px, 1.3vw, 20px);
+          font-size: 15px;
           font-weight: 700;
           line-height: 1.28;
         }
@@ -2559,180 +2513,178 @@ export default function Home() {
         }
 
         .rivotSafetyTech {
-          padding: clamp(24px, 4vw, 52px) clamp(14px, 3vw, 34px) clamp(34px, 5vw, 64px);
-          background: #fff;
-          color: #111;
+          position: relative;
+          overflow: hidden;
+          padding: clamp(34px, 4.5vw, 58px) clamp(14px, 3vw, 34px) clamp(42px, 5vw, 68px);
+          background: #d9d9d9;
+          color: #0b0b0b;
+        }
+
+        .rivotSafetyTech::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: rgba(255, 255, 255, .22);
+          pointer-events: none;
         }
 
         .rivotSafetyTechPanel {
           position: relative;
-          display: grid;
-          grid-template-columns: minmax(180px, .72fr) minmax(220px, 1.06fr) minmax(210px, .9fr) minmax(220px, 1fr);
-          grid-template-rows: minmax(230px, 1fr) minmax(200px, .9fr);
-          gap: clamp(16px, 1.6vw, 24px);
-          width: min(100%, 1280px);
+          z-index: 2;
+          width: min(100%, 1320px);
           margin: 0 auto;
-          padding-top: 20px;
-          background: #fff;
         }
 
-        .rivotSafetyIntroCard {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          min-height: 220px;
-          padding: clamp(40px, 4.8vw, 72px) 8px 18px 18px;
+        .rivotSafetyHeader {
+          display: grid;
+          justify-items: center;
+          text-align: center;
         }
 
-        .rivotSafetyIntroCard h2 {
-          margin: 0 0 26px;
-          color: #050505;
-          font-size: clamp(38px, 4.2vw, 62px);
+        .rivotSafetyHeader p {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin: 0 0 16px;
+          color: #f36f2b;
+          font-size: clamp(12px, .95vw, 15px);
           font-weight: 900;
-          line-height: .92;
-          letter-spacing: -.055em;
+          line-height: 1;
+          text-transform: uppercase;
         }
 
-        .rivotSafetyIntroCard p {
-          max-width: 190px;
+        .rivotSafetyHeader p svg {
+          width: 22px;
+          height: 22px;
+        }
+
+        .rivotSafetyHeader h2 {
           margin: 0;
-          color: #20242a;
-          font-size: clamp(14px, 1.05vw, 18px);
-          font-weight: 750;
-          line-height: 1.42;
+          color: #080808;
+          font-size: clamp(30px, 3vw, 42px);
+          font-weight: 950;
+          line-height: 1.02;
+          letter-spacing: -.045em;
         }
 
-        .rivotSafetyIntroCard i {
-          display: block;
-          width: 48px;
+        .rivotSafetyHeader span {
+          margin-top: 14px;
+          color: #5b6169;
+          font-size: clamp(14px, 1.25vw, 18px);
+          font-weight: 650;
+          line-height: 1.45;
+        }
+
+        .rivotSafetyHeader i {
+          width: 56px;
           height: 3px;
-          margin-top: 28px;
+          margin-top: 22px;
           border-radius: 999px;
-          background: #ef7430;
+          background: #f36f2b;
         }
 
-        .rivotSafetyCard {
+        .rivotSafetyGrid {
           position: relative;
           display: grid;
-          min-height: 0;
-          overflow: hidden;
-          border-radius: 18px;
-          background: #fff;
-          box-shadow:
-            0 14px 36px rgba(17, 17, 17, .08),
-            inset 0 0 0 1px rgba(17, 17, 17, .04);
+          grid-template-columns: minmax(230px, .72fr) minmax(430px, 1.42fr) minmax(230px, .72fr);
+          align-items: center;
+          gap: clamp(12px, 1.6vw, 26px);
+          margin-top: clamp(14px, 2vw, 26px);
+          min-height: clamp(430px, 35vw, 510px);
         }
 
-        .rivotSafetyImageCard {
-          align-items: end;
-          padding: clamp(20px, 2vw, 28px);
-          color: #fff;
-        }
-
-        .rivotSafetyImageCard::after {
-          content: "";
+        .rivotSafetyBackground {
           position: absolute;
           inset: 0;
-          background:
-            linear-gradient(180deg, rgba(0, 0, 0, .1) 0%, rgba(0, 0, 0, .28) 42%, rgba(0, 0, 0, .82) 100%),
-            linear-gradient(90deg, rgba(239, 116, 48, .14), transparent 44%);
+          z-index: 0;
+          pointer-events: none;
+          opacity: 1;
         }
 
-        .rivotSafetyImageCard img {
+        .rivotSafetyBackground img {
           object-fit: cover;
-          object-position: center;
-          filter: saturate(.9) contrast(1.02);
+          object-position: center 52%;
         }
 
-        .rivotSafetyImageCard > div,
-        .rivotSafetyIconCard {
+        .rivotSafetyStage {
           position: relative;
           z-index: 1;
+          min-height: clamp(320px, 31vw, 455px);
         }
 
-        .rivotSafetyImageCard svg,
-        .rivotSafetyImageCard span {
+        .rivotSafetyList {
+          position: relative;
+          z-index: 2;
+          display: grid;
+          gap: clamp(26px, 3.1vw, 44px);
+        }
+
+        .rivotSafetyFeature {
+          position: relative;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) clamp(56px, 5.2vw, 76px);
+          align-items: center;
+          gap: clamp(14px, 1.4vw, 22px);
+        }
+
+        .rivotSafetyFeature > div {
+          max-width: 210px;
+        }
+
+        .rivotSafetyListLeft .rivotSafetyFeature > div {
+          justify-self: end;
+        }
+
+        .rivotSafetyListRight .rivotSafetyFeature {
+          grid-template-columns: clamp(56px, 5.2vw, 76px) minmax(0, 1fr);
+        }
+
+        .rivotSafetyListLeft {
+          text-align: right;
+        }
+
+        .rivotSafetyFeature h3 {
+          margin: 0 0 12px;
+          color: #080808;
+          font-size: clamp(16px, 1.2vw, 20px);
+          font-weight: 900;
+          line-height: 1.08;
+          letter-spacing: -.03em;
+        }
+
+        .rivotSafetyFeature p {
+          margin: 0;
+          color: #535963;
+          font-size: clamp(13px, .95vw, 16px);
+          font-weight: 700;
+          line-height: 1.48;
+        }
+
+        .rivotSafetyRoundIcon {
+          display: grid;
+          width: clamp(56px, 5.2vw, 76px);
+          height: clamp(56px, 5.2vw, 76px);
+          place-items: center;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, .94);
+          color: #f36f2b;
+          box-shadow:
+            0 14px 34px rgba(13, 13, 13, .08),
+            inset 0 0 0 1px rgba(15, 15, 15, .04);
+        }
+
+        .rivotSafetyRoundIcon svg {
           width: 34px;
           height: 34px;
-          margin-bottom: 18px;
-          color: #ef7430;
-        }
-
-        .rivotSafetyImageCard h3,
-        .rivotSafetyIconCard h3 {
-          margin: 0 0 10px;
-          color: currentColor;
-          font-size: clamp(20px, 1.5vw, 28px);
-          font-weight: 900;
-          line-height: 1.05;
-          letter-spacing: -.035em;
-        }
-
-        .rivotSafetyImageCard p,
-        .rivotSafetyIconCard p {
-          max-width: 250px;
-          margin: 0;
-          color: currentColor;
-          font-size: clamp(13px, .98vw, 16px);
-          font-weight: 750;
-          line-height: 1.45;
-          opacity: .86;
-        }
-
-        .rivotSafetyIconCard {
-          align-content: center;
-          padding: clamp(24px, 2.7vw, 38px);
-          color: #111;
-        }
-
-        .rivotSafetyIconCard > svg {
-          width: 42px;
-          height: 42px;
-          margin-bottom: 24px;
-          color: #ef7430;
         }
 
         .rivotSafetyTc {
-          display: grid;
-          width: 44px;
-          height: 44px;
-          place-items: center;
-          margin-bottom: 24px;
-          border: 3px solid #ef7430;
-          border-radius: 13px;
-          color: #ef7430;
-          font-size: 18px;
-          font-weight: 900;
-        }
-
-        .rivotSafetyDropCard {
-          grid-column: 2;
-          grid-row: 1;
-        }
-
-        .rivotSafetyTractionCard {
-          grid-column: 3;
-          grid-row: 1;
-        }
-
-        .rivotSafetyHoldCard {
-          grid-column: 4;
-          grid-row: 1;
-        }
-
-        .rivotSafetyBrakeCard {
-          grid-column: 1 / span 2;
-          grid-row: 2;
-        }
-
-        .rivotSafetyExitCard {
-          grid-column: 3;
-          grid-row: 2;
-        }
-
-        .rivotSafetyTheftCard {
-          grid-column: 4;
-          grid-row: 2;
+          border-radius: 18px;
+          border: 3px solid rgba(243, 111, 43, .95);
+          font-size: clamp(15px, 1.2vw, 19px);
+          font-weight: 950;
+          line-height: 1;
         }
 
         .rivotAppConnect {
@@ -3139,7 +3091,7 @@ export default function Home() {
         .rivotAppConnectCopy h2 {
           margin: 0;
           color: #060606;
-          font-size: clamp(44px, 5.5vw, 78px);
+          font-size: clamp(40px, 4vw, 46px);
           font-weight: 900;
           line-height: .95;
           letter-spacing: 0;
@@ -3153,7 +3105,7 @@ export default function Home() {
           margin: clamp(24px, 2.4vw, 34px) 0 0;
           max-width: 390px;
           color: #5f676c;
-          font-size: clamp(16px, 1.35vw, 20px);
+          font-size: 15px;
           font-weight: 750;
           line-height: 1.5;
         }
@@ -3521,13 +3473,13 @@ export default function Home() {
         }
 
         .rivotAppConnectCopy h2 {
-          font-size: clamp(34px, 4.2vw, 56px);
+          font-size: clamp(34px, 4vw, 46px);
           line-height: .9;
         }
 
         .rivotAppLead {
           margin-top: 18px;
-          font-size: clamp(14px, 1.1vw, 17px);
+          font-size: 15px;
           line-height: 1.45;
         }
 
@@ -3782,7 +3734,7 @@ export default function Home() {
         .rivotReachCopy > p {
           margin: 0 0 18px;
           color: #ef7430;
-          font-size: clamp(13px, .95vw, 16px);
+          font-size: 15px;
           font-weight: 900;
           letter-spacing: 0;
           line-height: 1.2;
@@ -3792,7 +3744,7 @@ export default function Home() {
         .rivotReachCopy h2 {
           margin: 0;
           color: #050505;
-          font-size: clamp(30px, 3vw, 50px);
+          font-size: clamp(30px, 3vw, 46px);
           font-weight: 800;
           line-height: .98;
           letter-spacing: -.055em;
@@ -3803,7 +3755,7 @@ export default function Home() {
           max-width: 255px;
           margin-top: 16px;
           color: #42464d;
-          font-size: clamp(15px, 1.15vw, 17px);
+          font-size: 15px;
           font-weight: 500;
           line-height: 1.55;
         }
@@ -3876,7 +3828,7 @@ export default function Home() {
         .rivotBestFitHeader h2 {
           margin: 0;
           color: #080808;
-          font-size: clamp(34px, 3.5vw, 54px);
+          font-size: clamp(34px, 3.5vw, 46px);
           font-weight: 900;
           line-height: .95;
           letter-spacing: -.055em;
@@ -3885,7 +3837,7 @@ export default function Home() {
         .rivotBestFitHeader p {
           margin: 12px 0 0;
           color: #777d84;
-          font-size: clamp(14px, 1vw, 16px);
+          font-size: 15px;
           font-weight: 750;
           line-height: 1.35;
         }
@@ -4246,23 +4198,61 @@ export default function Home() {
             max-width: 460px;
           }
 
-          .rivotSafetyTechPanel {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            grid-template-rows: auto;
-            gap: 18px;
-            padding-top: 54px;
+          .rivotSafetyGrid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            width: min(100%, 760px);
+            margin-inline: auto;
+            min-height: 0;
           }
 
-          .rivotSafetyIntroCard,
-          .rivotSafetyDropCard,
-          .rivotSafetyTractionCard,
-          .rivotSafetyHoldCard,
-          .rivotSafetyBrakeCard,
-          .rivotSafetyExitCard,
-          .rivotSafetyTheftCard {
-            grid-column: auto;
-            grid-row: auto;
+          .rivotSafetyBackground {
+            position: relative;
+            inset: auto;
+            order: -2;
+            width: 100%;
+            min-height: clamp(300px, 58vw, 440px);
+            filter: drop-shadow(0 18px 36px rgba(239, 116, 48, .12));
+          }
+
+          .rivotSafetyBackground img {
+            object-fit: contain;
+          }
+
+          .rivotSafetyStage {
+            order: -1;
+            display: none;
+          }
+
+          .rivotSafetyList {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+          }
+
+          .rivotSafetyListLeft,
+          .rivotSafetyListRight {
+            text-align: left;
+          }
+
+          .rivotSafetyFeature,
+          .rivotSafetyListRight .rivotSafetyFeature {
+            grid-template-columns: 56px minmax(0, 1fr);
+            gap: 12px;
+            align-items: start;
+          }
+
+          .rivotSafetyListLeft .rivotSafetyFeature .rivotSafetyRoundIcon {
+            grid-column: 1;
+            grid-row: 1;
+          }
+
+          .rivotSafetyListLeft .rivotSafetyFeature div {
+            grid-column: 2;
+            grid-row: 1;
+          }
+
+          .rivotSafetyFeature > div {
+            max-width: none;
           }
 
           .rivotAppConnectShell {
@@ -4324,15 +4314,6 @@ export default function Home() {
 
           .rivotRidePhoneCard .rivotPhoneMockup {
             width: min(100%, 270px);
-          }
-
-          .rivotSafetyIntroCard {
-            min-height: 220px;
-            padding-top: 20px;
-          }
-
-          .rivotSafetyCard {
-            min-height: 260px;
           }
 
           .rivotReach {
@@ -4559,7 +4540,7 @@ export default function Home() {
 
           .rivotDesignCopy p {
             margin-top: 12px;
-            font-size: 16px;
+            font-size: 15px;
           }
 
           .rivotDesignImage {
@@ -4584,7 +4565,7 @@ export default function Home() {
           }
 
           .rivotEngineeringHeader h2 {
-            font-size: clamp(36px, 12vw, 50px);
+            font-size: clamp(36px, 12vw, 46px);
           }
 
           .rivotEngineeringHeader small {
@@ -4739,23 +4720,48 @@ export default function Home() {
             padding: 24px 12px 36px;
           }
 
-          .rivotSafetyTechPanel {
+          .rivotSafetyTech {
+            padding: 38px 14px 46px;
+          }
+
+          .rivotSafetyHeader h2 {
+            font-size: 30px;
+          }
+
+          .rivotSafetyHeader span {
+            max-width: 300px;
+          }
+
+          .rivotSafetyGrid {
+            gap: 18px;
+          }
+
+          .rivotSafetyBackground {
+            min-height: 235px;
+          }
+
+          .rivotSafetyList {
             grid-template-columns: 1fr;
-            gap: 14px;
-            padding-top: 54px;
+            gap: 12px;
           }
 
-          .rivotSafetyIntroCard {
-            min-height: auto;
-            padding: 18px 8px 16px;
+          .rivotSafetyFeature,
+          .rivotSafetyListRight .rivotSafetyFeature {
+            min-height: 92px;
+            padding: 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .86);
+            box-shadow: inset 0 0 0 1px rgba(15, 15, 15, .05);
           }
 
-          .rivotSafetyIntroCard h2 {
-            font-size: 40px;
+          .rivotSafetyRoundIcon {
+            width: 52px;
+            height: 52px;
           }
 
-          .rivotSafetyCard {
-            min-height: 240px;
+          .rivotSafetyRoundIcon svg {
+            width: 28px;
+            height: 28px;
           }
 
           .rivotAppConnect {

@@ -137,7 +137,7 @@ export function Faqs() {
         .rivotFaqsHeader h2 {
           margin: 0;
           color: #111;
-          font-size: clamp(34px, 4vw, 54px);
+          font-size: clamp(34px, 4vw, 46px);
           font-weight: 900;
           line-height: 1;
           letter-spacing: -.055em;
@@ -162,7 +162,7 @@ export function Faqs() {
           background: #f3f3f3;
           color: #34383d;
           font: inherit;
-          font-size: clamp(14px, .95vw, 17px);
+          font-size: 15px;
           font-weight: 900;
           letter-spacing: -.02em;
           cursor: pointer;

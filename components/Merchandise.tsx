@@ -136,7 +136,7 @@ export function Merchandise() {
         .rivotShopHeader h1 {
           margin: 0;
           color: #070707;
-          font-size: clamp(42px, 6vw, 82px);
+          font-size: clamp(36px, 4vw, 46px);
           font-weight: 950;
           line-height: .94;
           letter-spacing: 0;
@@ -152,7 +152,7 @@ export function Merchandise() {
           max-width: 680px;
           margin-top: 14px;
           color: #5f6b73;
-          font-size: clamp(15px, 1.35vw, 20px);
+          font-size: 15px;
           font-weight: 800;
           line-height: 1.45;
         }

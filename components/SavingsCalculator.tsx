@@ -290,7 +290,7 @@ export function SavingsCalculator() {
         .rivotSavingsHeader p {
           margin: 0 0 6px;
           color: #0f8f4c;
-          font-size: clamp(14px, 1vw, 17px);
+          font-size: 15px;
           font-weight: 900;
           line-height: 1.15;
         }
@@ -314,7 +314,7 @@ export function SavingsCalculator() {
           gap: 16px;
           margin-top: 8px;
           color: #071227;
-          font-size: clamp(16px, 1.25vw, 21px);
+          font-size: 15px;
           font-weight: 900;
           line-height: 1;
           white-space: nowrap;

@@ -185,7 +185,7 @@ export function DashboardRotation() {
         .rivotDashboardCopy h2 {
           margin: 0;
           color: #050505;
-          font-size: clamp(36px, 4.2vw, 68px);
+          font-size: clamp(36px, 4.2vw, 46px);
           font-weight: 900;
           line-height: .95;
           letter-spacing: -.055em;
@@ -197,7 +197,7 @@ export function DashboardRotation() {
           max-width: 440px;
           margin-top: 10px;
           color: #505b66;
-          font-size: clamp(15px, 1.1vw, 18px);
+          font-size: 15px;
           font-weight: 700;
           line-height: 1.45;
         }
