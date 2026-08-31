@@ -3,15 +3,40 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ScooterRotation } from "@/components/ScooterRotation";
+import sportModelImage from "@/asset/Model/Sport_NX100.png";
+import proModelImage from "@/asset/Model/Pro.png";
+import sportView1 from "@/asset/models/Sports/1.png";
+import sportView2 from "@/asset/models/Sports/2.png";
+import sportView3 from "@/asset/models/Sports/3.png";
+import sportView4 from "@/asset/models/Sports/4.png";
+import proFrontView from "@/asset/models/pro/Front view.png";
+import proLeftSideView from "@/asset/models/pro/Left side view.png";
+import proRearView from "@/asset/models/pro/Rear view.png";
+import proSilverGreyView from "@/asset/models/pro/Silver grey1 (2).png";
 
 type Model = "sport" | "pro";
 type BookingField = "name" | "mobile" | "email" | "pincode" | "state" | "city" | "source";
 type BookingErrors = Partial<Record<BookingField | "terms", string>>;
 
-const models: { id: Model; label: string; price: string; colors: string[] }[] = [
-  { id: "sport", label: "Sport", price: "₹ 1,39,000", colors: ["#f26f2f", "#ffffff", "#111111"] },
-  { id: "pro", label: "Pro", price: "₹ 1,29,000", colors: ["#111111", "#ffffff", "#6f7479"] },
+const bookingColors = ["#FCFCFC", "#757180", "#CD2E30", "#050505", "#C3CADB"];
+
+const models = [
+  {
+    id: "pro" as const,
+    label: "Pro",
+    price: "₹ 1,29,000",
+    colors: bookingColors,
+    image: proModelImage,
+    gallery: [proFrontView, proLeftSideView, proRearView, proSilverGreyView],
+  },
+  {
+    id: "sport" as const,
+    label: "Sport",
+    price: "₹ 1,39,000",
+    colors: bookingColors,
+    image: sportModelImage,
+    gallery: [sportView1, sportView2, sportView3, sportView4],
+  },
 ];
 
 const states = [
@@ -50,8 +75,9 @@ function FieldError({ field, errors, touched }: { field: BookingField | "terms";
 
 export function Booking() {
   const router = useRouter();
-  const [model, setModel] = useState<Model>("sport");
+  const [model, setModel] = useState<Model>(models[0].id);
   const [color, setColor] = useState(models[0].colors[0]);
+  const [galleryIndex, setGalleryIndex] = useState(0);
   const [state, setState] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -62,6 +88,7 @@ export function Booking() {
   function chooseModel(nextModel: Model) {
     setModel(nextModel);
     setColor(models.find((item) => item.id === nextModel)?.colors[0] ?? "#000000");
+    setGalleryIndex(0);
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -154,17 +181,32 @@ export function Booking() {
               <h1>
                 NX <span>100</span>
               </h1>
-              <strong>Starting at ₹ 1,39,000*</strong>
+              <strong>Starting at {selectedModel.price}*</strong>
             <small>Booking amount Rs 499. Fully refundable.</small>
           </div>
-          <ScooterRotation className="rivotBookingScooter" />
-          <div className="rivotBookingGallery" aria-label="Scooter views">
-            {["0001", "0040", "0080"].map((frame) => (
-              <img key={frame} src={`/grayscooty/${frame}.webp`} alt="RIVOT NX100 scooter view" />
-            ))}
-            <span className="rivotBooking360"><b>◌</b><small>360° View</small></span>
+          <div className="rivotRotationStage">
+            <img
+              key={`${selectedModel.id}-${galleryIndex}`}
+              className="rivotBookingScooter"
+              src={(selectedModel.gallery[galleryIndex] ?? selectedModel.image).src}
+              alt={`RIVOT NX100 ${selectedModel.label} scooter`}
+              decoding="async"
+            />
           </div>
-          <p className="rivotBookingHint">Drag to explore the NX100</p>
+          <div className="rivotBookingGallery" aria-label={`${selectedModel.label} scooter gallery`}>
+            {selectedModel.gallery.map((image, index) => (
+              <button
+                key={image.src}
+                type="button"
+                className={galleryIndex === index ? "active" : ""}
+                aria-label={`Show ${selectedModel.label} view ${index + 1}`}
+                aria-pressed={galleryIndex === index}
+                onClick={() => setGalleryIndex(index)}
+              >
+                <img src={image.src} alt="" decoding="async" />
+              </button>
+            ))}
+          </div>
           <div className="rivotBookingSpecs" aria-label="NX100 highlights">
             <div>
               <b>200 km</b>
@@ -467,6 +509,22 @@ export function Booking() {
           object-fit: contain;
         }
 
+        body:has(.rivotBooking) .rivotBookingGallery button {
+          width: 100%;
+          height: 70px;
+          padding: 0;
+          overflow: hidden;
+          border: 1px solid rgba(17, 17, 17, .1);
+          border-radius: 10px;
+          background: #f6f6f6;
+          cursor: pointer;
+        }
+
+        body:has(.rivotBooking) .rivotBookingGallery button.active {
+          border-color: #ef7430;
+          box-shadow: 0 0 0 1px #ef7430;
+        }
+
         body:has(.rivotBooking) .rivotBooking360 { gap: 7px; }
         body:has(.rivotBooking) .rivotBooking360 b { font-size: 25px; }
         body:has(.rivotBooking) .rivotBooking360 small { font-size: 10px; font-weight: 800; }
@@ -643,6 +701,20 @@ export function Booking() {
           border-radius: 8px;
           background: #f6f6f6;
           object-fit: contain;
+        }
+
+        .rivotBookingGallery button {
+          padding: 0;
+          overflow: hidden;
+          border: 1px solid rgba(17, 17, 17, .1);
+          border-radius: 8px;
+          background: #f6f6f6;
+          cursor: pointer;
+        }
+
+        .rivotBookingGallery button.active {
+          border-color: #ef7430;
+          box-shadow: 0 0 0 1px #ef7430;
         }
 
         .rivotBookingGallery img:first-child { border-color: #ef7430; }
@@ -2003,6 +2075,8 @@ export function Booking() {
           body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery img,
           body:has(.rivotBooking) .rivotBookingViewer .rivotBooking360 { height: 58px; }
 
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery button { height: 58px; }
+
           body:has(.rivotBooking) .rivotBookingViewer .rivotBookingSpecs {
             width: min(100%, 470px);
             height: 72px;
@@ -2082,6 +2156,7 @@ export function Booking() {
           body:has(.rivotBooking) .rivotBookingGallery { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; height: 54px; }
           body:has(.rivotBooking) .rivotBookingGallery img,
           body:has(.rivotBooking) .rivotBooking360 { height: 54px; }
+          body:has(.rivotBooking) .rivotBookingGallery button { height: 54px; }
           body:has(.rivotBooking) .rivotBooking360 { gap: 3px; }
           body:has(.rivotBooking) .rivotBooking360 b { font-size: 20px; }
           body:has(.rivotBooking) .rivotBooking360 small { font-size: 8px; }
@@ -2104,6 +2179,17 @@ export function Booking() {
           body:has(.rivotBooking) .rivotBookingPayment div strong { font-size: 25px; }
           body:has(.rivotBooking) .rivotBookingPayment > span { font-size: 10px; }
           body:has(.rivotBooking) .rivotBookingSubmit { min-height: 50px; font-size: 15px; }
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer {
+          position: relative;
+          z-index: 1;
+          height: auto !important;
+        }
+
+        body:has(.rivotBooking) .rivotBookingPanel {
+          position: relative;
+          z-index: 0;
         }
         body:has(.rivotBooking) .rivotBookingField { min-width: 0; }
         body:has(.rivotBooking) .rivotBookingField > label {
@@ -2271,10 +2357,74 @@ export function Booking() {
         body:has(.rivotBooking) .rivotBookingPayment div strong { color: #111; font-size: 30px; line-height: 1; }
         body:has(.rivotBooking) .rivotBookingPayment > span { color: #718087; font-size: 13px; }
 
+        body:has(.rivotBooking) .rivotBookingViewer {
+          gap: 14px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingIntro {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          width: min(100%, 530px);
+          margin: 0 auto 2px;
+          column-gap: 16px;
+          align-items: end;
+        }
+
+        body:has(.rivotBooking) .rivotBookingIntro p {
+          grid-column: 1 / -1;
+          margin: 0 0 5px;
+          font-size: 12px;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        body:has(.rivotBooking) .rivotBookingIntro h1 {
+          white-space: nowrap;
+          font-size: clamp(56px, 5.1vw, 82px);
+          line-height: .86;
+        }
+
+        body:has(.rivotBooking) .rivotBookingIntro strong {
+          align-self: center;
+          width: max-content;
+          margin: 0;
+          font-size: 15px;
+          line-height: 1.1;
+          white-space: nowrap;
+        }
+
+        body:has(.rivotBooking) .rivotBookingIntro small {
+          grid-column: 1 / -1;
+          margin: 8px 0 0;
+          font-size: 12px;
+          line-height: 1.2;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotRotationStage {
+          height: clamp(315px, 30vw, 380px);
+          margin-top: -4px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter {
+          width: min(100%, 500px);
+        }
+
+        body:has(.rivotBooking) .rivotBookingGallery {
+          margin-top: -4px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingGallery img:first-child {
+          border-color: transparent;
+          box-shadow: none;
+        }
+
         @media (max-width: 600px) {
           body:has(.rivotBooking) .rivotBookingModels { grid-template-columns: 1fr; }
           body:has(.rivotBooking) .rivotBookingFields { grid-template-columns: 1fr; }
           body:has(.rivotBooking) .rivotBookingFields .wide { grid-column: auto; }
+          body:has(.rivotBooking) .rivotBookingIntro { grid-template-columns: 1fr; }
+          body:has(.rivotBooking) .rivotBookingIntro h1 { font-size: clamp(54px, 18vw, 76px); }
+          body:has(.rivotBooking) .rivotBookingIntro strong { width: fit-content; margin-top: 8px; white-space: normal; }
         }
       `}</style>
     </section>

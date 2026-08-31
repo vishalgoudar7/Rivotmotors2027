@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import heroFeatureDark from "@/asset/images/Hero/1 (3).png";
 import heroFeatureLight from "@/asset/images/Hero/3 (3).png";
 import heroFeatureStudio from "@/asset/images/Hero/ChatGPT Image Aug 26, 2026, 03_15_38 PM.png";
-import heroFolderMain from "@/asset/images/Hero/Hero.png";
 import heroFolderDark from "@/asset/images/Hero/Hero1.png";
 import heroFolderLight from "@/asset/images/Hero/Hero2.png";
 import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
@@ -117,7 +116,6 @@ const heroCarouselImages = [
   heroFeatureDark,
   heroFeatureLight,
   heroFeatureStudio,
-  heroFolderMain,
   heroFolderDark,
   heroFolderLight,
 ] as const;
@@ -1793,6 +1791,18 @@ export default function Home() {
           overflow: hidden;
         }
 
+        .rivotEngineeringCard:has(.rivotEngineeringCardBg) {
+          background: #080909;
+        }
+
+        .rivotEngineeringCard:has(.rivotEngineeringCardBg) h3 {
+          color: #fff;
+        }
+
+        .rivotEngineeringCard:has(.rivotEngineeringCardBg) p {
+          color: rgba(255, 255, 255, .72);
+        }
+
         .rivotEngineeringCardBg {
           position: absolute;
           inset: 0;
@@ -1810,14 +1820,14 @@ export default function Home() {
           inset: 0;
           z-index: 1;
           background:
-            linear-gradient(180deg, rgba(244, 244, 244, .92) 0%, rgba(244, 244, 244, .78) 38%, rgba(244, 244, 244, .2) 100%);
+            linear-gradient(180deg, rgba(8, 9, 9, .92) 0%, rgba(8, 9, 9, .78) 38%, rgba(8, 9, 9, .2) 100%);
           pointer-events: none;
         }
 
         .rivotEngineeringCard:nth-child(n + 4):has(.rivotEngineeringCardBg)::before {
           background:
-            linear-gradient(90deg, rgba(244, 244, 244, .95) 0%, rgba(244, 244, 244, .78) 48%, rgba(244, 244, 244, .18) 100%),
-            linear-gradient(180deg, rgba(244, 244, 244, .22), rgba(244, 244, 244, .82));
+            linear-gradient(90deg, rgba(8, 9, 9, .95) 0%, rgba(8, 9, 9, .78) 48%, rgba(8, 9, 9, .18) 100%),
+            linear-gradient(180deg, rgba(8, 9, 9, .22), rgba(8, 9, 9, .82));
         }
 
         .rivotEngineeringCard:nth-child(2) .rivotEngineeringCardBg {
@@ -1835,7 +1845,7 @@ export default function Home() {
         .rivotEngineeringCard:nth-child(2),
         .rivotEngineeringCard:nth-child(4),
         .rivotEngineeringCard:nth-child(6) {
-          background: #f4f4f4;
+          background: #080909;
         }
 
         .rivotEngineeringCard:nth-child(3) {

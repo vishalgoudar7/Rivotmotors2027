@@ -1,16 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ProductFeatureSections } from "@/components/ProductFeatureSections";
+import { ProductHeroSpecs } from "@/components/ProductHeroSpecs";
 import sportImage from "@/asset/Model/Sport_NX100.png";
 import actionOne from "@/asset/rivot-website-main/Story_page/11.webp";
 import actionTwo from "@/asset/rivot-website-main/Story_page/13.webp";
 import actionThree from "@/asset/rivot-website-main/Story_page/15.webp";
-
-const telemetry = [
-  { value: "100", unit: "km/h", label: "Top Speed" },
-  { value: "45.5", unit: "Nm", label: "Torque" },
-  { value: "6", unit: "kW", label: "Motor" },
-  { value: "200", unit: "km", label: "Range" },
-];
 
 const rideModes = [
   { title: "Launch", copy: "Sharp throttle response tuned for fast city gaps and confident starts." },
@@ -26,6 +21,7 @@ export function SportModel() {
           <p>RIVOT NX100</p>
           <h1>Sports</h1>
           <span>Performance-focused electric riding with long-range practicality.</span>
+          <ProductHeroSpecs />
           <div className="sportActions">
             <Link href="/book-now">Book Now</Link>
             <Link href="/book-now">Test Ride</Link>
@@ -38,18 +34,9 @@ export function SportModel() {
           <Image src={sportImage} alt="RIVOT NX100 Sports" priority sizes="(max-width: 900px) 95vw, 62vw" />
         </div>
 
-        <div className="sportTelemetry">
-          {telemetry.map((item) => (
-            <article key={item.label}>
-              <b>
-                {item.value}
-                <small>{item.unit}</small>
-              </b>
-              <span>{item.label}</span>
-            </article>
-          ))}
-        </div>
       </section>
+
+      <ProductFeatureSections />
 
       <section className="sportManifest">
         <p>SPORT SETUP</p>
@@ -283,48 +270,45 @@ export function SportModel() {
         }
 
         .sportTelemetry {
-          position: absolute;
-          left: clamp(22px, 5vw, 76px);
-          right: clamp(22px, 5vw, 76px);
-          bottom: 26px;
-          z-index: 5;
           display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 1px;
-          background: var(--sport-line);
-          border: 1px solid var(--sport-line);
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 18px 42px rgba(17, 17, 17, .08);
+          width: min(620px, 100%);
+          margin-top: 34px;
         }
 
         .sportTelemetry article {
-          min-height: 118px;
-          padding: 20px;
-          background: rgba(255,255,255,.82);
-          backdrop-filter: blur(14px);
+          min-width: 0;
+          padding: 0 18px;
+          border-left: 1px solid rgba(17, 17, 17, .12);
+          text-align: center;
+        }
+
+        .sportTelemetry article:first-child {
+          padding-left: 0;
+          border-left: 0;
         }
 
         .sportTelemetry b {
           display: block;
           color: #070707;
-          font-size: clamp(34px, 4vw, 60px);
-          line-height: .9;
+          font-size: 18px;
+          line-height: 1.05;
+          white-space: nowrap;
         }
 
         .sportTelemetry small {
-          margin-left: 5px;
+          margin-left: 4px;
           color: var(--sport-accent);
-          font-size: 16px;
+          font-size: inherit;
         }
 
         .sportTelemetry span {
           display: block;
-          margin-top: 12px;
+          margin-top: 7px;
           color: var(--sport-muted);
-          font-size: 12px;
+          font-size: 14px;
           font-weight: 900;
-          letter-spacing: .14em;
+          letter-spacing: 0;
           text-transform: uppercase;
         }
 
@@ -480,12 +464,8 @@ export function SportModel() {
           }
 
           .sportTelemetry {
-            position: relative;
-            left: auto;
-            right: auto;
-            bottom: auto;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            margin-top: 22px;
+            gap: 18px 0;
           }
 
           .sportModes,
@@ -517,7 +497,15 @@ export function SportModel() {
           }
 
           .sportTelemetry {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .sportTelemetry b {
+            font-size: 16px;
+          }
+
+          .sportTelemetry span {
+            font-size: 12px;
           }
 
           .sportTelemetry article {

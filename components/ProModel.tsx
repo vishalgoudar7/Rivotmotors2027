@@ -1,15 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ProductFeatureSections } from "@/components/ProductFeatureSections";
+import { ProductHeroSpecs } from "@/components/ProductHeroSpecs";
 import proImage from "@/asset/Model/Pro.png";
 import detailImage from "@/asset/images/Details/Main detail photo.png";
 import bootImage from "@/asset/images/Details/Boot space with helmet.png";
 import floorImage from "@/asset/images/Details/Floorboard photo.png";
-
-const heroStats = [
-  { value: "200 km", label: "Real range" },
-  { value: "4.4 kWh", label: "LiMFP battery" },
-  { value: "55 L", label: "Boot space" },
-];
 
 const comfortSpecs = [
   ["Charge", "4 hr home charge, 1.5 hr FlashCharge ready"],
@@ -28,6 +24,7 @@ export function ProModel() {
           <p className="proIntro">
             The long-range RIVOT for riders who want calm power, everyday space, and premium confidence in one electric scooter.
           </p>
+          <ProductHeroSpecs />
           <div className="proActions">
             <Link href="/book-now">Book Now</Link>
             <Link href="/book-now">Test Ride</Link>
@@ -39,15 +36,9 @@ export function ProModel() {
           <Image src={proImage} alt="RIVOT NX100 Pro" priority sizes="(max-width: 900px) 92vw, 58vw" />
         </div>
 
-        <div className="proStats" aria-label="NX100 Pro highlights">
-          {heroStats.map((stat) => (
-            <div key={stat.label}>
-              <b>{stat.value}</b>
-              <span>{stat.label}</span>
-            </div>
-          ))}
-        </div>
       </div>
+
+      <ProductFeatureSections />
 
       <section className="proExecutive">
         <div>
@@ -243,45 +234,45 @@ export function ProModel() {
         }
 
         .proStats {
-          position: absolute;
-          left: clamp(22px, 5vw, 72px);
-          right: clamp(22px, 5vw, 72px);
-          bottom: 28px;
-          z-index: 2;
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          border-top: 1px solid var(--pro-line);
-          border-bottom: 1px solid var(--pro-line);
-          background: rgba(246,245,241,.74);
-          backdrop-filter: blur(14px);
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 18px 42px rgba(17, 17, 17, .08);
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          width: min(620px, 100%);
+          margin-top: 34px;
         }
 
         .proStats div {
-          padding: 22px 24px;
-          border-right: 1px solid var(--pro-line);
+          min-width: 0;
+          padding: 0 18px;
+          border-left: 1px solid var(--pro-line);
+          text-align: center;
         }
 
-        .proStats div:last-child {
-          border-right: 0;
+        .proStats div:first-child {
+          padding-left: 0;
+          border-left: 0;
         }
 
         .proStats b {
           display: block;
           color: var(--pro-ink);
-          font-size: clamp(28px, 3vw, 46px);
-          line-height: 1;
+          font-size: 18px;
+          line-height: 1.05;
+          white-space: nowrap;
+        }
+
+        .proStats small {
+          margin-left: 4px;
+          color: var(--pro-copper);
+          font-size: inherit;
         }
 
         .proStats span {
           display: block;
-          margin-top: 8px;
+          margin-top: 7px;
           color: var(--pro-muted);
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 800;
-          letter-spacing: .08em;
+          letter-spacing: 0;
           text-transform: uppercase;
         }
 
@@ -424,10 +415,8 @@ export function ProModel() {
           }
 
           .proStats {
-            left: auto;
-            right: auto;
-            bottom: auto;
-            margin-top: 24px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px 0;
           }
 
           .proGallery {
@@ -454,16 +443,19 @@ export function ProModel() {
           }
 
           .proStats {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
           }
 
           .proStats div {
-            border-right: 0;
-            border-bottom: 1px solid var(--pro-line);
+            border-left: 1px solid var(--pro-line);
           }
 
-          .proStats div:last-child {
-            border-bottom: 0;
+          .proStats b {
+            font-size: 16px;
+          }
+
+          .proStats span {
+            font-size: 12px;
           }
         }
       `}</style>

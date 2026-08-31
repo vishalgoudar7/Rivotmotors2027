@@ -120,15 +120,15 @@ export function Footer() {
       <style>{`
         .rivotFooter {
           display: block;
-          padding: clamp(14px, 2vw, 26px);
+          padding: 0;
           border: 0;
           background: #f5f5f2;
           color: #f4f4f4;
         }
 
         .rivotFooterShell {
-          width: min(100%, 1500px);
-          margin: 0 auto;
+          width: 100%;
+          margin: 0;
           overflow: hidden;
           border-radius: 16px;
           background:
@@ -356,7 +356,7 @@ export function Footer() {
 
         @media (max-width: 560px) {
           .rivotFooter {
-            padding: 12px;
+            padding: 10px;
           }
 
           .rivotFooterShell {
