@@ -639,6 +639,7 @@ export function Connect() {
 
         .rivotConnect.isSelection .rivotConnectHeader h1 {
           color: #080808;
+          font-size: 48px;
           font-weight: 950;
           line-height: 1.04;
           letter-spacing: 0;
@@ -695,7 +696,7 @@ export function Connect() {
 
         .rivotConnect.isSelection .rivotConnectName {
           margin: 0 0 8px;
-          font-size: 18px;
+          font-size: 15px;
           font-weight: 950;
           line-height: 1.1;
         }
@@ -738,23 +739,24 @@ export function Connect() {
         }
 
         .rivotConnectFormHeader .rivotConnectTitle {
-          color: #24272c;
-          font-weight: 300;
-          line-height: 1.08;
-          letter-spacing: .02em;
+          color: #080808;
+          font-size: 48px;
+          font-weight: 900;
+          line-height: 1.04;
+          letter-spacing: 0;
         }
 
         .rivotConnectFormHeader .rivotConnectTitle .highlight {
-          color: #a94f1d;
-          font-weight: 300;
+          color: #ef7430;
+          font-weight: 900;
         }
 
         .rivotConnectFormHeader .rivotConnectSubtitle {
           max-width: 760px;
           margin: 18px auto 0;
           color: #697682;
-          font-size: clamp(18px, 1.8vw, 24px);
-          font-weight: 400;
+          font-size: 15px;
+          font-weight: 600;
           line-height: 1.45;
         }
 
@@ -770,7 +772,7 @@ export function Connect() {
           border-radius: 4px;
           background: transparent;
           color: #d45f22;
-          font-size: 20px;
+          font-size: 15px;
           font-weight: 400;
           cursor: pointer;
           box-shadow: none;
@@ -787,9 +789,9 @@ export function Connect() {
           max-width: 940px;
           margin: 0 auto 86px;
           color: #2d3440;
-          font-size: clamp(18px, 1.55vw, 23px);
-          font-weight: 400;
-          line-height: 1.45;
+          font-size: 15px;
+          font-weight: 600;
+          line-height: 1.55;
           text-align: center;
         }
 
@@ -896,28 +898,28 @@ export function Connect() {
         }
 
         .rivotConnectGroup {
-          margin-bottom: 28px;
+          margin-bottom: 18px;
         }
 
         .rivotConnectGroup label {
           display: block;
-          margin-bottom: 14px;
+          margin-bottom: 8px;
           color: #101010;
-          font-size: 20px;
-          font-weight: 500;
+          font-size: 15px;
+          font-weight: 800;
         }
 
         .rivotConnectGroup input,
         .rivotConnectGroup select,
         .rivotConnectGroup textarea {
           width: 100%;
-          min-height: 60px;
-          padding: 14px 18px;
+          min-height: 48px;
+          padding: 11px 14px;
           border: 1px solid rgba(17, 17, 17, .18);
-          border-radius: 4px;
+          border-radius: 8px;
           background: rgba(255, 255, 255, .82);
           color: #111;
-          font-size: 17px;
+          font-size: 15px;
           font-family: inherit;
           font-weight: 400;
           transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
@@ -929,7 +931,7 @@ export function Connect() {
         }
 
         .rivotConnectGroup textarea {
-          min-height: 132px;
+          min-height: 120px;
           resize: vertical;
         }
 
@@ -944,15 +946,15 @@ export function Connect() {
 
         .rivotConnectSubmit {
           width: 100%;
-          min-height: 58px;
+          min-height: 50px;
           margin-top: 4px;
           padding: 0 24px;
           border: 1px solid #ef7430;
-          border-radius: 4px;
+          border-radius: 8px;
           background: #ef7430;
           color: #fff;
-          font-size: 18px;
-          font-weight: 500;
+          font-size: 15px;
+          font-weight: 800;
           box-shadow: none;
           cursor: pointer;
           transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
@@ -975,6 +977,10 @@ export function Connect() {
           }
 
           .rivotConnectGrid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .rivotConnect.isSelection .rivotConnectGrid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
 
@@ -1003,6 +1009,24 @@ export function Connect() {
             gap: 12px;
           }
 
+          .rivotConnect.isSelection {
+            padding: 88px 16px 48px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectHeader h1,
+          .rivotConnectFormHeader .rivotConnectTitle {
+            font-size: 40px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectGrid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectCard {
+            min-height: 176px;
+          }
+
           .rivotConnectCard {
             min-height: 174px;
             padding: 20px;
@@ -1020,12 +1044,20 @@ export function Connect() {
           }
 
           .rivotConnectFormHeader {
-            padding-right: 0;
+            margin: 0 -16px 34px;
+            padding: 30px 16px 28px;
           }
 
           .rivotConnectBack {
+            min-width: 84px;
+            height: 46px;
             position: static;
             margin-top: 20px;
+          }
+
+          .rivotConnectDescriptionText {
+            margin-bottom: 38px;
+            text-align: left;
           }
 
           .rivotConnectBenefits,
@@ -1035,6 +1067,12 @@ export function Connect() {
 
           .rivotConnectPhoto {
             min-height: 300px;
+          }
+
+          .rivotConnectGroup input,
+          .rivotConnectGroup select,
+          .rivotConnectGroup textarea {
+            font-size: 15px;
           }
         }
       `}</style>

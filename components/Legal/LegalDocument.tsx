@@ -29,9 +29,9 @@ export function LegalDocument({ html }: LegalDocumentProps) {
           max-width: none;
           margin: 0 auto 65px;
           color: #c85a22;
-          font-size: 40px;
-          font-weight: 500;
-          line-height: 1.15;
+          font-size: 48px;
+          font-weight: 900;
+          line-height: 1.04;
           letter-spacing: 0;
           text-align: center;
         }
@@ -43,18 +43,18 @@ export function LegalDocument({ html }: LegalDocumentProps) {
         .rivotLegalShell h3 {
           margin: 0 0 20px;
           color: #151515;
-          font-size: 26px;
-          font-weight: 500;
-          line-height: 1.16;
+          font-size: 20px;
+          font-weight: 800;
+          line-height: 1.2;
           letter-spacing: 0;
         }
 
         .rivotLegalShell p,
         .rivotLegalShell li {
           color: #555;
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 1.6;
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 1.65;
         }
 
         .rivotLegalShell p {
@@ -117,7 +117,11 @@ export function LegalDocument({ html }: LegalDocumentProps) {
           }
 
           .rivotLegalShell .section-title {
-            font-size: 32px;
+            font-size: 40px;
+          }
+
+          .rivotLegalShell h3 {
+            font-size: 18px;
           }
 
           .rivotLegalShell ul {

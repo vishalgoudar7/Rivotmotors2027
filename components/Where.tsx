@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 import { ReachStyles } from "@/components/Support";
 
 const locations = [
@@ -35,10 +36,10 @@ const locations = [
 ];
 
 const socialLinks = [
-  { label: "Facebook", href: "https://www.facebook.com/rivotmotors" },
-  { label: "Instagram", href: "https://www.instagram.com/rivotmotors/" },
-  { label: "YouTube", href: "https://www.youtube.com/c/rivotmotors" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/rivotmotors?originalSubdomain=in" },
+  { label: "Facebook", href: "https://www.facebook.com/rivotmotors", icon: FaFacebookF },
+  { label: "Instagram", href: "https://www.instagram.com/rivotmotors/", icon: FaInstagram },
+  { label: "YouTube", href: "https://www.youtube.com/c/rivotmotors", icon: FaYoutube },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/rivotmotors?originalSubdomain=in", icon: FaLinkedinIn },
 ];
 
 export function Where() {
@@ -129,11 +130,15 @@ export function Where() {
           </h2>
           <strong>Stay connected with RIVOT for the latest updates, news, and announcements.</strong>
           <div>
-            {socialLinks.map((link) => (
-              <a href={link.href} key={link.label} target="_blank" rel="noreferrer">
-                {link.label}
-              </a>
-            ))}
+            {socialLinks.map((link) => {
+              const Icon = link.icon;
+
+              return (
+                <a href={link.href} key={link.label} target="_blank" rel="noreferrer" aria-label={link.label} className={`rivotWhereSocial${link.label}`}>
+                  <Icon aria-hidden="true" focusable="false" />
+                </a>
+              );
+            })}
           </div>
         </section>
 
@@ -172,7 +177,7 @@ export function Where() {
         .rivotWhereSocial h2 {
           margin: 0;
           color: #070707;
-          font-size: clamp(34px, 4vw, 58px);
+          font-size: 48px;
           font-weight: 950;
           line-height: 1;
         }
@@ -186,7 +191,8 @@ export function Where() {
           max-width: 700px;
           margin: 16px auto 26px;
           color: #5f6b73;
-          font-size: 17px;
+          font-size: 15px;
+          font-weight: 600;
           line-height: 1.55;
         }
 
@@ -201,14 +207,37 @@ export function Where() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-height: 44px;
-          padding: 0 22px;
-          border-radius: 999px;
-          background: #ef7430;
-          color: #fff;
+          width: 44px;
+          height: 44px;
+          border: 1px solid rgba(17, 17, 17, .1);
+          border-radius: 50%;
+          background: #fff;
+          color: #151515;
+          box-shadow: 0 8px 18px rgba(17, 17, 17, .08);
           font-weight: 900;
           text-decoration: none;
+          transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
         }
+
+        .rivotWhereSocial a svg {
+          width: 19px;
+          height: 19px;
+        }
+
+        .rivotWhereSocial a:hover {
+          color: #fff;
+          transform: translateY(-2px);
+        }
+
+        .rivotWhereSocialFacebook { color: #1877f2; }
+        .rivotWhereSocialInstagram { color: #e1306c; }
+        .rivotWhereSocialYouTube { color: #ff0000; }
+        .rivotWhereSocialLinkedIn { color: #0a66c2; }
+
+        .rivotWhereSocialFacebook:hover { border-color: #1877f2; background: #1877f2; }
+        .rivotWhereSocialInstagram:hover { border-color: #e1306c; background: #e1306c; }
+        .rivotWhereSocialYouTube:hover { border-color: #ff0000; background: #ff0000; }
+        .rivotWhereSocialLinkedIn:hover { border-color: #0a66c2; background: #0a66c2; }
 
         .rivotWhereMap {
           height: 420px;
@@ -222,6 +251,66 @@ export function Where() {
           width: 100%;
           height: 100%;
           border: 0;
+        }
+
+        .rivotReachPage .rivotReachHero h1,
+        .rivotReachPage .rivotReachFormSection h2 {
+          font-size: 48px;
+        }
+
+        .rivotReachPage .rivotReachHero strong,
+        .rivotReachPage .rivotReachFormSection strong {
+          font-size: 15px;
+          font-weight: 600;
+        }
+
+        .rivotReachPage .rivotWhereCard h2 {
+          font-size: 15px;
+          line-height: 1.2;
+        }
+
+        .rivotReachPage .rivotWhereCard li,
+        .rivotReachPage .rivotWhereCard a,
+        .rivotReachPage .rivotReachFormSection label,
+        .rivotReachPage .rivotReachFormSection input,
+        .rivotReachPage .rivotReachFormSection select,
+        .rivotReachPage .rivotReachFormSection textarea,
+        .rivotReachPage .rivotReachFormSection button {
+          font-size: 15px;
+        }
+
+        .rivotReachPage .rivotReachFormSection button {
+          border-radius: 8px;
+        }
+
+        @media (max-width: 680px) {
+          .rivotReachPage .rivotReachHero h1,
+          .rivotReachPage .rivotReachFormSection h2 {
+            font-size: 40px;
+          }
+
+          .rivotWhereSocial {
+            margin-top: 40px;
+          }
+
+          .rivotWhereSocial h2 {
+            font-size: 40px;
+          }
+
+          .rivotWhereSocial strong {
+            margin: 14px auto 22px;
+            font-size: 15px;
+          }
+
+          .rivotWhereSocial a {
+            width: 42px;
+            height: 42px;
+          }
+
+          .rivotWhereMap {
+            height: 300px;
+            margin-top: 34px;
+          }
         }
       `}</style>
       <ReachStyles />

@@ -55,12 +55,14 @@ export function Navbar() {
     const nextTheme = savedTheme === "light" ? "light" : "dark";
     setTheme(nextTheme);
     document.documentElement.dataset.rivotTheme = nextTheme;
+    document.documentElement.dataset.theme = nextTheme;
   }, []);
 
   const toggleTheme = () => {
     setTheme((currentTheme) => {
       const nextTheme = currentTheme === "dark" ? "light" : "dark";
       document.documentElement.dataset.rivotTheme = nextTheme;
+      document.documentElement.dataset.theme = nextTheme;
       localStorage.setItem("rivot-theme-mode", nextTheme);
       return nextTheme;
     });
@@ -451,7 +453,7 @@ export function Navbar() {
     right: auto;
     top: 86px;
     z-index: 999;
-    width: min(92vw, 760px);
+    width: min(92vw, 620px);
     padding: 0;
     visibility: hidden;
     opacity: 0;
@@ -470,9 +472,9 @@ export function Navbar() {
 
   .rivotProductsMenuInner {
     display: grid;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
-    padding: 18px;
+    padding: 14px;
     border: 1px solid rgba(255, 255, 255, .42);
     border-radius: 18px;
     background: rgba(255, 255, 255, .58);
@@ -487,7 +489,7 @@ export function Navbar() {
   .rivotProductsMenuInner h2 {
     margin: 0;
     color: #171717;
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 900;
     line-height: 1.1;
     letter-spacing: 0;
@@ -495,21 +497,21 @@ export function Navbar() {
 
   .rivotProductsGrid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(240px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(210px, 1fr));
+    gap: 12px;
   }
 
   .rivotProductCard {
     display: grid;
-    grid-template-rows: 150px auto auto auto;
+    grid-template-rows: 112px auto auto auto;
     align-content: start;
     justify-items: center;
-    gap: 9px;
+    gap: 7px;
     min-width: 0;
-    min-height: 294px;
-    padding: 18px 18px 18px;
+    min-height: 230px;
+    padding: 14px;
     border: 1px solid rgba(255, 255, 255, .48);
-    border-radius: 14px;
+    border-radius: 12px;
     background: rgba(255, 255, 255, .38);
     color: #090909;
     overflow: hidden;
@@ -534,7 +536,7 @@ export function Navbar() {
     position: relative;
     display: grid;
     width: 100%;
-    height: 150px;
+    height: 112px;
     place-items: center;
     overflow: visible;
   }
@@ -542,8 +544,8 @@ export function Navbar() {
   .rivotProductImage img {
     width: 100%;
     height: 100%;
-    max-width: 230px;
-    max-height: 142px;
+    max-width: 178px;
+    max-height: 106px;
     object-fit: contain;
     object-position: center;
     filter: drop-shadow(0 14px 16px rgba(17, 17, 17, .12));
@@ -569,9 +571,9 @@ export function Navbar() {
     align-items: center;
     width: 100%;
     min-width: 0;
-    margin-top: 8px;
+    margin-top: 5px;
     color: #050505;
-    font-size: clamp(17px, 1.35vw, 20px);
+    font-size: clamp(15px, 1.1vw, 17px);
     font-weight: 950;
     line-height: 1.02;
     letter-spacing: -.04em;
@@ -583,7 +585,7 @@ export function Navbar() {
     width: 100%;
     min-width: 0;
     color: #5d7181;
-    font-size: clamp(12px, .8vw, 13px);
+    font-size: 11px;
     font-weight: 800;
     line-height: 1.25;
     overflow-wrap: anywhere;
@@ -596,8 +598,8 @@ export function Navbar() {
     justify-content: center;
     flex-wrap: wrap;
     width: 100%;
-    gap: 14px;
-    margin-top: 10px;
+    gap: 10px;
+    margin-top: 7px;
     color: #7b8389;
     font-size: 12px;
     font-weight: 850;
@@ -607,8 +609,8 @@ export function Navbar() {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 90px;
-    min-height: 36px;
+    min-width: 78px;
+    min-height: 32px;
     border-radius: 5px;
     background: #ef7430;
     color: #fff;
@@ -657,14 +659,14 @@ export function Navbar() {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    height: 34px;
-    padding: 0 10px 0 13px;
+    gap: 6px;
+    height: 30px;
+    padding: 0 8px 0 10px;
     border: 1px solid rgba(255, 255, 255, 0.42);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.08);
     color: #fff;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     line-height: 1;
     text-transform: uppercase;
@@ -680,8 +682,8 @@ export function Navbar() {
 
   .rivotThemeToggle span {
     display: inline-grid;
-    width: 17px;
-    height: 17px;
+    width: 14px;
+    height: 14px;
     place-items: center;
     flex: 0 0 auto;
     color: currentColor;
@@ -689,15 +691,15 @@ export function Navbar() {
 
   .rivotThemeToggle svg {
     display: block;
-    width: 17px;
-    height: 17px;
+    width: 14px;
+    height: 14px;
   }
 
   .rivotThemeToggle i {
     position: relative;
     display: block;
-    width: 30px;
-    height: 16px;
+    width: 26px;
+    height: 14px;
     flex: 0 0 auto;
     border-radius: 999px;
     background: rgba(255, 255, 255, .24);
@@ -709,8 +711,8 @@ export function Navbar() {
     position: absolute;
     top: 3px;
     left: 3px;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: currentColor;
     transition: transform .24s ease, background .24s ease;
@@ -759,7 +761,7 @@ export function Navbar() {
 
   html[data-rivot-theme="light"] .rivotThemeToggle i::before {
     background: #ef7430;
-    transform: translateX(14px);
+    transform: translateX(12px);
   }
 
   .rivotBook:hover {
@@ -794,11 +796,11 @@ export function Navbar() {
     .rivotProductsMenu {
       top: 70px;
       left: 20px;
-      width: min(calc(100vw - 40px), 680px);
+      width: min(calc(100vw - 40px), 600px);
     }
 
     .rivotProductsMenuInner {
-      padding: 16px;
+      padding: 14px;
       gap: 12px;
     }
 
@@ -807,27 +809,27 @@ export function Navbar() {
     }
 
     .rivotProductImage {
-      height: 140px;
+      height: 110px;
     }
 
     .rivotProductCard {
-      grid-template-rows: 140px auto auto auto;
-      min-height: 282px;
-      padding: 14px 16px 16px;
+      grid-template-rows: 110px auto auto auto;
+      min-height: 224px;
+      padding: 13px;
     }
 
     .rivotProductName {
-      font-size: clamp(17px, 2vw, 20px);
+      font-size: 16px;
     }
 
     .rivotProductActions {
-      gap: 14px;
+      gap: 10px;
       font-size: 12px;
     }
 
     .rivotProductActions span:first-child {
-      min-width: 90px;
-      min-height: 36px;
+      min-width: 78px;
+      min-height: 32px;
     }
   }
 
@@ -841,12 +843,12 @@ export function Navbar() {
     }
 
     .rivotProductCard {
-      min-height: 264px;
-      padding: 14px 16px 16px;
+      min-height: 220px;
+      padding: 13px;
     }
 
     .rivotProductImage {
-      height: 132px;
+      height: 106px;
     }
 
     .rivotProductImage img,
@@ -854,7 +856,7 @@ export function Navbar() {
     .rivotProductCard[data-model="sport"] .rivotProductImage img,
     .rivotProductCard[data-model="sport"]:hover .rivotProductImage img {
       max-width: 210px;
-      max-height: 126px;
+      max-height: 102px;
       transform: none;
     }
   }

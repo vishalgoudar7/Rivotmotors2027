@@ -3,16 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { FileText, Play } from "lucide-react";
 import heroFeatureDark from "@/asset/images/Hero/1 (3).png";
 import heroFeatureLight from "@/asset/images/Hero/3 (3).png";
 import heroFeatureStudio from "@/asset/images/Hero/ChatGPT Image Aug 26, 2026, 03_15_38 PM.png";
 import heroFolderDark from "@/asset/images/Hero/Hero1.png";
 import heroFolderLight from "@/asset/images/Hero/Hero2.png";
-import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
-import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
-import geofencingAppImage from "@/asset/images/App/Geofencing.png";
-import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring System).png";
-import tripInsightsAppImage from "@/asset/images/App/Trip Insights.png";
+import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).jpeg";
+import flashChargingAppImage from "@/asset/images/App/Flash Charging.jpeg";
+import geofencingAppImage from "@/asset/images/App/Geofencing.jpeg";
+import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring System).jpeg";
+import tripInsightsAppImage from "@/asset/images/App/Trip Insights.jpeg";
 import accelerationImage from "@/asset/images/last/accelaration.png";
 import rangeImage from "@/asset/images/last/IDC Range.png";
 import showroomImage from "@/asset/images/last/Showroom.avif";
@@ -26,6 +27,7 @@ import safetyImage from "@/asset/images/Key features/Safeaty.png";
 import bootDetailImage from "@/asset/images/Details/Boot space with helmet.png";
 import floorboardDetailImage from "@/asset/images/Details/Floorboard photo.png";
 import mainDetailImage from "@/asset/images/Details/Main detail photo.png";
+import catalogImage from "@/asset/connect/Catelog.png";
 import { DashboardRotation } from "@/components/DashboardRotation";
 import { Faqs } from "@/components/Faqs";
 import { SafetyTech } from "@/components/SafetyTech";
@@ -120,6 +122,15 @@ const heroCarouselImages = [
   heroFolderLight,
 ] as const;
 
+const productNavigationItems = [
+  { id: "key-features", label: "Key Features" },
+  { id: "design", label: "Design" },
+  { id: "design-details", label: "Details" },
+  { id: "performance", label: "Performance" },
+  { id: "ride-insights", label: "Ride Insights" },
+  { id: "engineering", label: "Engineering" },
+] as const;
+
 function EngineeringIcon({ type }: { type: string }) {
   if (type === "bolt") {
     return (
@@ -175,8 +186,9 @@ function EngineeringIcon({ type }: { type: string }) {
 }
 
 export default function Home() {
-  const [selectedRideInsight, setSelectedRideInsight] = useState(2);
+  const [selectedRideInsight, setSelectedRideInsight] = useState(0);
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
+  const [activeProductSection, setActiveProductSection] = useState("key-features");
 
   useEffect(() => {
     const heroImageInterval = window.setInterval(() => {
@@ -184,6 +196,46 @@ export default function Home() {
     }, 5000);
 
     return () => window.clearInterval(heroImageInterval);
+  }, []);
+
+  useEffect(() => {
+    const sections = productNavigationItems
+      .map(({ id }) => document.getElementById(id))
+      .filter((section): section is HTMLElement => section !== null);
+
+    const syncActiveHash = () => {
+      const hashSection = window.location.hash.slice(1);
+
+      if (productNavigationItems.some((item) => item.id === hashSection)) {
+        setActiveProductSection(hashSection);
+        return true;
+      }
+
+      return false;
+    };
+
+    syncActiveHash();
+    window.addEventListener("hashchange", syncActiveHash);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const activeEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((first, second) => second.intersectionRatio - first.intersectionRatio)[0];
+
+        if (activeEntry) {
+          setActiveProductSection(activeEntry.target.id);
+        }
+      },
+      { rootMargin: "-25% 0px -60%", threshold: [0.1, 0.3, 0.6] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("hashchange", syncActiveHash);
+    };
   }, []);
 
   return (
@@ -364,10 +416,12 @@ export default function Home() {
 
           <div className="rivotHeroButtons">
             <Link href="/book-now" className="rivotPriceBook">
-              Book Now <span aria-hidden="true">{"\u2192"}</span>
+              <Play aria-hidden="true" />
+              Book Now
             </Link>
             <Link href="/book-now" className="rivotTestRide">
-              Test Ride <span aria-hidden="true">{"\u2192"}</span>
+              <FileText aria-hidden="true" />
+              Test Ride
             </Link>
           </div>
 
@@ -379,7 +433,32 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotKeyFeatures" aria-labelledby="key-features-title">
+      <nav className="rivotProductNav" aria-label="NX100 product navigation">
+        <div className="rivotProductNavShell">
+          <div className="rivotProductNavLinks">
+            {productNavigationItems.map((item) => (
+              <a
+                href={`#${item.id}`}
+                className={activeProductSection === item.id ? "isActive" : ""}
+                key={item.id}
+                onClick={() => setActiveProductSection(item.id)}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+          <div className="rivotProductNavActions">
+            <a href="/book-now" className="rivotProductNavBrochure">
+              Test Ride
+            </a>
+            <a href="/book-now" className="rivotProductNavWatch">
+              Book Now
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <section className="rivotKeyFeatures" id="key-features" aria-labelledby="key-features-title">
         <div className="rivotKeyFeaturesShell">
           <div className="rivotKeyFeaturesCopy">
             <p className="rivotKeyEyebrow">
@@ -467,7 +546,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotDesignDetails" aria-labelledby="design-details-title">
+      <section className="rivotDesignDetails" id="design-details" aria-labelledby="design-details-title">
         <div className="rivotDesignDetailsShell">
           <div className="rivotDesignDetailsCopy">
             <p className="rivotDetailsEyebrow">
@@ -611,7 +690,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotPerformance" aria-labelledby="performance-title">
+      <section className="rivotPerformance" id="performance" aria-labelledby="performance-title">
         <div className="rivotPerformanceShell">
           <div className="rivotPerformanceCopy">
             <p className="rivotPerformanceEyebrow">Performance</p>
@@ -680,7 +759,7 @@ export default function Home() {
 
       <DashboardRotation />
 
-      <section className="rivotAppConnect" aria-labelledby="app-connect-title">
+      <section className="rivotAppConnect" id="ride-insights" aria-labelledby="app-connect-title">
         <div className="rivotAppConnectShell">
           <article className="rivotAppConnectCopy">
             <p className="rivotAppEyebrow">Ride Insights</p>
@@ -743,7 +822,6 @@ export default function Home() {
                     <b>{title}</b>
                     <small>{copy}</small>
                   </span>
-                  {index === 0 ? <em aria-hidden="true">{"\u203A"}</em> : null}
                 </button>
               ))}
             </div>
@@ -761,7 +839,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotEngineering" aria-labelledby="engineering-title">
+      <section className="rivotEngineering" id="engineering" aria-labelledby="engineering-title">
         <div className="rivotEngineeringHeader">
           <p>Beyond the surface.</p>
           <h2 id="engineering-title">
@@ -879,21 +957,16 @@ export default function Home() {
 
           <div className="rivotBestFitGrid">
             <article className="rivotBestFitCard rivotBestFitAccessories">
+              <Image
+                src={catalogImage}
+                alt=""
+                fill
+                sizes="(max-width: 760px) 100vw, 33vw"
+                className="rivotBestFitAccessoriesBg"
+              />
               <p className="rivotBestFitEyebrow">Shop</p>
               <h3>Accessories</h3>
               <p>There's more under the hood.</p>
-
-              <div className="rivotAccessoryTiles" aria-label="Accessory preview">
-                <span>
-                  <i className="rivotAccessoryPart rivotAccessoryGuard" aria-hidden="true" />
-                </span>
-                <span>
-                  <i className="rivotAccessoryPart rivotAccessoryPanel" aria-hidden="true" />
-                </span>
-                <span>
-                  <i className="rivotAccessoryPart rivotAccessoryGrip" aria-hidden="true" />
-                </span>
-              </div>
 
               <Link href="/merchandise" className="rivotBestFitCta">
                 Shop accessories <span aria-hidden="true">{"\u2192"}</span>
@@ -918,7 +991,7 @@ export default function Home() {
               </Link>
             </article>
 
-            <article className="rivotBestFitCard">
+            <article className="rivotBestFitCard rivotBestFitSubscription">
               <p className="rivotBestFitEyebrow rivotBestFitBlue">Subscription</p>
               <h3>Simple SuperPack</h3>
               <p>Extended Warranty &amp; Care for your Simple Scooters.</p>
@@ -1228,33 +1301,58 @@ export default function Home() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 28px;
-          min-width: 242px;
-          min-height: 56px;
-          padding: 0 34px;
-          border: 1px solid rgba(255, 255, 255, .34);
+          gap: 10px;
+          min-width: 180px;
+          min-height: 50px;
+          padding: 0 24px;
+          border: 1px solid #fff;
           border-radius: 999px;
-          font-size: 17px;
-          font-weight: 700;
+          font-size: 15px;
+          font-weight: 800;
           box-shadow: none;
+          text-decoration: none;
         }
 
         .rivotTestRide {
-          background: transparent;
+          background: rgba(8, 9, 9, .36);
           color: #fff;
         }
 
         .rivotPriceBook {
-          background: #ef7430;
-          border-color: #ef7430;
+          background: #151515;
+          border-color: #151515;
           color: #fff;
+          transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
         }
 
-        .rivotPriceBook span,
-        .rivotTestRide span {
-          font-size: 28px;
-          line-height: 1;
+        .rivotPriceBook:hover,
+        .rivotPriceBook:focus-visible {
+          border-color: #ef7430;
+          background: #ef7430;
+          box-shadow: 0 14px 28px rgba(239, 116, 48, .32);
+          outline: none;
+          transform: translateY(-3px);
         }
+
+        .rivotTestRide:hover,
+        .rivotTestRide:focus-visible {
+          border-color: #ef7430;
+          background: rgba(239, 116, 48, .18);
+          outline: none;
+          transform: translateY(-2px);
+        }
+
+        .rivotPriceBook svg,
+        .rivotTestRide svg {
+          width: 17px;
+          height: 17px;
+          transition: transform .2s ease;
+        }
+
+        .rivotPriceBook:hover svg,
+        .rivotPriceBook:focus-visible svg,
+        .rivotTestRide:hover svg,
+        .rivotTestRide:focus-visible svg { transform: translateX(3px); }
 
         .rivotHeroNotes {
           display: flex;
@@ -1275,12 +1373,165 @@ export default function Home() {
           line-height: 1.2;
         }
 
-        .rivotKeyFeatures {
+        .rivotProductNav {
+          position: sticky;
+          top: 0;
+          z-index: 20;
+          border-block: 1px solid rgba(17, 17, 17, .1);
+          background: rgba(255, 255, 255, .94);
+          backdrop-filter: blur(16px);
+        }
+
+        .rivotProductNavShell {
           display: flex;
-          min-height: 100vh;
+          align-items: center;
+          justify-content: space-between;
+          gap: 32px;
+          width: min(100%, 1240px);
+          min-height: 88px;
+          margin: 0 auto;
+          padding: 16px clamp(28px, 5vw, 64px);
+        }
+
+        .rivotProductNavLinks,
+        .rivotProductNavActions {
+          display: flex;
+          align-items: center;
+          gap: 22px;
+        }
+
+        .rivotProductNavLinks {
+          flex: 1 1 auto;
+          min-width: 0;
+          overflow-x: auto;
+          scrollbar-width: none;
+          white-space: nowrap;
+        }
+
+        .rivotProductNavLinks::-webkit-scrollbar {
+          display: none;
+        }
+
+        .rivotProductNavLinks a {
+          display: inline-flex;
+          align-items: center;
+          min-height: 42px;
+          color: #151515;
+          font-size: 15px;
+          font-weight: 800;
+          line-height: 1.2;
+          text-decoration: none;
+          transition: color .2s ease;
+        }
+
+        .rivotProductNavLinks a:hover,
+        .rivotProductNavLinks a:focus-visible,
+        .rivotProductNavLinks a.isActive {
+          color: #ef7430;
+          outline: none;
+        }
+
+        .rivotProductNavLinks a.isActive {
+          text-decoration: underline;
+          text-decoration-color: #ef7430;
+          text-decoration-thickness: 2px;
+          text-underline-offset: 8px;
+        }
+
+        .rivotProductNavActions {
+          flex: 0 0 auto;
+          margin-left: auto;
+          gap: 14px;
+        }
+
+        .rivotProductNavWatch,
+        .rivotProductNavBrochure {
+          display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: clamp(54px, 7vh, 74px) clamp(18px, 4vw, 46px);
+          gap: 8px;
+          min-height: 48px;
+          padding: 0 20px;
+          border: 1px solid #151515;
+          border-radius: 999px;
+          color: #151515;
+          font-size: 14px;
+          font-weight: 800;
+          line-height: 1;
+          text-decoration: none;
+          white-space: nowrap;
+          transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+        }
+
+        .rivotProductNavWatch {
+          border-color: #ef7430;
+          background: #ef7430;
+          color: #fff;
+        }
+
+        .rivotProductNavWatch:hover,
+        .rivotProductNavWatch:focus-visible {
+          border-color: #ef7430;
+          background: #ef7430;
+          outline: none;
+          transform: translateY(-1px);
+        }
+
+        .rivotProductNavBrochure {
+          background: transparent;
+          border-color: #ef7430;
+          color: #ef7430;
+        }
+
+        .rivotProductNavBrochure:hover,
+        .rivotProductNavBrochure:focus-visible {
+          border-color: #ef7430;
+          background: rgba(239, 116, 48, .1);
+          color: #c85a22;
+          outline: none;
+        }
+
+        .rivotProductNav svg {
+          width: 15px;
+          height: 15px;
+        }
+
+        .rivotKeyFeatures,
+        .rivotDesign,
+        .rivotDesignDetails,
+        .rivotPerformance,
+        .rivotAppConnect,
+        .rivotEngineering {
+          scroll-margin-top: 112px;
+        }
+
+        html[data-rivot-theme="dark"] .rivotProductNav {
+          border-color: rgba(255, 255, 255, .14);
+          background: rgba(8, 9, 9, .94);
+        }
+
+        html[data-rivot-theme="dark"] .rivotProductNavLinks a,
+        html[data-rivot-theme="dark"] .rivotProductNavBrochure {
+          border-color: rgba(255, 255, 255, .44);
+          color: #f5f5f2;
+        }
+
+        html[data-rivot-theme="dark"] .rivotProductNavLinks a.isActive {
+          color: #ef7430;
+        }
+
+        html[data-rivot-theme="dark"] .rivotProductNavBrochure:hover,
+        html[data-rivot-theme="dark"] .rivotProductNavBrochure:focus-visible {
+          border-color: #ef7430;
+          color: #ef7430;
+        }
+
+        .rivotKeyFeatures {
+          display: flex;
+          min-height: auto;
+          align-items: flex-start;
+          justify-content: center;
+          padding: clamp(36px, 5vh, 52px) clamp(18px, 4vw, 46px) clamp(54px, 7vh, 74px);
           background:
             linear-gradient(180deg, #fff 0%, #fbfaf7 48%, #f7f7f5 100%);
           color: #111;
@@ -1811,7 +2062,7 @@ export default function Home() {
           height: 100%;
           object-fit: cover;
           object-position: center;
-          opacity: .92;
+          opacity: 1;
         }
 
         .rivotEngineeringCard:has(.rivotEngineeringCardBg)::before {
@@ -1820,14 +2071,14 @@ export default function Home() {
           inset: 0;
           z-index: 1;
           background:
-            linear-gradient(180deg, rgba(8, 9, 9, .92) 0%, rgba(8, 9, 9, .78) 38%, rgba(8, 9, 9, .2) 100%);
+            linear-gradient(180deg, rgba(8, 9, 9, .68) 0%, rgba(8, 9, 9, .48) 38%, rgba(8, 9, 9, .08) 100%);
           pointer-events: none;
         }
 
         .rivotEngineeringCard:nth-child(n + 4):has(.rivotEngineeringCardBg)::before {
           background:
-            linear-gradient(90deg, rgba(8, 9, 9, .95) 0%, rgba(8, 9, 9, .78) 48%, rgba(8, 9, 9, .18) 100%),
-            linear-gradient(180deg, rgba(8, 9, 9, .22), rgba(8, 9, 9, .82));
+            linear-gradient(90deg, rgba(8, 9, 9, .72) 0%, rgba(8, 9, 9, .5) 48%, rgba(8, 9, 9, .08) 100%),
+            linear-gradient(180deg, rgba(8, 9, 9, .12), rgba(8, 9, 9, .48));
         }
 
         .rivotEngineeringCard:nth-child(2) .rivotEngineeringCardBg {
@@ -3199,13 +3450,6 @@ export default function Home() {
           line-height: 1.2;
         }
 
-        .rivotRideInsightList em {
-          color: #ef7430;
-          font-size: 20px;
-          font-style: normal;
-          font-weight: 900;
-        }
-
         .rivotAppConnectDots {
           display: flex;
           gap: 14px;
@@ -3233,22 +3477,12 @@ export default function Home() {
           justify-self: center;
           width: min(100%, 470px);
           min-width: 0;
-          padding: clamp(18px, 3vw, 34px);
+          padding: 0;
           isolation: isolate;
         }
 
         .rivotRidePhoneCard::before {
-          content: "";
-          position: absolute;
-          inset: clamp(18px, 4vw, 48px) 0;
-          z-index: 1;
-          border-radius: 34px;
-          background:
-            radial-gradient(circle at 50% 16%, rgba(255, 255, 255, .95), rgba(255, 255, 255, .38) 46%, transparent 70%),
-            linear-gradient(180deg, rgba(255, 255, 255, .82), rgba(255, 255, 255, .3));
-          box-shadow:
-            0 32px 90px rgba(17, 17, 17, .1),
-            inset 0 0 0 1px rgba(255, 255, 255, .86);
+          display: none;
         }
 
         .rivotRideInsightPhoto {
@@ -3257,12 +3491,12 @@ export default function Home() {
           width: clamp(238px, 24vw, 336px);
           height: auto;
           max-height: min(620px, 72vh);
-          border: 2px solid rgba(17, 17, 17, .08);
-          border-radius: clamp(30px, 3vw, 44px);
+          border: 0;
+          border-radius: 0;
           object-fit: contain;
           object-position: center;
-          background: #fff;
-          box-shadow: 0 28px 72px rgba(17, 17, 17, .16);
+          background: transparent;
+          box-shadow: none;
         }
 
         .rivotRidePhoneCard .rivotPhoneMockup {
@@ -3525,10 +3759,6 @@ export default function Home() {
         .rivotRideInsightList small {
           margin-top: 2px;
           font-size: 9px;
-        }
-
-        .rivotRideInsightList em {
-          font-size: 17px;
         }
 
         .rivotAppConnectDots {
@@ -3822,8 +4052,8 @@ export default function Home() {
 
         .rivotBestFit {
           padding: clamp(28px, 3.4vw, 44px) clamp(16px, 4vw, 48px) clamp(34px, 3.8vw, 50px);
-          background: #f3f3f4;
-          color: #070707;
+          background: #f7f7f5;
+          color: #151515;
         }
 
         .rivotBestFitShell {
@@ -3860,19 +4090,42 @@ export default function Home() {
         }
 
         .rivotBestFitCard {
+          position: relative;
           display: flex;
           min-height: clamp(330px, 24vw, 390px);
           flex-direction: column;
           align-items: center;
           padding: clamp(28px, 2.8vw, 38px) clamp(22px, 2.4vw, 34px) clamp(26px, 2.6vw, 34px);
-          border-radius: 20px;
-          background: #fff;
+          border: 1px solid rgba(255, 255, 255, .1);
+          border-radius: 8px;
+          background: #111313;
+          box-shadow: 0 18px 40px rgba(17, 19, 19, .12);
           text-align: center;
+          overflow: hidden;
+        }
+
+        .rivotBestFitAccessoriesBg {
+          object-fit: contain;
+          object-position: center;
+          opacity: .68;
+        }
+
+        .rivotBestFitAccessories::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(8, 9, 9, .9), rgba(8, 9, 9, .56));
+          pointer-events: none;
+        }
+
+        .rivotBestFitAccessories > *:not(.rivotBestFitAccessoriesBg) {
+          position: relative;
+          z-index: 1;
         }
 
         .rivotBestFitEyebrow {
           margin: 0 0 12px;
-          color: #0d0d0d;
+          color: #ef7430;
           font-size: 12px;
           font-weight: 900;
           line-height: 1.1;
@@ -3881,16 +4134,16 @@ export default function Home() {
         }
 
         .rivotBestFitGreen {
-          color: #16ce69;
+          color: #7ee7aa;
         }
 
         .rivotBestFitBlue {
-          color: #0758ff;
+          color: #9abaff;
         }
 
         .rivotBestFitCard h3 {
           margin: 0;
-          color: #050505;
+          color: #fff;
           font-size: clamp(24px, 1.9vw, 30px);
           font-weight: 850;
           line-height: 1.08;
@@ -3900,7 +4153,7 @@ export default function Home() {
         .rivotBestFitCard > p:not(.rivotBestFitEyebrow) {
           max-width: 300px;
           margin: 12px 0 0;
-          color: #777d84;
+          color: rgba(255, 255, 255, .66);
           font-size: 14px;
           font-weight: 750;
           line-height: 1.35;
@@ -3920,8 +4173,8 @@ export default function Home() {
           height: 92px;
           place-items: center;
           overflow: hidden;
-          border-radius: 13px;
-          background: #f4f4f5;
+          border-radius: 8px;
+          background: #1c1f1f;
         }
 
         .rivotAccessoryPart {
@@ -4012,17 +4265,19 @@ export default function Home() {
           min-height: 48px;
           margin-top: 32px;
           padding: 0 24px;
-          border: 0;
-          border-radius: 999px;
-          background: #f2f2f3;
-          color: #080808;
+          border: 1px solid #ef7430;
+          border-radius: 8px;
+          background: #ef7430;
+          color: #fff;
           font-size: 14px;
           font-weight: 850;
           line-height: 1;
         }
 
         .rivotBestFitDisabled {
-          color: #81868c;
+          border-color: rgba(255, 255, 255, .15);
+          background: rgba(255, 255, 255, .08);
+          color: rgba(255, 255, 255, .45);
           cursor: not-allowed;
         }
 
@@ -4032,7 +4287,8 @@ export default function Home() {
         }
 
         .rivotBestFitCta:hover {
-          background: #e9e9ea;
+          background: #c85a22;
+          border-color: #c85a22;
           transform: translateY(-1px);
         }
 
@@ -4057,6 +4313,47 @@ export default function Home() {
 
         .rivotBestFitShieldBlue {
           color: #5b8dff;
+        }
+
+        .rivotBestFitSubscription {
+          min-height: 300px;
+          padding: 28px 24px 30px;
+          justify-content: flex-start;
+          background: #111515;
+        }
+
+        .rivotBestFitSubscription .rivotBestFitEyebrow {
+          margin-bottom: 8px;
+          color: #8babff;
+          font-size: 10px;
+          letter-spacing: .5em;
+        }
+
+        .rivotBestFitSubscription h3 {
+          font-size: clamp(22px, 1.65vw, 26px);
+          letter-spacing: -.055em;
+        }
+
+        .rivotBestFitSubscription > p:not(.rivotBestFitEyebrow) {
+          max-width: 220px;
+          margin-top: 8px;
+          color: rgba(255, 255, 255, .82);
+          font-size: 12px;
+          line-height: 1.22;
+        }
+
+        .rivotBestFitSubscription .rivotBestFitShield {
+          width: 74px;
+          height: 74px;
+          margin: 18px 0 22px;
+        }
+
+        .rivotBestFitSubscription .rivotBestFitCta {
+          min-width: 128px;
+          min-height: 44px;
+          margin-top: 0;
+          padding-inline: 22px;
+          font-size: 12px;
         }
 
         @media (max-width: 900px) {
@@ -4376,6 +4673,48 @@ export default function Home() {
         }
 
         @media (max-width: 560px) {
+          .rivotProductNav {
+            position: relative;
+          }
+
+          .rivotProductNavShell {
+            display: grid;
+            gap: 10px;
+            min-height: 0;
+            padding: 12px 16px;
+          }
+
+          .rivotProductNavLinks {
+            width: 100%;
+            gap: 18px;
+          }
+
+          .rivotProductNavLinks a {
+            font-size: 12px;
+            min-height: 36px;
+          }
+
+          .rivotProductNavActions {
+            width: 100%;
+          }
+
+          .rivotProductNavWatch,
+          .rivotProductNavBrochure {
+            flex: 1 1 0;
+            min-height: 42px;
+            padding: 0 12px;
+            font-size: 12px;
+          }
+
+          .rivotKeyFeatures,
+          .rivotDesign,
+          .rivotDesignDetails,
+          .rivotPerformance,
+          .rivotAppConnect,
+          .rivotEngineering {
+            scroll-margin-top: 18px;
+          }
+
           .rivotHero {
             height: calc(100vh - 58px);
             min-height: 0;
@@ -4424,34 +4763,35 @@ export default function Home() {
 
           .rivotHeroSpecs {
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px 0;
+            gap: 8px 0;
             max-width: 340px;
             margin-left: 0;
-            margin-top: 24px;
-            margin-bottom: 18px;
+            margin-top: 18px;
+            margin-bottom: 12px;
           }
 
           .rivotHeroSpecs div {
-            padding: 0 12px;
+            padding: 0 8px;
           }
 
           .rivotSpecIcon {
-  width: 46px;
-  height: 46px;
-  margin-bottom: 8px;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 6px;
 }
 
 .rivotSpecIcon svg {
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 21px;
 }
 
           .rivotHeroSpecs b {
-            font-size: 16px;
+            font-size: 14px;
           }
 
           .rivotHeroSpecs small {
-            font-size: 12px;
+            margin-top: 3px;
+            font-size: 10px;
           }
 
           .rivotHeroButtons {
@@ -4478,14 +4818,19 @@ export default function Home() {
           .rivotPriceBook {
             width: 100%;
             min-width: 0;
-            min-height: 46px;
-            font-size: 15px;
+            min-height: 42px;
+            font-size: 14px;
           }
 
           .rivotHeroNotes {
-            gap: 10px 18px;
-            margin-top: 12px;
-            font-size: 12px;
+            gap: 5px 12px;
+            margin-top: 8px;
+            font-size: 10px;
+            line-height: 1.25;
+          }
+
+          .rivotHeroNotes strong {
+            font-size: 14px;
           }
 
           .rivotHeroNotes span {
@@ -4822,18 +5167,17 @@ export default function Home() {
 
           .rivotRidePhoneCard {
             width: min(100%, 336px);
-            padding: 4px 6px 0;
+            padding: 0;
           }
 
           .rivotRidePhoneCard::before {
-            inset: 22px 0 8px;
-            border-radius: 26px;
+            display: none;
           }
 
           .rivotRideInsightPhoto {
             width: min(78vw, 276px);
-            border-radius: 34px;
-            box-shadow: 0 22px 52px rgba(17, 17, 17, .16);
+            border-radius: 0;
+            box-shadow: none;
           }
 
           .rivotAppConnectCopy h2 {
@@ -4962,6 +5306,17 @@ export default function Home() {
 
           .rivotBestFitShield {
             margin-bottom: 26px;
+          }
+
+          .rivotBestFitSubscription {
+            min-height: 292px;
+            padding: 26px 18px 28px;
+          }
+
+          .rivotBestFitSubscription .rivotBestFitShield {
+            width: 70px;
+            height: 70px;
+            margin: 18px 0 22px;
           }
 
         }

@@ -361,9 +361,7 @@ export function Booking() {
         }
 
         body:has(.rivotBooking) .rivotBook {
-          border-color: #ef7430;
-          background: transparent;
-          color: #ef7430;
+          display: none;
         }
 
         body:has(.rivotBooking) .rivotThemeToggle {

@@ -35,13 +35,6 @@ export function Footer() {
               Powering the future of electric mobility with innovation,
               reliability &amp; performance.
             </p>
-            <div className="rivotFooterSocial" aria-label="Social links">
-              {socialLinks.map((link) => (
-                <a href={link.href} aria-label={link.label} key={link.label}>
-                  {link.mark}
-                </a>
-              ))}
-            </div>
           </section>
 
           <nav className="rivotFooterColumn" aria-label="Explore footer links">
@@ -96,18 +89,15 @@ export function Footer() {
             </p>
           </section>
 
-          <section className="rivotFooterColumn rivotFooterSubscribe" aria-labelledby="footer-subscribe-title">
-            <h2 id="footer-subscribe-title">Stay Updated</h2>
-            <p>Subscribe for updates and offers.</p>
-            <label>
-              <span>Email address</span>
-              <input type="email" placeholder="Enter your email" />
-              <button type="button" aria-label="Subscribe">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M20 4L4 11.2L10.8 13.3M20 4L13.2 20L10.8 13.3M20 4L10.8 13.3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </label>
+          <section className="rivotFooterColumn rivotFooterSubscribe" aria-labelledby="footer-connect-title">
+            <h2 id="footer-connect-title">Connect With Us</h2>
+            <div className="rivotFooterSocial" aria-label="Social links">
+              {socialLinks.map((link) => (
+                <a href={link.href} aria-label={link.label} key={link.label}>
+                  {link.mark}
+                </a>
+              ))}
+            </div>
           </section>
         </div>
 
