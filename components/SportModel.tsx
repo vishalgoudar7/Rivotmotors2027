@@ -18,22 +18,33 @@ export function SportModel() {
     <section className="sportPage">
       <section className="sportHero">
         <div className="sportCopy">
-          <p>RIVOT NX100</p>
-          <h1>Sports</h1>
-          <span>Performance-focused electric riding with long-range practicality.</span>
-          <ProductHeroSpecs />
+          <p>The Performance Electric</p>
+          <h1>
+            <span>NX100</span> <em>Sport</em>
+          </h1>
+          <h2>Power. Performance. Perfection.</h2>
+          <span>The NX100 Sport is built for riders who want a sharper, faster, more expressive electric ride.</span>
           <div className="sportActions">
-            <Link href="/book-now">Book Now</Link>
-            <Link href="/book-now">Test Ride</Link>
+            <Link href="/book-now">Book Now <span aria-hidden="true">{"\u2192"}</span></Link>
+            <Link href="/test-ride">Test Ride <span aria-hidden="true">{"\u2192"}</span></Link>
+          </div>
+          <div className="sportHeroColors" aria-label="Available colors">
+            <span>Available Colors</span>
+            <div>
+              <i className="sportColor sportColorOrange" />
+              <i className="sportColor sportColorWhite" />
+              <i className="sportColorBlack sportColor" />
+              <i className="sportColor sportColorRed" />
+              <i className="sportColor sportColorGreen" />
+            </div>
           </div>
         </div>
 
         <div className="sportMachine">
-          <div className="speedLine speedLineOne" />
-          <div className="speedLine speedLineTwo" />
           <Image src={sportImage} alt="RIVOT NX100 Sports" priority sizes="(max-width: 900px) 95vw, 62vw" />
         </div>
 
+        <ProductHeroSpecs />
       </section>
 
       <ProductFeatureSections />
@@ -132,70 +143,95 @@ export function SportModel() {
         .sportHero {
           position: relative;
           display: grid;
-          grid-template-columns: minmax(320px, .72fr) minmax(440px, 1.28fr);
+          grid-template-columns: minmax(330px, .72fr) minmax(420px, 1fr) minmax(132px, .24fr);
+          gap: clamp(16px, 3vw, 56px);
           min-height: 100vh;
           align-items: center;
-          padding: 128px clamp(22px, 5vw, 76px) 42px;
+          padding: 92px clamp(28px, 4vw, 68px) 28px;
           background:
-            radial-gradient(circle at 76% 42%, rgba(239, 116, 48, .16), transparent 36%),
-            linear-gradient(120deg, #fff 0%, #f7f7f5 58%, #f4e5dd 100%);
+            radial-gradient(circle at 92% 16%, rgba(239, 116, 48, .1), transparent 28%),
+            linear-gradient(135deg, #fff 0%, #f7f8f8 58%, #eef1f3 100%);
         }
 
         .sportHero::before {
-          content: "NX100";
+          content: "";
           position: absolute;
-          right: -2vw;
-          top: 13vh;
-          color: rgba(17,17,17,.04);
-          font-size: clamp(120px, 22vw, 330px);
-          font-weight: 900;
-          line-height: .8;
-          letter-spacing: .02em;
+          inset: 0 -8% 0 42%;
+          background:
+            linear-gradient(132deg, transparent 0 17%, rgba(255,255,255,.78) 17.2% 20%, transparent 20.2%),
+            linear-gradient(132deg, transparent 0 43%, rgba(17,17,17,.07) 43.2% 43.6%, transparent 43.8%),
+            linear-gradient(132deg, transparent 0 62%, rgba(239,116,48,.22) 62.1% 62.3%, transparent 62.5%);
+          opacity: .95;
+          pointer-events: none;
         }
 
         .sportCopy {
           position: relative;
           z-index: 4;
-          padding-left: 22px;
-          border-left: 4px solid var(--sport-accent);
+          max-width: 520px;
+          padding-left: 0;
+          border-left: 0;
         }
 
         .sportCopy > p,
         .sportManifest p {
-          margin: 0 0 16px;
+          margin: 0 0 10px;
           color: var(--sport-accent);
-          font-size: 12px;
+          font-size: 15px;
           font-weight: 900;
-          letter-spacing: .26em;
+          letter-spacing: 0;
           text-transform: uppercase;
         }
 
         .sportCopy h1 {
           margin: 0;
           color: #070707;
-          font-size: clamp(62px, 9vw, 132px);
+          font-size: 48px;
           font-weight: 950;
-          line-height: .82;
-          letter-spacing: .04em;
-          text-transform: uppercase;
+          line-height: .96;
+          letter-spacing: 0;
+          text-transform: none;
           transform: none;
+        }
+
+        .sportCopy h1 em {
+          color: var(--sport-accent);
+          font-style: normal;
+        }
+
+        .sportCopy h2 {
+          margin: clamp(12px, 1.3vw, 18px) 0 0;
+          color: #0d0d0d;
+          font-size: 24px;
+          font-weight: 900;
+          line-height: 1.12;
+          letter-spacing: 0;
         }
 
         .sportCopy > span {
           display: block;
-          max-width: 480px;
-          margin-top: 30px;
+          max-width: 430px;
+          margin-top: 10px;
           color: var(--sport-muted);
-          font-size: clamp(18px, 1.6vw, 24px);
-          font-weight: 700;
-          line-height: 1.38;
+          font-size: 15px;
+          font-weight: 650;
+          line-height: 1.45;
+        }
+
+        .sportCopy > span::after {
+          content: "";
+          display: block;
+          width: 58px;
+          height: 3px;
+          margin-top: 16px;
+          background: var(--sport-accent);
         }
 
         .sportActions {
           display: flex;
           flex-wrap: wrap;
-          gap: 12px;
-          margin-top: 38px;
+          gap: 16px;
+          margin-top: clamp(22px, 2.3vw, 32px);
         }
 
         .sportActions a,
@@ -203,70 +239,115 @@ export function SportModel() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-height: 52px;
-          padding: 0 24px;
+          gap: 14px;
+          min-width: 160px;
+          min-height: 48px;
+          padding: 0 22px;
           border: 1px solid var(--sport-accent);
-          border-radius: 999px;
+          border-radius: 10px;
           background: var(--sport-accent);
           color: #fff;
+          font-size: 15px;
           font-weight: 900;
-          text-transform: uppercase;
+          text-transform: none;
         }
 
         .sportActions a:nth-child(2) {
-          border-color: var(--sport-accent);
-          background: transparent;
-          color: var(--sport-accent);
+          border-color: #0d0d0d;
+          background: rgba(255,255,255,.55);
+          color: #111;
         }
+
+        .sportHeroColors {
+          margin-top: clamp(18px, 2vw, 26px);
+        }
+
+        .sportHeroColors > span {
+          display: block;
+          margin-bottom: 8px;
+          color: #606c74;
+          font-size: 11px;
+          font-weight: 850;
+          letter-spacing: 0;
+        }
+
+        .sportHeroColors > div {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .sportColor {
+          display: block;
+          width: 20px;
+          height: 20px;
+          border: 1px solid rgba(0, 0, 0, .14);
+          border-radius: 50%;
+          box-shadow: 0 0 0 3px #fff, 0 6px 14px rgba(0, 0, 0, .12);
+        }
+
+        .sportColorOrange { background: #ef7430; }
+        .sportColorWhite { background: #fff; }
+        .sportColorBlack { background: #050505; }
+        .sportColorRed { background: #cd2e30; }
+        .sportColorGreen { background: #638860; }
 
         .sportMachine {
           position: relative;
           z-index: 2;
           display: grid;
-          min-height: 620px;
+          min-height: 500px;
           place-items: center;
-        }
-
-        .sportMachine::before {
-          content: "";
-          position: absolute;
-          width: min(82%, 740px);
-          height: 48%;
-          border: 1px solid rgba(17,17,17,.08);
-          border-radius: 8px;
-          transform: skewX(-10deg) rotate(-2deg);
-          background: rgba(255, 255, 255, .36);
-          box-shadow: 0 24px 60px rgba(17,17,17,.08);
         }
 
         .sportMachine img {
           position: relative;
           z-index: 3;
-          width: min(112%, 940px);
+          width: min(116%, 720px);
           height: auto;
-          transform: translateX(-1vw) rotate(-1.4deg);
-          filter: drop-shadow(0 34px 34px rgba(17,17,17,.22));
+          transform: translateX(-.5vw);
+          filter: drop-shadow(0 34px 34px rgba(17,17,17,.2));
         }
 
-        .speedLine {
-          position: absolute;
-          z-index: 1;
-          height: 5px;
-          background: linear-gradient(90deg, transparent, var(--sport-accent), rgba(17,17,17,.18), transparent);
-          transform: skewX(-22deg);
+        .sportHero > .modelHeroSpecs {
+          position: relative;
+          z-index: 3;
+          align-self: center;
+          justify-self: end;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 22px;
+          width: min(158px, 100%);
+          max-width: none;
+          margin: 0;
         }
 
-        .speedLineOne {
-          top: 34%;
-          left: 3%;
-          width: 76%;
+        .sportHero > .modelHeroSpecs div {
+          grid-template-columns: 38px minmax(0, 1fr);
+          column-gap: 12px;
+          padding: 0;
+          border-left: 0;
         }
 
-        .speedLineTwo {
-          bottom: 30%;
-          right: 2%;
-          width: 52%;
-          opacity: .62;
+        .sportHero > .modelHeroSpecs .rivotSpecIcon {
+          width: 32px;
+          height: 32px;
+        }
+
+        .sportHero > .modelHeroSpecs .rivotSpecIcon svg {
+          width: 29px;
+          height: 29px;
+        }
+
+        .sportHero > .modelHeroSpecs b {
+          font-size: 16px;
+          line-height: 1.02;
+        }
+
+        .sportHero > .modelHeroSpecs small {
+          margin-top: 3px;
+          font-size: 11px;
+          line-height: 1.15;
         }
 
         .sportTelemetry {
@@ -313,7 +394,7 @@ export function SportModel() {
         }
 
         .sportManifest {
-          padding: clamp(76px, 9vw, 126px) clamp(22px, 7vw, 112px);
+          padding: clamp(54px, 7vw, 86px) clamp(22px, 7vw, 112px);
           background:
             radial-gradient(circle at 92% 12%, rgba(239, 116, 48, .1), transparent 25%),
             #fff;
@@ -323,10 +404,10 @@ export function SportModel() {
           max-width: 1120px;
           margin: 0;
           color: #070707;
-          font-size: clamp(42px, 6vw, 88px);
+          font-size: 48px;
           font-weight: 900;
-          line-height: .96;
-          letter-spacing: .01em;
+          line-height: 1.06;
+          letter-spacing: 0;
           text-transform: none;
         }
 
@@ -456,11 +537,19 @@ export function SportModel() {
         @media (max-width: 980px) {
           .sportHero {
             grid-template-columns: 1fr;
-            padding-top: 104px;
+            padding-top: 92px;
           }
 
           .sportMachine {
-            min-height: 440px;
+            min-height: 390px;
+          }
+
+          .sportHero > .modelHeroSpecs {
+            justify-self: start;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px 0;
+            width: min(520px, 100%);
+            margin-top: 8px;
           }
 
           .sportTelemetry {
@@ -485,6 +574,10 @@ export function SportModel() {
             border-bottom: 1px solid var(--sport-line);
           }
 
+          .sportManifest h2 {
+            font-size: 42px;
+          }
+
           .sportFinal {
             align-items: flex-start;
             flex-direction: column;
@@ -493,7 +586,7 @@ export function SportModel() {
 
         @media (max-width: 560px) {
           .sportCopy {
-            padding-left: 16px;
+            padding-left: 0;
           }
 
           .sportTelemetry {
@@ -518,7 +611,26 @@ export function SportModel() {
 
           .sportMachine img {
             width: 124%;
-            transform: translateX(-5vw) rotate(-1.4deg);
+            transform: translateX(-5vw);
+          }
+
+          .sportHero {
+            padding: 84px 18px 34px;
+          }
+
+          .sportCopy h1 {
+            font-size: 42px;
+          }
+
+          .sportActions a {
+            min-width: 0;
+            width: 100%;
+            min-height: 54px;
+            font-size: 16px;
+          }
+
+          .sportHero > .modelHeroSpecs {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
           }
         }
       `}</style>

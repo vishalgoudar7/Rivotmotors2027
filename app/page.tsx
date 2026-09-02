@@ -282,7 +282,7 @@ export default function Home() {
         <div className="rivotHeroContent">
           <p className="rivotEyebrow">Meet the future</p>
           <h1 className="rivotHeroTitle">
-            <span>NX100</span>
+            <span className="rivotHeroModelName">nx 100</span>
             <span className="rivotHeroMarks" aria-hidden="true">
               <span />
               <span />
@@ -385,7 +385,7 @@ export default function Home() {
     </span>
 
     <b>35 min</b>
-    <small>Flash Charge</small>
+    <small>200km Charge</small>
   </div>
 
   {/* BATTERY */}
@@ -1055,7 +1055,12 @@ export default function Home() {
         font-weight: 800;
         line-height: .86;
         letter-spacing: -.055em;
-        text-transform: uppercase;
+        text-transform: none;
+      }
+
+      .rivotHeroTitle .rivotHeroModelName {
+        display: inline-block;
+        text-transform: lowercase;
       }
 
       .rivotHeroMarks {

@@ -56,47 +56,46 @@ export function ProductHeroSpecs() {
         .modelHeroSpecs {
           display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
-          width: min(680px, 100%);
-          max-width: 680px;
-          margin-top: clamp(42px, 9vh, 92px);
-          margin-left: -36px;
-          margin-bottom: 28px;
+          width: min(700px, 100%);
+          max-width: 700px;
+          margin: clamp(20px, 2.5vw, 30px) 0 0;
         }
 
         .modelHeroSpecs div {
-          display: flex;
+          display: grid;
+          grid-template-columns: 40px minmax(0, 1fr);
+          grid-template-rows: auto auto;
+          column-gap: 10px;
           min-width: 0;
-          flex-direction: column;
           align-items: center;
-          padding: 0 20px;
+          padding: 0 clamp(10px, 1.2vw, 16px);
           border-left: 1px solid rgba(17, 17, 17, .14);
-          text-align: center;
+          text-align: left;
         }
 
         .modelHeroSpecs div:first-child {
-          padding-left: 20px;
+          padding-left: 0;
           border-left: 0;
         }
 
         .modelHeroSpecs .rivotSpecIcon {
           display: grid;
-          width: 64px;
-          height: 64px;
-          margin: 0 auto 12px;
+          grid-row: 1 / span 2;
+          width: 34px;
+          height: 34px;
+          margin: 0;
           place-items: center;
-          border: 1px solid rgba(17, 17, 17, .06);
-          border-radius: 50%;
-          background: rgba(255, 255, 255, .72);
-          color: #161616;
-          box-shadow:
-            inset 0 0 20px rgba(255, 255, 255, .6),
-            0 8px 25px rgba(17, 17, 17, .08);
+          border: 0;
+          border-radius: 0;
+          background: transparent;
+          color: #ef7430;
+          box-shadow: none;
         }
 
         .modelHeroSpecs .rivotSpecIcon svg {
           display: block;
-          width: 32px;
-          height: 32px;
+          width: 31px;
+          height: 31px;
         }
 
         .modelHeroSpecs b,
@@ -106,47 +105,49 @@ export function ProductHeroSpecs() {
 
         .modelHeroSpecs b {
           color: #111;
-          font-size: 18px;
-          line-height: 1.1;
+          font-size: clamp(16px, 1.2vw, 20px);
+          font-weight: 900;
+          line-height: 1;
         }
 
         .modelHeroSpecs small {
-          margin-top: 6px;
+          margin-top: 4px;
           color: #63707a;
-          font-size: 14px;
-          font-weight: 700;
+          font-size: 12px;
+          font-weight: 750;
+          line-height: 1.2;
         }
 
         @media (max-width: 980px) {
           .modelHeroSpecs {
             width: min(680px, 100%);
             margin-left: 0;
-            margin-top: 34px;
+            margin-top: 30px;
           }
         }
 
         @media (max-width: 560px) {
           .modelHeroSpecs {
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px 0;
-            max-width: 340px;
+            gap: 18px 0;
+            max-width: 100%;
             margin-top: 24px;
-            margin-bottom: 18px;
           }
 
           .modelHeroSpecs div {
+            grid-template-columns: 38px minmax(0, 1fr);
+            column-gap: 10px;
             padding: 0 12px;
           }
 
           .modelHeroSpecs .rivotSpecIcon {
-            width: 46px;
-            height: 46px;
-            margin-bottom: 8px;
+            width: 34px;
+            height: 34px;
           }
 
           .modelHeroSpecs .rivotSpecIcon svg {
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
           }
 
           .modelHeroSpecs b {
