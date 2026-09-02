@@ -16,7 +16,6 @@ import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring Syst
 import tripInsightsAppImage from "@/asset/images/App/Trip Insights.png";
 import accelerationImage from "@/asset/images/last/accelaration.png";
 import rangeImage from "@/asset/images/last/IDC Range.png";
-import showroomImage from "@/asset/images/last/Showroom.avif";
 import chargerImage from "@/asset/images/last/Charger.png";
 import discImage from "@/asset/images/last/Disc.png";
 import monoshockImage from "@/asset/images/last/Monoshock.png";
@@ -932,7 +931,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="rivotReachMedia" aria-hidden="true">
-              <Image src={showroomImage} alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
+              <Image src="/images/last/Showroom.avif" alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
             </div>
           </article>
 
