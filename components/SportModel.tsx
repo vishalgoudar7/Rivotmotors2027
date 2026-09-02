@@ -3,9 +3,8 @@ import Link from "next/link";
 import { ProductFeatureSections } from "@/components/ProductFeatureSections";
 import { ProductHeroSpecs } from "@/components/ProductHeroSpecs";
 import sportImage from "@/asset/Model/Sport_NX100.png";
-import actionOne from "@/asset/rivot-website-main/Story_page/11.webp";
-import actionTwo from "@/asset/rivot-website-main/Story_page/13.webp";
-import actionThree from "@/asset/rivot-website-main/Story_page/15.webp";
+
+const actionImages = ["/Story_page/11.webp", "/Story_page/13.webp", "/Story_page/15.webp"];
 
 const rideModes = [
   { title: "Launch", copy: "Sharp throttle response tuned for fast city gaps and confident starts." },
@@ -66,13 +65,13 @@ export function SportModel() {
 
       <section className="sportGallery" aria-label="NX100 Sports action gallery">
         <figure>
-          <Image src={actionOne} alt="NX100 Sports performance detail" sizes="(max-width: 800px) 100vw, 36vw" />
+          <Image src={actionImages[0]} alt="NX100 Sports performance detail" fill sizes="(max-width: 800px) 100vw, 36vw" />
         </figure>
         <figure>
-          <Image src={actionTwo} alt="NX100 Sports charging detail" sizes="(max-width: 800px) 100vw, 28vw" />
+          <Image src={actionImages[1]} alt="NX100 Sports charging detail" fill sizes="(max-width: 800px) 100vw, 28vw" />
         </figure>
         <figure>
-          <Image src={actionThree} alt="NX100 Sports riding detail" sizes="(max-width: 800px) 100vw, 28vw" />
+          <Image src={actionImages[2]} alt="NX100 Sports riding detail" fill sizes="(max-width: 800px) 100vw, 28vw" />
         </figure>
       </section>
 
@@ -461,6 +460,7 @@ export function SportModel() {
         }
 
         .sportGallery figure {
+          position: relative;
           min-height: 470px;
           margin: 0;
           overflow: hidden;

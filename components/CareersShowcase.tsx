@@ -1,22 +1,15 @@
 "use client";
 
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import section2Image from "@/asset/rivot-website-main/Story_page/10.webp";
-import section3Image from "@/asset/rivot-website-main/Story_page/19.png";
-import section4Image from "@/asset/rivot-website-main/Story_page/12.webp";
-import section5Image from "@/asset/rivot-website-main/Story_page/4.jpg";
-import section6Image from "@/asset/rivot-website-main/Story_page/18.png";
-import section7Image from "@/asset/rivot-website-main/Story_page/12.webp";
-import rotateIcon from "@/asset/rivot-website-main/img/360-rotation.png";
 
 type CareerSection = {
   title: string;
   highlight: string;
   description: string;
   quote: string;
-  image?: StaticImageData;
+  image?: string;
 };
 
 const careerSections: CareerSection[] = [
@@ -33,7 +26,7 @@ const careerSections: CareerSection[] = [
     description:
       "Dream beyond what exists. Build with intent. Learn fast, stay curious, and keep moving forward. We believe progress comes from action, not perfection.",
     quote: "The ones who are crazy enough to think they can change the world are the ones who do.",
-    image: section2Image,
+    image: "/Story_page/10.webp",
   },
   {
     title: "Our",
@@ -41,7 +34,7 @@ const careerSections: CareerSection[] = [
     description:
       "To redefine urban mobility through smart, sustainable innovation. We build products that solve real problems and make everyday transportation better for people and cities.",
     quote: "The future of mobility is not something we predict. It is something we build.",
-    image: section3Image,
+    image: "/Story_page/13.webp",
   },
   {
     title: "Dreamer",
@@ -49,7 +42,7 @@ const careerSections: CareerSection[] = [
     description:
       "We attract people who imagine boldly and execute relentlessly. If you like turning ideas into reality and learning by doing, you will feel at home here.",
     quote: "The way to get started is to quit talking and begin doing.",
-    image: section4Image,
+    image: "/Story_page/12.webp",
   },
   {
     title: "Build the",
@@ -57,7 +50,7 @@ const careerSections: CareerSection[] = [
     description:
       "You will work on real challenges, not recycled ideas. From concept to execution, you will own your work and see its impact in the real world.",
     quote: "If you want something new, you have to stop doing something old.",
-    image: section5Image,
+    image: "/Story_page/14.webp",
   },
   {
     title: "We are",
@@ -65,7 +58,7 @@ const careerSections: CareerSection[] = [
     description:
       "We do not follow trends, we question them. Built in Belagavi with global ambition, we believe meaningful innovation can come from anywhere.",
     quote: "If you are not willing to risk the usual, you will have to settle for the ordinary.",
-    image: section6Image,
+    image: "/Story_page/15.webp",
   },
   {
     title: "You",
@@ -73,7 +66,7 @@ const careerSections: CareerSection[] = [
     description:
       "If you are curious, driven, and ready to build something meaningful, we want you. Your background does not matter, your mindset does.",
     quote: "We do not hire resumes. We hire minds that see what others do not.",
-    image: section7Image,
+    image: "/Story_page/16.webp",
   },
 ];
 
@@ -199,7 +192,7 @@ export function CareersShowcase() {
             <Image src={frameSrc} alt="RIVOT scooter 360 view" fill priority className="rivotCareersScooter" sizes="(max-width: 900px) 100vw, 46vw" />
 
             <div className="rivotCareersRotationHint" aria-hidden="true">
-              <Image src={rotateIcon} alt="" width={34} height={34} />
+              <b>360</b>
               <span>Drag to rotate</span>
             </div>
           </div>
@@ -361,6 +354,20 @@ export function CareersShowcase() {
           font-weight: 700;
           letter-spacing: .08em;
           text-transform: uppercase;
+        }
+
+        .rivotCareersRotationHint b {
+          display: grid;
+          width: 34px;
+          height: 34px;
+          place-items: center;
+          border: 2px solid rgba(17, 17, 17, .42);
+          border-radius: 50%;
+          color: rgba(17, 17, 17, .66);
+          font-size: 11px;
+          font-weight: 900;
+          line-height: 1;
+          animation: pulse 2s infinite;
         }
 
         .rivotCareersContentPanel {
@@ -578,6 +585,12 @@ export function CareersShowcase() {
         html[data-rivot-theme="dark"] .rivotCareersRotationHint span,
         html[data-theme="dark"] .rivotCareersRotationHint span {
           color: rgba(255, 255, 255, .7);
+        }
+
+        html[data-rivot-theme="dark"] .rivotCareersRotationHint b,
+        html[data-theme="dark"] .rivotCareersRotationHint b {
+          border-color: rgba(255, 255, 255, .48);
+          color: rgba(255, 255, 255, .76);
         }
 
         html[data-rivot-theme="dark"] .rivotCareersSection,

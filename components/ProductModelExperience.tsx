@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import rotationIcon from "@/asset/rivot-website-main/img/360-rotation.png";
 import logo from "@/asset/images/RIVOT New Logo White.png";
 
 type ProductSpec = {
@@ -288,7 +287,7 @@ export function ProductModelExperience({ model }: { model: ProductModel }) {
             />
             <div className="rotation-icon-container">
               <div className="rotation-icon">
-                <Image src={rotationIcon} alt="360 degree rotation" />
+                <span aria-label="360 degree rotation">360</span>
               </div>
             </div>
           </div>
@@ -668,9 +667,17 @@ export function ProductModelExperience({ model }: { model: ProductModel }) {
           gap: 8px;
         }
 
-        .rotation-icon :global(img) {
+        .rotation-icon span {
+          display: grid;
           width: 35px;
           height: 35px;
+          place-items: center;
+          border: 2px solid currentColor;
+          border-radius: 50%;
+          color: currentColor;
+          font-size: 11px;
+          font-weight: 900;
+          line-height: 1;
           animation: pulse 2s infinite;
         }
 
