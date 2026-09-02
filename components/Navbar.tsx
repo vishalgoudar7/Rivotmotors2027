@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import modelPro from "@/asset/Model/Pro.png";
 import modelSport from "@/asset/Model/Sport_NX100.png";
 import logoBlack from "@/asset/images/RIVOT New Logo Back.png";
-import logoWhite from "@/asset/images/RIVOT New Logo White.png";
 
 const navItems = [
   { label: "Merchandise", href: "/merchandise" },
@@ -47,26 +46,7 @@ export function Navbar() {
   const [productsOpen, setProductsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [reachOpen, setReachOpen] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-  const logo = theme === "light" ? logoBlack : logoWhite;
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("rivot-theme-mode");
-    const nextTheme = savedTheme === "light" ? "light" : "dark";
-    setTheme(nextTheme);
-    document.documentElement.dataset.rivotTheme = nextTheme;
-    document.documentElement.dataset.theme = nextTheme;
-  }, []);
-
-  const toggleTheme = () => {
-    setTheme((currentTheme) => {
-      const nextTheme = currentTheme === "dark" ? "light" : "dark";
-      document.documentElement.dataset.rivotTheme = nextTheme;
-      document.documentElement.dataset.theme = nextTheme;
-      localStorage.setItem("rivot-theme-mode", nextTheme);
-      return nextTheme;
-    });
-  };
+  const logo = logoBlack;
 
   return (
     <header className="rivotHeader">
@@ -181,23 +161,6 @@ export function Navbar() {
       </nav>
 
       <div className="rivotHeaderActions">
-        <button className="rivotThemeToggle" type="button" onClick={toggleTheme}>
-          <span aria-hidden="true">
-            {theme === "dark" ? (
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M20 15.2A7.4 7.4 0 0 1 8.8 4A8.2 8.2 0 1 0 20 15.2Z" fill="currentColor" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="4.2" fill="currentColor" />
-                <path d="M12 3V5M12 19V21M3 12H5M19 12H21M5.64 5.64L7.05 7.05M16.95 16.95L18.36 18.36M18.36 5.64L16.95 7.05M7.05 16.95L5.64 18.36" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-              </svg>
-            )}
-          </span>
-          <b>{theme === "dark" ? "Dark Mode" : "Light Mode"}</b>
-          <i aria-hidden="true" />
-        </button>
-
         <Link href="/book-now" className="rivotBook">
           Book Now
         </Link>

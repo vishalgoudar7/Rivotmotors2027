@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import { SiteChrome } from "@/components/SiteChrome";
 import "./globals.css";
 
@@ -17,22 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <Script
-          id="rivot-theme-initializer"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                const theme = localStorage.getItem("rivot-theme-mode") === "light" ? "light" : "dark";
-                document.documentElement.dataset.rivotTheme = theme;
-                document.documentElement.dataset.theme = theme;
-              } catch {}
-            `,
-          }}
-        />
-      </head>
+    <html lang="en" data-rivot-theme="light" data-theme="light" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
         <SiteChrome>{children}</SiteChrome>
       </body>
