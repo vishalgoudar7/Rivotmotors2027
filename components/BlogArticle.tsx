@@ -1,8 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { blogPosts } from "@/lib/blogPosts";
 
-type BlogPost = (typeof blogPosts)[number];
+type BlogPost = {
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string | null;
+  image: string;
+  readTime?: string;
+  contentHtml?: string;
+  sections?: Array<{
+    heading: string;
+    body: string;
+  }>;
+};
 
 export function BlogArticle({ post }: { post: BlogPost }) {
   return (
@@ -16,7 +27,7 @@ export function BlogArticle({ post }: { post: BlogPost }) {
         <div className="rivotSingleMeta">
           <span>{post.author}</span>
           <span>{post.date}</span>
-          <span>{post.readTime}</span>
+          {post.readTime ? <span>{post.readTime}</span> : null}
         </div>
       </header>
 
@@ -27,7 +38,11 @@ export function BlogArticle({ post }: { post: BlogPost }) {
       <p className="rivotSingleExcerpt">{post.excerpt}</p>
 
       <div className="rivotSingleContent">
-        {post.sections.map((section) => (
+        {post.contentHtml ? (
+          <section dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
+        ) : null}
+
+        {!post.contentHtml && post.sections?.map((section) => (
           <section key={section.heading}>
             <h2>{section.heading}</h2>
             <p>{section.body}</p>
@@ -42,7 +57,7 @@ export function BlogArticle({ post }: { post: BlogPost }) {
       <style>{`
         .rivotSingleBlog {
           min-height: 100vh;
-          padding: 138px 7% 100px;
+          padding: 124px 7% 88px;
           background:
             radial-gradient(circle at 84% 12%, rgba(239, 116, 48, .16), transparent 28%),
             linear-gradient(135deg, #ffffff 0%, #f7f4f0 56%, #f4e5dd 100%);
@@ -79,10 +94,10 @@ export function BlogArticle({ post }: { post: BlogPost }) {
           max-width: 900px;
           margin: 0;
           color: #080808;
-          font-size: clamp(42px, 6.5vw, 82px);
+          font-size: 48px;
           font-weight: 950;
-          line-height: .96;
-          letter-spacing: -.055em;
+          line-height: 1.04;
+          letter-spacing: 0;
         }
 
         .rivotSingleMeta {
@@ -102,7 +117,7 @@ export function BlogArticle({ post }: { post: BlogPost }) {
           border-radius: 999px;
           background: rgba(255, 255, 255, .54);
           color: #5f6870;
-          font-size: 12px;
+          font-size: 13px;
           font-weight: 850;
           text-transform: uppercase;
           backdrop-filter: blur(18px);
@@ -113,10 +128,10 @@ export function BlogArticle({ post }: { post: BlogPost }) {
           position: relative;
           max-width: 1120px;
           aspect-ratio: 16 / 8;
-          margin: 0 auto 36px;
+          margin: 0 auto 32px;
           overflow: hidden;
           border: 1px solid rgba(255, 255, 255, .64);
-          border-radius: 18px;
+          border-radius: 8px;
           background: #f1ece8;
           box-shadow: 0 26px 70px rgba(17, 17, 17, .14);
         }
@@ -133,11 +148,11 @@ export function BlogArticle({ post }: { post: BlogPost }) {
         }
 
         .rivotSingleExcerpt {
-          margin-bottom: 42px;
+          margin-bottom: 36px;
           color: #c85a22;
-          font-size: clamp(19px, 2.1vw, 25px);
-          font-weight: 850;
-          line-height: 1.45;
+          font-size: 18px;
+          font-weight: 800;
+          line-height: 1.55;
           text-align: center;
         }
 
@@ -147,32 +162,45 @@ export function BlogArticle({ post }: { post: BlogPost }) {
         }
 
         .rivotSingleContent section {
-          padding: 28px;
-          border: 1px solid rgba(255, 255, 255, .62);
-          border-radius: 14px;
-          background: rgba(255, 255, 255, .54);
-          box-shadow:
-            0 18px 48px rgba(17, 17, 17, .08),
-            inset 0 1px 0 rgba(255, 255, 255, .76);
-          backdrop-filter: blur(22px) saturate(1.28);
-          -webkit-backdrop-filter: blur(22px) saturate(1.28);
+          padding: 24px;
+          border: 1px solid rgba(17, 17, 17, .08);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .78);
+          box-shadow: 0 14px 32px rgba(17, 17, 17, .06);
         }
 
         .rivotSingleContent h2 {
           margin: 0 0 12px;
           color: #101010;
-          font-size: clamp(22px, 2.8vw, 32px);
+          font-size: 20px;
           font-weight: 900;
           line-height: 1.08;
           letter-spacing: -.035em;
         }
 
-        .rivotSingleContent p {
+        .rivotSingleContent h3 {
+          margin: 20px 0 10px;
+          color: #101010;
+          font-size: 18px;
+          font-weight: 900;
+          line-height: 1.1;
+          letter-spacing: -.025em;
+        }
+
+        .rivotSingleContent p,
+        .rivotSingleContent li {
           margin: 0;
           color: #5d6971;
-          font-size: 17px;
-          font-weight: 650;
-          line-height: 1.75;
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 1.7;
+        }
+
+        .rivotSingleContent ul {
+          display: grid;
+          gap: 8px;
+          margin: 14px 0 0;
+          padding-left: 22px;
         }
 
         .rivotSingleFooter {
@@ -201,7 +229,15 @@ export function BlogArticle({ post }: { post: BlogPost }) {
 
         @media (max-width: 760px) {
           .rivotSingleBlog {
-            padding: 108px 5% 78px;
+            padding: 96px 16px 64px;
+          }
+
+          .rivotSingleHeader h1 {
+            font-size: 40px;
+          }
+
+          .rivotSingleExcerpt {
+            font-size: 17px;
           }
 
           .rivotBackLink {
@@ -215,7 +251,7 @@ export function BlogArticle({ post }: { post: BlogPost }) {
           }
 
           .rivotSingleContent section {
-            padding: 22px;
+            padding: 20px;
           }
         }
       `}</style>

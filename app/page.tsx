@@ -9,11 +9,11 @@ import heroFeatureLight from "@/asset/images/Hero/3 (3).png";
 import heroFeatureStudio from "@/asset/images/Hero/ChatGPT Image Aug 26, 2026, 03_15_38 PM.png";
 import heroFolderDark from "@/asset/images/Hero/Hero1.png";
 import heroFolderLight from "@/asset/images/Hero/Hero2.png";
-import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).jpeg";
-import flashChargingAppImage from "@/asset/images/App/Flash Charging.jpeg";
-import geofencingAppImage from "@/asset/images/App/Geofencing.jpeg";
-import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring System).jpeg";
-import tripInsightsAppImage from "@/asset/images/App/Trip Insights.jpeg";
+import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
+import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
+import geofencingAppImage from "@/asset/images/App/Geofencing.png";
+import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring System).png";
+import tripInsightsAppImage from "@/asset/images/App/Trip Insights.png";
 import accelerationImage from "@/asset/images/last/accelaration.png";
 import rangeImage from "@/asset/images/last/IDC Range.png";
 import showroomImage from "@/asset/images/last/Showroom.avif";
@@ -127,6 +127,7 @@ const productNavigationItems = [
   { id: "design", label: "Design" },
   { id: "design-details", label: "Details" },
   { id: "performance", label: "Performance" },
+  { id: "connectivity", label: "Connectivity" },
   { id: "ride-insights", label: "Ride Insights" },
   { id: "engineering", label: "Engineering" },
 ] as const;
@@ -189,6 +190,7 @@ export default function Home() {
   const [selectedRideInsight, setSelectedRideInsight] = useState(0);
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
   const [activeProductSection, setActiveProductSection] = useState("key-features");
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
     const heroImageInterval = window.setInterval(() => {
@@ -237,6 +239,21 @@ export default function Home() {
       window.removeEventListener("hashchange", syncActiveHash);
     };
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 520);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -419,7 +436,7 @@ export default function Home() {
               <Play aria-hidden="true" />
               Book Now
             </Link>
-            <Link href="/book-now" className="rivotTestRide">
+            <Link href="/test-ride" className="rivotTestRide">
               <FileText aria-hidden="true" />
               Test Ride
             </Link>
@@ -448,7 +465,7 @@ export default function Home() {
             ))}
           </div>
           <div className="rivotProductNavActions">
-            <a href="/book-now" className="rivotProductNavBrochure">
+            <a href="/test-ride" className="rivotProductNavBrochure">
               Test Ride
             </a>
             <a href="/book-now" className="rivotProductNavWatch">
@@ -1015,6 +1032,17 @@ export default function Home() {
 
       <Faqs />
 
+      {showBackToTop ? (
+        <button className="rivotBackToTop" type="button" onClick={scrollToTop} aria-label="Back to top">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 18V7" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+              <path d="M6.5 12.5L12 7L17.5 12.5" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+        </button>
+      ) : null}
+
       <style>{`
 
       .rivotHeroTitle {
@@ -1060,6 +1088,76 @@ export default function Home() {
         line-height: 1.12;
         letter-spacing: .16em;
         text-transform: uppercase;
+      }
+
+      .rivotBackToTop {
+        position: fixed;
+        right: clamp(16px, 3vw, 30px);
+        bottom: clamp(16px, 3.4vh, 28px);
+        z-index: 80;
+        display: grid;
+        place-items: center;
+        width: 54px;
+        height: 54px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 28% 24%, #ff9f5f 0%, #ff7f31 38%, #ef6725 100%);
+        color: #fff;
+        box-shadow:
+          0 14px 28px rgba(239, 116, 48, .34),
+          inset 0 1px 0 rgba(255, 255, 255, .4);
+        cursor: pointer;
+        transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      }
+
+      .rivotBackToTop span {
+        display: grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        line-height: 0;
+      }
+
+      .rivotBackToTop svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .rivotBackToTop:hover,
+      .rivotBackToTop:focus-visible {
+        filter: brightness(1.04);
+        box-shadow:
+          0 18px 34px rgba(239, 116, 48, .42),
+          inset 0 1px 0 rgba(255, 255, 255, .46);
+        transform: translateY(-2px);
+        outline: none;
+      }
+
+      html[data-rivot-theme="light"] .rivotBackToTop {
+        color: #fff;
+      }
+
+      html[data-rivot-theme="dark"] .rivotBackToTop {
+        background:
+          radial-gradient(circle at 28% 24%, #ffa165 0%, #ff8033 38%, #ef6725 100%);
+        color: #fff;
+      }
+
+      @media (max-width: 560px) {
+        .rivotBackToTop {
+          right: 12px;
+          bottom: 12px;
+          width: 46px;
+          height: 46px;
+        }
+
+        .rivotBackToTop span,
+        .rivotBackToTop svg {
+          width: 18px;
+          height: 18px;
+        }
       }
         .rivotHero {
   position: relative;
@@ -1138,9 +1236,9 @@ export default function Home() {
         }
 
         html[data-rivot-theme="light"] .rivotTestRide {
-          color: #111;
-          border-color: rgba(17,17,17,.28);
-          background: rgba(255,255,255,.42);
+          color: #c45a21;
+          border-color: rgba(239, 116, 48, .5);
+          background: rgba(255, 255, 255, .9);
         }
 
         .rivotHeroPointers {
@@ -1305,7 +1403,7 @@ export default function Home() {
           min-width: 180px;
           min-height: 50px;
           padding: 0 24px;
-          border: 1px solid #fff;
+          border: 1px solid rgba(239, 116, 48, .45);
           border-radius: 999px;
           font-size: 15px;
           font-weight: 800;
@@ -1314,21 +1412,22 @@ export default function Home() {
         }
 
         .rivotTestRide {
-          background: rgba(8, 9, 9, .36);
-          color: #fff;
+          background: rgba(255, 255, 255, .92);
+          color: #c45a21;
         }
 
         .rivotPriceBook {
-          background: #151515;
-          border-color: #151515;
+          background: #ef7430;
+          border-color: #ef7430;
           color: #fff;
+          box-shadow: 0 12px 28px rgba(239, 116, 48, .3);
           transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
         }
 
         .rivotPriceBook:hover,
         .rivotPriceBook:focus-visible {
-          border-color: #ef7430;
-          background: #ef7430;
+          border-color: #d86124;
+          background: #d86124;
           box-shadow: 0 14px 28px rgba(239, 116, 48, .32);
           outline: none;
           transform: translateY(-3px);
@@ -1337,7 +1436,8 @@ export default function Home() {
         .rivotTestRide:hover,
         .rivotTestRide:focus-visible {
           border-color: #ef7430;
-          background: rgba(239, 116, 48, .18);
+          background: rgba(239, 116, 48, .12);
+          color: #b84f1c;
           outline: none;
           transform: translateY(-2px);
         }
@@ -1496,13 +1596,20 @@ export default function Home() {
           height: 15px;
         }
 
+        :root {
+          --section-open-offset: 98px;
+          --section-open-gap: clamp(82px, 7vw, 112px);
+          --section-close-gap: clamp(48px, 5vw, 72px);
+        }
+
         .rivotKeyFeatures,
         .rivotDesign,
         .rivotDesignDetails,
         .rivotPerformance,
+        .rivotDashboard,
         .rivotAppConnect,
         .rivotEngineering {
-          scroll-margin-top: 112px;
+          scroll-margin-top: var(--section-open-offset);
         }
 
         html[data-rivot-theme="dark"] .rivotProductNav {
@@ -1531,7 +1638,7 @@ export default function Home() {
           min-height: auto;
           align-items: flex-start;
           justify-content: center;
-          padding: clamp(36px, 5vh, 52px) clamp(18px, 4vw, 46px) clamp(54px, 7vh, 74px);
+          padding: var(--section-open-gap) clamp(18px, 4vw, 46px) var(--section-close-gap);
           background:
             linear-gradient(180deg, #fff 0%, #fbfaf7 48%, #f7f7f5 100%);
           color: #111;
@@ -1798,7 +1905,7 @@ export default function Home() {
           align-items: center;
           justify-items: center;
           overflow: hidden;
-          padding: clamp(42px, 5.2vh, 58px) 5% clamp(36px, 5vh, 52px);
+          padding: var(--section-open-gap) 5% var(--section-close-gap);
           background: linear-gradient(180deg, #fbfbfb 0%, #f7f8f8 62%, #eaf5fc 100%);
           color: #050505;
           text-align: center;
@@ -1959,7 +2066,7 @@ export default function Home() {
           grid-template-columns: minmax(230px, .9fr) minmax(0, 2.1fr);
           min-height: 72vh;
           overflow: hidden;
-          padding: clamp(30px, 4vw, 54px) clamp(24px, 4.8vw, 72px);
+          padding: var(--section-open-gap) clamp(24px, 4.8vw, 72px) var(--section-close-gap);
           background: #fbfbfb;
           color: #050505;
         }
@@ -2268,7 +2375,7 @@ export default function Home() {
           min-height: 0;
           display: grid;
           place-items: center;
-          padding: clamp(26px, 3.6vw, 44px) clamp(14px, 3vw, 34px);
+          padding: var(--section-open-gap) clamp(14px, 3vw, 34px) var(--section-close-gap);
           background: linear-gradient(180deg, #f7f7f5 0%, #fff 52%, #fbfaf7 100%);
           color: #0b0b0b;
         }
@@ -2610,7 +2717,7 @@ export default function Home() {
         }
 
         .rivotPerformance {
-          padding: clamp(26px, 3.6vw, 44px) clamp(14px, 3vw, 34px);
+          padding: var(--section-open-gap) clamp(14px, 3vw, 34px) var(--section-close-gap);
           background: linear-gradient(180deg, #fbfaf7 0%, #fff 52%, #f7f7f5 100%);
           color: #050505;
           overflow: hidden;
@@ -3306,7 +3413,7 @@ export default function Home() {
         }
 
         .rivotAppConnect {
-          padding: clamp(52px, 7vw, 108px) clamp(18px, 5vw, 76px);
+          padding: var(--section-open-gap) clamp(18px, 5vw, 76px) var(--section-close-gap);
           overflow: hidden;
           background:
             radial-gradient(circle at 73% 28%, rgba(239, 116, 48, .08), transparent 31%),
@@ -4051,13 +4158,13 @@ export default function Home() {
         }
 
         .rivotBestFit {
-          padding: clamp(28px, 3.4vw, 44px) clamp(16px, 4vw, 48px) clamp(34px, 3.8vw, 50px);
+          padding: clamp(96px, 8vw, 124px) clamp(16px, 4vw, 48px) clamp(50px, 5vw, 72px);
           background: #f7f7f5;
           color: #151515;
         }
 
         .rivotBestFitShell {
-          width: min(100%, 1360px);
+          width: min(100%, 1320px);
           margin: 0 auto;
         }
 
@@ -4085,17 +4192,18 @@ export default function Home() {
         .rivotBestFitGrid {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: clamp(18px, 2vw, 28px);
-          margin-top: clamp(28px, 3.2vw, 42px);
+          gap: clamp(18px, 2vw, 26px);
+          margin-top: clamp(34px, 3.5vw, 48px);
+          align-items: stretch;
         }
 
         .rivotBestFitCard {
           position: relative;
           display: flex;
-          min-height: clamp(330px, 24vw, 390px);
+          min-height: clamp(340px, 23vw, 410px);
           flex-direction: column;
           align-items: center;
-          padding: clamp(28px, 2.8vw, 38px) clamp(22px, 2.4vw, 34px) clamp(26px, 2.6vw, 34px);
+          padding: clamp(32px, 2.8vw, 42px) clamp(22px, 2.2vw, 30px) clamp(30px, 2.6vw, 36px);
           border: 1px solid rgba(255, 255, 255, .1);
           border-radius: 8px;
           background: #111313;
@@ -4144,7 +4252,7 @@ export default function Home() {
         .rivotBestFitCard h3 {
           margin: 0;
           color: #fff;
-          font-size: clamp(24px, 1.9vw, 30px);
+          font-size: clamp(24px, 1.75vw, 32px);
           font-weight: 850;
           line-height: 1.08;
           letter-spacing: -.04em;
@@ -4152,7 +4260,7 @@ export default function Home() {
 
         .rivotBestFitCard > p:not(.rivotBestFitEyebrow) {
           max-width: 300px;
-          margin: 12px 0 0;
+          margin: 10px 0 0;
           color: rgba(255, 255, 255, .66);
           font-size: 14px;
           font-weight: 750;
@@ -4294,10 +4402,10 @@ export default function Home() {
 
         .rivotBestFitShield {
           display: grid;
-          width: clamp(86px, 7.5vw, 106px);
-          height: clamp(86px, 7.5vw, 106px);
+          width: clamp(92px, 7vw, 112px);
+          height: clamp(92px, 7vw, 112px);
           place-items: center;
-          margin: auto 0 clamp(24px, 2.6vw, 34px);
+          margin: auto 0 clamp(26px, 2.6vw, 36px);
         }
 
         .rivotBestFitShield svg {
@@ -4316,44 +4424,44 @@ export default function Home() {
         }
 
         .rivotBestFitSubscription {
-          min-height: 300px;
-          padding: 28px 24px 30px;
+          min-height: clamp(340px, 23vw, 410px);
+          padding: clamp(32px, 2.8vw, 42px) clamp(22px, 2.2vw, 30px) clamp(30px, 2.6vw, 36px);
           justify-content: flex-start;
           background: #111515;
         }
 
         .rivotBestFitSubscription .rivotBestFitEyebrow {
-          margin-bottom: 8px;
+          margin-bottom: 10px;
           color: #8babff;
           font-size: 10px;
           letter-spacing: .5em;
         }
 
         .rivotBestFitSubscription h3 {
-          font-size: clamp(22px, 1.65vw, 26px);
+          font-size: clamp(24px, 1.75vw, 32px);
           letter-spacing: -.055em;
         }
 
         .rivotBestFitSubscription > p:not(.rivotBestFitEyebrow) {
-          max-width: 220px;
+          max-width: 270px;
           margin-top: 8px;
           color: rgba(255, 255, 255, .82);
-          font-size: 12px;
-          line-height: 1.22;
+          font-size: 13px;
+          line-height: 1.28;
         }
 
         .rivotBestFitSubscription .rivotBestFitShield {
-          width: 74px;
-          height: 74px;
-          margin: 18px 0 22px;
+          width: clamp(84px, 6.2vw, 104px);
+          height: clamp(84px, 6.2vw, 104px);
+          margin: auto 0 clamp(26px, 2.6vw, 36px);
         }
 
         .rivotBestFitSubscription .rivotBestFitCta {
-          min-width: 128px;
-          min-height: 44px;
-          margin-top: 0;
+          min-width: 142px;
+          min-height: 48px;
+          margin-top: auto;
           padding-inline: 22px;
-          font-size: 12px;
+          font-size: 14px;
         }
 
         @media (max-width: 900px) {
@@ -4434,7 +4542,7 @@ export default function Home() {
 
           .rivotDesign {
             min-height: 100vh;
-            padding-block: 52px;
+            padding-block: var(--section-open-gap) var(--section-close-gap);
           }
 
           .rivotDesignImage {
@@ -4449,7 +4557,7 @@ export default function Home() {
           .rivotEngineering {
             grid-template-columns: 1fr;
             min-height: auto;
-            padding: 36px 20px;
+            padding: var(--section-open-gap) 20px var(--section-close-gap);
           }
 
           .rivotEngineeringHeader {
@@ -4673,6 +4781,12 @@ export default function Home() {
         }
 
         @media (max-width: 560px) {
+          :root {
+            --section-open-offset: 18px;
+            --section-open-gap: 54px;
+            --section-close-gap: 46px;
+          }
+
           .rivotProductNav {
             position: relative;
           }
@@ -4704,15 +4818,6 @@ export default function Home() {
             min-height: 42px;
             padding: 0 12px;
             font-size: 12px;
-          }
-
-          .rivotKeyFeatures,
-          .rivotDesign,
-          .rivotDesignDetails,
-          .rivotPerformance,
-          .rivotAppConnect,
-          .rivotEngineering {
-            scroll-margin-top: 18px;
           }
 
           .rivotHero {
@@ -4838,7 +4943,7 @@ export default function Home() {
           }
 
           .rivotKeyFeatures {
-            padding: 22px 12px;
+            padding: var(--section-open-gap) 12px var(--section-close-gap);
           }
 
           .rivotKeyFeaturesShell {
@@ -4886,7 +4991,7 @@ export default function Home() {
 
           .rivotDesign {
             min-height: 100vh;
-            padding: 42px 16px 92px;
+            padding: var(--section-open-gap) 16px var(--section-close-gap);
           }
 
           .rivotDesignCopy h2 {
@@ -4912,7 +5017,7 @@ export default function Home() {
 
           .rivotEngineering {
             display: block;
-            padding: 30px 12px 38px;
+            padding: var(--section-open-gap) 12px var(--section-close-gap);
           }
 
           .rivotEngineeringHeader {
@@ -4966,7 +5071,7 @@ export default function Home() {
           }
 
           .rivotDesignDetails {
-            padding: 24px 12px;
+            padding: var(--section-open-gap) 12px var(--section-close-gap);
             min-height: auto;
           }
 
@@ -5044,7 +5149,7 @@ export default function Home() {
           }
 
           .rivotPerformance {
-            padding: 22px 12px;
+            padding: var(--section-open-gap) 12px var(--section-close-gap);
           }
 
           .rivotPerformanceShell {
@@ -5120,7 +5225,7 @@ export default function Home() {
           }
 
           .rivotAppConnect {
-            padding: 34px 14px 44px;
+            padding: var(--section-open-gap) 14px var(--section-close-gap);
           }
 
           .rivotAppConnectIntro {
@@ -5262,7 +5367,7 @@ export default function Home() {
           }
 
           .rivotBestFit {
-            padding: 34px 12px 42px;
+            padding: 58px 12px 46px;
           }
 
           .rivotBestFitHeader h2 {
@@ -5275,7 +5380,7 @@ export default function Home() {
           }
 
           .rivotBestFitCard {
-            min-height: 328px;
+            min-height: 320px;
             padding: 28px 18px 26px;
             border-radius: 16px;
           }
@@ -5309,14 +5414,14 @@ export default function Home() {
           }
 
           .rivotBestFitSubscription {
-            min-height: 292px;
+            min-height: 320px;
             padding: 26px 18px 28px;
           }
 
           .rivotBestFitSubscription .rivotBestFitShield {
-            width: 70px;
-            height: 70px;
-            margin: 18px 0 22px;
+            width: 82px;
+            height: 82px;
+            margin: auto 0 24px;
           }
 
         }

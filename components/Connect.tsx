@@ -467,7 +467,7 @@ export function Connect() {
 
         .rivotConnect {
           min-height: 100vh;
-          padding: 138px clamp(20px, 5vw, 84px) 82px;
+          padding: 104px clamp(20px, 5vw, 84px) 76px;
           background:
             radial-gradient(circle at 92% 12%, rgba(239, 116, 48, .18), transparent 28%),
             linear-gradient(180deg, #fff 0%, #f8f8f8 100%);
@@ -732,8 +732,8 @@ export function Connect() {
         .rivotConnectFormHeader {
           position: relative;
           max-width: none;
-          margin: 0 calc(-1 * clamp(20px, 5vw, 84px)) 56px;
-          padding: 54px clamp(20px, 5vw, 84px) 40px;
+          margin: 0 calc(-1 * clamp(20px, 5vw, 84px)) 46px;
+          padding: 22px clamp(20px, 5vw, 84px) 34px;
           border-bottom: 1px solid rgba(17, 17, 17, .14);
           text-align: center;
         }
@@ -973,7 +973,7 @@ export function Connect() {
 
         @media (max-width: 960px) {
           .rivotConnect {
-            padding-top: 112px;
+            padding-top: 96px;
           }
 
           .rivotConnectGrid {
@@ -997,7 +997,7 @@ export function Connect() {
 
         @media (max-width: 680px) {
           .rivotConnect {
-            padding: 92px 16px 56px;
+            padding: 84px 16px 52px;
           }
 
           .rivotConnectHeader {
@@ -1045,7 +1045,7 @@ export function Connect() {
 
           .rivotConnectFormHeader {
             margin: 0 -16px 34px;
-            padding: 30px 16px 28px;
+            padding: 18px 16px 24px;
           }
 
           .rivotConnectBack {
@@ -1241,4 +1241,3 @@ function ConnectionIcon({ id }: { id: ConnectionId }) {
     </svg>
   );
 }
-

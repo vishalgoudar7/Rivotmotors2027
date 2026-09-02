@@ -1,6 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { blogPosts } from "@/lib/blogPosts";
+import { useEffect, useState } from "react";
+
+type ApiBlog = {
+  id: number | string;
+  title: string;
+  excerpt: string;
+  image_url: string;
+  author: string;
+  created_at: string | null;
+};
 
 const heroSlides = [
   {
@@ -17,7 +28,44 @@ const heroSlides = [
   },
 ];
 
+function imageSrc(value: string) {
+  if (!value) {
+    return "/Story_page/23.webp";
+  }
+
+  return value.startsWith("/") || value.startsWith("http") ? value : `/${value}`;
+}
+
 export default function BlogPage() {
+  const [blogs, setBlogs] = useState<ApiBlog[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    fetch("/api/blogs?status=published&limit=50", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((payload) => {
+        if (mounted) {
+          setBlogs(Array.isArray(payload.data) ? payload.data : []);
+        }
+      })
+      .catch(() => {
+        if (mounted) {
+          setBlogs([]);
+        }
+      })
+      .finally(() => {
+        if (mounted) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <section className="rivotBlogPage">
       <div className="rivotBlogHero">
@@ -52,19 +100,27 @@ export default function BlogPage() {
         </div>
 
         <div className="rivotBlogGrid">
-          {blogPosts.map((post) => (
-            <article className="rivotBlogCard" key={post.slug}>
-              <Link href={`/blog/${post.slug}`} className="rivotBlogCardImage" aria-label={post.title}>
-                <Image src={post.image} alt={post.title} fill sizes="(max-width: 760px) 100vw, 33vw" />
+          {loading ? (
+            <p className="rivotBlogState">Loading blogs...</p>
+          ) : null}
+
+          {!loading && blogs.length === 0 ? (
+            <p className="rivotBlogState">No blogs found.</p>
+          ) : null}
+
+          {blogs.map((post) => (
+            <article className="rivotBlogCard" key={post.id}>
+              <Link href={`/single-blog?id=${post.id}`} className="rivotBlogCardImage" aria-label={post.title}>
+                <Image src={imageSrc(post.image_url)} alt={post.title} fill sizes="(max-width: 760px) 100vw, 33vw" />
               </Link>
               <div className="rivotBlogCardBody">
                 <div className="rivotBlogMeta">
-                  <span>{post.date}</span>
-                  <span>{post.readTime}</span>
+                  <span>{post.created_at || "Latest"}</span>
+                  <span>{post.author}</span>
                 </div>
                 <h3>{post.title}</h3>
                 <p>{post.excerpt}</p>
-                <Link href={`/blog/${post.slug}`}>Read More</Link>
+                <Link href={`/single-blog?id=${post.id}`}>Read More</Link>
               </div>
             </article>
           ))}
@@ -219,6 +275,14 @@ export default function BlogPage() {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 18px;
+        }
+
+        .rivotBlogState {
+          grid-column: 1 / -1;
+          margin: 0;
+          color: #5d6971;
+          font-size: 16px;
+          font-weight: 800;
         }
 
         .rivotBlogCard {

@@ -16,7 +16,7 @@ const supportCards = [
     description: "Connect with us instantly on WhatsApp for quick responses to your questions and support needs.",
     contact: "+91 898-898-4646",
     href: "https://wa.me/918988984646",
-    hours: "Mon-Sat: 9AM-8PM",
+    hours: "Mon-Sat: 9 AM-8 PM",
     icon: "chat",
   },
   {
@@ -55,7 +55,7 @@ export function Support() {
           <h1>
             Customer <span>Support</span>
           </h1>
-          <strong>Dedicated service for your RIVOT scooter, whenever your ride needs attention.</strong>
+          <strong>Dedicated support for your RIVOT scooter whenever your ride needs attention.</strong>
         </header>
 
         <div className="rivotSupportGrid">
@@ -232,9 +232,9 @@ export function ReachStyles() {
       .rivotReachFormSection h2 {
         margin: 0;
         color: #070707;
-        font-size: clamp(42px, 6vw, 82px);
+        font-size: clamp(40px, 6vw, 48px);
         font-weight: 950;
-        line-height: .96;
+        line-height: 1.04;
       }
 
       .rivotReachHero h1 span,
@@ -248,9 +248,9 @@ export function ReachStyles() {
         max-width: 720px;
         margin-top: 20px;
         color: #5f6b73;
-        font-size: clamp(17px, 1.45vw, 22px);
+        font-size: 15px;
         font-weight: 700;
-        line-height: 1.55;
+        line-height: 1.6;
       }
 
       .rivotSupportGrid,
@@ -338,7 +338,7 @@ export function ReachStyles() {
       }
 
       .rivotReachFormSection h2 {
-        font-size: clamp(32px, 4vw, 56px);
+        font-size: clamp(32px, 4vw, 48px);
       }
 
       .rivotReachFields {

@@ -124,7 +124,7 @@ export function DashboardRotation() {
   }
 
   return (
-    <section className="rivotDashboard" aria-labelledby="dashboard-title">
+    <section className="rivotDashboard" id="connectivity" aria-labelledby="dashboard-title">
       <div className="rivotDashboardCopy">
         <p>Connectivity</p>
         <h2 id="dashboard-title">Intelligence, always in view.</h2>
@@ -157,7 +157,7 @@ export function DashboardRotation() {
           justify-items: center;
           min-height: auto;
           overflow: hidden;
-          padding: clamp(40px, 4.5vw, 64px) clamp(18px, 4vw, 70px) clamp(24px, 3vw, 42px);
+          padding: var(--section-open-gap, clamp(40px, 4.5vw, 64px)) clamp(18px, 4vw, 70px) var(--section-close-gap, clamp(24px, 3vw, 42px));
           background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%);
           color: #111;
         }
