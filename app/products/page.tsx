@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ModelComparison } from "@/components/ModelComparison";
 import { ProductFeatureSections } from "@/components/ProductFeatureSections";
 import modelPro from "@/asset/Model/Pro.png";
 import modelSport from "@/asset/Model/Sport_NX100.png";
+import { modelComparisonModels, modelComparisonRows } from "@/data/modelComparison";
 
 const products = [
   {
@@ -40,6 +42,8 @@ export default function Products() {
           ))}
         </div>
       </section>
+
+      <ModelComparison rows={modelComparisonRows} models={modelComparisonModels} />
 
       <ProductFeatureSections />
     </>

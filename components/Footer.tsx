@@ -346,34 +346,88 @@ export function Footer() {
 
         @media (max-width: 560px) {
           .rivotFooter {
-            padding: 10px;
+            padding: 0;
+            background: #090a0a;
           }
 
           .rivotFooterShell {
-            border-radius: 14px;
+            border-radius: 0;
+            box-shadow: none;
           }
 
           .rivotFooterTop {
             grid-template-columns: 1fr;
             gap: 0;
-            padding: 28px 20px;
+            padding: 30px 18px 12px;
           }
 
           .rivotFooterBrand,
           .rivotFooterColumn {
             gap: 11px;
-            padding: 22px 0;
+            padding: 20px 0;
             border-left: 0;
             border-top: 1px solid rgba(239, 116, 48, .28);
           }
 
           .rivotFooterBrand {
+            align-items: center;
+            text-align: center;
             padding-top: 0;
+            padding-bottom: 24px;
             border-top: 0;
           }
 
+          .rivotFooterBrand img {
+            width: 124px;
+          }
+
+          .rivotFooterBrand p {
+            max-width: 310px;
+            font-size: 13px;
+          }
+
+          .rivotFooterColumn h2 {
+            margin-bottom: 4px;
+            font-size: 14px;
+          }
+
+          .rivotFooterColumn a,
+          .rivotFooterColumn p {
+            font-size: 13px;
+            line-height: 1.5;
+          }
+
+          .rivotFooterColumn:not(.rivotFooterContact):not(.rivotFooterSubscribe) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 14px;
+          }
+
+          .rivotFooterColumn:not(.rivotFooterContact):not(.rivotFooterSubscribe) h2 {
+            grid-column: 1 / -1;
+          }
+
+          .rivotFooterContact p {
+            grid-template-columns: 22px minmax(0, 1fr);
+            width: 100%;
+            overflow-wrap: anywhere;
+          }
+
+          .rivotFooterSubscribe {
+            align-items: center;
+            text-align: center;
+          }
+
           .rivotFooterSocial {
+            justify-content: center;
             flex-wrap: wrap;
+            width: 100%;
+            gap: 12px;
+          }
+
+          .rivotFooterSocial a {
+            width: 38px;
+            height: 38px;
           }
 
           .rivotFooterSubscribe label {
@@ -381,9 +435,25 @@ export function Footer() {
           }
 
           .rivotFooterBottom {
-            align-items: flex-start;
+            align-items: center;
             flex-direction: column;
-            padding: 18px 20px;
+            gap: 8px;
+            padding: 18px 18px 24px;
+            text-align: center;
+          }
+
+          .rivotFooterBottom p {
+            font-size: 11px;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .rivotFooterTop {
+            padding-inline: 14px;
+          }
+
+          .rivotFooterColumn:not(.rivotFooterContact):not(.rivotFooterSubscribe) {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>

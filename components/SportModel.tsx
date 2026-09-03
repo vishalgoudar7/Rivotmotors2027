@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Faqs } from "@/components/Faqs";
+import { ProductDetailSupportSections } from "@/components/ProductDetailSupportSections";
 import { ProductFeatureSections } from "@/components/ProductFeatureSections";
 import { ProductHeroSpecs } from "@/components/ProductHeroSpecs";
 import sportImage from "@/asset/Model/Sport_NX100.png";
@@ -98,6 +100,10 @@ export function SportModel() {
         <h2>Ready for the quicker line?</h2>
         <Link href="/book-now">Reserve Sports</Link>
       </section>
+
+      <ProductDetailSupportSections />
+
+      <Faqs />
 
       <style>{`
         body:has(.sportPage) .rivotHeader,

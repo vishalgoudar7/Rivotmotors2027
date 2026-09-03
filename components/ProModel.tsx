@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Faqs } from "@/components/Faqs";
+import { ProductDetailSupportSections } from "@/components/ProductDetailSupportSections";
 import { ProductFeatureSections } from "@/components/ProductFeatureSections";
 import { ProductHeroSpecs } from "@/components/ProductHeroSpecs";
 import proImage from "@/asset/Model/Pro.png";
@@ -107,6 +109,10 @@ export function ProModel() {
         </div>
         <Link href="/book-now">Reserve Pro</Link>
       </section>
+
+      <ProductDetailSupportSections />
+
+      <Faqs />
 
       <style>{`
         body:has(.proPage) .rivotHeader,

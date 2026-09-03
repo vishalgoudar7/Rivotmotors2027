@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { AdminDashboard } from "@/components/Admin/AdminDashboard";
+import { AdminOrders } from "@/components/Admin/AdminOrders";
 import { getOrders } from "../_lib/orders";
 import { requireAdmin } from "../_lib/session";
 
@@ -19,10 +19,10 @@ export default async function AdminOrdersPage({
   const search = params?.search || "";
   const status = params?.status || "";
   const page = Number(params?.page || 1);
-  const result = await getOrders(search, status, page);
+  const result = await getOrders(search, status, page, 500);
 
   return (
-    <AdminDashboard
+    <AdminOrders
       result={result}
       search={search}
       status={status}

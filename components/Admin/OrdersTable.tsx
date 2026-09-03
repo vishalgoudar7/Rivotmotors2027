@@ -36,6 +36,7 @@ export function OrdersTable({
     const model = orderValue(order, ["model", "model_name", "product_name", "productName", "product"], "nx100");
     const productName = orderValue(order, ["product_name", "productName", "product", "model"], "nx100-Gray-Pro");
     const amount = formatAmount(orderValue(order, ["amount"], "0"));
+    const color = orderValue(order, ["color", "colour"], "N/A");
     const customer = `${orderValue(order, ["buyer_first_name", "name", "first_name"], "")} ${orderValue(order, ["buyer_last_name", "lastName", "last_name"], "")}`.trim() || "N/A";
     const statusValue = getStatus(order);
 
@@ -44,11 +45,11 @@ export function OrdersTable({
       orderId,
       price: amount,
       model,
-      color: index % 2 === 0 ? "Gray" : "Black",
+      color,
       productName,
       trackId: orderValue(order, ["track_id", "tracking_id", "trackId"], `NX100-PRO-${index + 1}`),
-      description: productName,
-      transactionId: orderValue(order, ["transaction_id", "payment_id", "txn_id"], `ZP${String(index + 1).padStart(2, "0")}...`),
+      description: orderValue(order, ["productDescription", "product_description"], productName),
+      transactionId: orderValue(order, ["transaction_id", "payment_id", "txn_id"], "Not paid"),
       customer,
       status: statusValue,
     };
@@ -73,9 +74,17 @@ export function OrdersTable({
       </div>
 
       <form className="orderFilterBar">
+        <input name="search" defaultValue={search} placeholder="Search orders" />
+        <select name="status" defaultValue={status}>
+          <option value="">All statuses</option>
+          <option value="order_not_completed">Pending</option>
+          <option value="payment_completed">Completed</option>
+          <option value="payment_failed">Failed</option>
+        </select>
+        <button type="submit">Filter</button>
         <div className="entriesBlock">
           <span>Show</span>
-          <select defaultValue="25">
+          <select defaultValue={String(result.perPage)} aria-label="Orders per page">
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
@@ -98,6 +107,8 @@ export function OrdersTable({
               <th>Order ID</th>
               <th>Product Description</th>
               <th>Transaction ID</th>
+              <th>Status</th>
+              <th>Customer</th>
             </tr>
           </thead>
           <tbody>
@@ -113,14 +124,16 @@ export function OrdersTable({
                   <td>{row.trackId}</td>
                   <td>{row.orderId}</td>
                   <td>{row.description}</td>
+                  <td>{row.transactionId}</td>
                   <td>
                     <span className={`statusTag ${statusClass(row.status)}`}>{row.status}</span>
                   </td>
+                  <td>{row.customer}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={10} className="emptyCell">No orders found.</td>
+                <td colSpan={12} className="emptyCell">No orders found.</td>
               </tr>
             )}
           </tbody>
@@ -199,6 +212,10 @@ export function OrdersTable({
         }
 
         .orderFilterBar {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 10px;
           margin: 8px 0 16px;
           padding: 10px 14px;
           border-radius: 8px;
@@ -206,9 +223,38 @@ export function OrdersTable({
           border: 1px solid rgba(255, 166, 102, 0.14);
         }
 
+        .orderFilterBar input,
+        .orderFilterBar select {
+          min-height: 34px;
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 6px;
+          background: rgba(255,255,255,0.03);
+          color: #fff;
+          padding: 0 10px;
+          font-size: 12px;
+          font-weight: 700;
+        }
+
+        .orderFilterBar input {
+          flex: 1 1 220px;
+        }
+
+        .orderFilterBar button {
+          min-height: 34px;
+          border: 0;
+          border-radius: 6px;
+          background: #ef7430;
+          color: #fff;
+          padding: 0 14px;
+          font-size: 12px;
+          font-weight: 900;
+          cursor: pointer;
+        }
+
         .entriesBlock {
           display: flex;
           align-items: center;
+          margin-left: auto;
           gap: 10px;
           color: #f1e2d2;
           font-weight: 700;

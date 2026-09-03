@@ -11,7 +11,7 @@ export type OrdersResult = {
   error?: string;
 };
 
-const perPage = 20;
+const defaultPerPage = 20;
 
 function sqlIdentifier(name: string) {
   return `\`${name.replace(/`/g, "``")}\``;
@@ -54,7 +54,7 @@ function buildWhere(columns: string[], search: string, status: string) {
   };
 }
 
-export async function getOrders(search = "", status = "", page = 1): Promise<OrdersResult> {
+export async function getOrders(search = "", status = "", page = 1, perPage = defaultPerPage): Promise<OrdersResult> {
   const columns = await getOrderColumns();
   const safePage = Math.max(1, page);
 
