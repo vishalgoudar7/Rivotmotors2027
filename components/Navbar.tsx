@@ -27,18 +27,18 @@ const reachItems = [
 
 const productModels = [
   {
-    name: "RIVOT NX100 Sport",
-    tagline: "Sporty. Stylish. Dynamic.",
-    price: "Starting at ₹1,39,000",
-    href: "/products/nx100-sport",
-    image: modelSport,
-  },
-  {
     name: "RIVOT NX100 Pro",
     tagline: "Powerful. Smart. Advanced.",
-    price: "Starting at ₹1,29,000",
+    price: "Starting at ₹1,39,000",
     href: "/products/nx100-pro",
     image: modelPro,
+  },
+  {
+    name: "RIVOT NX100 Sport",
+    tagline: "Sporty. Stylish. Dynamic.",
+    price: "Starting at ₹1,29,000",
+    href: "/products/nx100-sport",
+    image: modelSport,
   },
 ];
 

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { sendBookingAdminEmail } from "@/lib/email";
+import { makeBookingOrderId, sanitizeZaakpayText } from "@/lib/zaakpay";
 
 function toStringValue(value: FormDataEntryValue | string | null | undefined) {
   if (value === null || value === undefined) return "";
@@ -33,7 +34,19 @@ export async function POST(request: Request) {
     const pincode = toStringValue(payload.pincode as FormDataEntryValue | string | null | undefined);
     const model = toStringValue(payload.model as FormDataEntryValue | string | null | undefined) || "sport";
     const rawColor = toStringValue(payload.color as FormDataEntryValue | string | null | undefined) || "Gray";
-    const color = ({ "#f26f2f": "Orange", "#ffffff": "White", "#111111": "Black" } as Record<string, string>)[rawColor] || rawColor;
+    const color = ({
+      "#FCFCFC": "White",
+      "#fcfcfc": "White",
+      "#757180": "Grey",
+      "#CD2E30": "Red",
+      "#cd2e30": "Red",
+      "#050505": "Black",
+      "#C3CADB": "Silver",
+      "#c3cadb": "Silver",
+      "#f26f2f": "Orange",
+      "#ffffff": "White",
+      "#111111": "Black",
+    } as Record<string, string>)[rawColor] || sanitizeZaakpayText(rawColor, 30) || "Selected";
     const productName = "nx100";
     const price = "499.00";
     const source = toStringValue(payload.source as FormDataEntryValue | string | null | undefined);
@@ -56,19 +69,19 @@ export async function POST(request: Request) {
       );
     }
 
-    const trackId = `${productName}-${model}-${color}-${Math.floor(100000 + Math.random() * 900000)}`.toUpperCase();
+    const trackId = makeBookingOrderId();
     const insertData: Record<string, unknown> = {
       price,
       model,
       color,
       product_name: productName,
-      trackId: trackId,
-      orderId: "",
+      trackId,
+      orderId: trackId,
       productDescription: `${productName}-${color}-${model}`,
       transaction_id: "",
-      amount: "",
+      amount: price,
       statid: "0",
-      payment_status: "order_not_completed",
+      payment_status: "payment_pending",
       name: firstName,
       lastName,
       email,

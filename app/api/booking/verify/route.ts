@@ -1,91 +1,158 @@
-import crypto from "node:crypto";
 import { prisma } from "@/lib/db";
 import { sendPaymentSuccessEmails } from "@/lib/email";
+import {
+  checkZaakpayTransactionStatus,
+  classifyZaakpayStatus,
+  getZaakpayConfig,
+  verifyZaakpayCallback,
+  type ZaakpayCallbackFields,
+  type ZaakpayStatusResult,
+} from "@/lib/zaakpay";
 
 function quote(name: string) {
   return `\`${name.replace(/`/g, "``")}\``;
 }
 
+function gatewayAmountToRupees(amount?: string) {
+  const parsed = Number(amount || 0);
+  if (!Number.isFinite(parsed) || parsed <= 0) return "";
+  return (parsed / 100).toFixed(2);
+}
+
 export async function POST(request: Request) {
-  const body = (await request.json().catch(() => null)) as {
-    responseCode?: string;
-    orderId?: string;
-    paymentId?: string;
-    pgTransId?: string;
-    product1Description?: string;
-    amount?: string;
-    checksum?: string;
-    bookingData?: unknown;
-  } | null;
+  const body = (await request.json().catch(() => null)) as ZaakpayCallbackFields | null;
 
-  if (!body?.responseCode || !body.orderId || !body.checksum || !body.product1Description) {
-    return Response.json({ success: false, redirect: "/booking/payment-failed" }, { status: 400 });
+  if (!body?.orderId || !body.checksum) {
+    const orderId = body?.orderId ? `?order_id=${encodeURIComponent(body.orderId)}` : "";
+    const separator = orderId ? "&" : "?";
+    return Response.json({
+      success: false,
+      redirect: `/booking/payment-failed${orderId}${separator}reason=${encodeURIComponent("Zaakpay callback was missing required verification fields.")}`,
+      message: "Zaakpay callback was missing required verification fields.",
+    }, { status: 400 });
   }
 
-  const secret = process.env.ZAAKPAY_SECRET;
-  if (!secret) {
-    return Response.json({ success: false, message: "Zaakpay verification is not configured." }, { status: 503 });
+  let config: ReturnType<typeof getZaakpayConfig>;
+  try {
+    config = getZaakpayConfig(new URL(request.url).origin);
+  } catch {
+    return Response.json({ success: false, redirect: "/booking/payment-failed", message: "Payment verification is not configured." }, { status: 503 });
   }
 
-  const responseFields = body as unknown as Record<string, unknown>;
-  const responseOrder = [
-    "amount", "bank", "bankid", "cardId", "cardScheme", "cardToken", "cardhashid", "doRedirect",
-    "orderId", "paymentMethod", "paymentMode", "responseCode", "responseDescription", "productDescription",
-    "product1Description", "product2Description", "product3Description", "product4Description", "pgTransId", "pgTransTime",
-  ];
-  const checksumInput = responseOrder
-    .filter((key) => responseFields[key] !== undefined && responseFields[key] !== "")
-    .map((key) => `${key}=${String(responseFields[key])}&`)
-    .join("");
-  const calculatedChecksum = crypto.createHmac("sha256", secret).update(checksumInput).digest("hex");
-  const validChecksum = body.checksum.length === calculatedChecksum.length &&
-    crypto.timingSafeEqual(Buffer.from(body.checksum), Buffer.from(calculatedChecksum));
-
-  if (!validChecksum) {
-    return Response.json({ success: false, redirect: "/booking/payment-failed", message: "Payment verification failed." }, { status: 400 });
+  if (!verifyZaakpayCallback(body, config.secret)) {
+    console.warn(`Zaakpay checksum mismatch for order ${body.orderId}`);
+    const reason = "Zaakpay response checksum verification failed.";
+    return Response.json({
+      success: false,
+      redirect: `/booking/payment-failed?order_id=${encodeURIComponent(body.orderId)}&reason=${encodeURIComponent(reason)}`,
+      message: reason,
+    }, { status: 400 });
   }
 
   try {
     const columns = (await prisma.$queryRawUnsafe("SHOW COLUMNS FROM `orders`")) as Array<{ Field: string }>;
-    const names = new Set(columns.map((column) => column.Field));
-    if (!names.has("trackId")) return Response.json({ success: false, message: "Order table has no trackId column." }, { status: 500 });
+    const columnNames = new Set(columns.map((column) => column.Field));
+    const matchColumns = ["orderId", "trackId", "order_id"].filter((column) => columnNames.has(column));
 
-    const gatewayAmount = Number(body.amount || 0);
-    const amountInRupees = Number.isFinite(gatewayAmount) && gatewayAmount > 0
-      ? (gatewayAmount >= 100 ? gatewayAmount / 100 : gatewayAmount).toFixed(2)
-      : "";
-    const paymentId = body.pgTransId || body.paymentId || "";
-    const isSuccess = body.responseCode === "100";
+    if (matchColumns.length === 0) {
+      return Response.json({ success: false, redirect: "/booking/payment-failed", message: "Order table has no supported order ID column." }, { status: 500 });
+    }
+
+    const where = matchColumns.map((column) => `${quote(column)} = ?`).join(" OR ");
+    const rows = (await prisma.$queryRawUnsafe(
+      `SELECT * FROM \`orders\` WHERE ${where} LIMIT 1`,
+      ...matchColumns.map(() => body.orderId),
+    )) as Array<Record<string, unknown>>;
+    const booking = rows[0];
+
+    if (!booking) {
+      return Response.json({ success: false, redirect: `/booking/payment-failed?order_id=${encodeURIComponent(body.orderId)}`, message: "Booking not found." }, { status: 404 });
+    }
+
+    if (String(booking.payment_status || "") === "payment_completed" || String(booking.statid || "") === "1") {
+      return Response.json({ success: true, redirect: `/booking/success?order_id=${encodeURIComponent(body.orderId)}`, order_id: body.orderId });
+    }
+
+    const callbackStatus: ZaakpayStatusResult = {
+      verified: false,
+      status: classifyZaakpayStatus(body.responseCode),
+      responseCode: body.responseCode,
+      responseDescription: body.responseDescription,
+      transactionId: body.pgTransId,
+      amount: body.amount,
+    };
+    let verifiedStatus: ZaakpayStatusResult = callbackStatus;
+
+    try {
+      verifiedStatus = await checkZaakpayTransactionStatus({
+        merchantIdentifier: config.merchantIdentifier,
+        secret: config.secret,
+        statusUrl: config.statusUrl,
+        orderId: body.orderId,
+      });
+    } catch (statusError) {
+      console.error(`Zaakpay status check failed for order ${body.orderId}:`, statusError instanceof Error ? statusError.message : statusError);
+    }
+
+    const finalStatus = verifiedStatus.verified
+      ? verifiedStatus.status
+      : callbackStatus.status === "unknown"
+        ? "pending"
+        : callbackStatus.status;
+    const paymentStatus = finalStatus === "paid"
+      ? "payment_completed"
+      : finalStatus === "failed"
+        ? "payment_failed"
+        : "payment_pending";
 
     const updates: Record<string, unknown> = {
       orderId: body.orderId,
-      transaction_id: paymentId,
-      amount: amountInRupees,
-      statid: isSuccess ? "1" : "0",
-      payment_status: isSuccess ? "payment_completed" : "payment_failed",
+      transaction_id: verifiedStatus.transactionId || body.pgTransId || body.paymentMethod || "",
+      amount: gatewayAmountToRupees(verifiedStatus.amount || body.amount),
+      statid: finalStatus === "paid" ? "1" : "0",
+      payment_status: paymentStatus,
     };
-    const availableUpdates = ["orderId", "transaction_id", "amount", "statid", "payment_status"].filter((name) => names.has(name));
-    if (availableUpdates.length) {
-      const setSql = availableUpdates.map((name) => `${quote(name)} = ?`).join(", ");
-      const updateResult = await prisma.$executeRawUnsafe(
-        `UPDATE \`orders\` SET ${setSql} WHERE ${quote("trackId")} = ?${isSuccess && names.has("payment_status") ? ` AND ${quote("payment_status")} <> 'payment_completed'` : ""} LIMIT 1`,
-        ...availableUpdates.map((name) => updates[name]),
-        body.product1Description,
+    const updateColumns = ["orderId", "transaction_id", "amount", "statid", "payment_status"].filter((column) => columnNames.has(column));
+
+    if (updateColumns.length) {
+      const updated = await prisma.$executeRawUnsafe(
+        `UPDATE \`orders\` SET ${updateColumns.map((column) => `${quote(column)} = ?`).join(", ")} WHERE ${where}${finalStatus === "paid" && columnNames.has("payment_status") ? ` AND ${quote("payment_status")} <> 'payment_completed'` : ""} LIMIT 1`,
+        ...updateColumns.map((column) => updates[column]),
+        ...matchColumns.map(() => body.orderId),
       );
-      if (isSuccess && Number(updateResult) > 0) {
-        const rows = (await prisma.$queryRawUnsafe(`SELECT * FROM \`orders\` WHERE ${quote("trackId")} = ? LIMIT 1`, body.product1Description)) as Array<Record<string, unknown>>;
+
+      if (finalStatus === "paid" && Number(updated) > 0) {
+        const updatedRows = (await prisma.$queryRawUnsafe(
+          `SELECT * FROM \`orders\` WHERE ${where} LIMIT 1`,
+          ...matchColumns.map(() => body.orderId),
+        )) as Array<Record<string, unknown>>;
+
         try {
-          await sendPaymentSuccessEmails(rows[0] || { ...updates, trackId: body.product1Description, email: "" });
-        } catch (error) {
-          console.error(`Payment confirmation email failed for ${body.orderId}:`, error instanceof Error ? error.message : error);
+          await sendPaymentSuccessEmails(updatedRows[0] || { ...booking, ...updates });
+        } catch (emailError) {
+          console.error(`Payment confirmation email failed for order ${body.orderId}:`, emailError instanceof Error ? emailError.message : emailError);
         }
       }
     }
 
-    const redirect = isSuccess ? "/booking/thank-you" : "/booking/payment-failed";
-    return Response.json({ success: isSuccess, redirect: `${redirect}?order_id=${encodeURIComponent(body.orderId)}`, order_id: body.orderId });
+    console.info(`Zaakpay callback processed for order ${body.orderId}: ${paymentStatus}`);
+
+    if (finalStatus === "paid") {
+      return Response.json({ success: true, redirect: `/booking/success?order_id=${encodeURIComponent(body.orderId)}`, order_id: body.orderId });
+    }
+
+    if (finalStatus === "failed") {
+      const reason = verifiedStatus.responseDescription || callbackStatus.responseDescription || "Payment failed";
+      return Response.json({ success: false, redirect: `/booking/payment-failed?order_id=${encodeURIComponent(body.orderId)}&reason=${encodeURIComponent(reason)}`, order_id: body.orderId });
+    }
+
+    return Response.json({ success: false, redirect: `/booking/thank-you?order_id=${encodeURIComponent(body.orderId)}`, order_id: body.orderId, pending: true });
   } catch (error) {
-    console.error("Payment verification database update failed:", error);
-    return Response.json({ success: false, redirect: "/booking/payment-failed", message: "Could not confirm booking." }, { status: 500 });
+    console.error("Payment verification database update failed:", error instanceof Error ? error.message : error);
+    return Response.json({
+      success: false,
+      redirect: `/booking/payment-failed?order_id=${encodeURIComponent(body.orderId)}&reason=${encodeURIComponent("Could not confirm booking in database.")}`,
+      message: "Could not confirm booking.",
+    }, { status: 500 });
   }
 }

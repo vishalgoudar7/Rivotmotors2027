@@ -108,11 +108,6 @@ export function Booking() {
     formData.set("product_name", selectedModel.label);
     formData.set("color", color);
 
-    const nextOrderId = `RIVOT-${Date.now()}`;
-    formData.set("orderId", nextOrderId);
-    formData.set("order_id", nextOrderId);
-    formData.set("trackId", nextOrderId);
-
     try {
       const response = await fetch("/api/book-now", {
         method: "POST",
@@ -125,7 +120,7 @@ export function Booking() {
         throw new Error(payload.message || "Booking could not be saved.");
       }
 
-      router.push(`/booking/payment?order_id=${encodeURIComponent(payload.orderId || nextOrderId)}`);
+      router.push(`/booking/payment?order_id=${encodeURIComponent(payload.orderId || "")}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Booking failed.");
     } finally {
@@ -295,7 +290,7 @@ export function Booking() {
             </div>
             <p className="rivotBookingAmount">Booking Amount: ₹499 Fully Refundable</p>
             <small className="rivotBookingFinePrint">Zaakpay may show the amount in paise format. ₹49900 means ₹499.00 only.</small>
-            <button className="rivotBookingSubmit" type="submit" disabled={loading}>{loading ? "Saving..." : "Continue"} <span aria-hidden="true">→</span></button>
+            <button className="rivotBookingSubmit" type="submit" disabled={loading}>{loading ? "Creating booking..." : "Continue"} <span aria-hidden="true">→</span></button>
           </form>
         </div>
       </div>

@@ -8,16 +8,16 @@ import { modelComparisonModels, modelComparisonRows } from "@/data/modelComparis
 
 const products = [
   {
-    name: "RIVOT NX100 Sport",
-    href: "/products/nx100-sport",
-    image: modelSport,
-    description: "Sharper performance with a sportier riding experience.",
-  },
-  {
     name: "RIVOT NX100 Pro",
     href: "/products/nx100-pro",
     image: modelPro,
     description: "Extended range, enhanced features, and refined performance.",
+  },
+  {
+    name: "RIVOT NX100 Sport",
+    href: "/products/nx100-sport",
+    image: modelSport,
+    description: "Sharper performance with a sportier riding experience.",
   },
 ];
 

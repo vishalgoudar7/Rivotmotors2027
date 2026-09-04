@@ -9,13 +9,6 @@ import detailImage from "@/asset/images/Details/Main detail photo.png";
 import bootImage from "@/asset/images/Details/Boot space with helmet.png";
 import floorImage from "@/asset/images/Details/Floorboard photo.png";
 
-const comfortSpecs = [
-  ["Charge", "4 hr home charge, 1.5 hr FlashCharge ready"],
-  ["Ride", "Progressive rear monoshock with telescopic front suspension"],
-  ["Safety", "CBS, dual disc brakes, IP67 motor and controller"],
-  ["Utility", "Front charge port, 50 cm water wading, 162 mm clearance"],
-];
-
 export function ProModel() {
   return (
     <section className="proPage">
@@ -85,29 +78,6 @@ export function ProModel() {
           <Image src={floorImage} alt="NX100 Pro floorboard" sizes="(max-width: 800px) 100vw, 30vw" />
           <figcaption>Comfortable floorboard and riding posture</figcaption>
         </figure>
-      </section>
-
-      <section className="proSpecs">
-        <div className="proSpecsHead">
-          <p className="proKicker">Specification Suite</p>
-          <h2>Built around comfort, range, and control.</h2>
-        </div>
-        <div className="proSpecGrid">
-          {comfortSpecs.map(([label, value]) => (
-            <article key={label}>
-              <span>{label}</span>
-              <p>{value}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="proFinal">
-        <div>
-          <p className="proKicker">NX100 Pro</p>
-          <h2>Premium utility without excess noise.</h2>
-        </div>
-        <Link href="/book-now">Reserve Pro</Link>
       </section>
 
       <ProductDetailSupportSections />

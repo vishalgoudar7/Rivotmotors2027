@@ -120,24 +120,26 @@ export async function getBookingDetails(orderId: string) {
     return null;
   }
 
+  const paymentStatus = orderValue(booking, ["payment_status", "status"], "payment_pending");
+
   return {
-    payment_id: booking.transaction_id || booking.payment_id || booking.paymentId || null,
-    order_id: booking.orderId || booking.order_id || booking.trackId || null,
-    first_name: booking.name || booking.buyer_first_name || booking.first_name || null,
-    last_name: booking.lastName || booking.buyer_last_name || booking.last_name || null,
-    phone: booking.mobile || booking.phone || null,
-    email: booking.email || booking.buyer_email || null,
-    address: booking.address || null,
-    city: booking.city || null,
-    state: booking.state || null,
-    country: booking.country || null,
-    pincode: booking.pincode || null,
-    model: booking.model || null,
-    color: booking.color || null,
-    product_name: booking.product_name || booking.model || null,
-    amount: booking.amount || null,
-    status: booking.statid === "1" || booking.statid === 1 ? "Confirmed" : booking.payment_status || booking.status || "Pending",
-    created_at: booking.created_at || booking.createdAt || null,
+    payment_id: orderValue(booking, ["transaction_id", "payment_id", "paymentId"], ""),
+    order_id: orderValue(booking, ["orderId", "order_id", "trackId"], orderId),
+    first_name: orderValue(booking, ["name", "buyer_first_name", "first_name"], ""),
+    last_name: orderValue(booking, ["lastName", "buyer_last_name", "last_name"], ""),
+    phone: orderValue(booking, ["mobile", "phone"], ""),
+    email: orderValue(booking, ["email", "buyer_email"], ""),
+    address: orderValue(booking, ["address"], ""),
+    city: orderValue(booking, ["city"], ""),
+    state: orderValue(booking, ["state"], ""),
+    country: orderValue(booking, ["country"], "India"),
+    pincode: orderValue(booking, ["pincode"], ""),
+    model: orderValue(booking, ["model"], "NX100"),
+    color: orderValue(booking, ["color"], "Selected"),
+    product_name: orderValue(booking, ["product_name", "model"], "nx100"),
+    amount: orderValue(booking, ["amount", "price"], "499.00"),
+    status: booking.statid === "1" || booking.statid === 1 ? "Confirmed" : paymentStatus,
+    created_at: orderValue(booking, ["created_at", "createdAt"], ""),
   };
 }
 
