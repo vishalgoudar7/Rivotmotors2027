@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { ModelComparisonColumn, ModelComparisonRow } from "@/data/modelComparison";
 
 type ModelComparisonProps = {
@@ -28,7 +27,7 @@ export function ModelComparison({
             {models.map((model) => (
               <div className="modelComparisonVariant" role="columnheader" key={model.id}>
                 <span>{model.badge}</span>
-                <Link href={model.href}>{model.name}</Link>
+                <a href={model.href}>{model.name}</a>
                 <small>{model.subtitle}</small>
               </div>
             ))}
@@ -49,91 +48,90 @@ export function ModelComparison({
               ))}
             </div>
           ))}
-
-          <div className="modelComparisonRow modelComparisonActions" role="row">
-            <div role="cell" />
-            {models.map((model) => (
-              <div data-model={model.id === "sport" ? "Sport" : "Pro"} role="cell" key={`${model.id}-actions`}>
-                <Link href={model.bookHref}>Book Now</Link>
-                <Link href={model.testRideHref}>Test Ride</Link>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
       <style>{`
         .modelComparison {
-          padding: clamp(72px, 9vw, 118px) clamp(18px, 7vw, 112px);
+          display: grid;
+          min-height: calc(100vh - 82px);
+          padding: clamp(28px, 3.2vw, 42px) clamp(22px, 7vw, 112px);
           background:
-            radial-gradient(circle at 86% 12%, rgba(206, 103, 35, .11), transparent 30%),
-            linear-gradient(180deg, #fff 0%, #f8f8f5 100%);
-          color: #090909;
+            radial-gradient(circle at 86% 12%, rgba(239, 116, 48, .08), transparent 30%),
+            linear-gradient(180deg, #fff 0%, #f8f8f8 100%);
+          color: #111;
+          align-items: center;
         }
 
         .modelComparisonShell {
-          width: min(100%, 1040px);
+          width: min(100%, 1180px);
           margin: 0 auto;
         }
 
         .modelComparisonHead {
           display: grid;
-          grid-template-columns: minmax(180px, .72fr) minmax(0, 1.28fr);
-          gap: clamp(22px, 4vw, 62px);
+          grid-template-columns: minmax(190px, .52fr) minmax(0, 1fr);
+          gap: clamp(24px, 4vw, 58px);
           align-items: end;
-          margin-bottom: clamp(28px, 4vw, 52px);
+          margin-bottom: clamp(18px, 2.4vw, 28px);
         }
 
         .modelComparisonHead p {
           margin: 0;
-          color: #ce6723;
+          color: #ef7430;
           font-size: 13px;
-          font-weight: 900;
-          letter-spacing: .2em;
+          font-weight: 800;
+          letter-spacing: .18em;
           text-transform: uppercase;
         }
 
         .modelComparisonHead h2 {
           max-width: 620px;
           margin: 0;
-          color: #070707;
-          font-size: clamp(38px, 5vw, 68px);
-          font-weight: 900;
-          line-height: .95;
+          color: #10161a;
+          font-size: clamp(38px, 3.2vw, 48px);
+          font-weight: 800;
+          line-height: 1.02;
           letter-spacing: 0;
         }
 
         .modelComparisonTable {
           width: 100%;
-          border-top: 1px solid rgba(9, 9, 9, .09);
+          overflow: hidden;
+          border: 1px solid rgba(17, 17, 17, .08);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .72);
+          box-shadow: 0 18px 44px rgba(17, 17, 17, .06);
         }
 
         .modelComparisonRow {
           display: grid;
           grid-template-columns: minmax(180px, .85fr) repeat(2, minmax(0, 1fr));
-          column-gap: clamp(22px, 4.4vw, 72px);
+          column-gap: clamp(20px, 4vw, 58px);
           align-items: center;
-          min-height: 74px;
-          border-bottom: 1px solid rgba(9, 9, 9, .09);
+          min-height: 52px;
+          padding: 0 clamp(20px, 3vw, 34px);
+          border-bottom: 1px solid rgba(17, 17, 17, .08);
         }
 
         .modelComparisonRow > div {
           min-width: 0;
-          color: #080808;
-          font-size: 15px;
-          font-weight: 800;
-          line-height: 1.35;
+          color: #111;
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 1.32;
         }
 
         .modelComparisonLabel,
         .modelComparisonHeader > div:first-child {
-          color: #8a9297 !important;
+          color: #6a737b !important;
           font-size: 13px !important;
-          font-weight: 800 !important;
+          font-weight: 700 !important;
         }
 
         .modelComparisonHeader {
-          min-height: 120px;
+          min-height: 84px;
+          background: rgba(248, 248, 248, .78);
         }
 
         .modelComparisonVariant {
@@ -143,82 +141,48 @@ export function ModelComparison({
         }
 
         .modelComparisonVariant span {
-          color: #ce6723;
+          color: #ef7430;
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 700;
         }
 
         .modelComparisonVariant a {
           width: fit-content;
-          color: #070707;
-          font-size: clamp(24px, 2.2vw, 31px);
-          font-weight: 750;
+          color: #10161a;
+          font-size: 18px;
+          font-weight: 800;
           line-height: 1.1;
           letter-spacing: 0;
         }
 
         .modelComparisonVariant a:hover,
         .modelComparisonVariant a:focus-visible {
-          color: #ce6723;
+          color: #ef7430;
           outline: none;
         }
 
         .modelComparisonVariant small {
           max-width: 260px;
-          color: #8a9297;
+          color: #69737b;
           font-size: 14px;
-          font-weight: 800;
+          font-weight: 500;
           line-height: 1.35;
         }
 
         .modelComparisonPrice {
-          color: #050505 !important;
-          font-size: clamp(22px, 2.2vw, 28px) !important;
-          font-weight: 950 !important;
+          color: #10161a !important;
+          font-size: 18px !important;
+          font-weight: 800 !important;
           letter-spacing: 0;
-        }
-
-        .modelComparisonActions {
-          min-height: 94px;
-          border-bottom: 0;
-        }
-
-        .modelComparisonActions > div:not(:first-child) {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-
-        .modelComparisonActions a {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          min-height: 42px;
-          padding: 0 18px;
-          border: 1px solid #ce6723;
-          border-radius: 999px;
-          color: #ce6723;
-          font-size: 13px;
-          font-weight: 900;
-          white-space: nowrap;
-        }
-
-        .modelComparisonActions a:first-child {
-          background: #ce6723;
-          color: #fff;
-        }
-
-        .modelComparisonActions a:hover,
-        .modelComparisonActions a:focus-visible {
-          border-color: #a94f1d;
-          background: #a94f1d;
-          color: #fff;
-          outline: none;
         }
 
         @media (max-width: 760px) {
           .modelComparison {
-            padding: 64px 18px 76px;
+            padding: 54px 14px 64px;
+          }
+
+          .modelComparisonHead h2 {
+            font-size: 42px;
           }
 
           .modelComparisonHead {
@@ -238,7 +202,7 @@ export function ModelComparison({
             min-height: 0;
             padding: 18px;
             border: 1px solid rgba(9, 9, 9, .09);
-            border-radius: 14px;
+            border-radius: 8px;
             background: #fff;
             box-shadow: 0 14px 34px rgba(17, 17, 17, .06);
           }
@@ -256,14 +220,10 @@ export function ModelComparison({
 
           .modelComparisonRow > div:not(.modelComparisonLabel)::before {
             content: attr(data-model);
-            color: #ce6723;
+            color: #ef7430;
             font-size: 12px;
-            font-weight: 900;
+            font-weight: 800;
             text-transform: uppercase;
-          }
-
-          .modelComparisonActions {
-            display: none;
           }
         }
       `}</style>

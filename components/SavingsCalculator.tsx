@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
-const MIN_DAILY_KM = 15;
+const MIN_DAILY_KM = 10;
 const MAX_DAILY_KM = 200;
-const DEFAULT_DAILY_KM = 20;
-const PETROL_COST_PER_KM = 16002 / (DEFAULT_DAILY_KM * 365);
-const RIVOT_COST_PER_KM = 2006 / (DEFAULT_DAILY_KM * 365);
+const DAILY_KM_SEQUENCE = [10, 25, 30, 50, 75, 100, 150, 200] as const;
+const DEFAULT_DAILY_KM = DAILY_KM_SEQUENCE[0];
+const COST_BASE_DAILY_KM = 20;
+const PETROL_COST_PER_KM = 16002 / (COST_BASE_DAILY_KM * 365);
+const RIVOT_COST_PER_KM = 2006 / (COST_BASE_DAILY_KM * 365);
 const RUPEE = "\u20B9";
 
 type SavingsCardProps = {
@@ -182,7 +184,19 @@ function UsageSlider({
 }
 
 export function SavingsCalculator() {
-  const [dailyKm, setDailyKm] = useState(DEFAULT_DAILY_KM);
+  const [dailyKm, setDailyKm] = useState<number>(DEFAULT_DAILY_KM);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setDailyKm((currentKm) => {
+        const currentIndex = DAILY_KM_SEQUENCE.findIndex((value) => value === currentKm);
+        const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % DAILY_KM_SEQUENCE.length : 0;
+        return DAILY_KM_SEQUENCE[nextIndex];
+      });
+    }, 3000);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   const values = useMemo(() => {
     const annualDistance = dailyKm * 365;
@@ -504,6 +518,7 @@ export function SavingsCalculator() {
           background:
             linear-gradient(90deg, #f9732a var(--rivot-savings-progress), rgba(15, 31, 54, .11) 0);
           box-shadow: inset 0 1px 2px rgba(15, 31, 54, .08);
+          transition: background .35s ease;
         }
 
         .rivotSavingsSlider::after {
@@ -519,7 +534,7 @@ export function SavingsCalculator() {
           background: #fff;
           box-shadow: 0 4px 12px rgba(15, 31, 54, .12);
           transform: translateX(-50%);
-          transition: left .2s ease;
+          transition: left .35s ease;
         }
 
         .rivotSavingsSlider input {
@@ -590,7 +605,7 @@ export function SavingsCalculator() {
           box-shadow: 0 12px 24px rgba(249, 115, 42, .24);
           pointer-events: none;
           transform: translateX(-50%);
-          transition: left .2s ease;
+          transition: left .35s ease;
         }
 
         .rivotSavingsSlider i::before {

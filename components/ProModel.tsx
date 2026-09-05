@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Faqs } from "@/components/Faqs";
+import { ProductCustomMade } from "@/components/ProductCustomMade";
+import { ProductDesignDetails } from "@/components/ProductDesignDetails";
 import { ProductDetailSupportSections } from "@/components/ProductDetailSupportSections";
-import { ProductFeatureSections } from "@/components/ProductFeatureSections";
-import { ProductHeroSpecs } from "@/components/ProductHeroSpecs";
+import { ProductPerformanceBand } from "@/components/ProductPerformanceBand";
+import { ModelComparison } from "@/components/ModelComparison";
+import { modelComparisonModels, modelComparisonRows } from "@/data/modelComparison";
 import proImage from "@/asset/Model/Pro.png";
-import detailImage from "@/asset/images/Details/Main detail photo.png";
-import bootImage from "@/asset/images/Details/Boot space with helmet.png";
-import floorImage from "@/asset/images/Details/Floorboard photo.png";
 
 export function ProModel() {
   return (
@@ -33,52 +33,21 @@ export function ProModel() {
             <Link href="/book-now">Book Now <span aria-hidden="true">{"\u2192"}</span></Link>
             <Link href="/test-ride">Test Ride <span aria-hidden="true">{"\u2192"}</span></Link>
           </div>
-          <div className="proHeroColors" aria-label="Available colors">
-            <span>Available Colors</span>
-            <div>
-              <button className="proColor proColorOrange isSelected" type="button" aria-label="Select orange color" aria-pressed="true" />
-              <button className="proColor proColorWhite" type="button" aria-label="Select white color" aria-pressed="false" />
-              <button className="proColor proColorBlack" type="button" aria-label="Select black color" aria-pressed="false" />
-              <button className="proColor proColorRed" type="button" aria-label="Select red color" aria-pressed="false" />
-              <button className="proColor proColorGreen" type="button" aria-label="Select green color" aria-pressed="false" />
-            </div>
-          </div>
         </div>
 
         <div className="proStage" aria-label="RIVOT NX100 Pro">
           <div className="proHalo" />
           <Image src={proImage} alt="RIVOT NX100 Pro" priority sizes="(max-width: 900px) 92vw, 58vw" />
         </div>
-
-        <ProductHeroSpecs />
       </div>
 
-      <ProductFeatureSections />
+      <ProductPerformanceBand modelName="NX100 Pro" image={proImage} imageAlt="RIVOT NX100 Pro scooter" />
 
-      <section className="proExecutive">
-        <div>
-          <p className="proKicker">Designed For Distance</p>
-          <h2>Refined performance for the everyday long ride.</h2>
-        </div>
-        <p>
-          NX100 Pro focuses on useful upgrades: extended range, stable battery chemistry, larger storage, and a ride posture built for repeated commutes.
-        </p>
-      </section>
+      <ProductDesignDetails />
 
-      <section className="proGallery" aria-label="NX100 Pro details">
-        <figure>
-          <Image src={detailImage} alt="NX100 Pro detail view" sizes="(max-width: 800px) 100vw, 38vw" />
-          <figcaption>Premium finish and integrated bodywork</figcaption>
-        </figure>
-        <figure>
-          <Image src={bootImage} alt="NX100 Pro boot space" sizes="(max-width: 800px) 100vw, 30vw" />
-          <figcaption>55 L storage for daily essentials</figcaption>
-        </figure>
-        <figure>
-          <Image src={floorImage} alt="NX100 Pro floorboard" sizes="(max-width: 800px) 100vw, 30vw" />
-          <figcaption>Comfortable floorboard and riding posture</figcaption>
-        </figure>
-      </section>
+      <ProductCustomMade modelName="NX100 Pro" image={proImage} imageAlt="RIVOT NX100 Pro scooter colour preview" />
+
+      <ModelComparison rows={modelComparisonRows} models={modelComparisonModels} />
 
       <ProductDetailSupportSections />
 
@@ -121,6 +90,31 @@ export function ProModel() {
             linear-gradient(180deg, #fff 0%, #f8f8f8 100%);
           color: var(--pro-ink);
           font-family: inherit;
+        }
+
+        .proPage.proPage :is(h1, h2) {
+          font-size: 48px;
+          font-weight: 800;
+          line-height: 1.02;
+          letter-spacing: 0;
+        }
+
+        .proPage.proPage :is(p, small, li) {
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 1.55;
+          letter-spacing: 0;
+        }
+
+        .proPage.proPage :is(h3, h4, strong, b) {
+          font-weight: 800;
+          letter-spacing: 0;
+        }
+
+        .proPage.proPage :is(a, button) {
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0;
         }
 
         .proHero {
@@ -674,6 +668,10 @@ export function ProModel() {
         }
 
         @media (max-width: 560px) {
+          .proPage.proPage :is(h1, h2) {
+            font-size: 42px;
+          }
+
           .proHero::before {
             display: none;
           }

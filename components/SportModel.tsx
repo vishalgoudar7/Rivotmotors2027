@@ -1,18 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Faqs } from "@/components/Faqs";
+import { ProductCustomMade } from "@/components/ProductCustomMade";
+import { ProductDesignDetails } from "@/components/ProductDesignDetails";
 import { ProductDetailSupportSections } from "@/components/ProductDetailSupportSections";
-import { ProductFeatureSections } from "@/components/ProductFeatureSections";
-import { ProductHeroSpecs } from "@/components/ProductHeroSpecs";
+import { ProductPerformanceBand } from "@/components/ProductPerformanceBand";
+import { ModelComparison } from "@/components/ModelComparison";
+import { modelComparisonModels, modelComparisonRows } from "@/data/modelComparison";
 import sportImage from "@/asset/Model/Sport_NX100.png";
-
-const actionImages = ["/Story_page/11.webp", "/Story_page/13.webp", "/Story_page/15.webp"];
-
-const rideModes = [
-  { title: "Launch", copy: "Sharp throttle response tuned for fast city gaps and confident starts." },
-  { title: "Hold", copy: "Stable high-speed composure from the LiMFP pack and balanced chassis." },
-  { title: "Recover", copy: "Regen braking and dual discs keep stopping controlled and predictable." },
-];
 
 export function SportModel() {
   return (
@@ -29,77 +24,20 @@ export function SportModel() {
             <Link href="/book-now">Book Now <span aria-hidden="true">{"\u2192"}</span></Link>
             <Link href="/test-ride">Test Ride <span aria-hidden="true">{"\u2192"}</span></Link>
           </div>
-          <div className="sportHeroColors" aria-label="Available colors">
-            <span>Available Colors</span>
-            <div>
-              <i className="sportColor sportColorOrange" />
-              <i className="sportColor sportColorWhite" />
-              <i className="sportColorBlack sportColor" />
-              <i className="sportColor sportColorRed" />
-              <i className="sportColor sportColorGreen" />
-            </div>
-          </div>
         </div>
 
         <div className="sportMachine">
           <Image src={sportImage} alt="RIVOT NX100 Sports" priority sizes="(max-width: 900px) 95vw, 62vw" />
         </div>
-
-        <ProductHeroSpecs />
       </section>
 
-      <ProductFeatureSections />
+      <ProductPerformanceBand modelName="NX100 Sport" image={sportImage} imageAlt="RIVOT NX100 Sport scooter" />
 
-      <section className="sportManifest">
-        <p>SPORT SETUP</p>
-        <h2>A sharper NX100 for riders who like every commute to feel awake.</h2>
-      </section>
+      <ProductDesignDetails />
 
-      <section className="sportModes">
-        {rideModes.map((mode, index) => (
-          <article key={mode.title}>
-            <b>0{index + 1}</b>
-            <h3>{mode.title}</h3>
-            <p>{mode.copy}</p>
-          </article>
-        ))}
-      </section>
+      <ProductCustomMade modelName="NX100 Sport" image={sportImage} imageAlt="RIVOT NX100 Sport scooter colour preview" />
 
-      <section className="sportGallery" aria-label="NX100 Sports action gallery">
-        <figure>
-          <Image src={actionImages[0]} alt="NX100 Sports performance detail" fill sizes="(max-width: 800px) 100vw, 36vw" />
-        </figure>
-        <figure>
-          <Image src={actionImages[1]} alt="NX100 Sports charging detail" fill sizes="(max-width: 800px) 100vw, 28vw" />
-        </figure>
-        <figure>
-          <Image src={actionImages[2]} alt="NX100 Sports riding detail" fill sizes="(max-width: 800px) 100vw, 28vw" />
-        </figure>
-      </section>
-
-      <section className="sportSpecStrip">
-        <div>
-          <span>Battery</span>
-          <b>4.4 kWh LiMFP</b>
-        </div>
-        <div>
-          <span>Charging</span>
-          <b>4 hr home / 1.5 hr flash</b>
-        </div>
-        <div>
-          <span>Control</span>
-          <b>CBS + dual disc brakes</b>
-        </div>
-        <div>
-          <span>Utility</span>
-          <b>55 L boot, 162 mm clearance</b>
-        </div>
-      </section>
-
-      <section className="sportFinal">
-        <h2>Ready for the quicker line?</h2>
-        <Link href="/book-now">Reserve Sports</Link>
-      </section>
+      <ModelComparison rows={modelComparisonRows} models={modelComparisonModels} />
 
       <ProductDetailSupportSections />
 
@@ -143,6 +81,31 @@ export function SportModel() {
           color: var(--sport-ink);
           overflow: hidden;
           font-family: inherit;
+        }
+
+        .sportPage.sportPage :is(h1, h2) {
+          font-size: 48px;
+          font-weight: 800;
+          line-height: 1.02;
+          letter-spacing: 0;
+        }
+
+        .sportPage.sportPage :is(p, small, li) {
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 1.55;
+          letter-spacing: 0;
+        }
+
+        .sportPage.sportPage :is(h3, h4, strong, b) {
+          font-weight: 800;
+          letter-spacing: 0;
+        }
+
+        .sportPage.sportPage :is(a, button) {
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0;
         }
 
         .sportHero {
@@ -591,6 +554,10 @@ export function SportModel() {
         }
 
         @media (max-width: 560px) {
+          .sportPage.sportPage :is(h1, h2) {
+            font-size: 42px;
+          }
+
           .sportCopy {
             padding-left: 0;
           }

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import chargerImage from "@/asset/images/last/Charger.png";
-import catalogImage from "@/asset/connect/Catelog.png";
 
 export function ProductDetailSupportSections() {
   return (
@@ -65,62 +64,64 @@ export function ProductDetailSupportSections() {
       <section className="rivotBestFit" aria-labelledby="best-fit-title">
         <div className="rivotBestFitShell">
           <div className="rivotBestFitHeader">
-            <h2 id="best-fit-title">A best fit for your Scooter</h2>
-            <p>There&apos;s more under the hood.</p>
+            <span aria-hidden="true">06</span>
+            <p>Keep Riding</p>
+            <h2 id="best-fit-title">Your Scooter. Our Support.</h2>
+            <small>Essential products and plans to keep you moving, always.</small>
           </div>
 
           <div className="rivotBestFitGrid">
-            <article className="rivotBestFitCard rivotBestFitAccessories">
-              <Image
-                src={catalogImage}
-                alt=""
-                fill
-                sizes="(max-width: 760px) 100vw, 33vw"
-                className="rivotBestFitAccessoriesBg"
-              />
-              <p className="rivotBestFitEyebrow">Shop</p>
-              <h3>Accessories</h3>
-              <p>There&apos;s more under the hood.</p>
+            <article className="rivotBestFitCard">
+              <span className="rivotBestFitShield rivotBestFitShieldBlue" aria-hidden="true">
+                <svg viewBox="0 0 92 92" fill="none">
+                  <path d="M46 5L76 17V39C76 61.5 63.35 76.35 46 86C28.65 76.35 16 61.5 16 39V17L46 5Z" fill="currentColor" opacity=".1" />
+                  <path d="M46 18L66 26V41C66 56.1 57.8 66.4 46 73C34.2 66.4 26 56.1 26 41V26L46 18Z" fill="currentColor" opacity=".55" />
+                  <path d="M31 46H36L39 36H53L56 46H61" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M36 46V53M56 46V53" stroke="#fff" strokeWidth="4" strokeLinecap="round" />
+                  <circle cx="40" cy="54" r="3" fill="#fff" />
+                  <circle cx="52" cy="54" r="3" fill="#fff" />
+                </svg>
+              </span>
+              <p className="rivotBestFitEyebrow rivotBestFitBlueText">Roadside Assistance</p>
+              <h3>Available 24x7</h3>
+              <p>Help is just a call away</p>
 
-              <Link href="/merchandise" className="rivotBestFitCta">
-                Shop accessories <span aria-hidden="true">{"\u2192"}</span>
-              </Link>
+              <button className="rivotBestFitDisabled" type="button" disabled>Coming Soon</button>
             </article>
 
             <article className="rivotBestFitCard">
-              <p className="rivotBestFitEyebrow rivotBestFitGreen">Extended Warranty</p>
-              <h3>Battery+Motor</h3>
-
               <span className="rivotBestFitShield rivotBestFitShieldGreen" aria-hidden="true">
-                <svg viewBox="0 0 72 72" fill="none">
-                  <path d="M36 7L62 17V34C62 51.4 51.42 62.72 36 68C20.58 62.72 10 51.4 10 34V17L36 7Z" fill="currentColor" opacity=".16" />
-                  <path d="M36 16L53 22.4V34.8C53 47.02 46.28 55.4 36 60C25.72 55.4 19 47.02 19 34.8V22.4L36 16Z" fill="currentColor" />
-                  <path d="M31.4 40.3L27 35.9L23.5 39.4L31.4 47.3L48.8 29.9L45.3 26.4L31.4 40.3Z" fill="#fff" />
-                  <path d="M48 18V13M48 18H53M23 54V50M23 54H27" stroke="#fff" strokeWidth="3" strokeLinecap="round" opacity=".9" />
+                <svg viewBox="0 0 92 92" fill="none">
+                  <path d="M46 5L76 17V39C76 61.5 63.35 76.35 46 86C28.65 76.35 16 61.5 16 39V17L46 5Z" fill="currentColor" opacity=".12" />
+                  <path d="M46 18L66 26V41C66 56.1 57.8 66.4 46 73C34.2 66.4 26 56.1 26 41V26L46 18Z" fill="currentColor" opacity=".68" />
+                  <path d="M45 35L48 30L52 34L58 34L57 40L61 45L56 49L55 55L49 55L45 60L41 55L35 55L34 49L29 45L33 40L32 34L38 34L41 30L45 35Z" stroke="#fff" strokeWidth="3.5" strokeLinejoin="round" />
+                  <path d="M40 45L44 49L51 41" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
+              <p className="rivotBestFitEyebrow rivotBestFitGreenText">Extended Warranty</p>
+              <h3>Battery + Motor</h3>
+              <p>Extended protection, zero worries.</p>
 
-              <Link href="/products" className="rivotBestFitCta">
-                Explore more
+              <Link href="/products" className="rivotBestFitPill">
+                Explore More
               </Link>
             </article>
 
             <article className="rivotBestFitCard rivotBestFitSubscription">
-              <p className="rivotBestFitEyebrow rivotBestFitBlue">Subscription</p>
-              <h3>Simple SuperPack</h3>
-              <p>Extended Warranty &amp; Care for your Simple Scooters.</p>
-
               <span className="rivotBestFitShield rivotBestFitShieldBlue" aria-hidden="true">
-                <svg viewBox="0 0 72 72" fill="none">
-                  <path d="M36 7L62 17V34C62 51.4 51.42 62.72 36 68C20.58 62.72 10 51.4 10 34V17L36 7Z" fill="currentColor" opacity=".15" />
-                  <path d="M36 16L53 22.4V34.8C53 47.02 46.28 55.4 36 60C25.72 55.4 19 47.02 19 34.8V22.4L36 16Z" fill="currentColor" />
-                  <path d="M36 45.8L25.8 36.4C20.1 30.9 28.1 22.9 33.8 28.4L36 30.5L38.2 28.4C43.9 22.9 51.9 30.9 46.2 36.4L36 45.8Z" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M51 20V15M51 20H56" stroke="#fff" strokeWidth="3" strokeLinecap="round" opacity=".9" />
+                <svg viewBox="0 0 92 92" fill="none">
+                  <path d="M46 5L76 17V39C76 61.5 63.35 76.35 46 86C28.65 76.35 16 61.5 16 39V17L46 5Z" fill="currentColor" opacity=".1" />
+                  <path d="M46 18L66 26V41C66 56.1 57.8 66.4 46 73C34.2 66.4 26 56.1 26 41V26L46 18Z" fill="currentColor" opacity=".62" />
+                  <path d="M46 56L35.5 46.3C29.6 40.6 38 32.3 43.8 38L46 40.2L48.2 38C54 32.3 62.4 40.6 56.5 46.3L46 56Z" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M61 27V20M61 27H68" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
                 </svg>
               </span>
+              <p className="rivotBestFitEyebrow rivotBestFitBlueText">Subscription</p>
+              <h3>Simple SuperPack</h3>
+              <p>Keeping your ride in peak condition.</p>
 
-              <Link href="/products" className="rivotBestFitCta">
-                Explore more
+              <Link href="/products" className="rivotBestFitPill">
+                Explore More
               </Link>
             </article>
           </div>
@@ -286,186 +287,230 @@ export function ProductDetailSupportSections() {
         }
 
         .rivotBestFit {
-          padding: clamp(96px, 8vw, 124px) clamp(16px, 4vw, 48px) clamp(50px, 5vw, 72px);
-          background: #f7f7f5;
+          position: relative;
+          padding: clamp(54px, 6vw, 82px) clamp(16px, 4vw, 48px) clamp(54px, 6vw, 82px);
+          background:
+            radial-gradient(circle at 12% 8%, rgba(239, 116, 48, .12), transparent 28%),
+            radial-gradient(circle at 88% 82%, rgba(239, 116, 48, .08), transparent 32%),
+            linear-gradient(180deg, #fff 0%, #fbfaf8 54%, #f6f3ef 100%);
           color: #151515;
+          overflow: hidden;
+        }
+
+        .rivotBestFit::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(132deg, transparent 0 58%, rgba(239, 116, 48, .08) 58.15% 58.35%, transparent 58.55%),
+            repeating-linear-gradient(90deg, rgba(17, 17, 17, .025) 0 1px, transparent 1px 112px);
+          pointer-events: none;
         }
 
         .rivotBestFitShell {
-          width: min(100%, 1320px);
+          position: relative;
+          width: min(100%, 1160px);
           margin: 0 auto;
         }
 
         .rivotBestFitHeader {
+          position: relative;
           text-align: center;
+        }
+
+        .rivotBestFitHeader > span {
+          position: absolute;
+          left: 0;
+          top: -14px;
+          color: rgba(239, 116, 48, .12);
+          font-size: clamp(42px, 5vw, 66px);
+          font-weight: 900;
+          line-height: 1;
+        }
+
+        .rivotBestFitHeader > p {
+          display: inline-flex;
+          align-items: center;
+          gap: 13px;
+          margin: 0 0 10px;
+          color: #ef7430;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: .24em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        .rivotBestFitHeader > p::before,
+        .rivotBestFitHeader > p::after {
+          content: "";
+          width: 20px;
+          height: 2px;
+          background: #ef7430;
         }
 
         .rivotBestFitHeader h2 {
           margin: 0;
-          color: #080808;
-          font-size: clamp(34px, 3.5vw, 46px);
+          color: #10161a;
+          font-size: clamp(32px, 3.5vw, 48px);
           font-weight: 900;
-          line-height: .95;
-          letter-spacing: -.055em;
+          line-height: 1.05;
+          letter-spacing: 0;
         }
 
-        .rivotBestFitHeader p {
-          margin: 12px 0 0;
-          color: #777d84;
+        .rivotBestFitHeader small {
+          display: block;
+          margin: 8px 0 0;
+          color: #606c74;
           font-size: 15px;
-          font-weight: 750;
+          font-weight: 600;
           line-height: 1.35;
         }
 
         .rivotBestFitGrid {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: clamp(18px, 2vw, 26px);
-          margin-top: clamp(34px, 3.5vw, 48px);
+          gap: clamp(18px, 2vw, 28px);
+          margin-top: clamp(28px, 3.2vw, 42px);
           align-items: stretch;
         }
 
         .rivotBestFitCard {
           position: relative;
-          display: flex;
-          min-height: clamp(340px, 23vw, 410px);
-          flex-direction: column;
-          align-items: center;
-          padding: clamp(32px, 2.8vw, 42px) clamp(22px, 2.2vw, 30px) clamp(30px, 2.6vw, 36px);
-          border: 1px solid rgba(255, 255, 255, .1);
-          border-radius: 8px;
-          background: #111313;
-          box-shadow: 0 18px 40px rgba(17, 19, 19, .12);
+          display: grid;
+          min-height: 330px;
+          grid-template-rows: 130px auto auto 1fr auto;
+          justify-items: center;
+          align-items: start;
+          padding: 34px 28px 32px;
+          border: 1px solid rgba(17, 17, 17, .045);
+          border-radius: 18px;
+          background: rgba(255, 255, 255, .88);
+          box-shadow: 0 18px 48px rgba(24, 28, 31, .06);
           text-align: center;
           overflow: hidden;
+          transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
         }
 
-        .rivotBestFitAccessoriesBg {
-          object-fit: contain;
-          object-position: center;
-          opacity: .68;
-        }
-
-        .rivotBestFitAccessories::before {
+        .rivotBestFitCard::before {
           content: "";
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, rgba(8, 9, 9, .9), rgba(8, 9, 9, .56));
+          background:
+            radial-gradient(circle at 50% 0%, rgba(239, 116, 48, .055), transparent 42%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(239, 116, 48, .018));
           pointer-events: none;
         }
 
-        .rivotBestFitAccessories > *:not(.rivotBestFitAccessoriesBg) {
-          position: relative;
-          z-index: 1;
-        }
-
-        .rivotBestFitEyebrow {
-          margin: 0 0 12px;
-          color: #ef7430;
-          font-size: 12px;
-          font-weight: 900;
-          line-height: 1.1;
-          letter-spacing: .42em;
-          text-transform: uppercase;
-        }
-
-        .rivotBestFitGreen {
-          color: #7ee7aa;
-        }
-
-        .rivotBestFitBlue {
-          color: #9abaff;
-        }
-
-        .rivotBestFitCard h3 {
-          margin: 0;
-          color: #fff;
-          font-size: clamp(24px, 1.75vw, 32px);
-          font-weight: 850;
-          line-height: 1.08;
-          letter-spacing: -.04em;
-        }
-
-        .rivotBestFitCard > p:not(.rivotBestFitEyebrow) {
-          max-width: 300px;
-          margin: 10px 0 0;
-          color: rgba(255, 255, 255, .66);
-          font-size: 14px;
-          font-weight: 750;
-          line-height: 1.35;
-        }
-
-        .rivotBestFitCta {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          min-width: 142px;
-          min-height: 48px;
-          margin-top: auto;
-          padding: 0 24px;
-          border: 1px solid #ef7430;
-          border-radius: 8px;
-          background: #ef7430;
-          color: #fff;
-          font-size: 14px;
-          font-weight: 850;
-          line-height: 1;
-          transition: transform .2s ease, background .2s ease;
-        }
-
-        .rivotBestFitCta:hover {
-          background: #c85a22;
-          border-color: #c85a22;
-          transform: translateY(-1px);
+        .rivotBestFitCard:hover {
+          transform: translateY(-3px);
+          border-color: rgba(239, 116, 48, .18);
+          box-shadow: 0 24px 54px rgba(40, 27, 18, .12);
         }
 
         .rivotBestFitShield {
+          position: relative;
+          z-index: 1;
           display: grid;
-          width: clamp(92px, 7vw, 112px);
-          height: clamp(92px, 7vw, 112px);
+          width: 108px;
+          height: 108px;
           place-items: center;
-          margin: auto 0 clamp(26px, 2.6vw, 36px);
+          margin: 0 auto 14px;
+          color: #5e86ff;
+          filter: drop-shadow(0 18px 26px rgba(94, 134, 255, .18));
         }
 
         .rivotBestFitShield svg {
           width: 100%;
           height: 100%;
           overflow: visible;
-          filter: drop-shadow(0 18px 18px rgba(0, 0, 0, .08));
         }
 
         .rivotBestFitShieldGreen {
-          color: #45df82;
+          color: #29d86f;
+          filter: drop-shadow(0 18px 26px rgba(41, 216, 111, .18));
         }
 
         .rivotBestFitShieldBlue {
-          color: #5b8dff;
+          color: #5e86ff;
         }
 
-        .rivotBestFitSubscription {
-          min-height: clamp(340px, 23vw, 410px);
-          justify-content: flex-start;
-          background: #111515;
+        .rivotBestFitCard h3 {
+          position: relative;
+          z-index: 1;
+          margin: 14px 0 0;
+          color: #10161a;
+          font-size: 26px;
+          font-weight: 900;
+          line-height: 1.08;
+          letter-spacing: 0;
         }
 
-        .rivotBestFitSubscription .rivotBestFitEyebrow {
-          margin-bottom: 10px;
-          color: #8babff;
-          font-size: 10px;
-          letter-spacing: .5em;
+        .rivotBestFitCard > p {
+          position: relative;
+          z-index: 1;
+          max-width: 260px;
+          margin: 12px 0 0;
+          color: #606c74;
+          font-size: 14px;
+          font-weight: 650;
+          line-height: 1.35;
         }
 
-        .rivotBestFitSubscription > p:not(.rivotBestFitEyebrow) {
-          max-width: 270px;
-          margin-top: 8px;
-          color: rgba(255, 255, 255, .82);
-          font-size: 13px;
-          line-height: 1.28;
+        .rivotBestFitEyebrow {
+          position: relative;
+          z-index: 1;
+          margin: 4px 0 0;
+          color: #ef7430;
+          font-size: 11px;
+          font-weight: 900;
+          line-height: 1.1;
+          letter-spacing: .34em;
+          text-transform: uppercase;
         }
 
-        .rivotBestFitSubscription .rivotBestFitShield {
-          width: clamp(84px, 6.2vw, 104px);
-          height: clamp(84px, 6.2vw, 104px);
+        .rivotBestFitBlueText {
+          color: #5e86ff;
+        }
+
+        .rivotBestFitGreenText {
+          color: #16c766;
+        }
+
+        .rivotBestFitPill,
+        .rivotBestFitDisabled {
+          position: relative;
+          z-index: 1;
+          align-self: end;
+          display: inline-flex;
+          min-width: 140px;
+          min-height: 48px;
+          align-items: center;
+          justify-content: center;
+          margin-top: 34px;
+          border: 0;
+          border-radius: 999px;
+          background: #f2f2f2;
+          color: #10161a;
+          font: inherit;
+          font-size: 14px;
+          font-weight: 750;
+          line-height: 1;
+          box-shadow: inset 0 0 0 1px rgba(17, 17, 17, .02);
+          transition: transform .2s ease, background .2s ease, color .2s ease;
+        }
+
+        .rivotBestFitDisabled {
+          color: #aab0b4;
+          cursor: not-allowed;
+        }
+
+        .rivotBestFitPill:hover,
+        .rivotBestFitPill:focus-visible {
+          background: #ef7430;
+          color: #fff;
+          outline: none;
+          transform: translateY(-1px);
         }
 
         @media (max-width: 900px) {
@@ -494,7 +539,7 @@ export function ProductDetailSupportSections() {
           }
 
           .rivotBestFit {
-            padding: 42px 20px 50px;
+            padding: 48px 20px 54px;
           }
 
           .rivotBestFitGrid {
@@ -504,7 +549,7 @@ export function ProductDetailSupportSections() {
           }
 
           .rivotBestFitCard {
-            min-height: 360px;
+            min-height: 320px;
           }
         }
 
@@ -536,11 +581,11 @@ export function ProductDetailSupportSections() {
           }
 
           .rivotBestFit {
-            padding: 58px 12px 46px;
+            padding: 46px 12px;
           }
 
           .rivotBestFitHeader h2 {
-            font-size: clamp(30px, 9vw, 40px);
+            font-size: clamp(28px, 9vw, 36px);
           }
 
           .rivotBestFitGrid {
@@ -549,35 +594,18 @@ export function ProductDetailSupportSections() {
           }
 
           .rivotBestFitCard {
-            min-height: 320px;
-            padding: 28px 18px 26px;
+            min-height: 300px;
+            padding: 28px 18px;
             border-radius: 16px;
           }
 
-          .rivotBestFitEyebrow {
-            font-size: 11px;
-            letter-spacing: .34em;
-          }
-
-          .rivotBestFitCta {
-            min-width: 152px;
-            min-height: 46px;
-            margin-top: auto;
-            font-size: 14px;
-          }
-
           .rivotBestFitShield {
-            margin-bottom: 26px;
+            width: 96px;
+            height: 96px;
           }
 
-          .rivotBestFitSubscription {
-            min-height: 320px;
-          }
-
-          .rivotBestFitSubscription .rivotBestFitShield {
-            width: 82px;
-            height: 82px;
-            margin: auto 0 24px;
+          .rivotBestFitCard h3 {
+            font-size: 23px;
           }
         }
       `}</style>
