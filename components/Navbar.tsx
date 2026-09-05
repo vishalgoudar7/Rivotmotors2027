@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import modelPro from "@/asset/Model/Pro.png";
 import modelSport from "@/asset/Model/Sport_NX100.png";
-import logoBlack from "@/asset/images/RIVOT New Logo Back.png";
-import logoWhite from "@/asset/images/RIVOT New Logo White.png";
+import navbarLogo from "@/asset/images/Newlogo.png";
 
 const navItems = [
   { label: "Merchandise", href: "/merchandise" },
@@ -43,12 +43,14 @@ const productModels = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [reachOpen, setReachOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("light");
-  const logo = theme === "light" ? logoBlack : logoWhite;
+  const isHomePage = pathname === "/";
+  const logo = navbarLogo;
 
   useEffect(() => {
     setTheme("light");
@@ -68,7 +70,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="rivotHeader">
+    <header className={`rivotHeader${isHomePage ? " isHomeHeader" : ""}`}>
       <Link href="/" className="rivotBrand" aria-label="Rivot">
         <span className="rivotBrandMark">
           <Image src={logo} alt="RIVOT" priority />
@@ -763,6 +765,165 @@ export function Navbar() {
     transform: translateX(12px);
   }
 
+  .rivotHeader.isHomeHeader {
+    height: 74px;
+    padding: 0 clamp(28px, 4vw, 50px);
+    gap: clamp(42px, 9vw, 160px);
+    background: transparent;
+    color: #fff;
+  }
+
+  .rivotHeader.isHomeHeader .rivotBrandMark {
+    width: 150px;
+    height: 48px;
+  }
+
+  .rivotHeader.isHomeHeader .rivotHeaderLinks {
+    justify-self: center;
+    gap: clamp(34px, 4vw, 54px);
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotBrand,
+  .rivotHeader.isHomeHeader .rivotBrand {
+    color: #fff;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotHeaderLinks a,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotProductsButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotCommunityButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotExploreButton,
+  .rivotHeader.isHomeHeader .rivotHeaderLinks a,
+  .rivotHeader.isHomeHeader .rivotProductsButton,
+  .rivotHeader.isHomeHeader .rivotCommunityButton,
+  .rivotHeader.isHomeHeader .rivotExploreButton {
+    color: rgba(255, 255, 255, .92);
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotHeaderLinks a:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotProductsButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotProductsButton[aria-expanded="true"],
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotCommunityButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotCommunityButton[aria-expanded="true"],
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotExploreButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotExploreButton[aria-expanded="true"],
+  .rivotHeader.isHomeHeader .rivotHeaderLinks a:hover,
+  .rivotHeader.isHomeHeader .rivotProductsButton:hover,
+  .rivotHeader.isHomeHeader .rivotProductsButton[aria-expanded="true"],
+  .rivotHeader.isHomeHeader .rivotCommunityButton:hover,
+  .rivotHeader.isHomeHeader .rivotCommunityButton[aria-expanded="true"],
+  .rivotHeader.isHomeHeader .rivotExploreButton:hover,
+  .rivotHeader.isHomeHeader .rivotExploreButton[aria-expanded="true"] {
+    color: rgba(255, 255, 255, .9);
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotThemeToggle,
+  .rivotHeader.isHomeHeader .rivotThemeToggle {
+    width: 58px;
+    min-width: 58px;
+    height: 29px;
+    padding: 0;
+    border-radius: 999px;
+    border-color: rgba(255, 255, 255, .22);
+    background: #ff6b00;
+    color: #fff;
+    box-shadow: 0 16px 34px rgba(255, 107, 0, .24);
+  }
+
+  .rivotHeader.isHomeHeader .rivotThemeToggle b {
+    display: none;
+  }
+
+  .rivotHeader.isHomeHeader .rivotThemeToggle i {
+    position: absolute;
+    inset: 0;
+    width: 58px;
+    height: 29px;
+    border-radius: 999px;
+    background: #ff6b00;
+    box-shadow: none;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotThemeToggle i::before,
+  .rivotHeader.isHomeHeader .rivotThemeToggle i::before {
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    background: #fff;
+    transform: translateX(29px);
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotBook,
+  .rivotHeader.isHomeHeader .rivotBook {
+    display: none;
+  }
+
+  .rivotHeader.isHomeHeader .rivotCommunityMenu,
+  .rivotHeader.isHomeHeader .rivotExploreMenu {
+    border-color: rgba(255, 255, 255, .28);
+    background: rgba(0, 0, 0, .12);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, .18);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotCommunityMenu a,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotExploreMenu a,
+  .rivotHeader.isHomeHeader .rivotCommunityMenu a,
+  .rivotHeader.isHomeHeader .rivotExploreMenu a {
+    color: rgba(255, 255, 255, .94);
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotCommunityMenu a:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotExploreMenu a:hover,
+  .rivotHeader.isHomeHeader .rivotCommunityMenu a:hover,
+  .rivotHeader.isHomeHeader .rivotExploreMenu a:hover {
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+  }
+
+  .rivotHeader.isHomeHeader .rivotProductsMenuInner {
+    border-color: rgba(255, 255, 255, .28);
+    background: rgba(0, 0, 0, .12);
+    color: #fff;
+    box-shadow: 0 22px 54px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  }
+
+  .rivotHeader.isHomeHeader .rivotProductsMenuInner h2 {
+    color: #fff;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotProductCard,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotProductCard span,
+  .rivotHeader.isHomeHeader .rivotProductCard,
+  .rivotHeader.isHomeHeader .rivotProductCard span {
+    color: #fff;
+  }
+
+  .rivotHeader.isHomeHeader .rivotProductCard {
+    border-color: rgba(255, 255, 255, .24);
+    background: rgba(0, 0, 0, .08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18);
+  }
+
+  .rivotHeader.isHomeHeader .rivotProductCard:hover {
+    background: rgba(255, 255, 255, .1);
+    box-shadow:
+      0 18px 36px rgba(0, 0, 0, .18),
+      inset 0 1px 0 rgba(255, 255, 255, .2);
+  }
+
+  .rivotHeader.isHomeHeader .rivotProductTagline,
+  .rivotHeader.isHomeHeader .rivotProductActions span:last-child {
+    color: rgba(255, 255, 255, .78);
+  }
+
   .rivotBook:hover {
     background: #ef7430;
     border-color: #ef7430;
@@ -907,8 +1068,14 @@ export function Navbar() {
       display: grid;
       width: 38px;
       height: 38px;
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      z-index: 1010;
       place-items: center;
       gap: 4px;
+      margin-left: auto;
+      justify-self: end;
 
       border: 1px solid rgba(255, 255, 255, 0.55);
       border-radius: 50%;
@@ -1025,6 +1192,124 @@ export function Navbar() {
     .rivotMenuButton {
       width: 36px;
       height: 36px;
+    }
+  }
+
+  .rivotHeader.isHomeHeader .rivotThemeToggle {
+    position: relative;
+    width: 58px !important;
+    min-width: 58px !important;
+    height: 29px !important;
+    padding: 0 !important;
+    overflow: hidden;
+    border-radius: 999px !important;
+    background: #ff6b00 !important;
+    border-color: rgba(255, 255, 255, .22) !important;
+    box-shadow: 0 16px 34px rgba(255, 107, 0, .24) !important;
+  }
+
+  .rivotHeader.isHomeHeader .rivotThemeToggle span {
+    position: absolute;
+    left: 12px;
+    top: 7px;
+    z-index: 1;
+    width: 15px !important;
+    height: 15px !important;
+    color: #fff;
+  }
+
+  .rivotHeader.isHomeHeader .rivotThemeToggle svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .rivotHeader.isHomeHeader .rivotThemeToggle i {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0;
+    width: 58px !important;
+    height: 29px !important;
+    border-radius: 999px !important;
+    background: #ff6b00 !important;
+  }
+
+  .rivotHeader.isHomeHeader .rivotThemeToggle i::before {
+    top: 3px !important;
+    left: 3px !important;
+    width: 24px !important;
+    height: 24px !important;
+    transform: translateX(29px) !important;
+  }
+
+  @media (max-width: 700px) {
+    .rivotHeader.isHomeHeader {
+      grid-template-columns: auto 1fr auto;
+      height: 104px;
+      align-items: start;
+      padding: 10px 30px 0;
+      background: transparent;
+    }
+
+    .rivotHeader.isHomeHeader .rivotBrand {
+      align-self: start;
+    }
+
+    .rivotHeader.isHomeHeader .rivotBrandMark {
+      width: 208px;
+      height: 64px;
+    }
+
+    .rivotHeader.isHomeHeader .rivotHeaderActions,
+    .rivotHeader.isHomeHeader .rivotThemeToggle {
+      display: none !important;
+    }
+
+    .rivotHeader.isHomeHeader .rivotMenuButton {
+      display: grid;
+      width: 58px;
+      height: 58px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #fff;
+      padding: 8px;
+      gap: 7px;
+    }
+
+    html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotMenuButton {
+      border: 0;
+      color: #fff;
+    }
+
+    .rivotHeader.isHomeHeader .rivotMenuButton span {
+      width: 42px;
+      height: 5px;
+      border-radius: 999px;
+      background: currentColor;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .28);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .rivotHeader.isHomeHeader {
+      height: 92px;
+      padding: 8px 22px 0;
+    }
+
+    .rivotHeader.isHomeHeader .rivotBrandMark {
+      width: 154px;
+      height: 48px;
+    }
+
+    .rivotHeader.isHomeHeader .rivotMenuButton {
+      width: 48px;
+      height: 48px;
+      gap: 6px;
+    }
+
+    .rivotHeader.isHomeHeader .rivotMenuButton span {
+      width: 34px;
+      height: 4px;
     }
   }
 `}</style>

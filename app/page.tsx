@@ -3,12 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FileText, Play } from "lucide-react";
-import heroFeatureDark from "@/asset/images/Hero/1 (3).png";
-import heroFeatureLight from "@/asset/images/Hero/3 (3).png";
-import heroFeatureStudio from "@/asset/images/Hero/ChatGPT Image Aug 26, 2026, 03_15_38 PM.png";
-import heroFolderDark from "@/asset/images/Hero/Hero1.png";
-import heroFolderLight from "@/asset/images/Hero/Hero2.png";
+import heroSpotlightImageOne from "@/asset/newphotos/1.jpg";
+import heroSpotlightImageTwo from "@/asset/newphotos/2.jpg";
+import heroSpotlightImageThree from "@/asset/newphotos/3.jpg";
 import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
 import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
 import geofencingAppImage from "@/asset/images/App/Geofencing.png";
@@ -113,14 +110,6 @@ const rideInsightFeatures = [
   ["TPMS (Tire Pressure Monitoring System)", "Stay informed about tire pressure.", "history", tpmsAppImage],
 ] as const;
 
-const heroCarouselImages = [
-  heroFeatureDark,
-  heroFeatureStudio,
-  heroFeatureLight,
-  heroFolderDark,
-  heroFolderLight,
-] as const;
-
 const productNavigationItems = [
   { id: "key-features", label: "Key Features" },
   { id: "design", label: "Design" },
@@ -129,6 +118,12 @@ const productNavigationItems = [
   { id: "connectivity", label: "Connectivity" },
   { id: "ride-insights", label: "Ride Insights" },
   { id: "engineering", label: "Engineering" },
+] as const;
+
+const heroSpotlightImages = [
+  heroSpotlightImageOne,
+  heroSpotlightImageTwo,
+  heroSpotlightImageThree,
 ] as const;
 
 function EngineeringIcon({ type }: { type: string }) {
@@ -192,11 +187,11 @@ export default function Home() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
-    const heroImageInterval = window.setInterval(() => {
-      setSelectedHeroImage((currentImage) => (currentImage + 1) % heroCarouselImages.length);
-    }, 5000);
+    const heroTimer = window.setInterval(() => {
+      setSelectedHeroImage((currentImage) => (currentImage + 1) % heroSpotlightImages.length);
+    }, 8000);
 
-    return () => window.clearInterval(heroImageInterval);
+    return () => window.clearInterval(heroTimer);
   }, []);
 
   useEffect(() => {
@@ -257,10 +252,10 @@ export default function Home() {
   return (
     <>
       <section className="rivotHero">
-        {heroCarouselImages.map((heroImage, index) => (
+        {heroSpotlightImages.map((heroImage, index) => (
           <Image
             src={heroImage}
-            alt={index === 0 ? "Rivot NX100 hero image" : ""}
+            alt={index === 0 ? "RIVOT NX100 scooter under a dramatic spotlight" : ""}
             fill
             priority={index === 0}
             sizes="100vw"
@@ -269,14 +264,6 @@ export default function Home() {
           />
         ))}
         <div className="rivotHeroShade" aria-hidden="true" />
-        <div className="rivotHeroPointers" aria-hidden="true">
-          {heroCarouselImages.map((heroImage, index) => (
-            <span
-              className={index === selectedHeroImage ? "isActive" : ""}
-              key={`pointer-${heroImage.src}`}
-            />
-          ))}
-        </div>
 
         <div className="rivotHeroContent">
           <p className="rivotEyebrow">Meet the future</p>
@@ -432,19 +419,31 @@ export default function Home() {
 
           <div className="rivotHeroButtons">
             <Link href="/book-now" className="rivotPriceBook">
-              <Play aria-hidden="true" />
               Book Now
             </Link>
             <Link href="/test-ride" className="rivotTestRide">
-              <FileText aria-hidden="true" />
               Test Ride
             </Link>
           </div>
 
           <div className="rivotHeroNotes">
             <strong>Starting at just ₹1,29,000*</strong>
-            <span>EMI starting at Rs 3,999/month*</span>
-            <span>Easy Financing Options</span>
+            <span className="rivotHeroSubLine">
+              EMI starting at Rs 3,999/month* <i aria-hidden="true">|</i> Easy Financing Options
+            </span>
+          </div>
+
+          <div className="rivotHeroPointers" aria-label="Hero slide navigation">
+            {heroSpotlightImages.map((heroImage, index) => (
+              <button
+                type="button"
+                aria-label={`Go to slide ${index + 1}`}
+                aria-pressed={index === selectedHeroImage}
+                onClick={() => setSelectedHeroImage(index)}
+                className={index === selectedHeroImage ? "isActive" : ""}
+                key={`hero-pointer-${heroImage.src}`}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -1168,44 +1167,41 @@ export default function Home() {
         }
       }
         .rivotHero {
-  position: relative;
-  height: 100vh;
-  min-height: 700px;
-  margin-top: 0;
-
-  display: flex;
-  align-items: flex-start;
-  overflow: hidden;
-
-  background: #0d1017;
-  color: #fff;
-}
+          position: relative;
+          display: grid;
+          height: 100vh;
+          min-height: 700px;
+          margin-top: 0;
+          overflow: hidden;
+          background: #06080d;
+          color: #fff;
+        }
 
         .rivotHeroImage {
           object-fit: cover;
-          object-position: 68% center;
+          object-position: center;
           opacity: 0;
-          transform: scale(1.06);
-          transition: opacity 1s ease, transform 6s ease;
+          transform: scale(1.02);
+          transition: opacity .9s ease, transform 5s ease;
         }
 
         .rivotHeroImage.isActive {
           opacity: 1;
-          transform: scale(1.035);
+          transform: scale(1);
         }
 
         .rivotHeroShade {
           position: absolute;
           inset: 0;
           background:
-            linear-gradient(90deg, rgba(1, 3, 5, .98) 0%, rgba(1, 3, 5, .86) 31%, rgba(1, 3, 5, .28) 54%, rgba(1, 3, 5, .16) 72%, rgba(1, 3, 5, .45) 100%),
-            linear-gradient(180deg, rgba(1, 3, 5, .34) 0%, rgba(1, 3, 5, .04) 42%, rgba(1, 3, 5, .72) 100%);
+            linear-gradient(180deg, rgba(2, 4, 8, .58) 0%, rgba(2, 4, 8, .05) 42%, rgba(2, 4, 8, .72) 100%),
+            linear-gradient(90deg, rgba(2, 4, 8, .2) 0%, rgba(2, 4, 8, 0) 48%, rgba(2, 4, 8, .26) 100%);
         }
 
         html[data-rivot-theme="light"] .rivotHeroShade {
           background:
-            linear-gradient(90deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.8) 32%, rgba(255,255,255,.16) 58%, rgba(255,255,255,.04) 100%),
-            linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.02) 52%, rgba(255,255,255,.62) 100%);
+            linear-gradient(180deg, rgba(2, 4, 8, .46) 0%, rgba(2, 4, 8, .02) 42%, rgba(2, 4, 8, .68) 100%),
+            linear-gradient(90deg, rgba(2, 4, 8, .18) 0%, rgba(2, 4, 8, 0) 48%, rgba(2, 4, 8, .24) 100%);
         }
 
         html[data-rivot-theme="light"] .rivotHero,
@@ -1257,41 +1253,57 @@ export default function Home() {
           display: flex;
           align-items: center;
           gap: 10px;
-          pointer-events: none;
+          pointer-events: auto;
         }
 
-        .rivotHeroPointers span {
+        .rivotHeroPointers button {
           display: block;
           width: clamp(48px, 4.2vw, 76px);
           height: 7px;
+          padding: 0;
+          border: 0;
           border-radius: 999px;
           background: rgba(255, 255, 255, .34);
+          cursor: pointer;
           box-shadow: inset 0 1px 0 rgba(255, 255, 255, .32);
           transition: background .35s ease, width .35s ease, opacity .35s ease;
         }
 
-        .rivotHeroPointers span.isActive {
+        .rivotHeroPointers button.isActive {
           width: clamp(58px, 5vw, 88px);
           background: rgba(255, 255, 255, .94);
         }
 
-        html[data-rivot-theme="light"] .rivotHeroPointers span {
+        html[data-rivot-theme="light"] .rivotHeroPointers button {
           background: rgba(255, 255, 255, .42);
         }
 
-        html[data-rivot-theme="light"] .rivotHeroPointers span.isActive {
+        html[data-rivot-theme="light"] .rivotHeroPointers button.isActive {
           background: #fff;
         }
 
-.rivotHeroContent {
-  position: relative;
-  z-index: 1;
-  width: min(50vw, 680px);
-  margin-top: clamp(105px, 12vh, 125px);
-  margin-left: clamp(48px, 3.2vw, 62px);
-  text-align: left;
-  text-shadow: none;
-}
+        .rivotHeroContent {
+          position: absolute;
+          left: 50%;
+          bottom: clamp(44px, 7vh, 70px);
+          z-index: 2;
+          display: flex;
+          width: min(92vw, 430px);
+          flex-direction: column;
+          align-items: center;
+          margin: 0;
+          text-align: center;
+          text-shadow: 0 4px 24px rgba(0, 0, 0, .55);
+          transform: translateX(-50%);
+        }
+
+        .rivotEyebrow,
+        .rivotHeroTitle,
+        .rivotHero h2,
+        .rivotHeroCopy,
+        .rivotHeroSpecs {
+          display: none;
+        }
 
         .rivotEyebrow {
           margin: 0;
@@ -1398,8 +1410,11 @@ export default function Home() {
         .rivotHeroButtons {
           display: flex;
           align-items: center;
-          justify-content: flex-start;
-          gap: 18px;
+          justify-content: center;
+          order: 2;
+          gap: 14px;
+          width: 100%;
+          margin-top: 18px;
         }
 
         .rivotTestRide,
@@ -1407,35 +1422,36 @@ export default function Home() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
-          min-width: 180px;
-          min-height: 50px;
-          padding: 0 24px;
-          border: 1px solid rgba(239, 116, 48, .45);
+          min-width: 154px;
+          min-height: 46px;
+          padding: 0 26px;
+          border: 1px solid rgba(255, 255, 255, .55);
           border-radius: 999px;
           font-size: 15px;
           font-weight: 800;
-          box-shadow: none;
+          box-shadow: 0 12px 28px rgba(0, 0, 0, .16);
           text-decoration: none;
+          backdrop-filter: blur(10px);
         }
 
         .rivotTestRide {
-          background: rgba(255, 255, 255, .92);
-          color: #c45a21;
+          background: rgba(255, 255, 255, .06);
+          color: #fff;
         }
 
         .rivotPriceBook {
-          background: #ef7430;
-          border-color: #ef7430;
-          color: #fff;
-          box-shadow: 0 12px 28px rgba(239, 116, 48, .3);
+          background: #fff;
+          border-color: #fff;
+          color: #050505;
+          box-shadow: 0 14px 30px rgba(0, 0, 0, .18);
           transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
         }
 
         .rivotPriceBook:hover,
         .rivotPriceBook:focus-visible {
-          border-color: #d86124;
-          background: #d86124;
+          border-color: #ef7430;
+          background: #ef7430;
+          color: #fff;
           box-shadow: 0 14px 28px rgba(239, 116, 48, .32);
           outline: none;
           transform: translateY(-3px);
@@ -1443,9 +1459,9 @@ export default function Home() {
 
         .rivotTestRide:hover,
         .rivotTestRide:focus-visible {
-          border-color: #ef7430;
-          background: rgba(239, 116, 48, .12);
-          color: #b84f1c;
+          border-color: #fff;
+          background: rgba(255, 255, 255, .16);
+          color: #fff;
           outline: none;
           transform: translateY(-2px);
         }
@@ -1465,18 +1481,21 @@ export default function Home() {
         .rivotHeroNotes {
           display: flex;
           flex-wrap: wrap;
+          justify-content: center;
+          order: 1;
           row-gap: 8px;
-          column-gap: 28px;
-          margin-top: 16px;
-          color: rgba(255, 255, 255, .72);
-          font-size: 14px;
+          column-gap: 12px;
+          margin-top: 0;
+          color: rgba(255, 255, 255, .82);
+          font-size: 11px;
           font-weight: 700;
+          line-height: 1.2;
         }
 
         .rivotHeroNotes strong {
           flex: 0 0 100%;
           color: currentColor;
-          font-size: 18px;
+          font-size: 23px;
           font-weight: 900;
           line-height: 1.2;
         }
@@ -4499,12 +4518,12 @@ export default function Home() {
             gap: 8px;
           }
 
-          .rivotHeroPointers span {
+          .rivotHeroPointers button {
             width: 42px;
             height: 6px;
           }
 
-          .rivotHeroPointers span.isActive {
+          .rivotHeroPointers button.isActive {
             width: 54px;
           }
 
@@ -4842,14 +4861,15 @@ export default function Home() {
           }
 
           .rivotHeroImage {
-            object-position: 64% center;
-            transform: scale(1.015);
+            object-position: center center;
+            transform: scale(1);
           }
 
-          html[data-rivot-theme="light"] .rivotHeroShade {
+          html[data-rivot-theme="light"] .rivotHeroShade,
+          html[data-theme="light"] .rivotHeroShade {
             background:
-              linear-gradient(90deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.72) 25%, rgba(255,255,255,.08) 55%, rgba(255,255,255,.02) 100%),
-              linear-gradient(180deg, rgba(255,255,255,.48) 0%, rgba(255,255,255,.04) 46%, rgba(247,244,239,.9) 100%);
+              linear-gradient(90deg, rgba(2, 4, 8, .22) 0%, rgba(2, 4, 8, 0) 52%, rgba(2, 4, 8, .24) 100%),
+              linear-gradient(180deg, rgba(2, 4, 8, .22) 0%, rgba(2, 4, 8, .08) 46%, rgba(2, 4, 8, .84) 100%);
           }
 
           .rivotHeroContent {
@@ -4956,12 +4976,12 @@ export default function Home() {
             gap: 6px;
           }
 
-          .rivotHeroPointers span {
+          .rivotHeroPointers button {
             width: 24px;
             height: 4px;
           }
 
-          .rivotHeroPointers span.isActive {
+          .rivotHeroPointers button.isActive {
             width: 32px;
           }
 
@@ -5481,6 +5501,321 @@ export default function Home() {
             margin: auto 0 24px;
           }
 
+        }
+
+        .rivotHero .rivotEyebrow,
+        .rivotHero .rivotHeroTitle,
+        .rivotHero h2,
+        .rivotHero .rivotHeroCopy,
+        .rivotHero .rivotHeroSpecs {
+          display: none !important;
+        }
+
+        .rivotHero .rivotHeroImage {
+          opacity: 0 !important;
+          transform: scale(1) !important;
+          object-position: center center !important;
+          transition: opacity .9s ease !important;
+        }
+
+        .rivotHero .rivotHeroImage.isActive {
+          opacity: 1 !important;
+          transform: scale(1) !important;
+        }
+
+        .rivotHero .rivotHeroContent {
+          position: absolute !important;
+          left: 50% !important;
+          right: auto !important;
+          top: auto !important;
+          bottom: clamp(42px, 7vh, 68px) !important;
+          display: flex !important;
+          width: min(92vw, 430px) !important;
+          max-width: none !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          text-align: center !important;
+          transform: translateX(-50%) !important;
+        }
+
+        .rivotHero .rivotHeroShade,
+        html[data-rivot-theme="light"] .rivotHero .rivotHeroShade,
+        html[data-theme="light"] .rivotHero .rivotHeroShade,
+        html[data-rivot-theme="dark"] .rivotHero .rivotHeroShade,
+        html[data-theme="dark"] .rivotHero .rivotHeroShade {
+          background:
+            linear-gradient(180deg, rgba(2, 4, 8, .26) 0%, rgba(2, 4, 8, .1) 42%, rgba(2, 4, 8, .84) 100%) !important,
+            linear-gradient(90deg, rgba(2, 4, 8, .22) 0%, rgba(2, 4, 8, 0) 52%, rgba(2, 4, 8, .22) 100%) !important;
+        }
+
+        .rivotHero .rivotHeroNotes {
+          order: 1 !important;
+          justify-content: center !important;
+          margin: 0 !important;
+          color: rgba(255, 255, 255, .82) !important;
+          text-align: center !important;
+        }
+
+        .rivotHero .rivotHeroNotes strong {
+          color: #fff !important;
+          font-size: clamp(24px, 2.5vw, 32px) !important;
+          text-shadow: 0 5px 24px rgba(0, 0, 0, .72);
+        }
+
+        .rivotHero .rivotHeroButtons {
+          display: flex !important;
+          order: 2 !important;
+          justify-content: center !important;
+          width: 100% !important;
+          margin-top: 18px !important;
+        }
+
+        .rivotHero .rivotHeroPointers {
+          position: static !important;
+          display: flex !important;
+          order: 3 !important;
+          justify-content: center !important;
+          width: 100% !important;
+          margin-top: 18px !important;
+          transform: none !important;
+        }
+
+        .rivotHero .rivotHeroPointers button {
+          width: 44px !important;
+          height: 4px !important;
+          border-radius: 999px !important;
+          padding: 0 !important;
+          border: 0 !important;
+          background: rgba(255, 255, 255, .34) !important;
+          cursor: pointer !important;
+        }
+
+        .rivotHero .rivotHeroPointers button.isActive {
+          width: 58px !important;
+          background: rgba(255, 255, 255, .92) !important;
+        }
+
+        .rivotHero .rivotPriceBook,
+        .rivotHero .rivotTestRide {
+          min-width: 154px !important;
+          min-height: 46px !important;
+          width: auto !important;
+          border-radius: 999px !important;
+        }
+
+        .rivotHero .rivotTestRide {
+          border-color: rgba(255, 255, 255, .68) !important;
+          background: rgba(255, 255, 255, .08) !important;
+          color: #fff !important;
+          box-shadow: none !important;
+          backdrop-filter: blur(10px) !important;
+          -webkit-backdrop-filter: blur(10px) !important;
+        }
+
+        .rivotHero .rivotTestRide:hover,
+        .rivotHero .rivotTestRide:focus-visible {
+          border-color: #fff !important;
+          background: rgba(255, 255, 255, .16) !important;
+          color: #fff !important;
+        }
+
+        @media (max-width: 700px) {
+          .rivotHero {
+            height: 100svh !important;
+            min-height: 620px !important;
+            margin: 0 !important;
+            background: #05070a !important;
+          }
+
+          .rivotHero .rivotHeroImage {
+            object-position: center center !important;
+            transform: scale(1) !important;
+          }
+
+          .rivotHero .rivotHeroImage.isActive {
+            transform: scale(1) !important;
+          }
+
+          .rivotHero .rivotHeroShade {
+            background:
+              linear-gradient(180deg, rgba(2, 4, 8, .16) 0%, rgba(2, 4, 8, .06) 42%, rgba(2, 4, 8, .82) 100%) !important,
+              linear-gradient(90deg, rgba(2, 4, 8, .22) 0%, rgba(2, 4, 8, 0) 52%, rgba(2, 4, 8, .22) 100%) !important;
+          }
+
+          .rivotHero .rivotHeroContent {
+            left: clamp(18px, 5vw, 34px) !important;
+            right: clamp(18px, 5vw, 34px) !important;
+            bottom: max(24px, env(safe-area-inset-bottom)) !important;
+            width: auto !important;
+            transform: none !important;
+          }
+
+          .rivotHero .rivotHeroNotes {
+            display: flex !important;
+            width: 100% !important;
+            flex-wrap: wrap !important;
+            justify-content: flex-start !important;
+            gap: clamp(5px, 1.8vw, 8px) clamp(8px, 2.8vw, 12px) !important;
+            color: rgba(255, 255, 255, .9) !important;
+            font-size: clamp(12px, 3.1vw, 16px) !important;
+            line-height: 1.22 !important;
+            text-align: left !important;
+          }
+
+          .rivotHero .rivotHeroNotes strong {
+            flex: 0 0 100% !important;
+            font-size: clamp(30px, 7.5vw, 42px) !important;
+            line-height: 1.02 !important;
+            letter-spacing: 0 !important;
+          }
+
+          .rivotHero .rivotHeroSubLine {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            white-space: nowrap !important;
+          }
+
+          .rivotHero .rivotHeroSubLine i {
+            font-style: normal !important;
+            color: rgba(255, 255, 255, .8) !important;
+          }
+
+          .rivotHero .rivotHeroButtons {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: clamp(10px, 3.5vw, 16px) !important;
+            margin-top: clamp(18px, 5vw, 28px) !important;
+          }
+
+          .rivotHero .rivotPriceBook,
+          .rivotHero .rivotTestRide {
+            min-width: 0 !important;
+            min-height: clamp(52px, 13vw, 64px) !important;
+            padding: 0 clamp(12px, 3.4vw, 18px) !important;
+            font-size: clamp(18px, 4.9vw, 24px) !important;
+            font-weight: 900 !important;
+          }
+
+          .rivotHero .rivotPriceBook {
+            background: #fff !important;
+            color: #0b0d12 !important;
+            border-color: #fff !important;
+          }
+
+          .rivotHero .rivotTestRide {
+            background: rgba(255, 255, 255, .04) !important;
+            color: #fff !important;
+            border-color: rgba(255, 255, 255, .9) !important;
+          }
+
+          .rivotHero .rivotHeroPointers {
+            margin-top: clamp(20px, 5vw, 28px) !important;
+            gap: clamp(8px, 2.5vw, 12px) !important;
+          }
+
+          .rivotHero .rivotHeroPointers button {
+            width: clamp(30px, 10vw, 50px) !important;
+            height: clamp(4px, 1.4vw, 7px) !important;
+            background: rgba(255, 255, 255, .32) !important;
+          }
+
+          .rivotHero .rivotHeroPointers button.isActive {
+            width: clamp(38px, 12vw, 58px) !important;
+            background: rgba(255, 255, 255, .95) !important;
+          }
+        }
+
+        @media (max-width: 430px) {
+          .rivotHero .rivotHeroImage {
+            object-position: center center !important;
+          }
+
+          .rivotHero .rivotHeroContent {
+            left: 18px !important;
+            right: 18px !important;
+            bottom: max(22px, env(safe-area-inset-bottom)) !important;
+          }
+
+          .rivotHero .rivotHeroNotes strong {
+            font-size: clamp(26px, 8.2vw, 34px) !important;
+          }
+
+          .rivotHero .rivotHeroNotes {
+            font-size: clamp(12px, 3.4vw, 14px) !important;
+          }
+
+          .rivotHero .rivotHeroSubLine {
+            gap: 8px !important;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .rivotHero .rivotHeroContent {
+            left: 14px !important;
+            right: 14px !important;
+          }
+
+          .rivotHero .rivotPriceBook,
+          .rivotHero .rivotTestRide {
+            min-height: 50px !important;
+            font-size: 16px !important;
+          }
+        }
+
+        @media (max-width: 700px) and (max-height: 720px) {
+          .rivotHero {
+            min-height: 580px !important;
+          }
+
+          .rivotHero .rivotHeroContent {
+            bottom: 18px !important;
+          }
+
+          .rivotHero .rivotHeroNotes strong {
+            font-size: clamp(26px, 7.5vw, 36px) !important;
+          }
+
+          .rivotHero .rivotHeroNotes {
+            font-size: clamp(12px, 3.2vw, 15px) !important;
+          }
+
+          .rivotHero .rivotPriceBook,
+          .rivotHero .rivotTestRide {
+            min-height: 48px !important;
+            font-size: 16px !important;
+          }
+
+          .rivotHero .rivotHeroButtons,
+          .rivotHero .rivotHeroPointers {
+            margin-top: 14px !important;
+          }
+        }
+
+        @media (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
+          .rivotHero {
+            min-height: 520px !important;
+          }
+
+          .rivotHero .rivotHeroContent {
+            left: 50% !important;
+            right: auto !important;
+            bottom: 20px !important;
+            width: min(86vw, 520px) !important;
+            transform: translateX(-50%) !important;
+          }
+
+          .rivotHero .rivotHeroNotes {
+            justify-content: center !important;
+            text-align: center !important;
+          }
+
+          .rivotHero .rivotHeroButtons {
+            width: min(100%, 420px) !important;
+            margin-inline: auto !important;
+          }
         }
       `}</style>
     </>

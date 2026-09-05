@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import logoWhite from "@/asset/images/RIVOT New Logo White.png";
+import logoWhite from "@/asset/images/Newlogo.png";
 
 const exploreLinks = [
   { label: "Home", href: "/" },
