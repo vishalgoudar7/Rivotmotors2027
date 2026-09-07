@@ -17,9 +17,10 @@ import chargerImage from "@/asset/images/last/Charger.png";
 import discImage from "@/asset/images/last/Disc.png";
 import monoshockImage from "@/asset/images/last/Monoshock.png";
 import motorImage from "@/asset/images/last/Motor-card.jpg";
-import riderAssistanceImage from "@/asset/images/Key features/Riderasistance.png";
-import featureImage from "@/asset/images/Key features/Feature.png";
-import safetyImage from "@/asset/images/Key features/Safeaty.png";
+import antiTheftFeatureImage from "@/asset/newphotos/key features/antitheft.jpg";
+import dashCamFeatureImage from "@/asset/newphotos/key features/dashcam.jpg";
+import patternLockFeatureImage from "@/asset/newphotos/key features/pattern lock.jpg";
+import tpmsFeatureImage from "@/asset/newphotos/key features/tpms.jpg";
 import bootDetailImage from "@/asset/images/Details/Boot space with helmet.png";
 import floorboardDetailImage from "@/asset/images/Details/Floorboard photo.png";
 import mainDetailImage from "@/asset/images/Details/Main detail photo.png";
@@ -33,24 +34,31 @@ import { ScooterRotation } from "@/components/ScooterRotation";
 const keyFeatures = [
   {
     number: "01",
-    title: "Smart Riding",
-    image: riderAssistanceImage,
-    alt: "RIVOT rider assistance control close-up",
-    pills: ["Boost Mode", "Ride cam", "comfortKey", "cruiseControl",],
+    title: "TPMS",
+    copy: "Real-time monitoring and quick alert upgrades to keep every ride ready.",
+    image: tpmsFeatureImage,
+    alt: "RIVOT scooter wheel with TPMS feature",
   },
   {
     number: "02",
-    title: "Built-In Innovation",
-    image: featureImage,
-    alt: "RIVOT NX100 front feature close-up",
-    pills: ["recoEngine", "APU", "Compact Boot", "compact Charger(OBC)"],
+    title: "Anti Theft",
+    copy: "Smart lock protection for stronger everyday security.",
+    image: antiTheftFeatureImage,
+    alt: "RIVOT anti theft feature with rider",
   },
   {
     number: "03",
-    title: "Advanced Safety",
-    image: safetyImage,
-    alt: "RIVOT safety switch close-up",
-    pills: ["alerTire", "Roll Protecter", "Anti Theft", "Voice Alert"],
+    title: "Pattern Lock",
+    copy: "Unlock access with a secure, familiar pattern interface.",
+    image: patternLockFeatureImage,
+    alt: "RIVOT scooter dashboard pattern lock",
+  },
+  {
+    number: "04",
+    title: "Dash Cam",
+    copy: "Ride-aware visibility with an active front camera setup.",
+    image: dashCamFeatureImage,
+    alt: "RIVOT scooter dash camera close-up",
   },
 ];
 
@@ -496,13 +504,7 @@ export default function Home() {
               </span>
               Key Features.
             </p>
-            <h2 id="key-features-title">
-              Technology
-              <br />
-              that keeps you
-              <br />
-              ahead.
-            </h2>
+            <h2 id="key-features-title">Technology that keeps you ahead.</h2>
             <span className="rivotKeyAccent" aria-hidden="true" />
             <p>The features that set RIVOT apart.</p>
             <button className="rivotKeyArrow" type="button" aria-label="Explore all features">
@@ -524,11 +526,7 @@ export default function Home() {
                 <div className="rivotKeyCardContent">
                   <div className="rivotKeyCardHeading">
                     <h3>{feature.title}</h3>
-                  </div>
-                  <div className="rivotKeyCardPills">
-                    {feature.pills.map((pill) => (
-                      <small key={pill}>{pill}</small>
-                    ))}
+                    <p>{feature.copy}</p>
                   </div>
                 </div>
               </article>
@@ -1665,7 +1663,7 @@ export default function Home() {
           min-height: auto;
           align-items: flex-start;
           justify-content: center;
-          padding: var(--section-open-gap) clamp(18px, 4vw, 46px) var(--section-close-gap);
+          padding: clamp(38px, 4.5vw, 64px) clamp(20px, 6vw, 90px) clamp(72px, 7vw, 104px);
           background:
             linear-gradient(180deg, #fff 0%, #fbfaf7 48%, #f7f7f5 100%);
           color: #111;
@@ -1679,9 +1677,9 @@ export default function Home() {
 
         .rivotKeyFeaturesShell {
           display: grid;
-          grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
-          gap: clamp(26px, 4vw, 54px);
-          width: min(100%, 1180px);
+          grid-template-columns: 1fr;
+          gap: clamp(28px, 4vw, 44px);
+          width: min(100%, 1260px);
           max-height: none;
           margin: 0 auto;
           padding: 0;
@@ -1704,7 +1702,7 @@ export default function Home() {
         }
 
         .rivotKeyEyebrow {
-          display: inline-flex;
+          display: none;
           align-items: center;
           gap: 12px;
           margin: 0 0 20px;
@@ -1733,14 +1731,14 @@ export default function Home() {
         .rivotKeyFeaturesCopy h2 {
           margin: 0;
           color: #111;
-          font-size: clamp(28px, 2.8vw, 46px);
+          font-size: clamp(32px, 3.2vw, 46px);
           font-weight: 800;
-          line-height: 1.02;
-          letter-spacing: -.055em;
+          line-height: 1;
+          letter-spacing: -.035em;
         }
 
         .rivotKeyAccent {
-          display: block;
+          display: none;
           width: 48px;
           height: 3px;
           margin: 16px 0;
@@ -1749,16 +1747,16 @@ export default function Home() {
         }
 
         .rivotKeyFeaturesCopy p:not(.rivotKeyEyebrow) {
-          max-width: 255px;
-          margin: 0 0 28px;
-          color: #515151;
-          font-size: 13px;
-          font-weight: 500;
-          line-height: 1.45;
+          max-width: 420px;
+          margin: 6px 0 0;
+          color: #4f5964;
+          font-size: 15px;
+          font-weight: 600;
+          line-height: 1.35;
         }
 
         .rivotKeyArrow {
-          display: inline-grid;
+          display: none;
           width: 48px;
           height: 48px;
           place-items: center;
@@ -1783,86 +1781,88 @@ export default function Home() {
 
         .rivotKeyCards {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 14px;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: clamp(12px, 1.5vw, 18px);
           min-width: 0;
           align-items: stretch;
         }
 
         .rivotKeyCard {
           position: relative;
-          min-height: clamp(500px, 67vh, 600px);
+          aspect-ratio: 1 / 1.16;
+          min-height: 0;
           overflow: hidden;
-          border-radius: 16px;
+          border-radius: 18px;
           isolation: isolate;
-          transform: skewX(-10deg);
+          transform: none;
           transform-origin: center;
-          box-shadow: 0 16px 36px rgba(0, 0, 0, .14);
+          background: #0b0d10;
+          box-shadow: 0 18px 42px rgba(17, 17, 17, .12);
           transition: transform .25s ease, box-shadow .25s ease;
         }
 
         .rivotKeyCard:hover {
-          transform: skewX(-10deg) translateY(-5px);
-          box-shadow: 0 24px 48px rgba(0, 0, 0, .18);
+          transform: translateY(-5px);
+          box-shadow: 0 26px 54px rgba(17, 17, 17, .18);
         }
 
         .rivotKeyCardImage {
           object-fit: cover;
           object-position: center center;
-          transform: skewX(10deg) scale(1.18);
+          transform: scale(1.02);
           transition: transform .3s ease;
         }
 
         .rivotKeyCard:nth-child(1) .rivotKeyCardImage {
-          object-position: 46% center;
-          transform: skewX(10deg) scale(1.34);
+          object-position: center center;
+          transform: scale(1.02);
         }
 
         .rivotKeyCard:nth-child(2) .rivotKeyCardImage {
-          object-position: 52% center;
-          transform: skewX(10deg) scale(1.33);
+          object-position: center center;
+          transform: scale(1.02);
         }
 
         .rivotKeyCard:nth-child(3) .rivotKeyCardImage {
-          object-position: 58% center;
-          transform: skewX(10deg) scale(1.36);
+          object-position: center center;
+          transform: scale(1.02);
         }
 
         .rivotKeyCard:hover .rivotKeyCardImage {
-          transform: skewX(10deg) scale(1.23);
+          transform: scale(1.07);
         }
 
         .rivotKeyCard:nth-child(1):hover .rivotKeyCardImage {
-          transform: skewX(10deg) scale(1.39);
+          transform: scale(1.07);
         }
 
         .rivotKeyCard:nth-child(2):hover .rivotKeyCardImage {
-          transform: skewX(10deg) scale(1.38);
+          transform: scale(1.07);
         }
 
         .rivotKeyCard:nth-child(3):hover .rivotKeyCardImage {
-          transform: skewX(10deg) scale(1.41);
+          transform: scale(1.07);
         }
 
         .rivotKeyCardShade {
           position: absolute;
           inset: 0;
           z-index: 1;
-          background: linear-gradient(180deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.34) 34%, rgba(0,0,0,.12) 62%, rgba(0,0,0,.26) 100%);
+          background:
+            linear-gradient(180deg, rgba(0, 0, 0, .08) 0%, rgba(0, 0, 0, .1) 42%, rgba(0, 0, 0, .72) 100%);
         }
 
         .rivotKeyCardContent {
           position: absolute;
-          top: 34px;
-          left: 44px;
-          right: 34px;
-          bottom: 20px;
+          left: 24px;
+          right: 20px;
+          bottom: 22px;
           z-index: 2;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+          justify-content: flex-end;
           color: #fff;
-          transform: skewX(10deg);
+          transform: none;
         }
 
         .rivotKeyCardHeading {
@@ -1879,49 +1879,21 @@ export default function Home() {
         }
 
         .rivotKeyCardHeading h3 {
-          margin: 0 0 10px;
+          margin: 0 0 6px;
           color: #fff;
-          font-size: clamp(16px, 1.25vw, 21px);
-          font-weight: 800;
+          font-size: clamp(19px, 1.55vw, 25px);
+          font-weight: 900;
           line-height: 1.05;
           letter-spacing: -.035em;
         }
 
-        .rivotKeyCardPills {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, max-content));
-          justify-content: start;
-          justify-items: start;
-          gap: 10px 12px;
-          padding-left: 0;
-        }
-
-        .rivotKeyCardPills small {
-          display: inline-flex;
-          width: 100%;
-          min-height: 28px;
-          align-items: center;
-          justify-content: center;
-          border-radius: 999px;
-          background: rgba(105, 105, 105, .88);
-          color: #fff;
-          padding: 0 14px;
-          font-size: clamp(10px, .78vw, 12px);
-          font-weight: 850;
-          line-height: 1;
-          text-align: center;
-          white-space: nowrap;
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16);
-          backdrop-filter: blur(8px);
-        }
-
-        .rivotKeyCard:nth-child(2) .rivotKeyCardPills {
-          grid-template-columns: repeat(2, minmax(92px, max-content));
-        }
-
-        .rivotKeyCard:nth-child(2) .rivotKeyCardPills small:last-child {
-          grid-column: 1 / -1;
-          justify-self: start;
+        .rivotKeyCardHeading p {
+          max-width: 220px;
+          margin: 0;
+          color: rgba(255, 255, 255, .76);
+          font-size: clamp(10px, .72vw, 12px);
+          font-weight: 700;
+          line-height: 1.2;
         }
 
         .rivotDesign {
@@ -4563,6 +4535,10 @@ export default function Home() {
             max-height: none;
           }
 
+          .rivotKeyCards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
           .rivotKeyFeaturesCopy p:not(.rivotKeyEyebrow) {
             max-width: 460px;
           }
@@ -5020,7 +4996,7 @@ export default function Home() {
           }
 
           .rivotKeyFeatures {
-            padding: var(--section-open-gap) 12px var(--section-close-gap);
+            padding: 38px 12px 72px;
           }
 
           .rivotKeyFeaturesShell {
@@ -5045,7 +5021,6 @@ export default function Home() {
           }
 
           .rivotKeyCardContent {
-            top: 24px;
             left: 20px;
             right: 18px;
             bottom: 20px;
@@ -5053,7 +5028,8 @@ export default function Home() {
 
           .rivotKeyCard,
           .rivotKeyCard:hover {
-            min-height: 320px;
+            aspect-ratio: 1 / .72;
+            min-height: 240px;
             transform: none;
           }
 
