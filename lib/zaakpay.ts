@@ -100,9 +100,20 @@ const responseFieldOrder = [
 ];
 
 function requireEnv(name: string) {
-  const value = process.env[name];
+  const value = process.env[name]?.trim();
   if (!value) throw new Error(`${name} is not configured`);
   return value;
+}
+
+function configuredUrl(name: string, fallback?: string) {
+  const value = process.env[name]?.trim() || fallback;
+  if (!value) throw new Error(`${name} is not configured`);
+
+  const url = new URL(value);
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    throw new Error(`${name} must use http or https`);
+  }
+  return url.toString();
 }
 
 function hmacSha256(input: string, secret: string) {
@@ -141,14 +152,22 @@ export function makeBookingOrderId() {
 }
 
 export function getZaakpayConfig(origin: string) {
-  const paymentUrl = process.env.ZAAKPAY_PAYMENT_URL || "https://zaakstaging.zaakpay.com/api/paymentTransact/V13";
+  const paymentUrl = configuredUrl(
+    "ZAAKPAY_PAYMENT_URL",
+    "https://zaakstaging.zaakpay.com/api/paymentTransact/V13",
+  );
   const paymentOrigin = new URL(paymentUrl).origin;
+  const siteUrl = configuredUrl("NEXT_PUBLIC_SITE_URL", origin);
   return {
     merchantIdentifier: requireEnv("ZAAKPAY_MERCHANT_IDENTIFIER"),
     secret: requireEnv("ZAAKPAY_SECRET"),
     paymentUrl,
-    statusUrl: process.env.ZAAKPAY_STATUS_URL || `${paymentOrigin}/api/payments/v1/status`,
-    returnUrl: process.env.ZAAKPAY_RETURN_URL || `${process.env.NEXT_PUBLIC_SITE_URL || origin}/api/booking/callback`,
+    statusUrl: configuredUrl("ZAAKPAY_STATUS_URL", `${paymentOrigin}/api/payments/v1/status`),
+    returnUrl: configuredUrl(
+      "ZAAKPAY_RETURN_URL",
+      new URL("/api/booking/callback", siteUrl).toString(),
+    ),
+    siteUrl,
   };
 }
 

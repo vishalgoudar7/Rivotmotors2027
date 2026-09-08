@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { sendPaymentSuccessEmails } from "@/lib/email";
+import { sendPaymentFailureEmails, sendPaymentSuccessEmails } from "@/lib/email";
 import {
   checkZaakpayTransactionStatus,
   classifyZaakpayStatus,
@@ -13,10 +13,12 @@ function quote(name: string) {
   return `\`${name.replace(/`/g, "``")}\``;
 }
 
-function gatewayAmountToRupees(amount?: string) {
-  const parsed = Number(amount || 0);
-  if (!Number.isFinite(parsed) || parsed <= 0) return "";
-  return (parsed / 100).toFixed(2);
+function databaseAmountToPaise(value: unknown) {
+  const normalized = String(value ?? "").trim();
+  if (!/^\d+(?:\.\d{1,2})?$/.test(normalized)) return null;
+  const parsed = Number(normalized);
+  if (!Number.isFinite(parsed) || parsed <= 0) return null;
+  return Math.round(parsed * 100);
 }
 
 export async function POST(request: Request) {
@@ -31,6 +33,7 @@ export async function POST(request: Request) {
       message: "Zaakpay callback was missing required verification fields.",
     }, { status: 400 });
   }
+  const logOrderId = body.orderId.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 40) || "unknown";
 
   let config: ReturnType<typeof getZaakpayConfig>;
   try {
@@ -40,7 +43,7 @@ export async function POST(request: Request) {
   }
 
   if (!verifyZaakpayCallback(body, config.secret)) {
-    console.warn(`Zaakpay checksum mismatch for order ${body.orderId}`);
+    console.warn(`Zaakpay checksum mismatch for order ${logOrderId}`);
     const reason = "Zaakpay response checksum verification failed.";
     return Response.json({
       success: false,
@@ -48,6 +51,7 @@ export async function POST(request: Request) {
       message: reason,
     }, { status: 400 });
   }
+  console.info(`Zaakpay checksum verified for order ${logOrderId}`);
 
   try {
     const columns = (await prisma.$queryRawUnsafe("SHOW COLUMNS FROM `orders`")) as Array<{ Field: string }>;
@@ -73,6 +77,16 @@ export async function POST(request: Request) {
       return Response.json({ success: true, redirect: `/booking/success?order_id=${encodeURIComponent(body.orderId)}`, order_id: body.orderId });
     }
 
+    const bookingAmountPaise = databaseAmountToPaise(booking.price || booking.amount);
+    if (bookingAmountPaise === null) {
+      console.error(`Invalid database payment amount for order ${logOrderId}`);
+      return Response.json({
+        success: false,
+        redirect: `/booking/payment-failed?order_id=${encodeURIComponent(body.orderId)}&reason=${encodeURIComponent("The stored booking amount is invalid.")}`,
+        message: "The stored booking amount is invalid.",
+      }, { status: 500 });
+    }
+
     const callbackStatus: ZaakpayStatusResult = {
       verified: false,
       status: classifyZaakpayStatus(body.responseCode),
@@ -90,15 +104,22 @@ export async function POST(request: Request) {
         statusUrl: config.statusUrl,
         orderId: body.orderId,
       });
+      console.info(`Zaakpay status API result for order ${logOrderId}: verified=${verifiedStatus.verified}, status=${verifiedStatus.status}, responseCode=${verifiedStatus.responseCode || "none"}`);
     } catch (statusError) {
-      console.error(`Zaakpay status check failed for order ${body.orderId}:`, statusError instanceof Error ? statusError.message : statusError);
+      console.error(`Zaakpay status check failed for order ${logOrderId}:`, statusError instanceof Error ? statusError.message : statusError);
     }
 
-    const finalStatus = verifiedStatus.verified
-      ? verifiedStatus.status
-      : callbackStatus.status === "unknown"
-        ? "pending"
-        : callbackStatus.status;
+    const verifiedAmountPaise = verifiedStatus.amount
+      ? Number.parseInt(verifiedStatus.amount, 10)
+      : null;
+    const amountMatches = verifiedAmountPaise !== null
+      && Number.isSafeInteger(verifiedAmountPaise)
+      && verifiedAmountPaise === bookingAmountPaise;
+    const finalStatus = !verifiedStatus.verified
+      ? "pending"
+      : verifiedStatus.status === "paid" && !amountMatches
+        ? "failed"
+        : verifiedStatus.status;
     const paymentStatus = finalStatus === "paid"
       ? "payment_completed"
       : finalStatus === "failed"
@@ -108,41 +129,57 @@ export async function POST(request: Request) {
     const updates: Record<string, unknown> = {
       orderId: body.orderId,
       transaction_id: verifiedStatus.transactionId || body.pgTransId || body.paymentMethod || "",
-      amount: gatewayAmountToRupees(verifiedStatus.amount || body.amount),
+      amount: (bookingAmountPaise / 100).toFixed(2),
       statid: finalStatus === "paid" ? "1" : "0",
       payment_status: paymentStatus,
     };
     const updateColumns = ["orderId", "transaction_id", "amount", "statid", "payment_status"].filter((column) => columnNames.has(column));
 
     if (updateColumns.length) {
+      const statusGuard = columnNames.has("payment_status")
+        ? ` AND ${quote("payment_status")} <> 'payment_completed' AND ${quote("payment_status")} <> ?`
+        : columnNames.has("statid")
+          ? ` AND ${quote("statid")} <> '1'`
+          : "";
       const updated = await prisma.$executeRawUnsafe(
-        `UPDATE \`orders\` SET ${updateColumns.map((column) => `${quote(column)} = ?`).join(", ")} WHERE ${where}${finalStatus === "paid" && columnNames.has("payment_status") ? ` AND ${quote("payment_status")} <> 'payment_completed'` : ""} LIMIT 1`,
+        `UPDATE \`orders\` SET ${updateColumns.map((column) => `${quote(column)} = ?`).join(", ")} WHERE (${where})${statusGuard} LIMIT 1`,
         ...updateColumns.map((column) => updates[column]),
         ...matchColumns.map(() => body.orderId),
+        ...(columnNames.has("payment_status") ? [paymentStatus] : []),
       );
 
-      if (finalStatus === "paid" && Number(updated) > 0) {
+      if ((finalStatus === "paid" || finalStatus === "failed") && Number(updated) > 0) {
         const updatedRows = (await prisma.$queryRawUnsafe(
           `SELECT * FROM \`orders\` WHERE ${where} LIMIT 1`,
           ...matchColumns.map(() => body.orderId),
         )) as Array<Record<string, unknown>>;
 
+        const updatedBooking = updatedRows[0] || { ...booking, ...updates };
         try {
-          await sendPaymentSuccessEmails(updatedRows[0] || { ...booking, ...updates });
+          if (finalStatus === "paid") {
+            await sendPaymentSuccessEmails(updatedBooking);
+          } else {
+            const failureReason = !amountMatches && verifiedStatus.status === "paid"
+              ? "The confirmed payment amount did not match the booking amount."
+              : verifiedStatus.responseDescription || callbackStatus.responseDescription || "Payment failed";
+            await sendPaymentFailureEmails(updatedBooking, failureReason);
+          }
         } catch (emailError) {
-          console.error(`Payment confirmation email failed for order ${body.orderId}:`, emailError instanceof Error ? emailError.message : emailError);
+          console.error(`Payment ${finalStatus} email processing failed for order ${logOrderId}:`, emailError instanceof Error ? emailError.message : emailError);
         }
       }
     }
 
-    console.info(`Zaakpay callback processed for order ${body.orderId}: ${paymentStatus}`);
+    console.info(`Zaakpay callback processed for order ${logOrderId}: ${paymentStatus}`);
 
     if (finalStatus === "paid") {
       return Response.json({ success: true, redirect: `/booking/success?order_id=${encodeURIComponent(body.orderId)}`, order_id: body.orderId });
     }
 
     if (finalStatus === "failed") {
-      const reason = verifiedStatus.responseDescription || callbackStatus.responseDescription || "Payment failed";
+      const reason = !amountMatches && verifiedStatus.status === "paid"
+        ? "The confirmed payment amount did not match the booking amount."
+        : verifiedStatus.responseDescription || callbackStatus.responseDescription || "Payment failed";
       return Response.json({ success: false, redirect: `/booking/payment-failed?order_id=${encodeURIComponent(body.orderId)}&reason=${encodeURIComponent(reason)}`, order_id: body.orderId });
     }
 

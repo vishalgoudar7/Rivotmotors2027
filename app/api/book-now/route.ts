@@ -12,6 +12,14 @@ function safeSqlIdentifier(name: string) {
   return `\`${name.replace(/`/g, "``")}\``;
 }
 
+function configuredBookingPrice() {
+  const value = process.env.BOOKING_AMOUNT_RUPEES?.trim();
+  if (!value || !/^\d+(?:\.\d{1,2})?$/.test(value) || Number(value) <= 0) {
+    throw new Error("BOOKING_AMOUNT_RUPEES is not configured with a valid amount");
+  }
+  return Number(value).toFixed(2);
+}
+
 export async function POST(request: Request) {
   try {
     const contentType = request.headers.get("content-type") || "";
@@ -48,7 +56,7 @@ export async function POST(request: Request) {
       "#111111": "Black",
     } as Record<string, string>)[rawColor] || sanitizeZaakpayText(rawColor, 30) || "Selected";
     const productName = "nx100";
-    const price = "499.00";
+    const price = configuredBookingPrice();
     const source = toStringValue(payload.source as FormDataEntryValue | string | null | undefined);
     const referralCode = toStringValue(payload.referralCode as FormDataEntryValue | string | null | undefined);
 
@@ -117,6 +125,8 @@ export async function POST(request: Request) {
       `INSERT INTO \`orders\` (${columnsSql}) VALUES (${valuesSql})`,
       ...columnsToInsert.map((key) => insertData[key]),
     );
+
+    console.info(`Booking order created: ${trackId} with payment_pending status`);
 
     try {
       await sendBookingAdminEmail(insertData);

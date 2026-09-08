@@ -125,6 +125,39 @@ export async function sendPaymentSuccessEmails(order: EmailData) {
     sendEmail(subject, text(order.email), "Your RIVOT Motors Booking is Confirmed", sections),
   ]);
   results.forEach((result, index) => { if (result.status === "rejected") console.error(`Payment confirmation email ${index === 0 ? "admin" : "customer"} failed for order ${orderId}:`, result.reason instanceof Error ? result.reason.message : result.reason); });
+  console.info(`Payment success email processing finished for order ${orderId}`);
+}
+
+export async function sendPaymentFailureEmails(order: EmailData, reason?: string) {
+  const orderId = text(order.orderId || order.order_id || order.trackId);
+  const siteUrl = text(process.env.NEXT_PUBLIC_SITE_URL).replace(/\/$/, "");
+  const retryUrl = siteUrl && orderId
+    ? `${siteUrl}/booking/payment?order_id=${encodeURIComponent(orderId)}`
+    : "";
+  const failureRows = [
+    { label: "Order ID", value: orderId },
+    { label: "Payment Status", value: "Payment Failed" },
+    { label: "Reason", value: text(reason) || "The payment was declined or could not be completed." },
+  ].filter((row) => row.value);
+  const adminSections = [...bookingSections(order, false), { heading: "Payment Failure", rows: failureRows }];
+  const customerSections = [{
+    heading: "Payment Update",
+    rows: [
+      ...failureRows,
+      ...(retryUrl ? [{ label: "Retry Payment", value: retryUrl }] : []),
+    ],
+  }];
+  const admin = await getAdminEmail();
+  const results = await Promise.allSettled([
+    sendEmail(`Payment Failed - Order #${orderId} - RIVOT Motors`, admin, "Booking Payment Failed", adminSections, text(order.email)),
+    sendEmail(`Payment update for order #${orderId} - RIVOT Motors`, text(order.email), "Your RIVOT Motors Payment Was Not Completed", customerSections),
+  ]);
+  results.forEach((result, index) => {
+    if (result.status === "rejected") {
+      console.error(`Payment failure email ${index === 0 ? "admin" : "customer"} failed for order ${orderId}:`, result.reason instanceof Error ? result.reason.message : result.reason);
+    }
+  });
+  console.info(`Payment failure email processing finished for order ${orderId}`);
 }
 
 export async function sendSmtpTestEmail() {

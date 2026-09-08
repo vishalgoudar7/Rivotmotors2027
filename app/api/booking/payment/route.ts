@@ -1,8 +1,6 @@
 import { prisma } from "@/lib/db";
 import { createZaakpayPaymentFields, getZaakpayConfig } from "@/lib/zaakpay";
 
-const bookingAmountRupees = 499;
-
 function quote(name: string) {
   return `\`${name.replace(/`/g, "``")}\``;
 }
@@ -12,8 +10,10 @@ function orderIdFromPayload(payload: { orderId?: unknown; trackId?: unknown }) {
 }
 
 function rupeesToPaise(value: unknown) {
-  const parsed = Number(String(value || bookingAmountRupees).replace(/[^\d.]/g, ""));
-  if (!Number.isFinite(parsed) || parsed <= 0) return bookingAmountRupees * 100;
+  const normalized = String(value ?? "").trim();
+  if (!/^\d+(?:\.\d{1,2})?$/.test(normalized)) return null;
+  const parsed = Number(normalized);
+  if (!Number.isFinite(parsed) || parsed <= 0) return null;
   return Math.round(parsed * 100);
 }
 
@@ -63,9 +63,11 @@ export async function POST(request: Request) {
     const gatewayOrderId = String(booking.orderId || booking.trackId || orderId).replace(/[^a-zA-Z0-9]/g, "").slice(0, 40);
     const amountPaise = rupeesToPaise(booking.price);
 
-    if (amountPaise < 100 || amountPaise > 10000000) {
+    if (!gatewayOrderId || amountPaise === null || amountPaise < 100 || amountPaise > 10000000) {
       return Response.json({ success: false, message: "Invalid booking amount." }, { status: 400 });
     }
+
+    console.info(`Zaakpay payment initiation requested for order ${gatewayOrderId}`);
 
     const fields = createZaakpayPaymentFields({
       merchantIdentifier: config.merchantIdentifier,
@@ -94,7 +96,7 @@ export async function POST(request: Request) {
     const updateColumns = ["orderId", "amount", "payment_status", "statid"].filter((column) => columnNames.has(column));
     if (updateColumns.length) {
       await prisma.$executeRawUnsafe(
-        `UPDATE \`orders\` SET ${updateColumns.map((column) => `${quote(column)} = ?`).join(", ")} WHERE ${where} LIMIT 1`,
+        `UPDATE \`orders\` SET ${updateColumns.map((column) => `${quote(column)} = ?`).join(", ")} WHERE (${where})${columnNames.has("payment_status") ? ` AND ${quote("payment_status")} <> 'payment_completed'` : ""} LIMIT 1`,
         ...updateColumns.map((column) => updates[column]),
         ...matchColumns.map(() => orderId),
       );

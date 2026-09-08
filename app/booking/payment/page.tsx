@@ -75,9 +75,9 @@ function BookingPayment({ orderId }: { orderId: string }) {
               <div><span>Order ID</span><strong>{booking.order_id || orderId}</strong></div>
               <div><span>Model</span><strong>{booking.model || "NX100"}</strong></div>
               <div><span>Colour</span><strong>{booking.color || "Selected colour"}</strong></div>
-              <div><span>Booking amount</span><strong>Rs {booking.amount || "499"}</strong></div>
+              <div><span>Booking amount</span><strong>Rs {booking.amount || "Unavailable"}</strong></div>
             </div>
-            <p className="bookingFlowCopy">Your refundable booking is reserved. Continue to the configured Zaakpay payment page to complete the Rs 499 payment.</p>
+            <p className="bookingFlowCopy">Your refundable booking is reserved. Continue to the configured Zaakpay payment page{booking.amount ? ` to complete the Rs ${booking.amount} payment` : " to complete payment"}.</p>
             <button className="bookingFlowButton" onClick={startPayment} disabled={paying}>{paying ? "Opening payment..." : "Proceed to payment"} <span>→</span></button>
           </>
         ) : null}
