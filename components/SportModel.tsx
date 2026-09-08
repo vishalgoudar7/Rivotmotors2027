@@ -1,8 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import { Faqs } from "@/components/Faqs";
 import { ProductCustomMade } from "@/components/ProductCustomMade";
 import { ProductDesignDetails } from "@/components/ProductDesignDetails";
+import { ProductDetailHero } from "@/components/ProductDetailHero";
 import { ProductDetailSupportSections } from "@/components/ProductDetailSupportSections";
 import { ProductPerformanceBand } from "@/components/ProductPerformanceBand";
 import { ModelComparison } from "@/components/ModelComparison";
@@ -12,24 +11,11 @@ import sportImage from "@/asset/Model/Sport_NX100.png";
 export function SportModel() {
   return (
     <section className="sportPage">
-      <section className="sportHero">
-        <div className="sportCopy">
-          <p>The Performance Electric</p>
-          <h1>
-            <span>NX100</span> <em>Sport</em>
-          </h1>
-          <h2>Power. Performance. Perfection.</h2>
-          <span>The NX100 Sport is built for riders who want a sharper, faster, more expressive electric ride.</span>
-          <div className="sportActions">
-            <Link href="/book-now">Book Now <span aria-hidden="true">{"\u2192"}</span></Link>
-            <Link href="/test-ride">Test Ride <span aria-hidden="true">{"\u2192"}</span></Link>
-          </div>
-        </div>
-
-        <div className="sportMachine">
-          <Image src={sportImage} alt="RIVOT NX100 Sports" priority sizes="(max-width: 900px) 95vw, 62vw" />
-        </div>
-      </section>
+      <ProductDetailHero
+        modelName="NX100 Sport"
+        headline="Long rides to heavy loads"
+        description="Power for the long road, space for the long list."
+      />
 
       <ProductPerformanceBand modelName="NX100 Sport" image={sportImage} imageAlt="RIVOT NX100 Sport scooter" />
 

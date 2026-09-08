@@ -1,8 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import { Faqs } from "@/components/Faqs";
 import { ProductCustomMade } from "@/components/ProductCustomMade";
 import { ProductDesignDetails } from "@/components/ProductDesignDetails";
+import { ProductDetailHero } from "@/components/ProductDetailHero";
 import { ProductDetailSupportSections } from "@/components/ProductDetailSupportSections";
 import { ProductPerformanceBand } from "@/components/ProductPerformanceBand";
 import { ModelComparison } from "@/components/ModelComparison";
@@ -12,34 +11,11 @@ import proImage from "@/asset/Model/Pro.png";
 export function ProModel() {
   return (
     <section className="proPage">
-      <div className="proHero">
-        <div className="proHeroCopy">
-          <nav className="proBreadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span aria-hidden="true">/</span>
-            <Link href="/products">Products</Link>
-            <span aria-hidden="true">/</span>
-            <span>NX100 Pro</span>
-          </nav>
-          <p className="proKicker">The Performance Electric</p>
-          <h1>
-            <span>NX100</span> <em>Pro</em>
-          </h1>
-          <h2>Power. Performance. Perfection.</h2>
-          <p className="proIntro">
-            The NX100 Pro is built for riders who demand more. More range, more speed, and more control.
-          </p>
-          <div className="proActions">
-            <Link href="/book-now">Book Now <span aria-hidden="true">{"\u2192"}</span></Link>
-            <Link href="/test-ride">Test Ride <span aria-hidden="true">{"\u2192"}</span></Link>
-          </div>
-        </div>
-
-        <div className="proStage" aria-label="RIVOT NX100 Pro">
-          <div className="proHalo" />
-          <Image src={proImage} alt="RIVOT NX100 Pro" priority sizes="(max-width: 900px) 92vw, 58vw" />
-        </div>
-      </div>
+      <ProductDetailHero
+        modelName="NX100 Pro"
+        headline="Long rides to heavy loads"
+        description="Power for the long road, space for the long list."
+      />
 
       <ProductPerformanceBand modelName="NX100 Pro" image={proImage} imageAlt="RIVOT NX100 Pro scooter" />
 

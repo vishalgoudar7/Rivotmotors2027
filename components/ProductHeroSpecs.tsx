@@ -35,7 +35,7 @@ export function ProductHeroSpecs() {
             </svg>
           </span>
           <b>35 min</b>
-          <small>Flash Charge</small>
+          <small>200km Charge</small>
         </div>
 
         <div>

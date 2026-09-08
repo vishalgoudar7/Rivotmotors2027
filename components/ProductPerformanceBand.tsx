@@ -30,11 +30,11 @@ const performanceCards = [
     icon: "pin",
   },
   {
-    label: "Dual Disc",
-    title: "Brakes",
-    copy: "Confident stopping in city traffic.",
+    label: "35 min",
+    title: "Flash Charger",
+    copy: "Fast charging for quick daily turnarounds.",
     tone: "amber",
-    icon: "disc",
+    icon: "bolt",
   },
 ];
 
