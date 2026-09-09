@@ -1,10 +1,7 @@
-import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 
 type ProductPerformanceBandProps = {
   modelName: string;
-  image: StaticImageData;
-  imageAlt: string;
 };
 
 const performanceCards = [
@@ -75,9 +72,9 @@ function PerformanceIcon({ icon }: { icon: string }) {
   );
 }
 
-export function ProductPerformanceBand({ modelName, image, imageAlt }: ProductPerformanceBandProps) {
+export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProps) {
   return (
-    <section className="productPerformanceBand" aria-label={`${modelName} performance highlights`}>
+    <section className="productPerformanceBand" id="performance" aria-label={`${modelName} performance highlights`}>
       <div className="productPerformanceScene">
         <div className="productPerformanceCopy">
           <p>Performance</p>
@@ -87,10 +84,6 @@ export function ProductPerformanceBand({ modelName, image, imageAlt }: ProductPe
           <small>Ready. Set. Ride.</small>
           <Link href="/test-ride">Feel the Difference <span aria-hidden="true">{"\u2192"}</span></Link>
           <b>Built for a bolder tomorrow.</b>
-        </div>
-
-        <div className="productPerformanceMachine" aria-hidden="true">
-          <Image src={image} alt={imageAlt} sizes="(max-width: 900px) 80vw, 34vw" />
         </div>
 
         <div className="productPerformanceMetricGrid">
@@ -248,23 +241,6 @@ export function ProductPerformanceBand({ modelName, image, imageAlt }: ProductPe
           text-transform: uppercase;
         }
 
-        .productPerformanceMachine {
-          position: absolute;
-          left: 23%;
-          bottom: 3%;
-          z-index: 1;
-          width: min(36vw, 600px);
-          pointer-events: none;
-        }
-
-        .productPerformanceMachine img {
-          width: 100%;
-          height: auto;
-          object-fit: contain;
-          filter: drop-shadow(0 34px 34px rgba(0, 0, 0, .42));
-          opacity: .9;
-        }
-
         .productPerformanceMetricGrid {
           position: relative;
           z-index: 2;
@@ -367,13 +343,6 @@ export function ProductPerformanceBand({ modelName, image, imageAlt }: ProductPe
             min-height: auto;
           }
 
-          .productPerformanceMachine {
-            left: auto;
-            right: 3%;
-            bottom: 44%;
-            width: min(44vw, 430px);
-            opacity: .42;
-          }
         }
 
         @media (max-width: 760px) {
@@ -407,14 +376,6 @@ export function ProductPerformanceBand({ modelName, image, imageAlt }: ProductPe
           .productPerformanceMetric svg {
             width: 36px;
             height: 36px;
-          }
-
-          .productPerformanceMachine {
-            right: -16%;
-            bottom: auto;
-            top: 112px;
-            width: 76vw;
-            opacity: .22;
           }
 
           .productPerformanceCopy h2 {

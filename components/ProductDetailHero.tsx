@@ -394,8 +394,8 @@ export function ProductDetailHero({
           display: flex;
           align-items: center;
           justify-content: flex-start;
-          gap: 18px;
-          margin-top: 0;
+          gap: 12px;
+          margin-top: 4px;
         }
 
         .productDetailTestRide,
@@ -404,20 +404,22 @@ export function ProductDetailHero({
           align-items: center;
           justify-content: center;
           gap: 10px;
-          min-width: 180px;
-          min-height: 50px;
+          min-width: 168px;
+          min-height: 52px;
           padding: 0 24px;
-          border: 1px solid rgba(239, 116, 48, .45);
-          border-radius: 999px;
-          box-shadow: none;
+          border: 1px solid #ef7430;
+          border-radius: 12px;
           font-size: 15px;
           font-weight: 800;
           text-decoration: none;
+          transition: color .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
         }
 
         .productDetailTestRide {
-          background: rgba(255, 255, 255, .92);
-          color: #c45a21;
+          border-color: #ef7430;
+          background: #fff;
+          color: #c9581f;
+          box-shadow: 0 12px 28px rgba(17, 17, 17, .12);
         }
 
         .productDetailPriceBook {
@@ -440,8 +442,9 @@ export function ProductDetailHero({
         .productDetailTestRide:hover,
         .productDetailTestRide:focus-visible {
           border-color: #ef7430;
-          background: rgba(239, 116, 48, .12);
-          color: #b84f1c;
+          background: #fff4ed;
+          color: #ad4616;
+          box-shadow: 0 14px 28px rgba(17, 17, 17, .15);
           outline: none;
           transform: translateY(-2px);
         }
@@ -644,9 +647,9 @@ export function ProductDetailHero({
           .productDetailPriceBook {
             width: 100%;
             min-width: 0;
-            min-height: 48px;
+            min-height: 50px;
             padding: 0 12px;
-            border-radius: 15px;
+            border-radius: 12px;
             font-size: 13px;
           }
 

@@ -29,6 +29,7 @@ import { Faqs } from "@/components/Faqs";
 import { SafetyTech } from "@/components/SafetyTech";
 import { SavingsCalculator } from "@/components/SavingsCalculator";
 import { ScooterRotation } from "@/components/ScooterRotation";
+import { bookingColors } from "@/data/bookingColors";
 
 const keyFeatures = [
   {
@@ -182,6 +183,10 @@ function EngineeringIcon({ type }: { type: string }) {
 
 export default function Home() {
   const featureCardsRef = useRef<HTMLDivElement>(null);
+  const detailCardsRef = useRef<HTMLDivElement>(null);
+  const performanceCardsRef = useRef<HTMLDivElement>(null);
+  const engineeringCardsRef = useRef<HTMLDivElement>(null);
+  const [selectedDesignColor, setSelectedDesignColor] = useState<(typeof bookingColors)[number]>(bookingColors[0]);
   const [selectedRideInsight, setSelectedRideInsight] = useState(0);
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
   const [activeProductSection, setActiveProductSection] = useState("key-features");
@@ -216,6 +221,72 @@ export default function Home() {
         behavior: "smooth",
       });
     }, 3200);
+
+    return () => window.clearInterval(slideTimer);
+  }, []);
+
+  useEffect(() => {
+    const carousel = detailCardsRef.current;
+    const smallScreen = window.matchMedia("(max-width: 560px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (!carousel || reducedMotion.matches) return;
+
+    const slideTimer = window.setInterval(() => {
+      const bounds = carousel.getBoundingClientRect();
+      const isVisible = bounds.bottom > 0 && bounds.top < window.innerHeight;
+      if (!smallScreen.matches || !isVisible || document.hidden) return;
+
+      const reachedLastSlide = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 4;
+      carousel.scrollTo({
+        left: reachedLastSlide ? 0 : carousel.scrollLeft + carousel.clientWidth + 14,
+        behavior: "smooth",
+      });
+    }, 3600);
+
+    return () => window.clearInterval(slideTimer);
+  }, []);
+
+  useEffect(() => {
+    const carousel = performanceCardsRef.current;
+    const smallScreen = window.matchMedia("(max-width: 560px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (!carousel || reducedMotion.matches) return;
+
+    const slideTimer = window.setInterval(() => {
+      const bounds = carousel.getBoundingClientRect();
+      const isVisible = bounds.bottom > 0 && bounds.top < window.innerHeight;
+      if (!smallScreen.matches || !isVisible || document.hidden) return;
+
+      const reachedLastSlide = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 4;
+      carousel.scrollTo({
+        left: reachedLastSlide ? 0 : carousel.scrollLeft + carousel.clientWidth + 14,
+        behavior: "smooth",
+      });
+    }, 3600);
+
+    return () => window.clearInterval(slideTimer);
+  }, []);
+
+  useEffect(() => {
+    const carousel = engineeringCardsRef.current;
+    const smallScreen = window.matchMedia("(max-width: 560px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (!carousel || reducedMotion.matches) return;
+
+    const slideTimer = window.setInterval(() => {
+      const bounds = carousel.getBoundingClientRect();
+      const isVisible = bounds.bottom > 0 && bounds.top < window.innerHeight;
+      if (!smallScreen.matches || !isVisible || document.hidden) return;
+
+      const reachedLastGroup = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 4;
+      carousel.scrollTo({
+        left: reachedLastGroup ? 0 : carousel.scrollLeft + carousel.clientWidth + 12,
+        behavior: "smooth",
+      });
+    }, 3600);
 
     return () => window.clearInterval(slideTimer);
   }, []);
@@ -559,7 +630,7 @@ export default function Home() {
 
       <section className="rivotDesign" id="design" aria-labelledby="design-title">
         <div className="rivotDesignCopy">
-          <h2 id="design-title">Designed Different.</h2>
+          <h2 id="design-title">Designed <span>Different.</span></h2>
           <p>A form built with purpose.</p>
         </div>
 
@@ -569,13 +640,19 @@ export default function Home() {
 
         <div className="rivotDesignControls" aria-label="Scooter color options">
           <div className="rivotColorPicker" aria-label="Color option">
-            <p>Sonic Grey</p>
+            <p aria-live="polite">{selectedDesignColor.name}</p>
             <div>
-              <button type="button" className="active colorGrey" aria-label="Sonic Grey" />
-              <button type="button" className="colorBlack" aria-label="Black" />
-              <button type="button" className="colorBlue" aria-label="Blue Grey" />
-              <button type="button" className="colorWhite" aria-label="White" />
-              <button type="button" className="colorGraphite" aria-label="Graphite" />
+              {bookingColors.map((color) => (
+                <button
+                  type="button"
+                  className={selectedDesignColor.value === color.value ? "active" : ""}
+                  aria-label={color.name}
+                  aria-pressed={selectedDesignColor.value === color.value}
+                  onClick={() => setSelectedDesignColor(color)}
+                  style={{ backgroundColor: color.value }}
+                  key={color.value}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -653,7 +730,7 @@ export default function Home() {
             </button>
           </div>
 
-          <div className="rivotDetailsMedia">
+          <div className="rivotDetailsMedia" ref={detailCardsRef} aria-label="Design detail carousel">
             <div className="rivotDetailsHeroPlaceholder">
               <Image
                 src={mainDetailImage}
@@ -744,7 +821,7 @@ export default function Home() {
             <span className="rivotPerformanceAccent" aria-hidden="true" />
           </div>
 
-          <div className="rivotPerformanceCards">
+          <div className="rivotPerformanceCards" ref={performanceCardsRef} aria-label="Performance carousel">
             <article className="rivotPerformanceCard">
               <div className="rivotPerformancePlaceholder">
                 <Image
@@ -886,7 +963,7 @@ export default function Home() {
           <i aria-hidden="true" />
         </div>
 
-        <div className="rivotEngineeringGrid">
+        <div className="rivotEngineeringGrid" ref={engineeringCardsRef} aria-label="Engineering feature carousel">
           {engineeringFeatures.map((feature, index) => (
             <article className="rivotEngineeringCard" key={feature.title}>
               {"image" in feature && feature.image ? (
@@ -2076,35 +2153,22 @@ export default function Home() {
         .rivotColorPicker button {
           width: 34px;
           height: 34px;
-          border: 0;
+          border: 1px solid rgba(17, 17, 17, .12);
           border-radius: 50%;
           box-shadow: inset 0 2px 5px rgba(255,255,255,.55), 0 4px 12px rgba(0,0,0,.2);
           cursor: pointer;
+          transition: transform .2s ease, outline-color .2s ease, box-shadow .2s ease;
         }
 
         .rivotColorPicker button.active {
           outline: 3px solid rgba(239, 116, 48, .32);
           outline-offset: 3px;
+          transform: scale(1.04);
         }
 
-        .colorGrey {
-          background: linear-gradient(135deg, #797c7d, #d8d9d8 45%, #515355);
-        }
-
-        .colorBlack {
-          background: linear-gradient(135deg, #050505, #2b2c2d 48%, #050505);
-        }
-
-        .colorBlue {
-          background: linear-gradient(135deg, #1c2c39, #526373 48%, #101922);
-        }
-
-        .colorWhite {
-          background: linear-gradient(135deg, #f7f7f5, #d7d7d2 52%, #fff);
-        }
-
-        .colorGraphite {
-          background: linear-gradient(135deg, #343434, #777 48%, #242424);
+        .rivotColorPicker button:hover,
+        .rivotColorPicker button:focus-visible {
+          transform: translateY(-2px) scale(1.04);
         }
 
         .rivotEngineering {
@@ -5068,14 +5132,22 @@ export default function Home() {
           }
 
           .rivotKeyFeaturesShell {
-            padding: 24px 18px;
+            width: 100%;
+            gap: 30px;
+            padding: 26px 16px 18px;
             border-radius: 14px;
           }
 
+          .rivotKeyFeaturesCopy {
+            padding-inline: 2px;
+          }
+
           .rivotKeyEyebrow {
-            margin-bottom: 18px;
+            margin-bottom: 22px;
             gap: 10px;
-            font-size: 12px;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: .24em;
           }
 
           .rivotKeyEyebrow span {
@@ -5083,12 +5155,39 @@ export default function Home() {
             height: 24px;
           }
 
+          .rivotKeyFeaturesCopy h2 {
+            max-width: 350px;
+            font-size: clamp(30px, 8.6vw, 38px);
+            font-weight: 900;
+            line-height: .98;
+            letter-spacing: -.055em;
+            text-wrap: balance;
+          }
+
+          .rivotKeyAccent {
+            width: 54px;
+            height: 3px;
+            margin: 20px 0 18px;
+          }
+
+          .rivotKeyFeaturesCopy p:not(.rivotKeyEyebrow) {
+            max-width: 310px;
+            margin: 0;
+            color: #454545;
+            font-size: 14px;
+            line-height: 1.5;
+          }
+
+          .rivotKeyArrow {
+            display: none;
+          }
+
           .rivotKeyCards {
             display: flex;
             gap: 14px;
-            width: calc(100% + 18px);
-            margin-right: -18px;
-            padding: 2px 18px 14px 0;
+            width: 100%;
+            margin: 0;
+            padding: 2px 0;
             overflow-x: auto;
             overscroll-behavior-inline: contain;
             scroll-behavior: smooth;
@@ -5110,8 +5209,8 @@ export default function Home() {
 
           .rivotKeyCard,
           .rivotKeyCard:hover {
-            width: min(84vw, 360px);
-            flex: 0 0 min(84vw, 360px);
+            width: 100%;
+            flex: 0 0 100%;
             aspect-ratio: 1 / .72;
             min-height: 240px;
             transform: none;
@@ -5128,58 +5227,112 @@ export default function Home() {
           }
 
           .rivotKeyCardPills {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            width: 100%;
             gap: 8px;
           }
 
+          .rivotKeyCard:nth-child(2) .rivotKeyCardPills {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
           .rivotKeyCardPills small {
-            width: auto;
+            width: 100%;
             min-height: 26px;
-            padding-inline: 12px;
+            padding: 5px 8px;
             font-size: 10px;
+            line-height: 1.15;
+            white-space: normal;
           }
 
           .rivotDesign {
-            min-height: 100vh;
-            padding: var(--section-open-gap) 16px var(--section-close-gap);
+            min-height: 0;
+            grid-template-rows: auto auto auto;
+            gap: clamp(22px, 6vw, 30px);
+            align-content: start;
+            padding: 48px 18px 34px;
           }
 
           .rivotDesignCopy h2 {
-            font-size: clamp(38px, 13vw, 54px);
+            width: 100%;
+            max-width: 100%;
+            margin-inline: auto;
+            font-size: clamp(27px, 8vw, 34px);
+            line-height: 1;
+            letter-spacing: -.05em;
+            text-align: center;
+            white-space: nowrap;
+          }
+
+          .rivotDesignCopy h2 span {
+            display: inline;
           }
 
           .rivotDesignCopy p {
-            margin-top: 12px;
-            font-size: 15px;
+            width: 100%;
+            margin: 10px auto 0;
+            font-size: clamp(12px, 3.6vw, 14px);
+            text-align: center;
+          }
+
+          .rivotDesignCopy {
+            width: 100%;
+            max-width: 100%;
+            text-align: center;
+          }
+
+          .rivotDesignScooter {
+            width: 100%;
+            min-width: 0;
+            margin: 0;
+          }
+
+          .rivotDesignScooter .rivotRotationStage {
+            width: 100%;
+            min-width: 0;
+            overflow: hidden;
           }
 
           .rivotDesignImage {
-            width: 102vw;
-            max-width: none;
+            width: min(100%, 520px);
+            max-width: 100%;
+            max-height: none;
+            object-fit: contain;
           }
 
           .rivotDesignControls {
-            right: 50%;
-            bottom: 24px;
-            transform: translateX(50%);
-            gap: 12px;
+            position: static;
+            width: min(100%, 340px);
+            margin: 4px auto 0;
+            justify-content: center;
+            transform: none;
           }
 
           .rivotEngineering {
             display: block;
-            padding: var(--section-open-gap) 12px var(--section-close-gap);
+            padding: 54px 12px 52px;
           }
 
           .rivotEngineeringHeader {
-            padding: 0 6px 24px;
+            align-items: center;
+            padding: 0 8px 30px;
+            text-align: center;
+          }
+
+          .rivotEngineeringHeader p {
+            margin-bottom: 12px;
+            font-size: 11px;
           }
 
           .rivotEngineeringHeader h2 {
-            font-size: clamp(36px, 12vw, 46px);
+            font-size: clamp(34px, 10.5vw, 44px);
+            line-height: .94;
           }
 
           .rivotEngineeringHeader small {
+            max-width: 300px;
             margin-top: 18px;
-            font-size: 15px;
+            font-size: 14px;
           }
 
           .rivotEngineeringHeader i {
@@ -5187,36 +5340,117 @@ export default function Home() {
           }
 
           .rivotEngineeringGrid {
-            grid-template-columns: 1fr;
+            display: flex;
             width: 100%;
+            gap: 12px;
+            overflow-x: auto;
+            overscroll-behavior-inline: contain;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
           }
 
-          .rivotEngineeringCard {
-            min-height: 210px;
-            padding: 26px 22px 34px;
+          .rivotEngineeringGrid::-webkit-scrollbar {
+            display: none;
+          }
+
+          .rivotEngineeringCard,
+          .rivotEngineeringCard:nth-child(n + 4) {
+            display: flex;
+            width: calc((100% - 12px) / 2);
+            min-height: clamp(240px, 72vw, 280px);
+            flex: 0 0 calc((100% - 12px) / 2);
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0;
+            padding: 22px 12px;
+            border-radius: 15px;
+            text-align: center;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
           }
 
           .rivotEngineeringCard:nth-child(n + 4) {
-            grid-template-columns: 52px minmax(0, 1fr);
-            column-gap: 14px;
+            grid-template-columns: none;
           }
 
           .rivotEngineeringIcon {
-            width: 46px;
-            height: 46px;
+            width: 42px;
+            height: 42px;
+            margin: 0 0 16px;
           }
 
-          .rivotEngineeringCard p {
-            max-width: 240px;
+          .rivotEngineeringCard:nth-child(n + 4) .rivotEngineeringIcon,
+          .rivotEngineeringCard:nth-child(n + 4) h3,
+          .rivotEngineeringCard:nth-child(n + 4) p,
+          .rivotEngineeringCard:nth-child(n + 4) .rivotEngineeringStatus {
+            grid-column: auto;
+            grid-row: auto;
+          }
+
+          .rivotEngineeringCard:nth-child(n + 4) .rivotEngineeringIcon {
+            margin: 0 0 16px;
+          }
+
+          .rivotEngineeringCard h3 {
+            font-size: clamp(15px, 4.5vw, 18px);
+          }
+
+          .rivotEngineeringCard p,
+          .rivotEngineeringCard:nth-child(n + 4) p {
+            max-width: 145px;
+            margin: 12px auto 0;
+            font-size: 11px;
+            line-height: 1.35;
+          }
+
+          .rivotEngineeringStatus,
+          .rivotEngineeringCard:nth-child(n + 4) .rivotEngineeringStatus,
+          .rivotEngineeringModes {
+            margin-top: auto;
+            padding-top: 18px;
+            font-size: 11px;
+          }
+
+          .rivotEngineeringModes {
+            gap: 5px;
+          }
+
+          .rivotEngineeringModes span {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+          }
+
+          .rivotEngineeringModes span::after {
+            width: 7px;
+            height: 7px;
           }
 
           .rivotColorPicker {
-            padding: 15px 14px 10px;
+            width: 100%;
+            justify-content: center;
+            padding: 17px 16px 13px;
+            box-shadow: 0 14px 36px rgba(25, 34, 40, .12);
+          }
+
+          .rivotColorPicker p {
+            top: -25px;
+            font-size: 12px;
+            font-weight: 800;
+          }
+
+          .rivotColorPicker div {
+            width: 100%;
+            justify-content: space-between;
+            gap: 10px;
           }
 
           .rivotColorPicker button {
-            width: 28px;
-            height: 28px;
+            width: clamp(30px, 9vw, 36px);
+            height: clamp(30px, 9vw, 36px);
           }
 
           .rivotDesignDetails {
@@ -5226,45 +5460,98 @@ export default function Home() {
 
           .rivotDesignDetailsShell {
             height: auto;
-            padding: 28px 18px;
+            gap: 34px;
+            padding: 32px 16px;
             border-radius: 18px;
           }
 
+          .rivotDesignDetailsCopy {
+            align-items: center;
+            text-align: center;
+          }
+
+          .rivotDetailsEyebrow {
+            margin-bottom: 14px;
+            font-size: 12px;
+          }
+
+          .rivotDesignDetailsCopy h2 {
+            font-size: clamp(36px, 11vw, 46px);
+            line-height: .94;
+          }
+
           .rivotDetailsIntro {
-            margin: 22px 0 30px;
+            max-width: 300px;
+            margin: 16px auto 26px;
+            font-size: 14px;
+            line-height: 1.5;
           }
 
           .rivotDetailsList {
-            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            max-width: none;
+            gap: 12px;
+            text-align: left;
           }
 
           .rivotDetailsList > div {
-            grid-template-columns: 52px 1fr;
-            gap: 12px;
+            grid-template-columns: 38px minmax(0, 1fr);
+            gap: 9px;
+            min-width: 0;
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .74);
+            box-shadow: inset 0 0 0 1px rgba(17, 17, 17, .05);
           }
 
           .rivotDetailsList span {
-            width: 48px;
-            height: 48px;
+            width: 36px;
+            height: 36px;
+          }
+
+          .rivotDetailsList h3 {
+            font-size: 12px;
+          }
+
+          .rivotDetailsList p {
+            margin-top: 3px;
+            font-size: 10px;
+            line-height: 1.3;
           }
 
           .rivotDetailsCta {
-            width: 100%;
-            margin-top: 30px;
+            width: min(100%, 310px);
+            margin-top: 24px;
           }
 
-          .rivotDetailsHeroPlaceholder {
-            height: 320px;
-            min-height: 0;
+          .rivotDetailsMedia {
+            display: flex;
+            width: 100%;
+            gap: 14px;
+            overflow-x: auto;
+            overscroll-behavior-inline: contain;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+          }
+
+          .rivotDetailsMedia::-webkit-scrollbar {
+            display: none;
           }
 
           .rivotDetailsSideStack {
-            grid-template-columns: 1fr;
+            display: contents;
           }
 
+          .rivotDetailsHeroPlaceholder,
           .rivotDetailsSmallPlaceholder {
-            height: 220px;
+            width: 100%;
+            height: clamp(280px, 82vw, 340px);
+            flex: 0 0 100%;
             min-height: 0;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
           }
 
           .rivotDetailsLanguage {
@@ -5298,22 +5585,65 @@ export default function Home() {
           }
 
           .rivotPerformance {
-            padding: var(--section-open-gap) 12px var(--section-close-gap);
+            padding: 54px 12px 52px;
           }
 
           .rivotPerformanceShell {
-            padding: 24px 18px;
+            gap: 32px;
+            padding: 26px 16px;
+          }
+
+          .rivotPerformanceCopy {
+            text-align: center;
+          }
+
+          .rivotPerformanceEyebrow {
+            margin-bottom: 14px;
+            font-size: 12px;
+            letter-spacing: .12em;
+          }
+
+          .rivotPerformanceCopy h2 {
+            font-size: clamp(36px, 11vw, 46px);
+            line-height: .94;
+          }
+
+          .rivotPerformanceCopy > p:not(.rivotPerformanceEyebrow) {
+            max-width: 310px;
+            margin: 18px auto 0;
+            font-size: 14px;
+            line-height: 1.5;
+          }
+
+          .rivotPerformanceAccent {
+            width: 54px;
+            margin: 22px auto 0;
           }
 
           .rivotPerformanceCards {
-            grid-template-columns: 1fr;
+            display: flex;
+            width: 100%;
             gap: 14px;
+            overflow-x: auto;
+            overscroll-behavior-inline: contain;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+          }
+
+          .rivotPerformanceCards::-webkit-scrollbar {
+            display: none;
           }
 
           .rivotPerformanceCard,
           .rivotPerformanceCard:hover {
-            min-height: 320px;
+            width: 100%;
+            min-height: clamp(300px, 92vw, 360px);
+            flex: 0 0 100%;
             transform: none;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
           }
 
           .rivotPerformancePlaceholder,
@@ -5322,7 +5652,21 @@ export default function Home() {
           }
 
           .rivotPerformanceCardContent {
-            inset: 24px;
+            inset: 24px 22px;
+          }
+
+          .rivotPerformanceCardContent p:first-child {
+            margin-bottom: 34px;
+            font-size: 11px;
+          }
+
+          .rivotPerformanceCardContent h3 {
+            font-size: clamp(30px, 10vw, 40px);
+          }
+
+          .rivotPerformanceCardContent p:last-child {
+            margin-top: 18px;
+            font-size: 14px;
           }
 
           .rivotSafetyTech {
@@ -5490,48 +5834,116 @@ export default function Home() {
           }
 
           .rivotReach {
-            padding: 20px 12px 44px;
+            padding: 40px 12px 48px;
           }
 
           .rivotReachPanel {
-            gap: 14px;
-            padding-top: 50px;
+            gap: 18px;
+            padding-top: 0;
+            background: transparent;
           }
 
           .rivotReachCard {
             grid-template-columns: 1fr;
             min-height: auto;
+            border: 1px solid rgba(17, 17, 17, .06);
+            border-radius: 18px;
+            box-shadow: 0 16px 38px rgba(17, 17, 17, .09);
+          }
+
+          .rivotReachStore,
+          .rivotReachCharge {
+            border-radius: 18px;
+          }
+
+          .rivotReachCharge {
+            border-left: 1px solid rgba(17, 17, 17, .06);
           }
 
           .rivotReachCopy {
-            padding: 28px 22px 22px;
+            align-items: center;
+            padding: 26px 22px 28px;
+            text-align: center;
+          }
+
+          .rivotReachIcon {
+            width: 42px;
+            height: 42px;
+            margin-bottom: 13px;
+          }
+
+          .rivotReachCopy > p {
+            margin-bottom: 12px;
+            font-size: 12px;
+          }
+
+          .rivotReachCopy h2 {
+            font-size: clamp(32px, 10vw, 42px);
+            line-height: .94;
+          }
+
+          .rivotReachCopy h2 br {
+            display: none;
+          }
+
+          .rivotReachCopy small {
+            max-width: 285px;
+            margin-top: 14px;
+            font-size: 14px;
+            line-height: 1.5;
+          }
+
+          .rivotReachArrow {
+            width: 42px;
+            height: 42px;
+            margin-top: 20px;
           }
 
           .rivotReachMedia {
-            min-height: 240px;
+            min-height: clamp(210px, 64vw, 260px);
             margin: 0;
-            border-radius: 14px 14px 0 0;
+            border-radius: 17px 17px 0 0;
             clip-path: none;
             order: -1;
           }
 
           .rivotBestFit {
-            padding: 58px 12px 46px;
+            padding: 56px 12px 48px;
           }
 
           .rivotBestFitHeader h2 {
-            font-size: clamp(30px, 9vw, 40px);
+            max-width: 330px;
+            margin-inline: auto;
+            font-size: clamp(32px, 9.5vw, 40px);
+            line-height: .98;
+            text-wrap: balance;
+          }
+
+          .rivotBestFitHeader p {
+            margin-top: 10px;
+            font-size: 14px;
           }
 
           .rivotBestFitGrid {
-            gap: 14px;
-            margin-top: 26px;
+            width: 100%;
+            gap: 16px;
+            margin-top: 30px;
           }
 
           .rivotBestFitCard {
-            min-height: 320px;
-            padding: 28px 18px 26px;
+            width: 100%;
+            min-height: 340px;
+            padding: 30px 18px 26px;
             border-radius: 16px;
+          }
+
+          .rivotBestFitCard h3 {
+            font-size: clamp(25px, 8vw, 31px);
+          }
+
+          .rivotBestFitCard > p:not(.rivotBestFitEyebrow) {
+            max-width: 275px;
+            font-size: 13px;
           }
 
           .rivotBestFitEyebrow {
@@ -5547,7 +5959,7 @@ export default function Home() {
           }
 
           .rivotAccessoryTiles span {
-            height: 88px;
+            height: clamp(76px, 23vw, 90px);
           }
 
           .rivotBestFitDisabled,
@@ -5563,7 +5975,7 @@ export default function Home() {
           }
 
           .rivotBestFitSubscription {
-            min-height: 320px;
+            min-height: 340px;
             padding: 26px 18px 28px;
           }
 

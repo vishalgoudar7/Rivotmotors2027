@@ -48,7 +48,7 @@ const designDetails: DetailCard[] = [
 
 export function ProductDesignDetails() {
   return (
-    <section className="productDesignDetails" aria-labelledby="product-design-details-title">
+    <section className="productDesignDetails" id="details" aria-labelledby="product-design-details-title">
       <div className="productDesignIntro">
         <p><span>03</span> Design</p>
         <h2 id="product-design-details-title">A closer look at what makes it unique.</h2>

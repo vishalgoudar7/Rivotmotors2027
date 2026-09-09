@@ -13,19 +13,18 @@ import proFrontView from "@/asset/models/pro/Front view.png";
 import proLeftSideView from "@/asset/models/pro/Left side view.png";
 import proRearView from "@/asset/models/pro/Rear view.png";
 import proSilverGreyView from "@/asset/models/pro/Silver grey1 (2).png";
+import { bookingColorValues } from "@/data/bookingColors";
 
 type Model = "sport" | "pro";
 type BookingField = "name" | "mobile" | "email" | "pincode" | "state" | "city" | "source";
 type BookingErrors = Partial<Record<BookingField | "terms", string>>;
-
-const bookingColors = ["#FCFCFC", "#757180", "#CD2E30", "#050505", "#C3CADB"];
 
 const models = [
   {
     id: "pro" as const,
     label: "Pro",
     price: "₹ 1,29,000",
-    colors: bookingColors,
+    colors: bookingColorValues,
     image: proModelImage,
     gallery: [proFrontView, proLeftSideView, proRearView, proSilverGreyView],
   },
@@ -33,7 +32,7 @@ const models = [
     id: "sport" as const,
     label: "Sport",
     price: "₹ 1,39,000",
-    colors: bookingColors,
+    colors: bookingColorValues,
     image: sportModelImage,
     gallery: [sportView1, sportView2, sportView3, sportView4],
   },
@@ -87,7 +86,7 @@ export function Booking() {
 
   function chooseModel(nextModel: Model) {
     setModel(nextModel);
-    setColor(models.find((item) => item.id === nextModel)?.colors[0] ?? "#000000");
+    setColor(models.find((item) => item.id === nextModel)?.colors[0] ?? bookingColorValues[0]);
     setGalleryIndex(0);
   }
 

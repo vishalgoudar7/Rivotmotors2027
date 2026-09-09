@@ -2,8 +2,10 @@ import { Faqs } from "@/components/Faqs";
 import { ProductCustomMade } from "@/components/ProductCustomMade";
 import { ProductDesignDetails } from "@/components/ProductDesignDetails";
 import { ProductDetailHero } from "@/components/ProductDetailHero";
+import { ProductDetailNav } from "@/components/ProductDetailNav";
 import { ProductDetailSupportSections } from "@/components/ProductDetailSupportSections";
 import { ProductPerformanceBand } from "@/components/ProductPerformanceBand";
+import { ProductKeyFeaturesGallery } from "@/components/ProductKeyFeaturesGallery";
 import { ModelComparison } from "@/components/ModelComparison";
 import { modelComparisonModels, modelComparisonRows } from "@/data/modelComparison";
 import proImage from "@/asset/Model/Pro.png";
@@ -17,11 +19,15 @@ export function ProModel() {
         description="Power for the long road, space for the long list."
       />
 
-      <ProductPerformanceBand modelName="NX100 Pro" image={proImage} imageAlt="RIVOT NX100 Pro scooter" />
+      <ProductDetailNav />
+
+      <ProductPerformanceBand modelName="NX100 Pro" />
 
       <ProductDesignDetails />
 
       <ProductCustomMade modelName="NX100 Pro" image={proImage} imageAlt="RIVOT NX100 Pro scooter colour preview" />
+
+      <ProductKeyFeaturesGallery />
 
       <ModelComparison rows={modelComparisonRows} models={modelComparisonModels} />
 
@@ -68,28 +74,44 @@ export function ProModel() {
           font-family: inherit;
         }
 
+        .proPage :is(#performance, #details, #design, #key-features, #model-comparison, #support) {
+          scroll-margin-top: 104px;
+        }
+
+        .proPage.proPage,
+        .proPage.proPage :is(button, input, select, textarea) {
+          font-family: inherit;
+        }
+
+        .proPage.proPage :is(h1, h2, h3, h4) {
+          font-family: inherit;
+          font-weight: 800 !important;
+          letter-spacing: -.04em;
+          text-wrap: balance;
+        }
+
         .proPage.proPage :is(h1, h2) {
           font-size: 48px;
-          font-weight: 800;
           line-height: 1.02;
-          letter-spacing: 0;
         }
 
         .proPage.proPage :is(p, small, li) {
+          font-family: inherit;
           font-size: 15px;
           font-weight: 500;
           line-height: 1.55;
           letter-spacing: 0;
         }
 
-        .proPage.proPage :is(h3, h4, strong, b) {
-          font-weight: 800;
-          letter-spacing: 0;
+        .proPage.proPage :is(strong, b) {
+          font-family: inherit;
+          font-weight: 800 !important;
         }
 
         .proPage.proPage :is(a, button) {
+          font-family: inherit;
           font-size: 15px;
-          font-weight: 700;
+          font-weight: 700 !important;
           letter-spacing: 0;
         }
 

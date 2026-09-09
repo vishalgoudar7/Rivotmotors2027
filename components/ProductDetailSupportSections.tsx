@@ -5,7 +5,7 @@ import chargerImage from "@/asset/images/last/Charger.png";
 export function ProductDetailSupportSections() {
   return (
     <>
-      <section className="rivotReach" aria-label="RIVOT access network">
+      <section className="rivotReach" id="support" aria-label="RIVOT access network">
         <div className="rivotReachPanel">
           <article className="rivotReachCard rivotReachStore">
             <div className="rivotReachCopy">

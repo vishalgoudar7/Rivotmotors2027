@@ -18,7 +18,7 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
   const selectedColor = colorOptions.find((color) => color.selected) || colorOptions[0];
 
   return (
-    <section className="productCustomMade" aria-labelledby={`${modelName.replace(/\s+/g, "-").toLowerCase()}-custom-title`}>
+    <section className="productCustomMade" id="design" aria-labelledby={`${modelName.replace(/\s+/g, "-").toLowerCase()}-custom-title`}>
       <div className="productCustomCopy">
         <h2 id={`${modelName.replace(/\s+/g, "-").toLowerCase()}-custom-title`}>
           Custom made.<br />For you
