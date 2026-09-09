@@ -117,8 +117,9 @@ export function ProductDetailSupportSections() {
                 </svg>
               </span>
               <p className="rivotBestFitEyebrow rivotBestFitBlueText">Subscription</p>
-              <h3>Simple SuperPack</h3>
-              <p>Keeping your ride in peak condition.</p>
+              <h3>SMART CARE
+</h3>
+              <p>Extended coverage that keeps you moving with confidence.</p>
 
               <Link href="/products" className="rivotBestFitPill">
                 Explore More

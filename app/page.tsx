@@ -12,7 +12,7 @@ import geofencingAppImage from "@/asset/images/App/Geofencing.png";
 import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring System).png";
 import tripInsightsAppImage from "@/asset/images/App/Trip Insights.png";
 import accelerationImage from "@/asset/images/last/accelaration.png";
-import rangeImage from "@/asset/images/last/IDC Range.png";
+import rangeImage from "@/asset/images/last/IDC Range.jpeg";
 import chargerImage from "@/asset/images/last/Charger.png";
 import discImage from "@/asset/images/last/Disc.png";
 import monoshockImage from "@/asset/images/last/Monoshock.png";
@@ -1105,7 +1105,8 @@ export default function Home() {
 
             <article className="rivotBestFitCard rivotBestFitSubscription">
               <p className="rivotBestFitEyebrow rivotBestFitBlue">Subscription</p>
-              <h3>Simple SuperPack</h3>
+              <h3>SMART CARE
+</h3>
               <p>Extended Warranty &amp; Care for your Simple Scooters.</p>
 
               <span className="rivotBestFitShield rivotBestFitShieldBlue" aria-hidden="true">
@@ -2920,6 +2921,21 @@ export default function Home() {
             linear-gradient(160deg, #4a4a43 0%, #171717 58%, #070707 100%);
         }
 
+        .rivotPerformancePhoto {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+        }
+
+        .rivotPerformanceCard:first-child .rivotPerformancePhoto {
+          object-position: 54% center;
+        }
+
+        .rivotPerformanceCard:nth-child(2) .rivotPerformancePhoto {
+          object-position: 58% center;
+        }
+
         .rivotPerformanceCard:nth-child(2) .rivotPerformancePlaceholder {
           background:
             linear-gradient(135deg, rgba(239, 116, 48, .26), transparent 34%),
@@ -4266,6 +4282,51 @@ export default function Home() {
 
         .rivotReachCharge .rivotReachMedia {
           margin-right: 18px;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReach {
+          background: #080909;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachPanel,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCard {
+          background: #111313;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachPanel {
+          box-shadow:
+            0 18px 46px rgba(0, 0, 0, .38),
+            inset 0 0 0 1px rgba(255, 255, 255, .12);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCharge {
+          border-left-color: rgba(255, 255, 255, .12);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachIcon {
+          background: #1a1c1c;
+          border-color: rgba(239, 116, 48, .34);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCharge .rivotReachIcon {
+          border-color: rgba(37, 167, 93, .34);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCopy h2 {
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCopy small {
+          color: #c7cbc7;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachStore .rivotReachCopy > p {
+          color: #ef7430;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCharge .rivotReachCopy > p {
+          color: #39c976;
         }
 
         .rivotBestFit {
