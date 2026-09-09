@@ -259,6 +259,33 @@ export function Faqs() {
           line-height: 1.6;
         }
 
+        html[data-theme="dark"] .rivotFaqs {
+          background: #080909;
+          color: #f5f5f2;
+        }
+
+        html[data-theme="dark"] .rivotFaqsHeader h2,
+        html[data-theme="dark"] .rivotFaqItem summary,
+        html[data-theme="dark"] .rivotFaqItem summary span,
+        html[data-theme="dark"] .rivotFaqItem p {
+          color: #f5f5f2;
+        }
+
+        html[data-theme="dark"] .rivotFaqItem {
+          background: #151717;
+          border: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        html[data-theme="dark"] .rivotFaqItem summary i::before,
+        html[data-theme="dark"] .rivotFaqItem summary i::after {
+          background: #f5f5f2;
+        }
+
+        html[data-theme="dark"] .rivotFaqTabs button:not(.active) {
+          background: #f5f5f2;
+          color: #24282c;
+        }
+
         @media (max-width: 800px) {
           .rivotFaqsShell {
             width: min(100%, 760px);

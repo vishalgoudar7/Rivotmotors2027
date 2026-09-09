@@ -310,6 +310,46 @@ export function DashboardRotation() {
           filter: drop-shadow(0 20px 26px rgba(17, 17, 17, .18));
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDashboard {
+          background:
+            radial-gradient(circle at 50% 68%, rgba(255, 255, 255, .13), transparent 28%),
+            linear-gradient(180deg, #080909 0%, #101212 100%) !important;
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDashboardCopy p {
+          color: #ef7430 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotDashboardCopy h2,.rivotDashboardCopy span) {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDashboardModes {
+          background: rgba(255, 255, 255, .07) !important;
+          border: 1px solid rgba(255, 255, 255, .1);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, .32);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDashboardModes button:not(.active) {
+          background: #1a1c1c;
+          color: #f5f5f2;
+          box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDashboardStage::before {
+          width: 88%;
+          height: 52%;
+          background: rgba(255, 255, 255, .18);
+          filter: blur(90px);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDashboardStage canvas {
+          filter:
+            drop-shadow(0 24px 30px rgba(0, 0, 0, .62))
+            drop-shadow(0 0 22px rgba(255, 255, 255, .13));
+        }
+
         @media (max-width: 900px) {
           .rivotDashboardCopy h2 {
             white-space: normal;

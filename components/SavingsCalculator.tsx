@@ -726,6 +726,64 @@ export function SavingsCalculator() {
           color: #16a765;
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavings {
+          background:
+            radial-gradient(circle at 92% 18%, rgba(122, 69, 229, .14), transparent 32%),
+            radial-gradient(circle at 88% 92%, rgba(22, 167, 101, .12), transparent 32%),
+            #080909 !important;
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotSavingsCard,.rivotSavingsCalculator,.rivotSavingsMetric) {
+          background: rgba(17, 19, 19, .92) !important;
+          border-color: rgba(255, 255, 255, .12) !important;
+          box-shadow: 0 18px 44px rgba(0, 0, 0, .3) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotSavingsHeader h2,.rivotSavingsHeader a,.rivotSavingsCard small,.rivotSavingsCard b,.rivotSavingsUsageCopy p,.rivotSavingsMetric b,.rivotSavingsMetric small,.rivotSavingsNote) {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsCard p {
+          color: #b8bfca !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsCard.green b,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsUsageCopy b,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsHeader h2 span {
+          color: #28c77c !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsCard.orange:nth-child(3) b {
+          color: #ff7b2e !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsSlider::before {
+          background: linear-gradient(90deg, #f9732a var(--rivot-savings-progress), rgba(255, 255, 255, .24) 0);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsSlider::after {
+          background: #111313;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsSlider small {
+          color: #c2c7cf;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsSlider input {
+          background: transparent !important;
+          border: 0 !important;
+          box-shadow: none !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsHeader > div > p {
+          color: #28c77c !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSavingsMetricGrid {
+          border-left-color: rgba(255, 255, 255, .12);
+        }
+
         @media (max-width: 1180px) {
           .rivotSavingsPanel {
             padding: 34px 0;

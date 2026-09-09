@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import { SiteChrome } from "@/components/SiteChrome";
 import "./globals.css";
 
@@ -19,16 +18,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-rivot-theme="light" data-theme="light" suppressHydrationWarning>
       <head>
-        <Script
-          id="rivot-theme-initializer"
-          strategy="beforeInteractive"
+        <script
           dangerouslySetInnerHTML={{
             __html: `
-              try {
-                document.documentElement.dataset.rivotTheme = "light";
-                document.documentElement.dataset.theme = "light";
-                localStorage.setItem("rivot-theme-mode", "light");
-              } catch {}
+              (function () {
+                try {
+                  var saved = localStorage.getItem("rivot-theme-mode");
+                  var theme = saved === "dark" || saved === "light"
+                    ? saved
+                    : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+                  document.documentElement.dataset.rivotTheme = theme;
+                  document.documentElement.dataset.theme = theme;
+                  document.documentElement.style.colorScheme = theme;
+                } catch (e) {}
+              })();
             `,
           }}
         />

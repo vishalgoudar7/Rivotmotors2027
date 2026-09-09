@@ -131,8 +131,8 @@ export function ProductDetailSupportSections() {
       <style>{`
         .rivotReach {
           padding: clamp(8px, 1.5vw, 18px) clamp(10px, 2vw, 22px) clamp(64px, 7vw, 92px);
-          background: #fff;
-          color: #111;
+          background: #050606;
+          color: #f5f5f2;
           overflow: hidden;
         }
 
@@ -144,10 +144,10 @@ export function ProductDetailSupportSections() {
           width: min(100%, 1360px);
           margin: 0 auto;
           border-radius: 16px;
-          background: #fff;
+          background: #111313;
           box-shadow:
             0 12px 34px rgba(17, 17, 17, .08),
-            inset 0 0 0 1px rgba(17, 17, 17, .06);
+            inset 0 0 0 1px rgba(255, 255, 255, .12);
         }
 
         .rivotReachCard {
@@ -156,7 +156,7 @@ export function ProductDetailSupportSections() {
           grid-template-columns: minmax(185px, .78fr) minmax(240px, 1.08fr);
           min-height: clamp(250px, 24vw, 330px);
           overflow: hidden;
-          background: #fff;
+          background: #111313;
         }
 
         .rivotReachStore {
@@ -164,7 +164,7 @@ export function ProductDetailSupportSections() {
         }
 
         .rivotReachCharge {
-          border-left: 1px solid rgba(17, 17, 17, .06);
+          border-left: 1px solid rgba(255, 255, 255, .12);
           border-radius: 0 16px 16px 0;
         }
 
@@ -199,7 +199,7 @@ export function ProductDetailSupportSections() {
           border: 1px solid rgba(239, 116, 48, .18);
           border-radius: 13px;
           color: #ef7430;
-          background: #fff;
+          background: #1a1c1c;
           box-shadow: 0 10px 24px rgba(239, 116, 48, .1);
         }
 
@@ -219,7 +219,7 @@ export function ProductDetailSupportSections() {
 
         .rivotReachCopy h2 {
           margin: 0;
-          color: #050505;
+          color: #f5f5f2;
           font-size: clamp(30px, 3vw, 46px);
           font-weight: 800;
           line-height: .98;
@@ -230,7 +230,7 @@ export function ProductDetailSupportSections() {
           display: block;
           max-width: 255px;
           margin-top: 16px;
-          color: #42464d;
+          color: #c7cbc7;
           font-size: 15px;
           font-weight: 500;
           line-height: 1.55;
@@ -284,6 +284,48 @@ export function ProductDetailSupportSections() {
 
         .rivotReachCharge .rivotReachMedia {
           margin-right: 18px;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReach {
+          background: #080909 !important;
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachPanel,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCard {
+          background: #111313 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachPanel {
+          box-shadow:
+            0 18px 46px rgba(0, 0, 0, .38),
+            inset 0 0 0 1px rgba(255, 255, 255, .12);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCharge {
+          border-left-color: rgba(255, 255, 255, .12);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachIcon {
+          background: #1a1c1c !important;
+          border-color: rgba(239, 116, 48, .34);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCharge .rivotReachIcon {
+          border-color: rgba(37, 167, 93, .34);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCopy h2,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCopy small {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachStore .rivotReachCopy > p {
+          color: #ef7430 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCharge .rivotReachCopy > p {
+          color: #39c976 !important;
         }
 
         .rivotBestFit {

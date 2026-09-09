@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import modelPro from "@/asset/Model/Pro.png";
 import modelSport from "@/asset/Model/Sport_NX100.png";
 import navbarLogo from "@/asset/images/Newlogo.png";
@@ -52,11 +52,33 @@ export function Navbar() {
   const isHomePage = pathname === "/";
   const logo = navbarLogo;
 
+  useLayoutEffect(() => {
+    const savedTheme = localStorage.getItem("rivot-theme-mode");
+    const currentTheme: "dark" | "light" =
+      savedTheme === "dark" || savedTheme === "light"
+        ? savedTheme
+        : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+    setTheme(currentTheme);
+    document.documentElement.dataset.rivotTheme = currentTheme;
+    document.documentElement.dataset.theme = currentTheme;
+    document.documentElement.style.colorScheme = currentTheme;
+  }, []);
+
   useEffect(() => {
-    setTheme("light");
-    document.documentElement.dataset.rivotTheme = "light";
-    document.documentElement.dataset.theme = "light";
-    localStorage.setItem("rivot-theme-mode", "light");
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const syncSystemTheme = (event: MediaQueryListEvent) => {
+      if (localStorage.getItem("rivot-theme-mode")) return;
+      const nextTheme = event.matches ? "dark" : "light";
+      setTheme(nextTheme);
+      document.documentElement.dataset.rivotTheme = nextTheme;
+      document.documentElement.dataset.theme = nextTheme;
+      document.documentElement.style.colorScheme = nextTheme;
+    };
+
+    media.addEventListener("change", syncSystemTheme);
+    return () => media.removeEventListener("change", syncSystemTheme);
   }, []);
 
   const toggleTheme = () => {
@@ -64,6 +86,7 @@ export function Navbar() {
       const nextTheme = currentTheme === "dark" ? "light" : "dark";
       document.documentElement.dataset.rivotTheme = nextTheme;
       document.documentElement.dataset.theme = nextTheme;
+      document.documentElement.style.colorScheme = nextTheme;
       localStorage.setItem("rivot-theme-mode", nextTheme);
       return nextTheme;
     });
@@ -182,7 +205,13 @@ export function Navbar() {
       </nav>
 
       <div className="rivotHeaderActions">
-        <button className="rivotThemeToggle" type="button" onClick={toggleTheme}>
+        <button
+          className="rivotThemeToggle"
+          type="button"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        >
           <span aria-hidden="true">
             {theme === "dark" ? (
               <svg viewBox="0 0 24 24" fill="none">
@@ -217,6 +246,15 @@ export function Navbar() {
       </button>
 
       <nav className={`rivotMobileLinks${menuOpen ? " isOpen" : ""}`} aria-label="Mobile navigation">
+        <button
+          className="rivotMobileThemeToggle"
+          type="button"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        >
+          <span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+          <i aria-hidden="true" className={theme === "dark" ? "isDark" : ""} />
+        </button>
         {productModels.map((model) => (
           <Link href={model.href} key={model.name} onClick={() => setMenuOpen(false)}>
             {model.name}
@@ -1161,9 +1199,52 @@ export function Navbar() {
       border-bottom: 0;
     }
 
-    .rivotMobileLinks a:hover {
-      color: #ef7430;
-    }
+  .rivotMobileLinks a:hover {
+    color: #ef7430;
+  }
+
+  .rivotMobileThemeToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px 18px;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .rivotMobileThemeToggle i {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    border-radius: 999px;
+    background: #555;
+  }
+
+  .rivotMobileThemeToggle i::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform .2s ease;
+  }
+
+  .rivotMobileThemeToggle i.isDark {
+    background: #ef7430;
+  }
+
+  .rivotMobileThemeToggle i.isDark::after {
+    transform: translateX(18px);
+  }
   }
 
   @media (max-width: 380px) {
