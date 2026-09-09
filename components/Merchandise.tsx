@@ -291,6 +291,12 @@ export function Merchandise() {
         html[data-rivot-theme="dark"] .rivotShopCard {
           border-color: rgba(255, 255, 255, .1);
           background: rgba(18, 20, 20, .88);
+          box-shadow: 0 20px 48px rgba(0, 0, 0, .34);
+        }
+
+        html[data-rivot-theme="dark"] .rivotShopInfo {
+          border-top: 1px solid rgba(255, 255, 255, .08);
+          background: #151717;
         }
 
         html[data-rivot-theme="dark"] .rivotShopImage {

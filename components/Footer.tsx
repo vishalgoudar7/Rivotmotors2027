@@ -333,6 +333,16 @@ export function Footer() {
           letter-spacing: 0;
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFooter {
+          background: #080909;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFooterShell {
+          box-shadow:
+            0 18px 50px rgba(0, 0, 0, .28),
+            inset 0 0 0 1px rgba(255, 255, 255, .06);
+        }
+
         @media (max-width: 1080px) {
           .rivotFooterTop {
             grid-template-columns: repeat(2, minmax(0, 1fr));

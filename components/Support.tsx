@@ -403,6 +403,48 @@ export function ReachStyles() {
         font-weight: 800;
       }
 
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSupportCard,
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotWhereCard,
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachFormSection {
+        border-color: rgba(255, 255, 255, .11);
+        background: #151717;
+        box-shadow: 0 22px 54px rgba(0, 0, 0, .32);
+      }
+
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachPage {
+        background:
+          radial-gradient(circle at 94% 10%, rgba(239, 116, 48, .12), transparent 30%),
+          linear-gradient(180deg, #080909 0%, #0d0f0f 100%) !important;
+        color: #f5f5f2;
+      }
+
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachShell {
+        background: transparent !important;
+      }
+
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotSupportCard h2, .rivotWhereCard h2, .rivotReachFormSection h2, .rivotReachFormSection label) {
+        color: #f5f5f2 !important;
+      }
+
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotSupportCard p, .rivotWhereCard p, .rivotWhereCard li, .rivotSupportCard small, .rivotReachHero strong, .rivotReachFormSection strong) {
+        color: #aeb4b4 !important;
+      }
+
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachIcon {
+        border: 1px solid rgba(239, 116, 48, .22);
+        background: rgba(239, 116, 48, .14);
+      }
+
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotReachFormSection input, .rivotReachFormSection select, .rivotReachFormSection textarea) {
+        border-color: rgba(255, 255, 255, .14);
+        background: #0f1111;
+        color: #f5f5f2;
+      }
+
+      html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachSuccess {
+        color: #5ee49b !important;
+      }
+
       @media (max-width: 900px) {
         .rivotSupportGrid,
         .rivotWhereGrid,

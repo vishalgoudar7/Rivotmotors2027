@@ -33,7 +33,13 @@ function imageSrc(value: string) {
     return "/Story_page/23.webp";
   }
 
-  return value.startsWith("/") || value.startsWith("http") ? value : `/${value}`;
+  const normalized = value.startsWith("/") || value.startsWith("http") ? value : `/${value}`;
+  const missingImageFallbacks: Record<string, string> = {
+    "/Story_page/21.webp": "/Story_page/16.webp",
+    "/Story_page/22.webp": "/Story_page/15.webp",
+  };
+
+  return missingImageFallbacks[normalized] ?? normalized;
 }
 
 export default function BlogPage() {
@@ -370,6 +376,35 @@ export default function BlogPage() {
           font-weight: 900;
           text-decoration: none;
           box-shadow: 0 12px 28px rgba(239, 116, 48, .22);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBlogPage {
+          background:
+            radial-gradient(circle at 78% 16%, rgba(239, 116, 48, .1), transparent 30%),
+            linear-gradient(135deg, #080909 0%, #0d0f0f 58%, #1a120f 100%) !important;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBlogCard {
+          border-color: rgba(255, 255, 255, .12) !important;
+          background: #151717 !important;
+          box-shadow: 0 24px 58px rgba(0, 0, 0, .34);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBlogCardImage {
+          background: #0d0f0f;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotBlogHeading h2, .rivotBlogCard h3) {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotBlogCard p, .rivotBlogMeta, .rivotBlogState) {
+          color: #aeb4b4 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBlogHeading > p {
+          color: #ef7430 !important;
         }
 
         @keyframes rivotBlogSlide {

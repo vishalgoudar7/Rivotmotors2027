@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
 import modelPro from "@/asset/Model/Pro.png";
 import modelSport from "@/asset/Model/Sport_NX100.png";
@@ -43,13 +42,11 @@ const productModels = [
 ];
 
 export function Navbar() {
-  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [reachOpen, setReachOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("light");
-  const isHomePage = pathname === "/";
   const logo = navbarLogo;
 
   useLayoutEffect(() => {
@@ -93,7 +90,7 @@ export function Navbar() {
   };
 
   return (
-    <header className={`rivotHeader${isHomePage ? " isHomeHeader" : ""}`}>
+    <header className="rivotHeader isHomeHeader">
       <Link href="/" className="rivotBrand" aria-label="Rivot">
         <span className="rivotBrandMark">
           <Image src={logo} alt="RIVOT" priority />
@@ -807,8 +804,8 @@ export function Navbar() {
     height: 74px;
     padding: 0 clamp(28px, 4vw, 50px);
     gap: clamp(42px, 9vw, 160px);
-    background: transparent;
-    color: #fff;
+    background: linear-gradient(180deg, rgba(4, 6, 9, .72) 0%, rgba(4, 6, 9, .28) 72%, transparent 100%) !important;
+    color: #fff !important;
   }
 
   .rivotHeader.isHomeHeader .rivotBrandMark {
@@ -823,7 +820,7 @@ export function Navbar() {
 
   html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotBrand,
   .rivotHeader.isHomeHeader .rivotBrand {
-    color: #fff;
+    color: #fff !important;
   }
 
   html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotHeaderLinks a,
@@ -834,7 +831,7 @@ export function Navbar() {
   .rivotHeader.isHomeHeader .rivotProductsButton,
   .rivotHeader.isHomeHeader .rivotCommunityButton,
   .rivotHeader.isHomeHeader .rivotExploreButton {
-    color: rgba(255, 255, 255, .92);
+    color: rgba(255, 255, 255, .92) !important;
     font-size: 13px;
     font-weight: 800;
   }
@@ -853,7 +850,7 @@ export function Navbar() {
   .rivotHeader.isHomeHeader .rivotCommunityButton[aria-expanded="true"],
   .rivotHeader.isHomeHeader .rivotExploreButton:hover,
   .rivotHeader.isHomeHeader .rivotExploreButton[aria-expanded="true"] {
-    color: rgba(255, 255, 255, .9);
+    color: rgba(255, 255, 255, .9) !important;
   }
 
   html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotThemeToggle,

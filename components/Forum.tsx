@@ -361,6 +361,40 @@ export function Forum() {
           text-transform: none;
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotForumPage {
+          background:
+            radial-gradient(circle at 80% 16%, rgba(239, 116, 48, .1), transparent 30%),
+            linear-gradient(135deg, #080909 0%, #0d0f0f 58%, #1a120f 100%) !important;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotForumCategory, .rivotForumTopics) {
+          border-color: rgba(255, 255, 255, .12);
+          background: #151717;
+          box-shadow: 0 24px 58px rgba(0, 0, 0, .34);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotForumHeading h2, .rivotForumTopicsHeader h2, .rivotForumCategory h3, .rivotForumTopicBody strong) {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotForumCategory p, .rivotForumCategory span, .rivotForumTopicBody small, .rivotForumTopicBody em, .rivotForumTopicStats, .rivotForumTopicStats small) {
+          color: #aeb4b4 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotForumCategory div, .rivotForumTopicsHeader, .rivotForumTopic, .rivotForumTopicStats) {
+          border-color: rgba(255, 255, 255, .1);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotForumTopicsHeader span {
+          border-color: rgba(255, 255, 255, .14);
+          color: #c5caca;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotForumHeading > p, .rivotForumCategory b, .rivotForumTopicStats b) {
+          color: #ef7430 !important;
+        }
+
         @media (max-width: 920px) {
           .rivotForumCategories {
             grid-template-columns: 1fr;
