@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const categories = ["Generic", "Pricing", "Specifications", "All"] as const;
 
@@ -71,7 +71,22 @@ const faqs = [
 ];
 
 export function Faqs() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [activeCategory, setActiveCategory] = useState<(typeof categories)[number]>("Generic");
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.16 },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   const visibleFaqs = useMemo(() => {
     if (activeCategory === "All") {
@@ -82,7 +97,12 @@ export function Faqs() {
   }, [activeCategory]);
 
   return (
-    <section className="rivotFaqs" id="rivot-faqs" aria-labelledby="rivot-faqs-title">
+    <section
+      ref={sectionRef}
+      className={`rivotFaqs rivotFaqsAnimated${isVisible ? " isVisible" : ""}`}
+      id="rivot-faqs"
+      aria-labelledby="rivot-faqs-title"
+    >
       <div className="rivotFaqsShell">
         <div className="rivotFaqsHeader">
           <h2 id="rivot-faqs-title">The Answers Behind the Ride.</h2>
@@ -101,7 +121,7 @@ export function Faqs() {
           </div>
         </div>
 
-        <div className="rivotFaqsList">
+        <div className="rivotFaqsList" key={activeCategory}>
           {visibleFaqs.map((faq) => (
             <details className="rivotFaqItem" key={faq.question}>
               <summary>
@@ -115,6 +135,52 @@ export function Faqs() {
       </div>
 
       <style>{`
+        .rivotFaqsAnimated .rivotFaqsHeader h2,
+        .rivotFaqsAnimated .rivotFaqTabs button,
+        .rivotFaqsAnimated .rivotFaqItem {
+          opacity: 0;
+          filter: blur(6px);
+          transform: translateY(24px);
+          will-change: opacity, transform, filter;
+        }
+
+        .rivotFaqsAnimated.isVisible .rivotFaqsHeader h2,
+        .rivotFaqsAnimated.isVisible .rivotFaqTabs button,
+        .rivotFaqsAnimated.isVisible .rivotFaqItem {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateY(0);
+        }
+
+        .rivotFaqsAnimated.isVisible .rivotFaqsHeader h2 {
+          transition: opacity .8s ease .06s, transform .85s cubic-bezier(.16, 1, .3, 1) .06s, filter .75s ease .06s;
+          animation: rivotFaqHeadline .9s cubic-bezier(.16, 1, .3, 1) .06s both;
+        }
+
+        .rivotFaqsAnimated.isVisible .rivotFaqTabs button {
+          transition: opacity .65s ease, transform .72s cubic-bezier(.22, 1, .36, 1), filter .65s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
+        }
+
+        .rivotFaqsAnimated.isVisible .rivotFaqTabs button:nth-child(1) { transition-delay: .2s; }
+        .rivotFaqsAnimated.isVisible .rivotFaqTabs button:nth-child(2) { transition-delay: .28s; }
+        .rivotFaqsAnimated.isVisible .rivotFaqTabs button:nth-child(3) { transition-delay: .36s; }
+        .rivotFaqsAnimated.isVisible .rivotFaqTabs button:nth-child(4) { transition-delay: .44s; }
+
+        .rivotFaqsAnimated.isVisible .rivotFaqItem {
+          transition: opacity .68s ease, transform .76s cubic-bezier(.22, 1, .36, 1), filter .68s ease;
+        }
+
+        .rivotFaqsAnimated.isVisible .rivotFaqItem:nth-child(1) { transition-delay: .42s; }
+        .rivotFaqsAnimated.isVisible .rivotFaqItem:nth-child(2) { transition-delay: .52s; }
+        .rivotFaqsAnimated.isVisible .rivotFaqItem:nth-child(3) { transition-delay: .62s; }
+        .rivotFaqsAnimated.isVisible .rivotFaqItem:nth-child(4) { transition-delay: .72s; }
+        .rivotFaqsAnimated.isVisible .rivotFaqItem:nth-child(n+5) { transition-delay: .82s; }
+
+        @keyframes rivotFaqHeadline {
+          from { letter-spacing: -.08em; transform: translateY(16px) scale(.985); }
+          to { letter-spacing: -.055em; transform: translateY(0) scale(1); }
+        }
+
         .rivotFaqs {
           padding: clamp(44px, 5vw, 72px) clamp(18px, 4vw, 64px) clamp(54px, 6vw, 84px);
           background: #fff;
@@ -294,6 +360,18 @@ export function Faqs() {
           border: 1px solid rgba(255, 255, 255, .11);
           background: #1a1c1c;
           color: #d8dada;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotFaqsAnimated .rivotFaqsHeader h2,
+          .rivotFaqsAnimated .rivotFaqTabs button,
+          .rivotFaqsAnimated .rivotFaqItem {
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
+            animation: none !important;
+            transition: none !important;
+          }
         }
 
         @media (max-width: 800px) {

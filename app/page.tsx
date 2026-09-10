@@ -196,6 +196,7 @@ export default function Home() {
   const detailCardsRef = useRef<HTMLDivElement>(null);
   const performanceCardsRef = useRef<HTMLDivElement>(null);
   const engineeringCardsRef = useRef<HTMLDivElement>(null);
+  const bestFitSectionRef = useRef<HTMLElement>(null);
   const reachSectionRef = useRef<HTMLElement>(null);
   const [selectedDesignColor, setSelectedDesignColor] = useState<(typeof bookingColors)[number]>(bookingColors[0]);
   const [selectedRideInsight, setSelectedRideInsight] = useState(0);
@@ -207,6 +208,7 @@ export default function Home() {
   const [designDetailsTextVisible, setDesignDetailsTextVisible] = useState(false);
   const [performanceTextVisible, setPerformanceTextVisible] = useState(false);
   const [engineeringTextVisible, setEngineeringTextVisible] = useState(false);
+  const [bestFitVisible, setBestFitVisible] = useState(false);
   const selectedHeroImageRef = useRef(0);
   const [activeProductSection, setActiveProductSection] = useState("key-features");
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -280,6 +282,19 @@ export default function Home() {
     const observer = new IntersectionObserver(([entry]) => {
       setEngineeringTextVisible(entry.isIntersecting);
     }, { threshold: .18 });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = bestFitSectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setBestFitVisible(entry.isIntersecting),
+      { threshold: 0.18 },
+    );
 
     observer.observe(section);
     return () => observer.disconnect();
@@ -1183,7 +1198,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotBestFit" aria-labelledby="best-fit-title">
+      <section
+        ref={bestFitSectionRef}
+        className={`rivotBestFit rivotBestFitAnimated${bestFitVisible ? " isVisible" : ""}`}
+        aria-labelledby="best-fit-title"
+      >
         <div className="rivotBestFitShell">
           <div className="rivotBestFitHeader">
             <h2 id="best-fit-title">A best fit for your Scooter</h2>
@@ -7071,6 +7090,84 @@ export default function Home() {
           padding: 0 28px;
           border-radius: 12px;
           font-size: 15px;
+        }
+
+        .rivotBestFitAnimated .rivotBestFitHeader > *,
+        .rivotBestFitAnimated .rivotBestFitCard {
+          opacity: 0;
+          filter: blur(7px);
+          transform: translateY(34px);
+          will-change: opacity, transform, filter;
+        }
+
+        .rivotBestFitAnimated.isVisible .rivotBestFitHeader > *,
+        .rivotBestFitAnimated.isVisible .rivotBestFitCard {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateY(0);
+        }
+
+        .rivotBestFitAnimated.isVisible .rivotBestFitHeader h2 {
+          transition: opacity .8s ease .06s, transform .85s cubic-bezier(.16, 1, .3, 1) .06s, filter .75s ease .06s;
+          animation: rivotBestFitHeadline .9s cubic-bezier(.16, 1, .3, 1) .06s both;
+        }
+
+        .rivotBestFitAnimated.isVisible .rivotBestFitHeader p {
+          transition: opacity .7s ease .2s, transform .75s cubic-bezier(.22, 1, .36, 1) .2s, filter .7s ease .2s;
+        }
+
+        .rivotBestFitAnimated.isVisible .rivotBestFitCard {
+          transition: opacity .8s ease, transform .9s cubic-bezier(.16, 1, .3, 1), filter .75s ease;
+        }
+
+        .rivotBestFitAnimated.isVisible .rivotBestFitCard:nth-child(1) { transition-delay: .3s; }
+        .rivotBestFitAnimated.isVisible .rivotBestFitCard:nth-child(2) { transition-delay: .45s; }
+        .rivotBestFitAnimated.isVisible .rivotBestFitCard:nth-child(3) { transition-delay: .6s; }
+
+        .rivotBestFitAnimated .rivotBestFitCard > *:not(.rivotBestFitCardImage) {
+          opacity: 0;
+          filter: blur(5px);
+          transform: translateY(18px);
+        }
+
+        .rivotBestFitAnimated.isVisible .rivotBestFitCard > *:not(.rivotBestFitCardImage) {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateY(0);
+          transition: opacity .65s ease, transform .72s cubic-bezier(.22, 1, .36, 1), filter .65s ease;
+        }
+
+        .rivotBestFitAnimated.isVisible .rivotBestFitCard:nth-child(1) > *:not(.rivotBestFitCardImage) { transition-delay: .5s; }
+        .rivotBestFitAnimated.isVisible .rivotBestFitCard:nth-child(2) > *:not(.rivotBestFitCardImage) { transition-delay: .65s; }
+        .rivotBestFitAnimated.isVisible .rivotBestFitCard:nth-child(3) > *:not(.rivotBestFitCardImage) { transition-delay: .8s; }
+
+        .rivotBestFitAnimated .rivotBestFitCardImage {
+          filter: saturate(.72) blur(4px);
+          transform: scale(1.08);
+        }
+
+        .rivotBestFitAnimated.isVisible .rivotBestFitCardImage {
+          filter: saturate(1) blur(0);
+          transform: scale(1);
+          transition: filter 1s ease, transform 1.1s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        @keyframes rivotBestFitHeadline {
+          from { letter-spacing: -.075em; }
+          to { letter-spacing: -.045em; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotBestFitAnimated .rivotBestFitHeader > *,
+          .rivotBestFitAnimated .rivotBestFitCard,
+          .rivotBestFitAnimated .rivotBestFitCard > *,
+          .rivotBestFitAnimated .rivotBestFitCardImage {
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
+            animation: none !important;
+            transition: none !important;
+          }
         }
 
         @media (max-width: 1000px) {
