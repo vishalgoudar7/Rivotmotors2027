@@ -1,6 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import accelerationImage from "@/asset/images/last/accelaration.png";
-import rangeImage from "@/asset/images/last/IDC Range.png";
+import rangeImage from "@/asset/images/last/IDC Range.jpeg";
 import discImage from "@/asset/images/last/Disc.png";
 import monoshockImage from "@/asset/images/last/Monoshock.png";
 import motorImage from "@/asset/images/last/Motor-card.jpg";

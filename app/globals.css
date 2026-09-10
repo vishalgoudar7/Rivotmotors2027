@@ -36,6 +36,9 @@ html[data-theme="dark"] :where(.rivotBlogPage p,.rivotForumPage p,.rivotForumPos
 
 html[data-theme="dark"] :where(.rivotBooking,.rivotBestFit,.rivotDesign,.rivotDesignDetails,.rivotEngineering,.rivotKeyFeatures,.rivotPerformance,.rivotAppConnect){background:var(--bg)!important;color:var(--text)!important}
 html[data-theme="dark"] :where(.rivotBookingPanel,.rivotBestFitCard,.rivotEngineeringCard,.rivotKeyCard,.rivotPerformanceCard,.rivotRidePhoneCard,.rivotDesignDetailsShell){background-color:var(--surface)!important;color:var(--text)!important;border-color:var(--border)!important}
+html:is([data-theme="dark"],[data-rivot-theme="dark"]) .rivotEngineeringCard:nth-child(odd){border:1px solid rgba(255,255,255,.16)!important}
+html:is([data-theme="dark"],[data-rivot-theme="dark"]) .rivotEngineeringCard:nth-child(even){border:2px solid #ef7430!important}
+@media(hover:hover) and (pointer:fine){html:is([data-theme="dark"],[data-rivot-theme="dark"]) .rivotEngineeringCard:nth-child(even):hover{border-color:#ff965c!important;box-shadow:0 24px 48px rgba(0,0,0,.42),0 0 30px rgba(239,116,48,.34)!important}}
 html[data-theme="dark"] body:has(.rivotBooking) .rivotBooking,html[data-theme="dark"] body:has(.rivotBooking) .rivotBookingLayout,html[data-theme="dark"] body:has(.rivotBooking) .rivotBookingViewer{background:linear-gradient(115deg,var(--bg),var(--surface) 64%,#1c1511)!important}
 html[data-theme="dark"] body:has(.rivotBooking) .rivotBookingPanel{background:rgba(17,19,19,.94)!important;border-color:var(--border)!important}
 html[data-theme="dark"] body:has(.rivotBooking) :where(.rivotBookingPanel h1,.rivotBookingPanel>p,.rivotBookingPanelHeader p,.rivotBookingPanelHeader p::before,.rivotBookingColors>span,.rivotBookingAmount,.rivotBookingColors::before,.rivotBookingLead::before){color:var(--text)!important}

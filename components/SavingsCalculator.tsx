@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
 const MIN_DAILY_KM = 10;
@@ -36,7 +36,7 @@ function formatRupees(value: number) {
 
 function FuelIcon() {
   return (
-    <svg viewBox="0 0 36 36" fill="none">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
       <path d="M11 6H22C23.1 6 24 6.9 24 8V31H9V8C9 6.9 9.9 6 11 6Z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
       <path d="M13 11H20V18H13V11Z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
       <path d="M24 13H28L31 16V25C31 26.66 29.66 28 28 28H24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -47,7 +47,7 @@ function FuelIcon() {
 
 function BoltIcon() {
   return (
-    <svg viewBox="0 0 36 36" fill="none">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
       <path d="M20 4L9 21H17L15 32L28 14H20V4Z" fill="currentColor" />
     </svg>
   );
@@ -55,7 +55,7 @@ function BoltIcon() {
 
 function PiggyIcon() {
   return (
-    <svg viewBox="0 0 36 36" fill="none">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
       <path d="M8 19C8 14.58 11.58 11 16 11H22C25.86 11 29 14.14 29 18V24H26L24.8 30H20L19.1 26H15.4L14.4 30H10L9 25.5C6.8 24.7 5 22.78 5 20.5V18H8V19Z" fill="currentColor" />
       <circle cx="22" cy="9" r="3.5" stroke="currentColor" strokeWidth="2.2" />
       <path d="M14 13.5H20" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
@@ -66,7 +66,7 @@ function PiggyIcon() {
 
 function DropIcon() {
   return (
-    <svg viewBox="0 0 120 120" fill="none">
+    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
       <path d="M61 10C47 34 31 52 31 78C31 99 45.1 111 61 111C77.5 111 91 99 91 78C91 52 74 34 61 10Z" stroke="currentColor" strokeWidth="7" strokeLinejoin="round" />
       <path d="M61 96C72 93 78 86 78 75" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
     </svg>
@@ -75,7 +75,7 @@ function DropIcon() {
 
 function LightningOutlineIcon() {
   return (
-    <svg viewBox="0 0 120 120" fill="none">
+    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
       <path d="M70 8L24 70H55L45 112L96 50H65L70 8Z" stroke="currentColor" strokeWidth="8" strokeLinejoin="round" />
     </svg>
   );
@@ -83,7 +83,7 @@ function LightningOutlineIcon() {
 
 function PiggyOutlineIcon() {
   return (
-    <svg viewBox="0 0 140 120" fill="none">
+    <svg width="140" height="120" viewBox="0 0 140 120" fill="none">
       <path d="M28 66C28 47.8 42.8 33 61 33H84C101.1 33 115 46.9 115 64V85H102L98 105H79L76 92H54L50 105H32L28.5 89C18 85.6 10 77 10 66V55H28V66Z" stroke="currentColor" strokeWidth="7" strokeLinejoin="round" />
       <path d="M113 70H132" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
       <circle cx="87" cy="19" r="13" stroke="currentColor" strokeWidth="7" />
@@ -95,7 +95,7 @@ function PiggyOutlineIcon() {
 
 function RoadIcon() {
   return (
-    <svg viewBox="0 0 36 36" fill="none">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
       <path d="M11 32L15 5H21L25 32" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M18 8V12M18 17V21M18 26V30" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
     </svg>
@@ -104,7 +104,7 @@ function RoadIcon() {
 
 function ShieldIcon() {
   return (
-    <svg viewBox="0 0 36 36" fill="none">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
       <path d="M18 5L29 9V17C29 24.4 24.38 29.45 18 32C11.62 29.45 7 24.4 7 17V9L18 5Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" />
       <path d="M13 18L16.5 21.5L24 14" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -113,7 +113,7 @@ function ShieldIcon() {
 
 function InfoIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
       <path d="M12 10.5V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       <circle cx="12" cy="7.8" r="1.2" fill="currentColor" />
@@ -184,7 +184,22 @@ function UsageSlider({
 }
 
 export function SavingsCalculator() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [dailyKm, setDailyKm] = useState<number>(DEFAULT_DAILY_KM);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.2 },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -214,7 +229,11 @@ export function SavingsCalculator() {
   }, [dailyKm]);
 
   return (
-    <section className="rivotSavings" aria-label="Finance and savings estimate">
+    <section
+      ref={sectionRef}
+      className={`rivotSavings rivotSavingsAnimated${isVisible ? " isVisible" : ""}`}
+      aria-label="Finance and savings estimate"
+    >
       <div className="rivotSavingsPanel">
         <header className="rivotSavingsHeader">
           <div>
@@ -272,6 +291,68 @@ export function SavingsCalculator() {
       </div>
 
       <style jsx global>{`
+        .rivotSavingsAnimated .rivotSavingsHeader > *,
+        .rivotSavingsAnimated .rivotSavingsCard,
+        .rivotSavingsAnimated .rivotSavingsCalculator,
+        .rivotSavingsAnimated .rivotSavingsNote {
+          opacity: 0;
+          filter: blur(7px);
+          transform: translateY(28px);
+          will-change: opacity, transform, filter;
+        }
+
+        .rivotSavingsAnimated.isVisible .rivotSavingsHeader > *,
+        .rivotSavingsAnimated.isVisible .rivotSavingsCard,
+        .rivotSavingsAnimated.isVisible .rivotSavingsCalculator,
+        .rivotSavingsAnimated.isVisible .rivotSavingsNote {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateY(0);
+        }
+
+        .rivotSavingsAnimated.isVisible .rivotSavingsHeader > div {
+          transition: opacity .75s ease .08s, transform .8s cubic-bezier(.16, 1, .3, 1) .08s, filter .7s ease .08s;
+        }
+
+        .rivotSavingsAnimated.isVisible .rivotSavingsHeader h2 {
+          animation: rivotSavingsHeadline .95s cubic-bezier(.16, 1, .3, 1) .16s both;
+        }
+
+        .rivotSavingsAnimated.isVisible .rivotSavingsHeader > a {
+          transition: opacity .7s ease .28s, transform .75s cubic-bezier(.22, 1, .36, 1) .28s, filter .7s ease .28s;
+        }
+
+        .rivotSavingsAnimated.isVisible .rivotSavingsCard:nth-child(1) {
+          transition: opacity .7s ease .35s, transform .8s cubic-bezier(.22, 1, .36, 1) .35s, filter .7s ease .35s;
+        }
+
+        .rivotSavingsAnimated.isVisible .rivotSavingsCard:nth-child(2) {
+          transition: opacity .7s ease .48s, transform .8s cubic-bezier(.22, 1, .36, 1) .48s, filter .7s ease .48s;
+        }
+
+        .rivotSavingsAnimated.isVisible .rivotSavingsCard:nth-child(3) {
+          transition: opacity .7s ease .61s, transform .8s cubic-bezier(.22, 1, .36, 1) .61s, filter .7s ease .61s;
+        }
+
+        .rivotSavingsAnimated.isVisible .rivotSavingsCalculator {
+          transition: opacity .8s ease .74s, transform .85s cubic-bezier(.22, 1, .36, 1) .74s, filter .75s ease .74s;
+        }
+
+        .rivotSavingsAnimated.isVisible .rivotSavingsNote {
+          transition: opacity .7s ease .9s, transform .75s cubic-bezier(.22, 1, .36, 1) .9s, filter .7s ease .9s;
+        }
+
+        @keyframes rivotSavingsHeadline {
+          from {
+            letter-spacing: -.075em;
+            transform: translateY(12px) scale(.985);
+          }
+          to {
+            letter-spacing: 0;
+            transform: translateY(0) scale(1);
+          }
+        }
+
         .rivotSavings {
           min-height: 100vh;
           display: grid;
@@ -282,6 +363,20 @@ export function SavingsCalculator() {
             radial-gradient(circle at 88% 92%, rgba(32, 178, 107, .12), transparent 32%),
             linear-gradient(135deg, rgba(241, 245, 255, .92) 0%, rgba(255, 255, 255, .92) 45%, rgba(250, 247, 255, .92) 100%);
           color: #0f1f36;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotSavingsAnimated .rivotSavingsHeader > *,
+          .rivotSavingsAnimated .rivotSavingsCard,
+          .rivotSavingsAnimated .rivotSavingsCalculator,
+          .rivotSavingsAnimated .rivotSavingsNote,
+          .rivotSavingsAnimated .rivotSavingsHeader h2 {
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
+            animation: none !important;
+            transition: none !important;
+          }
         }
 
         .rivotSavingsPanel {

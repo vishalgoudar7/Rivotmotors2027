@@ -11,19 +11,21 @@ import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
 import geofencingAppImage from "@/asset/images/App/Geofencing.png";
 import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring System).png";
 import tripInsightsAppImage from "@/asset/images/App/Trip Insights.png";
-import accelerationImage from "@/asset/images/last/accelaration.png";
-import rangeImage from "@/asset/images/last/IDC Range.jpeg";
+import accelerationImage from "@/asset/newimg/performance/accelaration.jpeg";
+import recoEngineImage from "@/asset/newimg/performance/recoengine.jpeg";
 import chargerImage from "@/asset/images/last/Charger.png";
-import discImage from "@/asset/images/last/Disc.png";
-import monoshockImage from "@/asset/images/last/Monoshock.png";
+import boostModeImage from "@/asset/newimg/Engineering/boost-mode.png";
+import cruiseImage from "@/asset/newimg/Engineering/cuise.jpeg";
+import discImage from "@/asset/newimg/Engineering/disccc.jpeg";
+import allTestsClearedImage from "@/asset/newimg/Engineering/All test cleared.optimized.jpg";
+import monoshockImage from "@/asset/newimg/Engineering/mono shock.jpeg";
 import motorImage from "@/asset/images/last/Motor-card.jpg";
 import riderAssistanceImage from "@/asset/newimg/Key feuture/Smart ride.jpeg";
 import featureImage from "@/asset/newimg/Key feuture/Built-In Innovation.jpeg";
 import safetyImage from "@/asset/newimg/Key feuture/Advanced Safety.jpeg";
-import bootDetailImage from "@/asset/images/Details/Boot space with helmet.png";
-import floorboardDetailImage from "@/asset/images/Details/Floorboard photo.png";
-import mainDetailImage from "@/asset/images/Details/Main detail photo.png";
-import catalogImage from "@/asset/connect/Catelog.png";
+import ergonomicSeatImage from "@/asset/newimg/Design/erogonomy seat .png";
+import floorboardDetailImage from "@/asset/newimg/Design/Footfloor.jpeg";
+import bootSpaceImage from "@/asset/newimg/Design/bootspace.jpeg";
 import { DashboardRotation } from "@/components/DashboardRotation";
 import { Faqs } from "@/components/Faqs";
 import { SafetyTech } from "@/components/SafetyTech";
@@ -62,6 +64,7 @@ const engineeringFeatures = [
     status: "GO",
     statusTone: "multi",
     icon: "bolt",
+    image: boostModeImage,
   },
   {
     title: "Motor",
@@ -77,6 +80,7 @@ const engineeringFeatures = [
     status: "ACTIVE",
     statusTone: "green",
     icon: "gauge",
+    image: cruiseImage,
   },
   {
     title: "Dual Disk",
@@ -92,6 +96,7 @@ const engineeringFeatures = [
     status: "SAFETY",
     statusTone: "blue",
     icon: "shield",
+    image: allTestsClearedImage,
   },
   {
     title: "MonoShock",
@@ -183,19 +188,29 @@ function EngineeringIcon({ type }: { type: string }) {
 
 export default function Home() {
   const keyFeaturesSectionRef = useRef<HTMLElement>(null);
+  const designSectionRef = useRef<HTMLElement>(null);
+  const designDetailsSectionRef = useRef<HTMLElement>(null);
+  const performanceSectionRef = useRef<HTMLElement>(null);
+  const engineeringSectionRef = useRef<HTMLElement>(null);
   const featureCardsRef = useRef<HTMLDivElement>(null);
   const detailCardsRef = useRef<HTMLDivElement>(null);
   const performanceCardsRef = useRef<HTMLDivElement>(null);
   const engineeringCardsRef = useRef<HTMLDivElement>(null);
+  const reachSectionRef = useRef<HTMLElement>(null);
   const [selectedDesignColor, setSelectedDesignColor] = useState<(typeof bookingColors)[number]>(bookingColors[0]);
   const [selectedRideInsight, setSelectedRideInsight] = useState(0);
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
   const [previousHeroImage, setPreviousHeroImage] = useState<number | null>(null);
   const [heroSlideDirection, setHeroSlideDirection] = useState<"next" | "previous">("next");
   const [keyFeaturesTextVisible, setKeyFeaturesTextVisible] = useState(false);
+  const [designTextVisible, setDesignTextVisible] = useState(false);
+  const [designDetailsTextVisible, setDesignDetailsTextVisible] = useState(false);
+  const [performanceTextVisible, setPerformanceTextVisible] = useState(false);
+  const [engineeringTextVisible, setEngineeringTextVisible] = useState(false);
   const selectedHeroImageRef = useRef(0);
   const [activeProductSection, setActiveProductSection] = useState("key-features");
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [reachVisible, setReachVisible] = useState(false);
 
   useEffect(() => {
     const heroTimer = window.setInterval(() => {
@@ -215,10 +230,69 @@ export default function Home() {
     if (!section) return;
 
     const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      setKeyFeaturesTextVisible(true);
-      observer.disconnect();
+      setKeyFeaturesTextVisible(entry.isIntersecting);
     }, { threshold: .18 });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = designDetailsSectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setDesignDetailsTextVisible(entry.isIntersecting);
+    }, { threshold: .2 });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = designSectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setDesignTextVisible(entry.isIntersecting);
+    }, { threshold: .25 });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = performanceSectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setPerformanceTextVisible(entry.isIntersecting);
+    }, { threshold: .2 });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = engineeringSectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setEngineeringTextVisible(entry.isIntersecting);
+    }, { threshold: .18 });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = reachSectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setReachVisible(entry.isIntersecting),
+      { threshold: .2 },
+    );
 
     observer.observe(section);
     return () => observer.disconnect();
@@ -665,7 +739,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotDesign" id="design" aria-labelledby="design-title">
+      <section
+        className={`rivotDesign${designTextVisible ? " is-text-visible" : ""}`}
+        id="design"
+        aria-labelledby="design-title"
+        ref={designSectionRef}
+      >
         <div className="rivotDesignCopy">
           <h2 id="design-title">Designed <span>Different.</span></h2>
           <p>A form built with purpose.</p>
@@ -695,7 +774,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotDesignDetails" id="design-details" aria-labelledby="design-details-title">
+      <section
+        className={`rivotDesignDetails${designDetailsTextVisible ? " is-text-visible" : ""}`}
+        id="design-details"
+        aria-labelledby="design-details-title"
+        ref={designDetailsSectionRef}
+      >
         <div className="rivotDesignDetailsShell">
           <div className="rivotDesignDetailsCopy">
             <p className="rivotDetailsEyebrow">
@@ -748,18 +832,6 @@ export default function Home() {
                   <p>Move freely. Ride confidently.</p>
                 </div>
               </div>
-              <div>
-                <span aria-hidden="true">
-                  <svg viewBox="0 0 40 40" fill="none">
-                    <path d="M20 7L32 17L20 33L8 17L20 7Z" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-                    <path d="M8 17H32M15 17L20 33L25 17M14 17L20 7L26 17" stroke="#ef7430" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-                <div>
-                  <h3>Premium Finish</h3>
-                  <p>Meticulous attention to detail.</p>
-                </div>
-              </div>
             </div>
 
             <button className="rivotDetailsCta" type="button">
@@ -770,8 +842,8 @@ export default function Home() {
           <div className="rivotDetailsMedia" ref={detailCardsRef} aria-label="Design detail carousel">
             <div className="rivotDetailsHeroPlaceholder">
               <Image
-                src={mainDetailImage}
-                alt="RIVOT scooter main design detail"
+                src={floorboardDetailImage}
+                alt="RIVOT scooter with a spacious floorboard"
                 fill
                 sizes="(max-width: 900px) 100vw, 46vw"
                 className="rivotDetailsPhoto"
@@ -790,13 +862,13 @@ export default function Home() {
                 <span />
                 <span />
               </div>
-              <span className="rivotDetailsCaption">Main detail</span>
+              <span className="rivotDetailsCaption">Spacious floorboard</span>
             </div>
             <div className="rivotDetailsSideStack">
               <div className="rivotDetailsSmallPlaceholder">
                 <Image
-                  src={bootDetailImage}
-                  alt="RIVOT scooter boot space with helmet"
+                  src={ergonomicSeatImage}
+                  alt="RIVOT scooter ergonomic riding position"
                   fill
                   sizes="(max-width: 900px) 50vw, 25vw"
                   className="rivotDetailsPhoto"
@@ -809,15 +881,15 @@ export default function Home() {
                     </svg>
                   </i>
                   <div>
-                    <b>Boot detail</b>
-                    <small>Generous space for your essentials.</small>
+                    <b>Ergonomic seat</b>
+                    <small>Comfort that goes the distance.</small>
                   </div>
                 </div>
               </div>
               <div className="rivotDetailsSmallPlaceholder">
                 <Image
-                  src={floorboardDetailImage}
-                  alt="RIVOT scooter floorboard detail"
+                  src={bootSpaceImage}
+                  alt="RIVOT scooter boot space"
                   fill
                   sizes="(max-width: 900px) 50vw, 25vw"
                   className="rivotDetailsPhoto"
@@ -830,7 +902,7 @@ export default function Home() {
                     </svg>
                   </i>
                   <div>
-                    <b>APU</b>
+                    <b>Boot Space</b>
                   </div>
                 </div>
               </div>
@@ -839,7 +911,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotPerformance" id="performance" aria-labelledby="performance-title">
+      <section
+        className={`rivotPerformance${performanceTextVisible ? " is-text-visible" : ""}`}
+        id="performance"
+        aria-labelledby="performance-title"
+        ref={performanceSectionRef}
+      >
         <div className="rivotPerformanceShell">
           <div className="rivotPerformanceCopy">
             <p className="rivotPerformanceEyebrow">Performance</p>
@@ -884,8 +961,8 @@ export default function Home() {
             <article className="rivotPerformanceCard">
               <div className="rivotPerformancePlaceholder">
                 <Image
-                  src={rangeImage}
-                  alt="RIVOT scooter for long range riding"
+                  src={recoEngineImage}
+                  alt="RIVOT scooter recoEngine drivetrain"
                   fill
                   sizes="(max-width: 900px) 100vw, 28vw"
                   className="rivotPerformancePhoto"
@@ -893,13 +970,13 @@ export default function Home() {
               </div>
               <div className="rivotPerformanceCardShade" aria-hidden="true" />
               <div className="rivotPerformanceCardContent">
-                <p>Range</p>
+                <p>recoEngine</p>
                 <h3>
-                  200 km
+                  Smart Power
                   <br />
-                  <span>IDC Range</span>
+                  <span>Built to Adapt</span>
                 </h3>
-                <p>Go further. Explore more.</p>
+                <p>Intelligent control. Seamless performance.</p>
               </div>
             </article>
           </div>
@@ -988,7 +1065,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="rivotEngineering" id="engineering" aria-labelledby="engineering-title">
+      <section
+        className={`rivotEngineering${engineeringTextVisible ? " is-text-visible" : ""}`}
+        id="engineering"
+        aria-labelledby="engineering-title"
+        ref={engineeringSectionRef}
+      >
         <div className="rivotEngineeringHeader">
           <p>Beyond the surface.</p>
           <h2 id="engineering-title">
@@ -1040,7 +1122,11 @@ export default function Home() {
 
       <SavingsCalculator />
 
-      <section className="rivotReach" aria-label="RIVOT access network">
+      <section
+        ref={reachSectionRef}
+        className={`rivotReach rivotReachAnimated${reachVisible ? " isVisible" : ""}`}
+        aria-label="RIVOT access network"
+      >
         <div className="rivotReachPanel">
           <article className="rivotReachCard rivotReachStore">
             <div className="rivotReachCopy">
@@ -1107,13 +1193,14 @@ export default function Home() {
           <div className="rivotBestFitGrid">
             <article className="rivotBestFitCard rivotBestFitAccessories">
               <Image
-                src={catalogImage}
-                alt=""
+                src="/images/shop/accessories.png"
+                alt="RIVOT scooter accessories"
                 fill
+                loading="eager"
+                unoptimized
                 sizes="(max-width: 760px) 100vw, 33vw"
-                className="rivotBestFitAccessoriesBg"
+                className="rivotBestFitCardImage"
               />
-              <p className="rivotBestFitEyebrow">Shop</p>
               <h3>Accessories</h3>
               <p>There's more under the hood.</p>
 
@@ -1123,17 +1210,18 @@ export default function Home() {
             </article>
 
             <article className="rivotBestFitCard">
+              <Image
+                src="/images/shop/battery.png"
+                alt="Battery and motor extended warranty"
+                fill
+                loading="eager"
+                unoptimized
+                sizes="(max-width: 760px) 100vw, 33vw"
+                className="rivotBestFitCardImage"
+              />
               <p className="rivotBestFitEyebrow rivotBestFitGreen">Extended Warranty</p>
-              <h3>Battery+Motor</h3>
-
-              <span className="rivotBestFitShield rivotBestFitShieldGreen" aria-hidden="true">
-                <svg viewBox="0 0 72 72" fill="none">
-                  <path d="M36 7L62 17V34C62 51.4 51.42 62.72 36 68C20.58 62.72 10 51.4 10 34V17L36 7Z" fill="currentColor" opacity=".16" />
-                  <path d="M36 16L53 22.4V34.8C53 47.02 46.28 55.4 36 60C25.72 55.4 19 47.02 19 34.8V22.4L36 16Z" fill="currentColor" />
-                  <path d="M31.4 40.3L27 35.9L23.5 39.4L31.4 47.3L48.8 29.9L45.3 26.4L31.4 40.3Z" fill="#fff" />
-                  <path d="M48 18V13M48 18H53M23 54V50M23 54H27" stroke="#fff" strokeWidth="3" strokeLinecap="round" opacity=".9" />
-                </svg>
-              </span>
+              <h3>Battery + Motor</h3>
+              <p>Engineered for a longer, smarter ride.</p>
 
               <Link href="/products" className="rivotBestFitCta">
                 Explore more
@@ -1141,19 +1229,18 @@ export default function Home() {
             </article>
 
             <article className="rivotBestFitCard rivotBestFitSubscription">
+              <Image
+                src="/images/shop/smart-care.png"
+                alt="Smart Care extended scooter coverage"
+                fill
+                loading="eager"
+                unoptimized
+                sizes="(max-width: 760px) 100vw, 33vw"
+                className="rivotBestFitCardImage"
+              />
               <p className="rivotBestFitEyebrow rivotBestFitBlue">Subscription</p>
-              <h3>SMART CARE
-</h3>
+              <h3>Smart Care</h3>
               <p>Extended Warranty &amp; Care for your Simple Scooters.</p>
-
-              <span className="rivotBestFitShield rivotBestFitShieldBlue" aria-hidden="true">
-                <svg viewBox="0 0 72 72" fill="none">
-                  <path d="M36 7L62 17V34C62 51.4 51.42 62.72 36 68C20.58 62.72 10 51.4 10 34V17L36 7Z" fill="currentColor" opacity=".15" />
-                  <path d="M36 16L53 22.4V34.8C53 47.02 46.28 55.4 36 60C25.72 55.4 19 47.02 19 34.8V22.4L36 16Z" fill="currentColor" />
-                  <path d="M36 45.8L25.8 36.4C20.1 30.9 28.1 22.9 33.8 28.4L36 30.5L38.2 28.4C43.9 22.9 51.9 30.9 46.2 36.4L36 45.8Z" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M51 20V15M51 20H56" stroke="#fff" strokeWidth="3" strokeLinecap="round" opacity=".9" />
-                </svg>
-              </span>
 
               <Link href="/products" className="rivotBestFitCta">
                 Explore more
@@ -2143,6 +2230,33 @@ export default function Home() {
           z-index: 2;
         }
 
+        .rivotDesignCopy h2,
+        .rivotDesignCopy p {
+          opacity: 0;
+          transform: translateY(28px);
+          filter: blur(5px);
+          transition:
+            opacity .8s cubic-bezier(.22, 1, .36, 1),
+            transform .8s cubic-bezier(.22, 1, .36, 1),
+            filter .8s cubic-bezier(.22, 1, .36, 1);
+          will-change: opacity, transform, filter;
+        }
+
+        .rivotDesign.is-text-visible .rivotDesignCopy h2,
+        .rivotDesign.is-text-visible .rivotDesignCopy p {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+
+        .rivotDesign.is-text-visible .rivotDesignCopy h2 {
+          transition-delay: .08s;
+        }
+
+        .rivotDesign.is-text-visible .rivotDesignCopy p {
+          transition-delay: .26s;
+        }
+
         .rivotDesignCopy h2 {
           margin: 0;
           color: #050505;
@@ -2158,6 +2272,16 @@ export default function Home() {
           font-size: 15px;
           font-weight: 700;
           line-height: 1.25;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotDesignCopy h2,
+          .rivotDesignCopy p {
+            opacity: 1;
+            transform: none;
+            filter: none;
+            transition: none;
+          }
         }
 
         .rivotDesignScooter {
@@ -2292,6 +2416,43 @@ export default function Home() {
           text-align: left;
         }
 
+        .rivotEngineeringHeader > *,
+        .rivotEngineeringCard > h3,
+        .rivotEngineeringCard > p,
+        .rivotEngineeringCard > .rivotEngineeringStatus {
+          opacity: 0;
+          transform: translateY(22px);
+          filter: blur(5px);
+          transition:
+            opacity .76s cubic-bezier(.22, 1, .36, 1),
+            transform .76s cubic-bezier(.22, 1, .36, 1),
+            filter .76s cubic-bezier(.22, 1, .36, 1);
+          will-change: opacity, transform, filter;
+        }
+
+        .rivotEngineering.is-text-visible .rivotEngineeringHeader > *,
+        .rivotEngineering.is-text-visible .rivotEngineeringCard > h3,
+        .rivotEngineering.is-text-visible .rivotEngineeringCard > p,
+        .rivotEngineering.is-text-visible .rivotEngineeringCard > .rivotEngineeringStatus {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+
+        .rivotEngineering.is-text-visible .rivotEngineeringHeader > p { transition-delay: .04s; }
+        .rivotEngineering.is-text-visible .rivotEngineeringHeader > h2 { transition-delay: .14s; }
+        .rivotEngineering.is-text-visible .rivotEngineeringHeader > small { transition-delay: .26s; }
+        .rivotEngineering.is-text-visible .rivotEngineeringHeader > i { transition-delay: .36s; }
+        .rivotEngineeringCard:nth-child(1) { --engineering-text-delay: .16s; }
+        .rivotEngineeringCard:nth-child(2) { --engineering-text-delay: .24s; }
+        .rivotEngineeringCard:nth-child(3) { --engineering-text-delay: .32s; }
+        .rivotEngineeringCard:nth-child(4) { --engineering-text-delay: .4s; }
+        .rivotEngineeringCard:nth-child(5) { --engineering-text-delay: .48s; }
+        .rivotEngineeringCard:nth-child(6) { --engineering-text-delay: .56s; }
+        .rivotEngineering.is-text-visible .rivotEngineeringCard > h3 { transition-delay: var(--engineering-text-delay); }
+        .rivotEngineering.is-text-visible .rivotEngineeringCard > p { transition-delay: calc(var(--engineering-text-delay) + .1s); }
+        .rivotEngineering.is-text-visible .rivotEngineeringCard > .rivotEngineeringStatus { transition-delay: calc(var(--engineering-text-delay) + .2s); }
+
         .rivotEngineeringHeader p {
           margin: 0 0 14px;
           color: #c85a22;
@@ -2356,6 +2517,37 @@ export default function Home() {
           background: #f4f4f4;
           text-align: center;
           overflow: hidden;
+          transform: translateY(0) scale(1);
+          transform-origin: center;
+          transition:
+            transform .38s cubic-bezier(.22, 1, .36, 1),
+            box-shadow .38s ease,
+            border-color .38s ease;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+          .rivotEngineeringCard:hover {
+            z-index: 3;
+            transform: translateY(-8px) scale(1.018);
+            box-shadow: 0 24px 48px rgba(10, 10, 10, .2);
+          }
+
+          .rivotEngineeringCard:nth-child(2):hover,
+          .rivotEngineeringCard:nth-child(4):hover,
+          .rivotEngineeringCard:nth-child(6):hover {
+            border-color: #ff8a49;
+            box-shadow:
+              0 24px 48px rgba(10, 10, 10, .24),
+              0 0 28px rgba(239, 116, 48, .3);
+          }
+
+          .rivotEngineeringCard:hover .rivotEngineeringCardBg {
+            transform: scale(1.07);
+          }
+
+          .rivotEngineeringCard:hover .rivotEngineeringIcon {
+            transform: translateY(-4px) scale(1.08);
+          }
         }
 
         .rivotEngineeringCard:has(.rivotEngineeringCardBg) {
@@ -2379,6 +2571,8 @@ export default function Home() {
           object-fit: cover;
           object-position: center;
           opacity: 1;
+          transform: scale(1);
+          transition: transform .65s cubic-bezier(.22, 1, .36, 1);
         }
 
         .rivotEngineeringCard:has(.rivotEngineeringCardBg)::before {
@@ -2413,6 +2607,41 @@ export default function Home() {
         .rivotEngineeringCard:nth-child(4),
         .rivotEngineeringCard:nth-child(6) {
           background: #080909;
+          border: 2px solid #ef7430;
+        }
+
+        .rivotEngineeringCard:nth-child(1),
+        .rivotEngineeringCard:nth-child(3),
+        .rivotEngineeringCard:nth-child(5),
+        .rivotEngineeringCard:nth-child(1):has(.rivotEngineeringCardBg),
+        .rivotEngineeringCard:nth-child(3):has(.rivotEngineeringCardBg),
+        .rivotEngineeringCard:nth-child(5):has(.rivotEngineeringCardBg) {
+          background: #f4f4f4;
+        }
+
+        .rivotEngineeringCard:nth-child(1) .rivotEngineeringCardBg,
+        .rivotEngineeringCard:nth-child(3) .rivotEngineeringCardBg,
+        .rivotEngineeringCard:nth-child(5) .rivotEngineeringCardBg {
+          opacity: .72;
+          filter: saturate(.86) brightness(1.06);
+        }
+
+        .rivotEngineeringCard:nth-child(1):has(.rivotEngineeringCardBg)::before,
+        .rivotEngineeringCard:nth-child(3):has(.rivotEngineeringCardBg)::before,
+        .rivotEngineeringCard:nth-child(5):has(.rivotEngineeringCardBg)::before {
+          background: linear-gradient(180deg, rgba(255, 255, 255, .3), rgba(244, 244, 244, .54));
+        }
+
+        .rivotEngineeringCard:nth-child(1):has(.rivotEngineeringCardBg) h3,
+        .rivotEngineeringCard:nth-child(3):has(.rivotEngineeringCardBg) h3,
+        .rivotEngineeringCard:nth-child(5):has(.rivotEngineeringCardBg) h3 {
+          color: #121212;
+        }
+
+        .rivotEngineeringCard:nth-child(1):has(.rivotEngineeringCardBg) p,
+        .rivotEngineeringCard:nth-child(3):has(.rivotEngineeringCardBg) p,
+        .rivotEngineeringCard:nth-child(5):has(.rivotEngineeringCardBg) p {
+          color: #35383d;
         }
 
         .rivotEngineeringCard:nth-child(3) {
@@ -2435,6 +2664,8 @@ export default function Home() {
           background: #ef7430;
           color: #fff;
           box-shadow: 0 12px 22px rgba(200, 90, 34, .22);
+          transform: translateY(0) scale(1);
+          transition: transform .38s cubic-bezier(.22, 1, .36, 1);
         }
 
         .rivotEngineeringIcon[data-tone="green"] {
@@ -2580,6 +2811,32 @@ export default function Home() {
           box-shadow: 18px 0 0 #2c8dff;
         }
 
+        @media (prefers-reduced-motion: reduce) {
+          .rivotEngineeringCard,
+          .rivotEngineeringCard:hover {
+            transform: none;
+            transition: none;
+          }
+
+          .rivotEngineeringCardBg,
+          .rivotEngineeringCard:hover .rivotEngineeringCardBg,
+          .rivotEngineeringIcon,
+          .rivotEngineeringCard:hover .rivotEngineeringIcon {
+            transform: none;
+            transition: none;
+          }
+
+          .rivotEngineeringHeader > *,
+          .rivotEngineeringCard > h3,
+          .rivotEngineeringCard > p,
+          .rivotEngineeringCard > .rivotEngineeringStatus {
+            opacity: 1;
+            transform: none;
+            filter: none;
+            transition: none;
+          }
+        }
+
         .rivotDesignDetails {
           min-height: 0;
           display: grid;
@@ -2613,6 +2870,31 @@ export default function Home() {
           align-items: flex-start;
           justify-content: center;
         }
+
+        .rivotDesignDetailsCopy > *,
+        .rivotDetailsList > div {
+          opacity: 0;
+          transform: translateY(24px);
+          transition:
+            opacity .72s cubic-bezier(.22, 1, .36, 1),
+            transform .72s cubic-bezier(.22, 1, .36, 1);
+          will-change: opacity, transform;
+        }
+
+        .rivotDesignDetails.is-text-visible .rivotDesignDetailsCopy > *,
+        .rivotDesignDetails.is-text-visible .rivotDetailsList > div {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .rivotDesignDetails.is-text-visible .rivotDetailsEyebrow { transition-delay: .04s; }
+        .rivotDesignDetails.is-text-visible .rivotDesignDetailsCopy h2 { transition-delay: .13s; }
+        .rivotDesignDetails.is-text-visible .rivotDetailsIntro { transition-delay: .22s; }
+        .rivotDesignDetails.is-text-visible .rivotDetailsList { transition-delay: .28s; }
+        .rivotDesignDetails.is-text-visible .rivotDetailsList > div:nth-child(1) { transition-delay: .32s; }
+        .rivotDesignDetails.is-text-visible .rivotDetailsList > div:nth-child(2) { transition-delay: .39s; }
+        .rivotDesignDetails.is-text-visible .rivotDetailsList > div:nth-child(3) { transition-delay: .46s; }
+        .rivotDesignDetails.is-text-visible .rivotDetailsCta { transition-delay: .62s; }
 
         .rivotDetailsEyebrow {
           display: inline-flex;
@@ -2747,14 +3029,15 @@ export default function Home() {
         .rivotDetailsSmallPlaceholder {
           position: relative;
           overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, .08);
+          border: 0;
           border-radius: 15px;
+          isolation: isolate;
           background:
             radial-gradient(circle at 48% 42%, rgba(255, 255, 255, .05), transparent 34%),
             #060708;
           box-shadow:
-            0 20px 44px rgba(0, 0, 0, .18),
-            inset 0 0 0 1px rgba(255, 255, 255, .03);
+            0 20px 44px rgba(0, 0, 0, .14),
+            0 0 0 1px rgba(17, 17, 17, .04);
         }
 
         .rivotDetailsHeroPlaceholder {
@@ -2775,21 +3058,22 @@ export default function Home() {
         }
 
         .rivotDetailsPhoto {
+          border-radius: inherit;
           object-fit: cover;
           object-position: center;
           transform: scale(1.015);
         }
 
         .rivotDetailsHeroPlaceholder .rivotDetailsPhoto {
-          object-position: 50% 48%;
+          object-position: 50% 52%;
         }
 
         .rivotDetailsSmallPlaceholder:first-child .rivotDetailsPhoto {
-          object-position: 50% 42%;
+          object-position: 50% 58%;
         }
 
         .rivotDetailsSmallPlaceholder:last-child .rivotDetailsPhoto {
-          object-position: 50% 58%;
+          object-position: 50% 64%;
         }
 
         .rivotDetailsHeroPlaceholder::after,
@@ -2800,6 +3084,32 @@ export default function Home() {
           height: 50%;
           background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .72));
         }
+
+        .rivotDetailsLanguage,
+        .rivotDetailsCaption,
+        .rivotDetailsMiniCaption {
+          opacity: 0;
+          transform: translateY(18px);
+          filter: blur(5px);
+          transition:
+            opacity .72s cubic-bezier(.22, 1, .36, 1),
+            transform .72s cubic-bezier(.22, 1, .36, 1),
+            filter .72s cubic-bezier(.22, 1, .36, 1);
+          will-change: opacity, transform, filter;
+        }
+
+        .rivotDesignDetails.is-text-visible .rivotDetailsLanguage,
+        .rivotDesignDetails.is-text-visible .rivotDetailsCaption,
+        .rivotDesignDetails.is-text-visible .rivotDetailsMiniCaption {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+
+        .rivotDesignDetails.is-text-visible .rivotDetailsLanguage { transition-delay: .28s; }
+        .rivotDesignDetails.is-text-visible .rivotDetailsCaption { transition-delay: .42s; }
+        .rivotDesignDetails.is-text-visible .rivotDetailsSmallPlaceholder:first-child .rivotDetailsMiniCaption { transition-delay: .5s; }
+        .rivotDesignDetails.is-text-visible .rivotDetailsSmallPlaceholder:last-child .rivotDetailsMiniCaption { transition-delay: .62s; }
 
         .rivotDetailsCaption {
           position: absolute;
@@ -2925,6 +3235,19 @@ export default function Home() {
           height: 18px;
         }
 
+        @media (prefers-reduced-motion: reduce) {
+          .rivotDesignDetailsCopy > *,
+          .rivotDetailsList > div,
+          .rivotDetailsLanguage,
+          .rivotDetailsCaption,
+          .rivotDetailsMiniCaption {
+            opacity: 1;
+            transform: none;
+            filter: none;
+            transition: none;
+          }
+        }
+
         .rivotPerformance {
           padding: var(--section-open-gap) clamp(14px, 3vw, 34px) var(--section-close-gap);
           background: linear-gradient(180deg, #fbfaf7 0%, #fff 52%, #f7f7f5 100%);
@@ -2945,6 +3268,36 @@ export default function Home() {
         .rivotPerformanceCopy {
           min-width: 0;
         }
+
+        .rivotPerformanceCopy > *,
+        .rivotPerformanceCardContent > * {
+          opacity: 0;
+          transform: translateY(24px);
+          filter: blur(5px);
+          transition:
+            opacity .78s cubic-bezier(.22, 1, .36, 1),
+            transform .78s cubic-bezier(.22, 1, .36, 1),
+            filter .78s cubic-bezier(.22, 1, .36, 1);
+          will-change: opacity, transform, filter;
+        }
+
+        .rivotPerformance.is-text-visible .rivotPerformanceCopy > *,
+        .rivotPerformance.is-text-visible .rivotPerformanceCardContent > * {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+
+        .rivotPerformance.is-text-visible .rivotPerformanceEyebrow { transition-delay: .04s; }
+        .rivotPerformance.is-text-visible .rivotPerformanceCopy h2 { transition-delay: .14s; }
+        .rivotPerformance.is-text-visible .rivotPerformanceCopy > p:not(.rivotPerformanceEyebrow) { transition-delay: .26s; }
+        .rivotPerformance.is-text-visible .rivotPerformanceAccent { transition-delay: .36s; }
+        .rivotPerformance.is-text-visible .rivotPerformanceCard:first-child .rivotPerformanceCardContent p:first-child { transition-delay: .2s; }
+        .rivotPerformance.is-text-visible .rivotPerformanceCard:first-child .rivotPerformanceCardContent h3 { transition-delay: .32s; }
+        .rivotPerformance.is-text-visible .rivotPerformanceCard:first-child .rivotPerformanceCardContent p:last-child { transition-delay: .44s; }
+        .rivotPerformance.is-text-visible .rivotPerformanceCard:nth-child(2) .rivotPerformanceCardContent p:first-child { transition-delay: .32s; }
+        .rivotPerformance.is-text-visible .rivotPerformanceCard:nth-child(2) .rivotPerformanceCardContent h3 { transition-delay: .44s; }
+        .rivotPerformance.is-text-visible .rivotPerformanceCard:nth-child(2) .rivotPerformanceCardContent p:last-child { transition-delay: .56s; }
 
         .rivotPerformanceEyebrow {
           margin: 0 0 24px;
@@ -3026,11 +3379,11 @@ export default function Home() {
         }
 
         .rivotPerformanceCard:first-child .rivotPerformancePhoto {
-          object-position: 54% center;
+          object-position: 48% center;
         }
 
         .rivotPerformanceCard:nth-child(2) .rivotPerformancePhoto {
-          object-position: 58% center;
+          object-position: 55% center;
         }
 
         .rivotPerformanceCard:nth-child(2) .rivotPerformancePlaceholder {
@@ -3102,6 +3455,16 @@ export default function Home() {
           font-size: 16px;
           font-weight: 600;
           line-height: 1.45;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotPerformanceCopy > *,
+          .rivotPerformanceCardContent > * {
+            opacity: 1;
+            transform: none;
+            filter: none;
+            transition: none;
+          }
         }
 
         .rivotSafetyTech {
@@ -4219,6 +4582,85 @@ export default function Home() {
           padding-top: 8px;
           font-size: 7px;
         }
+        }
+
+        .rivotReachAnimated .rivotReachCard {
+          opacity: 0;
+          filter: blur(8px);
+          will-change: opacity, transform, filter;
+        }
+
+        .rivotReachAnimated .rivotReachStore {
+          transform: translateX(-46px) scale(.975);
+        }
+
+        .rivotReachAnimated .rivotReachCharge {
+          transform: translateX(46px) scale(.975);
+        }
+
+        .rivotReachAnimated.isVisible .rivotReachCard {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateX(0) scale(1);
+          transition: opacity .85s ease, transform .95s cubic-bezier(.16, 1, .3, 1), filter .8s ease;
+        }
+
+        .rivotReachAnimated.isVisible .rivotReachCharge {
+          transition-delay: .14s;
+        }
+
+        .rivotReachAnimated .rivotReachCopy > * {
+          opacity: 0;
+          transform: translateY(22px);
+          filter: blur(5px);
+        }
+
+        .rivotReachAnimated.isVisible .rivotReachCopy > * {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+          transition: opacity .65s ease, transform .75s cubic-bezier(.22, 1, .36, 1), filter .65s ease;
+        }
+
+        .rivotReachAnimated.isVisible .rivotReachCopy > :nth-child(1) { transition-delay: .28s; }
+        .rivotReachAnimated.isVisible .rivotReachCopy > :nth-child(2) { transition-delay: .38s; }
+        .rivotReachAnimated.isVisible .rivotReachCopy > :nth-child(3) { transition-delay: .5s; }
+        .rivotReachAnimated.isVisible .rivotReachCopy > :nth-child(4) { transition-delay: .62s; }
+        .rivotReachAnimated.isVisible .rivotReachCharge .rivotReachCopy > :nth-child(1) { transition-delay: .4s; }
+        .rivotReachAnimated.isVisible .rivotReachCharge .rivotReachCopy > :nth-child(2) { transition-delay: .5s; }
+        .rivotReachAnimated.isVisible .rivotReachCharge .rivotReachCopy > :nth-child(3) { transition-delay: .62s; }
+        .rivotReachAnimated.isVisible .rivotReachCharge .rivotReachCopy > :nth-child(4) { transition-delay: .74s; }
+
+        .rivotReachAnimated.isVisible .rivotReachCopy h2 {
+          animation: rivotReachHeadline .9s cubic-bezier(.16, 1, .3, 1) both;
+        }
+
+        .rivotReachAnimated .rivotReachMedia img {
+          transform: scale(1.1);
+          filter: saturate(.75) blur(3px);
+          transition: transform 1.25s cubic-bezier(.16, 1, .3, 1), filter 1s ease;
+        }
+
+        .rivotReachAnimated.isVisible .rivotReachMedia img {
+          transform: scale(1);
+          filter: saturate(1) blur(0);
+        }
+
+        @keyframes rivotReachHeadline {
+          from { letter-spacing: -.075em; }
+          to { letter-spacing: -.055em; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotReachAnimated .rivotReachCard,
+          .rivotReachAnimated .rivotReachCopy > *,
+          .rivotReachAnimated .rivotReachMedia img {
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
+            animation: none !important;
+            transition: none !important;
+          }
         }
 
         .rivotReach {
@@ -6530,6 +6972,139 @@ export default function Home() {
           .rivotHero .rivotHeroButtons {
             width: min(100%, 420px) !important;
             margin-inline: auto !important;
+          }
+        }
+
+        /* Image-led shop cards. */
+        .rivotBestFit {
+          min-height: calc(100svh - 88px);
+          display: flex;
+          align-items: center;
+          padding: clamp(22px, 3vh, 32px) clamp(16px, 4vw, 48px);
+        }
+
+        .rivotBestFitShell {
+          width: min(100%, 1320px);
+        }
+
+        .rivotBestFitHeader h2 {
+          font-size: clamp(32px, 3.2vw, 44px);
+        }
+
+        .rivotBestFitHeader p {
+          margin-top: 8px;
+        }
+
+        .rivotBestFitGrid {
+          margin-top: clamp(22px, 3vh, 32px);
+        }
+
+        .rivotBestFitCard,
+        .rivotBestFitSubscription {
+          height: clamp(390px, calc(100svh - 285px), 470px);
+          min-height: 0;
+          align-items: center;
+          justify-content: flex-start;
+          padding: clamp(28px, 2.5vw, 40px);
+          border: 0;
+          border-radius: 14px;
+          background: #111313;
+          text-align: center;
+          isolation: isolate;
+        }
+
+        .rivotBestFitCard::before,
+        .rivotBestFitAccessories::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: linear-gradient(180deg, rgba(5, 7, 8, .76) 0%, rgba(5, 7, 8, .42) 25%, rgba(5, 7, 8, .1) 52%, rgba(5, 7, 8, .62) 78%, rgba(5, 7, 8, .96) 100%);
+          pointer-events: none;
+        }
+
+        .rivotBestFitCardImage {
+          z-index: 0;
+          object-fit: cover;
+          object-position: center;
+          transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .rivotBestFitCard:hover .rivotBestFitCardImage {
+          transform: scale(1.035);
+        }
+
+        .rivotBestFitCard > *:not(.rivotBestFitCardImage) {
+          position: relative;
+          z-index: 2;
+          text-shadow: 0 2px 14px rgba(0, 0, 0, .72);
+        }
+
+        .rivotBestFitCard .rivotBestFitEyebrow,
+        .rivotBestFitSubscription .rivotBestFitEyebrow {
+          margin: 0 0 12px;
+          font-size: 12px;
+          line-height: 1.1;
+        }
+
+        .rivotBestFitCard h3,
+        .rivotBestFitSubscription h3 {
+          font-size: clamp(28px, 2.1vw, 36px);
+          letter-spacing: -.045em;
+        }
+
+        .rivotBestFitCard > p:not(.rivotBestFitEyebrow),
+        .rivotBestFitSubscription > p:not(.rivotBestFitEyebrow) {
+          max-width: 330px;
+          margin-top: 8px;
+          color: rgba(255,255,255,.78);
+          font-size: clamp(14px, 1vw, 16px);
+          line-height: 1.35;
+          text-align: center;
+        }
+
+        .rivotBestFitCard .rivotBestFitCta,
+        .rivotBestFitSubscription .rivotBestFitCta {
+          min-width: 0;
+          min-height: 52px;
+          margin-top: auto;
+          padding: 0 28px;
+          border-radius: 12px;
+          font-size: 15px;
+        }
+
+        @media (max-width: 1000px) {
+          .rivotBestFit {
+            min-height: 0;
+            display: block;
+            padding: clamp(58px, 8vw, 88px) clamp(16px, 4vw, 48px);
+          }
+
+          .rivotBestFitGrid {
+            grid-template-columns: 1fr;
+            width: min(100%, 620px);
+            margin-inline: auto;
+          }
+
+          .rivotBestFitCard,
+          .rivotBestFitSubscription {
+            height: clamp(430px, 76vw, 540px);
+            min-height: clamp(430px, 76vw, 540px);
+          }
+        }
+
+        @media (max-width: 560px) {
+          .rivotBestFitCard,
+          .rivotBestFitSubscription {
+            height: 430px;
+            min-height: 430px;
+            padding: 26px 22px;
+            border-radius: 12px;
+          }
+
+          .rivotBestFitCard .rivotBestFitCta,
+          .rivotBestFitSubscription .rivotBestFitCta {
+            width: 100%;
           }
         }
       `}</style>
