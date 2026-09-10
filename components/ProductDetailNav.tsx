@@ -167,6 +167,31 @@ export function ProductDetailNav() {
           background: #fff4ed;
         }
 
+        :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNav {
+          border-color: rgba(255, 255, 255, .1);
+          background: rgba(12, 14, 14, .96);
+          box-shadow: 0 12px 34px rgba(0, 0, 0, .3);
+        }
+
+        :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavLinks a {
+          color: #d9dcdc !important;
+        }
+
+        :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavLinks a:hover,
+        :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavLinks a:focus-visible,
+        :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavLinks a.isActive {
+          color: #ef7430 !important;
+        }
+
+        :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavSecondary {
+          background: transparent;
+          color: #ef7430 !important;
+        }
+
+        :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavSecondary:hover {
+          background: rgba(239, 116, 48, .12);
+        }
+
         @media (max-width: 900px) {
           .productDetailNavShell {
             min-height: 76px;

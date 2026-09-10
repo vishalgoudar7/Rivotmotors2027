@@ -64,7 +64,6 @@ export function ProductDetailSupportSections() {
       <section className="rivotBestFit" aria-labelledby="best-fit-title">
         <div className="rivotBestFitShell">
           <div className="rivotBestFitHeader">
-            <span aria-hidden="true">06</span>
             <p>Keep Riding</p>
             <h2 id="best-fit-title">Your Scooter. Our Support.</h2>
             <small>Essential products and plans to keep you moving, always.</small>
@@ -359,16 +358,6 @@ export function ProductDetailSupportSections() {
         .rivotBestFitHeader {
           position: relative;
           text-align: center;
-        }
-
-        .rivotBestFitHeader > span {
-          position: absolute;
-          left: 0;
-          top: -14px;
-          color: rgba(239, 116, 48, .12);
-          font-size: clamp(42px, 5vw, 66px);
-          font-weight: 900;
-          line-height: 1;
         }
 
         .rivotBestFitHeader > p {

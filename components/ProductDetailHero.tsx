@@ -70,7 +70,7 @@ export function ProductDetailHero({
       <div className="productDetailHeroContent">
         <p className="productDetailEyebrow">{kicker}</p>
         <h1 className="productDetailHeroTitle">
-          <span className="productDetailHeroModelName">NX100</span>
+          <span className="productDetailHeroModelName">nx100</span>
           {modelVariant && <span className="productDetailHeroBadge">{modelVariant}</span>}
         </h1>
         <h2>{headline}</h2>
@@ -289,6 +289,7 @@ export function ProductDetailHero({
         .productDetailHeroModelName {
           display: block;
           font-style: italic;
+          text-transform: lowercase;
         }
 
         .productDetailHeroBadge {

@@ -217,6 +217,34 @@ export function ProductKeyFeaturesGallery() {
           display: none;
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productKeyFeatures {
+          background:
+            radial-gradient(circle at 92% 8%, rgba(239, 116, 48, .08), transparent 28%),
+            linear-gradient(180deg, #080909 0%, #0d0f0f 100%) !important;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productKeyFeaturesRail {
+          background: transparent !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productKeyFeatures.productKeyFeatures h2 {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productKeyFeaturesHeader > p {
+          color: #ef7430 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productKeyFeatures.productKeyFeatures .productKeyFeaturesHeader > div p {
+          color: #aeb4b4 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productKeyFeatureCard {
+          border-color: rgba(255, 255, 255, .12);
+          box-shadow: 0 22px 52px rgba(0, 0, 0, .38);
+        }
+
         @media (max-width: 1050px) {
           .productKeyFeaturesHeader {
             grid-template-columns: 1fr 1.4fr;

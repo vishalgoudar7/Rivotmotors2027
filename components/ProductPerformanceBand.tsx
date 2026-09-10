@@ -105,7 +105,7 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
 
       <style>{`
         .productPerformanceBand {
-          padding: clamp(28px, 4vw, 48px) clamp(16px, 3vw, 32px);
+          padding: 0;
           background: #f7f7f5;
           color: #080808;
         }
@@ -116,15 +116,16 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
           grid-template-columns: minmax(260px, .88fr) minmax(430px, 1.48fr);
           gap: clamp(24px, 4vw, 54px);
           align-items: center;
-          min-height: 520px;
+          min-height: calc(100svh - 88px);
           overflow: hidden;
-          border-radius: 8px;
+          border: 0;
+          border-radius: 0;
           padding: clamp(34px, 4.2vw, 56px);
           background:
             radial-gradient(circle at 24% 72%, rgba(239, 116, 48, .12), transparent 28%),
             radial-gradient(circle at 86% 16%, rgba(239, 116, 48, .08), transparent 25%),
             linear-gradient(135deg, #fff 0%, #f8f8f8 58%, #eef1f3 100%);
-          box-shadow: 0 26px 70px rgba(17, 17, 17, .1);
+          box-shadow: none;
           isolation: isolate;
         }
 
@@ -334,9 +335,48 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
           line-height: 1.35;
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productPerformanceBand {
+          background: #080909 !important;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productPerformanceScene {
+          background:
+            radial-gradient(circle at 24% 72%, rgba(239, 116, 48, .1), transparent 30%),
+            radial-gradient(circle at 86% 16%, rgba(239, 116, 48, .06), transparent 26%),
+            linear-gradient(135deg, #111313 0%, #0d0f0f 58%, #15120f 100%) !important;
+          box-shadow: 0 26px 70px rgba(0, 0, 0, .38);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productPerformanceScene::before {
+          background:
+            linear-gradient(115deg, rgba(17, 19, 19, .94) 0 38%, rgba(17, 19, 19, .62) 58%, rgba(239, 116, 48, .035)),
+            repeating-linear-gradient(90deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 92px);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productPerformanceMetric {
+          border-color: rgba(255, 255, 255, .1);
+          background: linear-gradient(135deg, #191b1b, #121414);
+          color: #f5f5f2;
+          box-shadow: 0 20px 38px rgba(0, 0, 0, .3);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.productPerformanceCopy h2, .productPerformanceMetric h3, .productPerformanceMetric p) {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productPerformanceCopy p {
+          color: #ef7430 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.productPerformanceCopy small, .productPerformanceMetric small, .productPerformanceCopy b) {
+          color: #aeb4b4;
+        }
+
         @media (max-width: 1100px) {
           .productPerformanceScene {
             grid-template-columns: 1fr;
+            min-height: auto;
           }
 
           .productPerformanceCopy {
@@ -347,7 +387,7 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
 
         @media (max-width: 760px) {
           .productPerformanceBand {
-            padding: 18px 12px;
+            padding: 0;
           }
 
           .productPerformanceScene {

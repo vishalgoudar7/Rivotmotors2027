@@ -67,3 +67,125 @@ html:is([data-theme="dark"],[data-rivot-theme="dark"]) .rivotRideInsightList .ac
 html:is([data-theme="dark"],[data-rivot-theme="dark"]) .rivotRideInsightList b{color:#f5f5f2!important}
 html:is([data-theme="dark"],[data-rivot-theme="dark"]) .rivotRideInsightList small{color:#aeb4b4!important}
 html:is([data-theme="dark"],[data-rivot-theme="dark"]) .rivotRidePhoneCard{background:radial-gradient(circle,rgba(255,255,255,.055),transparent 68%)!important;border-radius:28px}
+
+/* Product detail navigation CTAs: keep both actions button-shaped in either theme. */
+.productDetailNav .productDetailNavActions .productDetailNavPrimary,
+.productDetailNav .productDetailNavActions .productDetailNavSecondary{
+  display:inline-flex!important;
+  min-width:126px;
+  min-height:48px;
+  align-items:center;
+  justify-content:center;
+  padding:0 22px;
+  border:1px solid #ef7430!important;
+  border-radius:999px!important;
+  font-size:14px;
+  font-weight:800;
+  line-height:1;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background-color .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+.productDetailNav .productDetailNavActions .productDetailNavPrimary{
+  background:#ef7430!important;
+  color:#fff!important;
+  box-shadow:0 9px 22px rgba(239,116,48,.24);
+}
+.productDetailNav .productDetailNavActions .productDetailNavSecondary{
+  background:#fff!important;
+  color:#d65f22!important;
+}
+.productDetailNav .productDetailNavActions .productDetailNavPrimary:hover,
+.productDetailNav .productDetailNavActions .productDetailNavSecondary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 11px 26px rgba(239,116,48,.3);
+}
+.productDetailNav .productDetailNavActions .productDetailNavPrimary:hover{
+  background:#d96021!important;
+  border-color:#d96021!important;
+}
+.productDetailNav .productDetailNavActions .productDetailNavSecondary:hover{
+  background:#fff3ec!important;
+}
+.productDetailNav .productDetailNavActions a:focus-visible{
+  outline:3px solid color-mix(in srgb,#ef7430 45%,transparent);
+  outline-offset:3px;
+}
+html:is([data-theme="dark"],[data-rivot-theme="dark"]) .productDetailNav .productDetailNavActions .productDetailNavSecondary{
+  background:#171919!important;
+  color:#ff7b35!important;
+  border-color:#ff7b35!important;
+}
+html:is([data-theme="dark"],[data-rivot-theme="dark"]) .productDetailNav .productDetailNavActions .productDetailNavSecondary:hover{
+  background:#2b1c14!important;
+}
+
+/* Product hero CTAs are rendered through Next Link, so keep their visual treatment global. */
+.productDetailHero .productDetailHeroButtons .productDetailPriceBook,
+.productDetailHero .productDetailHeroButtons .productDetailTestRide{
+  display:inline-flex!important;
+  min-width:168px;
+  min-height:52px;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:0 24px;
+  border:1px solid #ef7430!important;
+  border-radius:999px!important;
+  font-size:15px;
+  font-weight:800;
+  line-height:1;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background-color .2s ease,color .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+.productDetailHero .productDetailHeroButtons .productDetailPriceBook{
+  background:#ef7430!important;
+  color:#fff!important;
+  box-shadow:0 12px 28px rgba(239,116,48,.3);
+}
+.productDetailHero .productDetailHeroButtons .productDetailTestRide{
+  background:rgba(255,255,255,.94)!important;
+  color:#c9581f!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.16);
+}
+.productDetailHero .productDetailHeroButtons :is(.productDetailPriceBook,.productDetailTestRide) svg{
+  width:18px;
+  height:18px;
+  flex:0 0 auto;
+}
+.productDetailHero .productDetailHeroButtons .productDetailPriceBook:hover{
+  background:#d86124!important;
+  border-color:#d86124!important;
+  transform:translateY(-2px);
+}
+.productDetailHero .productDetailHeroButtons .productDetailTestRide:hover{
+  background:#fff3eb!important;
+  transform:translateY(-2px);
+}
+.productDetailHero .productDetailHeroButtons a:focus-visible{
+  outline:3px solid rgba(255,157,101,.8);
+  outline-offset:3px;
+}
+html:is([data-theme="dark"],[data-rivot-theme="dark"]) .productDetailHero .productDetailHeroButtons .productDetailTestRide{
+  background:rgba(17,19,19,.9)!important;
+  color:#ff7b35!important;
+  border-color:#ff7b35!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.3);
+  backdrop-filter:blur(8px);
+}
+html:is([data-theme="dark"],[data-rivot-theme="dark"]) .productDetailHero .productDetailHeroButtons .productDetailTestRide:hover{
+  background:#2b1c14!important;
+}
+@media(max-width:560px){
+  .productDetailHero .productDetailHeroButtons{
+    width:100%;
+    flex-wrap:wrap;
+  }
+  .productDetailHero .productDetailHeroButtons .productDetailPriceBook,
+  .productDetailHero .productDetailHeroButtons .productDetailTestRide{
+    min-width:min(168px,100%);
+    min-height:48px;
+    padding-inline:20px;
+  }
+}

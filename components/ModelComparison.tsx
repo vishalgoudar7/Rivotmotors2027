@@ -307,6 +307,55 @@ export function ModelComparison({
             text-transform: uppercase;
           }
         }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .modelComparison {
+          background:
+            radial-gradient(circle at 86% 12%, rgba(239, 116, 48, .09), transparent 30%),
+            linear-gradient(180deg, #080909 0%, #0d0f0f 100%) !important;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .modelComparisonShell {
+          background: transparent !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .modelComparisonTable {
+          border-color: rgba(255, 255, 255, .12);
+          background: #151717;
+          box-shadow: 0 22px 58px rgba(0, 0, 0, .38);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.modelComparisonRow, .modelComparisonRow > div) {
+          border-color: rgba(255, 255, 255, .1);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .modelComparisonRow {
+          background: #151717;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .modelComparisonRow > div {
+          color: #e9ebeb;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .modelComparisonRow > div:nth-child(2) {
+          background: rgba(239, 116, 48, .11);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .modelComparisonHeader {
+          background: #181a1a;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.modelComparisonHead h2, .modelComparisonVariant a, .modelComparisonPrice) {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.modelComparisonHead > small, .modelComparisonVariant small, .modelComparisonLabel, .modelComparisonHeader > div:first-child) {
+          color: #aeb4b4 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .modelComparisonHead p {
+          color: #ef7430 !important;
+        }
       `}</style>
     </section>
   );

@@ -195,6 +195,64 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
           background: rgba(17, 17, 17, .16);
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomMade {
+          background:
+            radial-gradient(circle at 84% 18%, rgba(239, 116, 48, .09), transparent 30%),
+            linear-gradient(180deg, #080909 0%, #0d0f0f 100%) !important;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomMade::before {
+          background:
+            linear-gradient(132deg, transparent 0 58%, rgba(239, 116, 48, .12) 58.2% 58.5%, transparent 58.8%),
+            repeating-linear-gradient(90deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 112px);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomCopy h2 {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomCopy p {
+          color: #aeb4b4 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPicker {
+          background: transparent !important;
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPicker strong {
+          color: #dfe2e2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPicker div {
+          border: 1px solid rgba(255, 255, 255, .11);
+          background: rgba(24, 27, 27, .92);
+          box-shadow: 0 14px 34px rgba(0, 0, 0, .32);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPicker span {
+          box-shadow: 0 0 0 4px #242727, 0 10px 22px rgba(0, 0, 0, .38);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomGlow {
+          background: radial-gradient(circle, rgba(239, 116, 48, .16), rgba(8, 9, 9, 0) 64%);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomStage img {
+          filter: drop-shadow(0 26px 30px rgba(0, 0, 0, .5));
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPlinth {
+          border-color: rgba(255, 255, 255, .12);
+          background: linear-gradient(180deg, #202323, #121414);
+          box-shadow: 0 18px 38px rgba(0, 0, 0, .42);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPlinth::after {
+          background: rgba(255, 255, 255, .13);
+        }
+
         @media (max-width: 900px) {
           .productCustomMade {
             grid-template-columns: 1fr;

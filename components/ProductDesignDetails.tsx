@@ -254,6 +254,49 @@ export function ProductDesignDetails() {
           color: rgba(255, 255, 255, .78);
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignDetails {
+          background:
+            radial-gradient(circle at 12% 8%, rgba(239, 116, 48, .08), transparent 30%),
+            linear-gradient(180deg, #080909 0%, #0d0f0f 100%) !important;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.productDesignIntro h2, .productDesignIntro a) {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro p {
+          color: #aeb4b4 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro p span {
+          color: #ef7430;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro small {
+          color: #aeb4b4;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignCard {
+          border-color: rgba(255, 255, 255, .12) !important;
+          background: #151717 !important;
+          box-shadow: 0 18px 42px rgba(0, 0, 0, .34);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignShade,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.productDesignCard.wheel, .productDesignCard.drive) .productDesignShade {
+          background: linear-gradient(110deg, rgba(0, 0, 0, .68), rgba(0, 0, 0, .2) 56%, rgba(0, 0, 0, .34));
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.productDesignCard h3, .productDesignCard p) {
+          color: #fff !important;
+          text-shadow: 0 5px 18px rgba(0, 0, 0, .58);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignCard p {
+          color: rgba(255, 255, 255, .8) !important;
+        }
+
         @media (max-width: 1000px) {
           .productDesignDetails {
             grid-template-columns: 1fr;
