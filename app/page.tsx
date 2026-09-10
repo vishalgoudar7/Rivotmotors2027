@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import heroSpotlightImageOne from "@/asset/newphotos/1.jpg";
-import heroSpotlightImageTwo from "@/asset/newphotos/2.jpg";
-import heroSpotlightImageThree from "@/asset/newphotos/3.jpg";
+import heroSpotlightImageOne from "@/asset/newphotos/1.optimized.webp";
+import heroSpotlightImageTwo from "@/asset/newphotos/2.optimized.webp";
+import heroSpotlightImageThree from "@/asset/newphotos/3.optimized.webp";
 import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
 import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
 import geofencingAppImage from "@/asset/images/App/Geofencing.png";
@@ -13,7 +14,7 @@ import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring Syst
 import tripInsightsAppImage from "@/asset/images/App/Trip Insights.png";
 import accelerationImage from "@/asset/newimg/performance/accelaration.jpeg";
 import recoEngineImage from "@/asset/newimg/performance/recoengine.jpeg";
-import chargerImage from "@/asset/images/last/Charger.png";
+import chargerImage from "@/asset/images/last/Charger.optimized.webp";
 import boostModeImage from "@/asset/newimg/Engineering/boost-mode.png";
 import cruiseImage from "@/asset/newimg/Engineering/cuise.jpeg";
 import discImage from "@/asset/newimg/Engineering/disccc.jpeg";
@@ -26,12 +27,13 @@ import safetyImage from "@/asset/newimg/Key feuture/Advanced Safety.jpeg";
 import ergonomicSeatImage from "@/asset/newimg/Design/erogonomy seat .png";
 import floorboardDetailImage from "@/asset/newimg/Design/Footfloor.jpeg";
 import bootSpaceImage from "@/asset/newimg/Design/bootspace.jpeg";
-import { DashboardRotation } from "@/components/DashboardRotation";
-import { Faqs } from "@/components/Faqs";
-import { SafetyTech } from "@/components/SafetyTech";
-import { SavingsCalculator } from "@/components/SavingsCalculator";
-import { ScooterRotation } from "@/components/ScooterRotation";
 import { bookingColors } from "@/data/bookingColors";
+
+const DashboardRotation = dynamic(() => import("@/components/DashboardRotation").then((module) => module.DashboardRotation));
+const Faqs = dynamic(() => import("@/components/Faqs").then((module) => module.Faqs));
+const SafetyTech = dynamic(() => import("@/components/SafetyTech").then((module) => module.SafetyTech));
+const SavingsCalculator = dynamic(() => import("@/components/SavingsCalculator").then((module) => module.SavingsCalculator));
+const ScooterRotation = dynamic(() => import("@/components/ScooterRotation").then((module) => module.ScooterRotation));
 
 const keyFeatures = [
   {
@@ -733,7 +735,6 @@ export default function Home() {
                   alt={feature.alt}
                   fill
                   loading="eager"
-                  unoptimized
                   sizes="(max-width: 768px) 100vw, 28vw"
                   className="rivotKeyCardImage"
                 />
@@ -1212,11 +1213,10 @@ export default function Home() {
           <div className="rivotBestFitGrid">
             <article className="rivotBestFitCard rivotBestFitAccessories">
               <Image
-                src="/images/shop/accessories.png"
+                src="/images/shop/accessories.optimized.webp"
                 alt="RIVOT scooter accessories"
                 fill
                 loading="eager"
-                unoptimized
                 sizes="(max-width: 760px) 100vw, 33vw"
                 className="rivotBestFitCardImage"
               />
@@ -1230,11 +1230,10 @@ export default function Home() {
 
             <article className="rivotBestFitCard">
               <Image
-                src="/images/shop/battery.png"
+                src="/images/shop/battery.optimized.webp"
                 alt="Battery and motor extended warranty"
                 fill
                 loading="eager"
-                unoptimized
                 sizes="(max-width: 760px) 100vw, 33vw"
                 className="rivotBestFitCardImage"
               />
@@ -1249,11 +1248,10 @@ export default function Home() {
 
             <article className="rivotBestFitCard rivotBestFitSubscription">
               <Image
-                src="/images/shop/smart-care.png"
+                src="/images/shop/smart-care.optimized.webp"
                 alt="Smart Care extended scooter coverage"
                 fill
                 loading="eager"
-                unoptimized
                 sizes="(max-width: 760px) 100vw, 33vw"
                 className="rivotBestFitCardImage"
               />

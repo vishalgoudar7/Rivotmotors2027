@@ -30,7 +30,7 @@ export function Footer() {
       <div className="rivotFooterShell">
         <div className="rivotFooterTop">
           <section className="rivotFooterBrand" aria-label="RIVOT Motors">
-            <Image src={logoWhite} alt="RIVOT Motors" priority />
+            <Image src={logoWhite} alt="RIVOT Motors" />
             <p>
               Powering the future of electric mobility with innovation,
               reliability &amp; performance.

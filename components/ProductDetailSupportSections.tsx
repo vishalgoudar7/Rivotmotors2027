@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import chargerImage from "@/asset/images/last/Charger.png";
+import chargerImage from "@/asset/images/last/Charger.optimized.webp";
 
 export function ProductDetailSupportSections() {
   return (

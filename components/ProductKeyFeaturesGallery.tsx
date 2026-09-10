@@ -60,7 +60,6 @@ export function ProductKeyFeaturesGallery() {
               fill
               sizes="(max-width: 560px) calc(100vw - 36px), (max-width: 960px) 46vw, 24vw"
               style={{ objectPosition: feature.imagePosition }}
-              priority={index === 0}
             />
             <div className="productKeyFeatureShade" aria-hidden="true" />
             <div className="productKeyFeatureCopy">

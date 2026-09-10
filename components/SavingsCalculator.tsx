@@ -202,6 +202,8 @@ export function SavingsCalculator() {
   }, []);
 
   useEffect(() => {
+    if (!isVisible) return;
+
     const interval = window.setInterval(() => {
       setDailyKm((currentKm) => {
         const currentIndex = DAILY_KM_SEQUENCE.findIndex((value) => value === currentKm);
@@ -211,7 +213,7 @@ export function SavingsCalculator() {
     }, 3000);
 
     return () => window.clearInterval(interval);
-  }, []);
+  }, [isVisible]);
 
   const values = useMemo(() => {
     const annualDistance = dailyKm * 365;

@@ -241,7 +241,7 @@ export function ProductModelExperience({ model }: { model: ProductModel }) {
           </div>
           {!loaded && (
             <div className="loaderOverlay">
-              <Image className="loaderLogo" src={logo} alt="Loading Logo" priority />
+              <Image className="loaderLogo" src={logo} alt="Loading Logo" />
               <div className="progressBar">
                 <div className="progressFill" style={{ width: `${loadingProgress}%` }} />
               </div>

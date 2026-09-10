@@ -95,7 +95,7 @@ export function ProductFeatureSections() {
         <div className="productKeyCards">
           {keyFeatures.map((feature) => (
             <article className="productKeyCard" key={feature.title}>
-              <Image src={feature.image} alt={feature.alt} fill loading="eager" unoptimized sizes="(max-width: 768px) 100vw, 28vw" />
+              <Image src={feature.image} alt={feature.alt} fill sizes="(max-width: 768px) 100vw, 28vw" />
               <div className="productCardShade" aria-hidden="true" />
               <div className="productKeyCardContent">
                 <h3>{feature.title}</h3>
