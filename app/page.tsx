@@ -17,9 +17,9 @@ import chargerImage from "@/asset/images/last/Charger.png";
 import discImage from "@/asset/images/last/Disc.png";
 import monoshockImage from "@/asset/images/last/Monoshock.png";
 import motorImage from "@/asset/images/last/Motor-card.jpg";
-import riderAssistanceImage from "@/asset/images/Key features/Riderasistance.png";
-import featureImage from "@/asset/images/Key features/Feature.png";
-import safetyImage from "@/asset/images/Key features/Safeaty.png";
+import riderAssistanceImage from "@/asset/newimg/Key feuture/Smart ride.jpeg";
+import featureImage from "@/asset/newimg/Key feuture/Built-In Innovation.jpeg";
+import safetyImage from "@/asset/newimg/Key feuture/Advanced Safety.jpeg";
 import bootDetailImage from "@/asset/images/Details/Boot space with helmet.png";
 import floorboardDetailImage from "@/asset/images/Details/Floorboard photo.png";
 import mainDetailImage from "@/asset/images/Details/Main detail photo.png";
@@ -41,10 +41,10 @@ const keyFeatures = [
   },
   {
     number: "02",
-    title: "Built-In Innovation",
+    title: "Built In Innovation",
     image: featureImage,
     alt: "RIVOT NX100 front feature close-up",
-    pills: ["recoEngine", "APU", "Compact Boot", "compact Charger(OBC)"],
+    pills: ["recoEngine", "APU", "Compact Boot", "Integrated OBC"],
   },
   {
     number: "03",
@@ -182,6 +182,7 @@ function EngineeringIcon({ type }: { type: string }) {
 }
 
 export default function Home() {
+  const keyFeaturesSectionRef = useRef<HTMLElement>(null);
   const featureCardsRef = useRef<HTMLDivElement>(null);
   const detailCardsRef = useRef<HTMLDivElement>(null);
   const performanceCardsRef = useRef<HTMLDivElement>(null);
@@ -191,6 +192,7 @@ export default function Home() {
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
   const [previousHeroImage, setPreviousHeroImage] = useState<number | null>(null);
   const [heroSlideDirection, setHeroSlideDirection] = useState<"next" | "previous">("next");
+  const [keyFeaturesTextVisible, setKeyFeaturesTextVisible] = useState(false);
   const selectedHeroImageRef = useRef(0);
   const [activeProductSection, setActiveProductSection] = useState("key-features");
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -206,6 +208,20 @@ export default function Home() {
     }, 8000);
 
     return () => window.clearInterval(heroTimer);
+  }, []);
+
+  useEffect(() => {
+    const section = keyFeaturesSectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setKeyFeaturesTextVisible(true);
+      observer.disconnect();
+    }, { threshold: .18 });
+
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -584,7 +600,12 @@ export default function Home() {
         </div>
       </nav>
 
-      <section className="rivotKeyFeatures" id="key-features" aria-labelledby="key-features-title">
+      <section
+        ref={keyFeaturesSectionRef}
+        className={`rivotKeyFeatures${keyFeaturesTextVisible ? " isTextVisible" : ""}`}
+        id="key-features"
+        aria-labelledby="key-features-title"
+      >
         <div className="rivotKeyFeaturesShell">
           <div className="rivotKeyFeaturesCopy">
             <p className="rivotKeyEyebrow">
@@ -607,7 +628,7 @@ export default function Home() {
               </span>
               Key Features.
             </p>
-            <h2 id="key-features-title">Technology that keeps you ahead.</h2>
+            <h2 id="key-features-title">Stay Ahead with Tech</h2>
             <span className="rivotKeyAccent" aria-hidden="true" />
             <p>The features that set RIVOT apart.</p>
             <Link className="rivotKeyArrow" href="#design" aria-label="Explore the design section">
@@ -622,6 +643,8 @@ export default function Home() {
                   src={feature.image}
                   alt={feature.alt}
                   fill
+                  loading="eager"
+                  unoptimized
                   sizes="(max-width: 768px) 100vw, 28vw"
                   className="rivotKeyCardImage"
                 />
@@ -1894,6 +1917,50 @@ export default function Home() {
           transform: translateX(4px);
         }
 
+        .rivotKeyFeaturesCopy .rivotKeyEyebrow,
+        .rivotKeyFeaturesCopy h2,
+        .rivotKeyFeaturesCopy .rivotKeyAccent,
+        .rivotKeyFeaturesCopy > p:not(.rivotKeyEyebrow),
+        .rivotKeyCardHeading h3,
+        .rivotKeyCardPills small {
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity .9s ease, transform .9s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .rivotKeyFeatures.isTextVisible .rivotKeyFeaturesCopy .rivotKeyEyebrow,
+        .rivotKeyFeatures.isTextVisible .rivotKeyFeaturesCopy h2,
+        .rivotKeyFeatures.isTextVisible .rivotKeyFeaturesCopy .rivotKeyAccent,
+        .rivotKeyFeatures.isTextVisible .rivotKeyFeaturesCopy > p:not(.rivotKeyEyebrow),
+        .rivotKeyFeatures.isTextVisible .rivotKeyCardHeading h3,
+        .rivotKeyFeatures.isTextVisible .rivotKeyCardPills small {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .rivotKeyFeaturesCopy h2 { transition-delay: .12s; }
+        .rivotKeyFeaturesCopy .rivotKeyAccent { transition-delay: .24s; }
+        .rivotKeyFeaturesCopy > p:not(.rivotKeyEyebrow) { transition-delay: .34s; }
+        .rivotKeyCard:nth-child(1) .rivotKeyCardHeading h3 { transition-delay: .24s; }
+        .rivotKeyCard:nth-child(2) .rivotKeyCardHeading h3 { transition-delay: .38s; }
+        .rivotKeyCard:nth-child(3) .rivotKeyCardHeading h3 { transition-delay: .52s; }
+        .rivotKeyCard:nth-child(1) .rivotKeyCardPills small { transition-delay: .48s; }
+        .rivotKeyCard:nth-child(2) .rivotKeyCardPills small { transition-delay: .62s; }
+        .rivotKeyCard:nth-child(3) .rivotKeyCardPills small { transition-delay: .76s; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotKeyFeaturesCopy .rivotKeyEyebrow,
+          .rivotKeyFeaturesCopy h2,
+          .rivotKeyFeaturesCopy .rivotKeyAccent,
+          .rivotKeyFeaturesCopy > p:not(.rivotKeyEyebrow),
+          .rivotKeyCardHeading h3,
+          .rivotKeyCardPills small {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+        }
+
         .rivotKeyCards {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2006,6 +2073,8 @@ export default function Home() {
           grid-template-columns: repeat(2, minmax(0, max-content));
           justify-content: start;
           justify-items: start;
+          width: 100%;
+          margin-left: clamp(-56px, -3vw, -28px);
           gap: 10px 12px;
         }
 
@@ -2015,11 +2084,11 @@ export default function Home() {
           min-height: 28px;
           align-items: center;
           justify-content: center;
-          padding: 0 14px;
+          padding: 0 clamp(8px, .75vw, 12px);
           border-radius: 999px;
           background: rgba(105, 105, 105, .88);
           color: #fff;
-          font-size: clamp(10px, .78vw, 12px);
+          font-size: clamp(9px, .7vw, 11px);
           font-weight: 850;
           line-height: 1;
           text-align: center;
@@ -2029,11 +2098,25 @@ export default function Home() {
         }
 
         .rivotKeyCard:nth-child(2) .rivotKeyCardPills {
-          grid-template-columns: repeat(2, minmax(92px, max-content));
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          width: 100%;
         }
 
         .rivotKeyCard:nth-child(2) .rivotKeyCardPills small:last-child {
-          grid-column: 1 / -1;
+          grid-column: auto;
+        }
+
+        .rivotKeyCard:nth-child(2) .rivotKeyCardPills small {
+          min-width: 0;
+          width: 100%;
+          padding-inline: 6px;
+          font-size: clamp(9px, .62vw, 10px);
+        }
+
+        @media (max-width: 760px) {
+          .rivotKeyCardPills {
+            margin-left: 0;
+          }
         }
 
         .rivotDesign {

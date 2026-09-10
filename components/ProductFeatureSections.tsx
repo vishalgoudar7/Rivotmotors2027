@@ -4,9 +4,9 @@ import rangeImage from "@/asset/images/last/IDC Range.png";
 import discImage from "@/asset/images/last/Disc.png";
 import monoshockImage from "@/asset/images/last/Monoshock.png";
 import motorImage from "@/asset/images/last/Motor-card.jpg";
-import riderAssistanceImage from "@/asset/images/Key features/Riderasistance.png";
-import featureImage from "@/asset/images/Key features/Feature.png";
-import safetyImage from "@/asset/images/Key features/Safeaty.png";
+import riderAssistanceImage from "@/asset/newimg/Key feuture/Smart ride.jpeg";
+import featureImage from "@/asset/newimg/Key feuture/Built-In Innovation.jpeg";
+import safetyImage from "@/asset/newimg/Key feuture/Advanced Safety.jpeg";
 
 const keyFeatures = [
   {
@@ -16,10 +16,10 @@ const keyFeatures = [
     pills: ["Boost Mode", "Ride cam", "comfortKey", "cruiseControl"],
   },
   {
-    title: "Built-In Innovation",
+    title: "Built In Innovation",
     image: featureImage,
     alt: "RIVOT NX100 front feature close-up",
-    pills: ["recoEngine", "APU", "Compact Boot", "compact Charger(OBC)"],
+    pills: ["recoEngine", "APU", "Compact Boot", "Integrated OBC"],
   },
   {
     title: "Advanced Safety",
@@ -87,7 +87,7 @@ export function ProductFeatureSections() {
             <span aria-hidden="true"><GearIcon /></span>
             Key Features.
           </p>
-          <h2 id="product-key-features-title">Technology that keeps you ahead.</h2>
+          <h2 id="product-key-features-title">Stay Ahead with Tech</h2>
           <i aria-hidden="true" />
           <small>The features that set RIVOT apart.</small>
         </div>
@@ -95,7 +95,7 @@ export function ProductFeatureSections() {
         <div className="productKeyCards">
           {keyFeatures.map((feature) => (
             <article className="productKeyCard" key={feature.title}>
-              <Image src={feature.image} alt={feature.alt} fill sizes="(max-width: 768px) 100vw, 28vw" />
+              <Image src={feature.image} alt={feature.alt} fill loading="eager" unoptimized sizes="(max-width: 768px) 100vw, 28vw" />
               <div className="productCardShade" aria-hidden="true" />
               <div className="productKeyCardContent">
                 <h3>{feature.title}</h3>
@@ -295,6 +295,8 @@ export function ProductFeatureSections() {
         .productKeyCardContent div {
           display: flex;
           flex-wrap: wrap;
+          justify-content: flex-start;
+          margin-left: clamp(-54px, -3vw, -26px);
           gap: 10px;
         }
 
@@ -305,10 +307,24 @@ export function ProductFeatureSections() {
           border-radius: 999px;
           background: rgba(105, 105, 105, .88);
           color: #fff;
-          padding: 0 13px;
-          font-size: 11px;
+          padding: 0 clamp(8px, .75vw, 12px);
+          font-size: clamp(9px, .7vw, 11px);
           font-weight: 850;
           white-space: nowrap;
+        }
+
+        .productKeyCard:nth-child(2) .productKeyCardContent div {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          width: 100%;
+        }
+
+        .productKeyCard:nth-child(2) .productKeyCardContent small {
+          min-width: 0;
+          width: 100%;
+          justify-content: center;
+          padding-inline: 6px;
+          font-size: clamp(9px, .62vw, 10px);
         }
 
         .productEngineeringGrid {
@@ -477,6 +493,10 @@ export function ProductFeatureSections() {
           .productPerformanceCards article > div:last-child {
             transform: none;
             inset: 24px;
+          }
+
+          .productKeyCardContent div {
+            margin-left: 0;
           }
 
           .productEngineeringCard {

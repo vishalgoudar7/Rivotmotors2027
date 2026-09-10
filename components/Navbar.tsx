@@ -1319,6 +1319,71 @@ export function Navbar() {
     transform: translateX(29px) !important;
   }
 
+  .rivotHeader .rivotBrand {
+    animation: rivotNavBrandLoad 1.2s cubic-bezier(.22, 1, .36, 1) .12s backwards;
+  }
+
+  .rivotHeader .rivotHeaderLinks > * {
+    animation: rivotNavTextLoad 1.05s cubic-bezier(.22, 1, .36, 1) backwards;
+  }
+
+  .rivotHeader .rivotHeaderLinks > :nth-child(1) { animation-delay: .3s; }
+  .rivotHeader .rivotHeaderLinks > :nth-child(2) { animation-delay: .44s; }
+  .rivotHeader .rivotHeaderLinks > :nth-child(3) { animation-delay: .58s; }
+  .rivotHeader .rivotHeaderLinks > :nth-child(4) { animation-delay: .72s; }
+  .rivotHeader .rivotHeaderLinks > :nth-child(5) { animation-delay: .86s; }
+
+  .rivotHeader .rivotHeaderActions,
+  .rivotHeader .rivotMenuButton {
+    animation: rivotNavActionLoad 1.15s cubic-bezier(.22, 1, .36, 1) 1s backwards;
+  }
+
+  @keyframes rivotNavBrandLoad {
+    from {
+      opacity: 0;
+      filter: blur(6px);
+      transform: translateX(-24px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes rivotNavTextLoad {
+    from {
+      opacity: 0;
+      filter: blur(4px);
+      transform: translateY(-14px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes rivotNavActionLoad {
+    from {
+      opacity: 0;
+      transform: translateX(22px) scale(.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rivotHeader .rivotBrand,
+    .rivotHeader .rivotHeaderLinks > *,
+    .rivotHeader .rivotHeaderActions,
+    .rivotHeader .rivotMenuButton {
+      animation: none !important;
+    }
+  }
+
   @media (max-width: 700px) {
     .rivotHeader.isHomeHeader {
       grid-template-columns: auto 1fr auto;
