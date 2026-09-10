@@ -189,12 +189,20 @@ export default function Home() {
   const [selectedDesignColor, setSelectedDesignColor] = useState<(typeof bookingColors)[number]>(bookingColors[0]);
   const [selectedRideInsight, setSelectedRideInsight] = useState(0);
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
+  const [previousHeroImage, setPreviousHeroImage] = useState<number | null>(null);
+  const [heroSlideDirection, setHeroSlideDirection] = useState<"next" | "previous">("next");
+  const selectedHeroImageRef = useRef(0);
   const [activeProductSection, setActiveProductSection] = useState("key-features");
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
     const heroTimer = window.setInterval(() => {
-      setSelectedHeroImage((currentImage) => (currentImage + 1) % heroSpotlightImages.length);
+      const currentImage = selectedHeroImageRef.current;
+      const nextImage = (currentImage + 1) % heroSpotlightImages.length;
+      setHeroSlideDirection("next");
+      setPreviousHeroImage(currentImage);
+      selectedHeroImageRef.current = nextImage;
+      setSelectedHeroImage(nextImage);
     }, 8000);
 
     return () => window.clearInterval(heroTimer);
@@ -348,7 +356,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="rivotHero">
+      <section className={`rivotHero ${heroSlideDirection === "previous" ? "isReverse" : "isForward"}`}>
         {heroSpotlightImages.map((heroImage, index) => (
           <Image
             src={heroImage}
@@ -356,7 +364,7 @@ export default function Home() {
             fill
             priority={index === 0}
             sizes="100vw"
-            className={`rivotHeroImage${index === selectedHeroImage ? " isActive" : ""}`}
+            className={`rivotHeroImage${index === selectedHeroImage ? " isActive" : ""}${index === previousHeroImage ? " isPrevious" : ""}`}
             key={heroImage.src}
           />
         ))}
@@ -536,7 +544,13 @@ export default function Home() {
                 type="button"
                 aria-label={`Go to slide ${index + 1}`}
                 aria-pressed={index === selectedHeroImage}
-                onClick={() => setSelectedHeroImage(index)}
+                onClick={() => {
+                  if (index === selectedHeroImage) return;
+                  setHeroSlideDirection(index < selectedHeroImage ? "previous" : "next");
+                  setPreviousHeroImage(selectedHeroImage);
+                  selectedHeroImageRef.current = index;
+                  setSelectedHeroImage(index);
+                }}
                 className={index === selectedHeroImage ? "isActive" : ""}
                 key={`hero-pointer-${heroImage.src}`}
               />
@@ -6058,18 +6072,36 @@ export default function Home() {
 
         .rivotHero .rivotHeroImage {
           opacity: 0 !important;
-          transform: scale(1) !important;
+          z-index: 0;
+          transform: translate3d(100%, 0, 0) scale(1.01) !important;
           object-position: center center !important;
-          transition: opacity .9s ease !important;
+          transition: transform 1.05s cubic-bezier(.72, 0, .2, 1), opacity .72s ease !important;
+          will-change: transform, opacity;
+        }
+
+        .rivotHero .rivotHeroImage.isPrevious {
+          opacity: 0 !important;
+          z-index: 1;
+          transform: translate3d(-100%, 0, 0) scale(1.01) !important;
+        }
+
+        .rivotHero.isReverse .rivotHeroImage {
+          transform: translate3d(-100%, 0, 0) scale(1.01) !important;
+        }
+
+        .rivotHero.isReverse .rivotHeroImage.isPrevious {
+          transform: translate3d(100%, 0, 0) scale(1.01) !important;
         }
 
         .rivotHero .rivotHeroImage.isActive {
           opacity: 1 !important;
-          transform: scale(1) !important;
+          z-index: 2;
+          transform: translate3d(0, 0, 0) scale(1) !important;
         }
 
         .rivotHero .rivotHeroContent {
           position: absolute !important;
+          z-index: 4 !important;
           left: 50% !important;
           right: auto !important;
           top: auto !important;
@@ -6090,6 +6122,7 @@ export default function Home() {
         html[data-theme="light"] .rivotHero .rivotHeroShade,
         html[data-rivot-theme="dark"] .rivotHero .rivotHeroShade,
         html[data-theme="dark"] .rivotHero .rivotHeroShade {
+          z-index: 3;
           background:
             linear-gradient(180deg, rgba(2, 4, 8, .26) 0%, rgba(2, 4, 8, .1) 42%, rgba(2, 4, 8, .84) 100%) !important,
             linear-gradient(90deg, rgba(2, 4, 8, .22) 0%, rgba(2, 4, 8, 0) 52%, rgba(2, 4, 8, .22) 100%) !important;
@@ -6166,6 +6199,65 @@ export default function Home() {
           color: #fff !important;
         }
 
+        .rivotHero .rivotHeroNotes strong {
+          animation: rivotHeroTextReveal .8s cubic-bezier(.22, 1, .36, 1) .18s both;
+        }
+
+        .rivotHero .rivotHeroSubLine {
+          animation: rivotHeroTextReveal .8s cubic-bezier(.22, 1, .36, 1) .34s both;
+        }
+
+        .rivotHero .rivotHeroButtons {
+          animation: rivotHeroActionsReveal .78s cubic-bezier(.22, 1, .36, 1) .5s both;
+        }
+
+        .rivotHero .rivotHeroPointers {
+          animation: rivotHeroTextReveal .7s ease .68s both;
+        }
+
+        @keyframes rivotHeroTextReveal {
+          from {
+            opacity: 0;
+            filter: blur(7px);
+            transform: translateY(22px);
+          }
+          to {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes rivotHeroActionsReveal {
+          from {
+            opacity: 0;
+            transform: translateY(24px) scale(.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotHero .rivotHeroImage,
+          .rivotHero .rivotHeroNotes strong,
+          .rivotHero .rivotHeroSubLine,
+          .rivotHero .rivotHeroButtons,
+          .rivotHero .rivotHeroPointers {
+            animation: none !important;
+          }
+
+          .rivotHero .rivotHeroImage {
+            transition: opacity .01s linear !important;
+          }
+
+          .rivotHero .rivotHeroImage.isPrevious,
+          .rivotHero.isReverse .rivotHeroImage.isPrevious {
+            transform: translate3d(0, 0, 0) !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .rivotHero {
             height: 100svh !important;
@@ -6176,11 +6268,6 @@ export default function Home() {
 
           .rivotHero .rivotHeroImage {
             object-position: center center !important;
-            transform: scale(1) !important;
-          }
-
-          .rivotHero .rivotHeroImage.isActive {
-            transform: scale(1) !important;
           }
 
           .rivotHero .rivotHeroShade {
