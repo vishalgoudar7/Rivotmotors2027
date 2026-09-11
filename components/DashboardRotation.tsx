@@ -15,12 +15,31 @@ export function DashboardRotation() {
     [],
   );
   const [activeMode, setActiveMode] = useState(0);
+  const [textVisible, setTextVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationFrame = useRef<number | null>(null);
   const lastTick = useRef(0);
   const loadedFrames = useRef<Set<number>>(new Set([0]));
   const frameImages = useRef<HTMLImageElement[]>([]);
   const currentFrame = useRef(0);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setTextVisible(entry.isIntersecting),
+      { threshold: 0.2, rootMargin: "-8% 0px -8% 0px" },
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -124,7 +143,12 @@ export function DashboardRotation() {
   }
 
   return (
-    <section className="rivotDashboard" id="connectivity" aria-labelledby="dashboard-title">
+    <section
+      ref={sectionRef}
+      className={`rivotDashboard${textVisible ? " is-text-visible" : ""}`}
+      id="connectivity"
+      aria-labelledby="dashboard-title"
+    >
       <div className="rivotDashboardCopy">
         <p>Connectivity</p>
         <h2 id="dashboard-title">Intelligence, always in view.</h2>
@@ -171,6 +195,26 @@ export function DashboardRotation() {
           margin: 0 auto;
           text-align: center;
         }
+
+        .rivotDashboardCopy > * {
+          opacity: 0;
+          transform: translateY(24px);
+          filter: blur(5px);
+          transition:
+            opacity .7s cubic-bezier(.22, 1, .36, 1),
+            transform .7s cubic-bezier(.22, 1, .36, 1),
+            filter .7s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .rivotDashboard.is-text-visible .rivotDashboardCopy > * {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+
+        .rivotDashboard.is-text-visible .rivotDashboardCopy p { transition-delay: .04s; }
+        .rivotDashboard.is-text-visible .rivotDashboardCopy h2 { transition-delay: .14s; }
+        .rivotDashboard.is-text-visible .rivotDashboardCopy span { transition-delay: .24s; }
 
         .rivotDashboardCopy p {
           margin: 0 0 10px;
@@ -232,18 +276,35 @@ export function DashboardRotation() {
           font: inherit;
           cursor: pointer;
           box-shadow: 0 16px 40px rgba(17, 17, 17, .08);
+          opacity: 0;
+          transform: translateY(22px) scale(.96);
           transition:
+            opacity .58s cubic-bezier(.22, 1, .36, 1),
             background .2s ease,
             color .2s ease,
-            transform .2s ease,
+            transform .58s cubic-bezier(.22, 1, .36, 1),
             box-shadow .2s ease;
         }
+
+        .rivotDashboard.is-text-visible .rivotDashboardModes button {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+
+        .rivotDashboard.is-text-visible .rivotDashboardModes button:nth-child(1) { transition-delay: .28s; }
+        .rivotDashboard.is-text-visible .rivotDashboardModes button:nth-child(2) { transition-delay: .36s; }
+        .rivotDashboard.is-text-visible .rivotDashboardModes button:nth-child(3) { transition-delay: .44s; }
+        .rivotDashboard.is-text-visible .rivotDashboardModes button:nth-child(4) { transition-delay: .52s; }
 
         .rivotDashboardModes button.active {
           background: #ef7430;
           color: #fff;
           transform: translateY(-4px);
           box-shadow: 0 20px 40px rgba(239, 116, 48, .24);
+        }
+
+        .rivotDashboard.is-text-visible .rivotDashboardModes button.active {
+          transform: translateY(-4px) scale(1);
         }
 
         .rivotDashboardModes i {
@@ -391,6 +452,20 @@ export function DashboardRotation() {
           .rivotDashboardStage {
             width: 100%;
             margin-top: 18px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotDashboardCopy > *,
+          .rivotDashboardModes button,
+          .rivotDashboardModes button.active,
+          .rivotDashboard.is-text-visible .rivotDashboardCopy > *,
+          .rivotDashboard.is-text-visible .rivotDashboardModes button,
+          .rivotDashboard.is-text-visible .rivotDashboardModes button.active {
+            opacity: 1;
+            transform: none;
+            filter: none;
+            transition: none;
           }
         }
       `}</style>

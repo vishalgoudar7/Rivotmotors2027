@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import safeImage from "@/asset/images/Safe.png";
+import safeImage from "@/asset/newimg/Safety/Safety.jpeg";
 
 function SafetyIcon({ type }: { type: "shield" | "bolt" | "gauge" | "light" | "theft" }) {
   if (type === "bolt") {
