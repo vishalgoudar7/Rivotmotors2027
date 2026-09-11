@@ -1162,6 +1162,7 @@ export default function Home() {
               </h2>
               <small>Find your nearest RIVOT store and experience the NX100.</small>
               <Link href="/book-now" className="rivotReachArrow" aria-label="Find a RIVOT store">
+                <b>Find a Store</b>
                 <span aria-hidden="true">{"\u2192"}</span>
               </Link>
             </div>
@@ -1188,6 +1189,7 @@ export default function Home() {
               </h2>
               <small>India&apos;s most reliable EV charging network for every RIVOT ride.</small>
               <Link href="/products" className="rivotReachArrow" aria-label="Explore RIVOT charging network">
+                <b>Find a Charger</b>
                 <span aria-hidden="true">{"\u2192"}</span>
               </Link>
             </div>
@@ -4681,8 +4683,8 @@ export default function Home() {
         }
 
         .rivotReach {
-          padding: clamp(8px, 1.5vw, 18px) clamp(10px, 2vw, 22px) clamp(64px, 7vw, 92px);
-          background: #fff;
+          padding: clamp(28px, 3vw, 48px) clamp(18px, 4vw, 64px) clamp(64px, 7vw, 92px);
+          background: var(--bg);
           color: #111;
           overflow: hidden;
         }
@@ -4691,34 +4693,36 @@ export default function Home() {
           position: relative;
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 0;
+          gap: clamp(18px, 2vw, 28px);
           width: min(100%, 1360px);
           margin: 0 auto;
           padding-top: 0;
-          border-radius: 16px;
-          background: #fff;
-          box-shadow:
-            0 12px 34px rgba(17, 17, 17, .08),
-            inset 0 0 0 1px rgba(17, 17, 17, .06);
+          border-radius: 0;
+          background: transparent;
+          box-shadow: none;
         }
 
         .rivotReachCard {
           position: relative;
           display: grid;
-          grid-template-columns: minmax(185px, .78fr) minmax(240px, 1.08fr);
+          grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr);
           min-height: clamp(250px, 24vw, 330px);
           overflow: hidden;
-          background: #fff;
-          box-shadow: none;
+          border: 0;
+          border-radius: 24px;
+          background: var(--surface);
+          box-shadow: 0 18px 46px var(--shadow);
         }
 
         .rivotReachStore {
-          border-radius: 16px 0 0 16px;
+          border-radius: 24px;
+          background: linear-gradient(135deg, var(--surface) 0%, color-mix(in srgb, var(--surface) 91%, #ef7430 9%) 100%);
         }
 
         .rivotReachCharge {
-          border-left: 1px solid rgba(17, 17, 17, .06);
-          border-radius: 0 16px 16px 0;
+          border-left: 0;
+          border-radius: 24px;
+          background: linear-gradient(135deg, var(--surface) 0%, color-mix(in srgb, var(--surface) 91%, #25a75d 9%) 100%);
         }
 
         .rivotReachCard::before {
@@ -4737,10 +4741,11 @@ export default function Home() {
           position: relative;
           z-index: 2;
           display: flex;
+          min-width: 0;
           flex-direction: column;
           align-items: flex-start;
           justify-content: center;
-          padding: clamp(42px, 4.2vw, 62px) clamp(24px, 3.2vw, 46px) clamp(28px, 2.8vw, 40px);
+          padding: clamp(42px, 4.2vw, 62px) clamp(24px, 2.2vw, 36px) clamp(28px, 2.8vw, 40px);
         }
 
         .rivotReachIcon {
@@ -4772,12 +4777,19 @@ export default function Home() {
         }
 
         .rivotReachCopy h2 {
+          max-width: 100%;
           margin: 0;
           color: #050505;
-          font-size: clamp(30px, 3vw, 46px);
+          font-size: clamp(34px, 2.45vw, 46px);
           font-weight: 800;
           line-height: .98;
           letter-spacing: -.055em;
+          overflow-wrap: normal;
+          text-wrap: balance;
+        }
+
+        .rivotReachCharge .rivotReachCopy h2 {
+          font-size: clamp(32px, 2.3vw, 43px);
         }
 
         .rivotReachCopy small {
@@ -4791,18 +4803,45 @@ export default function Home() {
         }
 
         .rivotReachArrow {
-          display: grid;
-          width: 44px;
-          height: 44px;
-          place-items: center;
+          display: inline-flex;
+          width: auto;
+          min-width: 176px;
+          height: 52px;
+          align-items: center;
+          justify-content: space-between;
+          gap: 18px;
           margin-top: 24px;
-          border-radius: 50%;
-          background: #ef7430;
+          padding: 0 16px 0 22px;
+          border: 1px solid rgba(255, 255, 255, .26);
+          border-radius: 999px;
+          background: linear-gradient(135deg, #ff833e, #ef6725);
           color: #fff;
-          font-size: 23px;
+          font-size: 21px;
           font-weight: 900;
           line-height: 1;
           box-shadow: 0 12px 24px rgba(239, 116, 48, .24);
+          transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+        }
+
+        .rivotReachArrow b {
+          font-size: 14px;
+          font-weight: 850;
+          letter-spacing: -.01em;
+        }
+
+        .rivotReachArrow span {
+          display: grid;
+          width: 28px;
+          height: 28px;
+          place-items: center;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, .18);
+        }
+
+        .rivotReachArrow:hover {
+          filter: brightness(1.04);
+          transform: translateY(-3px);
+          box-shadow: 0 18px 34px rgba(239, 116, 48, .3);
         }
 
         .rivotReachCharge .rivotReachCopy > p,
@@ -4817,18 +4856,27 @@ export default function Home() {
         }
 
         .rivotReachCharge .rivotReachArrow {
-          background: #25a75d;
+          background: linear-gradient(135deg, #2cc771, #159d51);
           color: #fff;
           box-shadow: 0 12px 24px rgba(37, 167, 93, .22);
         }
 
+        .rivotReachCharge .rivotReachArrow:hover {
+          box-shadow: 0 18px 34px rgba(37, 167, 93, .3);
+        }
+
         .rivotReachMedia {
           position: relative;
+          z-index: 1;
+          min-width: 0;
           min-height: 100%;
           margin: 18px 18px 18px 0;
-          border-radius: 0 14px 14px 0;
-          clip-path: polygon(17% 0, 93% 0, 100% 7%, 100% 93%, 93% 100%, 17% 100%, 0 50%);
+          overflow: hidden;
+          border: 0;
+          border-radius: 20px;
+          clip-path: none;
           background: #111;
+          box-shadow: 0 14px 32px rgba(17, 17, 17, .14);
         }
 
         .rivotReachMedia img {
@@ -4836,8 +4884,89 @@ export default function Home() {
           object-position: center;
         }
 
+        .rivotReachMedia::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          border-radius: inherit;
+          background: linear-gradient(180deg, transparent 56%, rgba(7, 8, 8, .2));
+          pointer-events: none;
+        }
+
+        .rivotReachAnimated.isVisible .rivotReachCard:hover {
+          transform: translateY(-7px) scale(1);
+          box-shadow: 0 30px 66px rgba(17, 17, 17, .14);
+        }
+
+        .rivotReachCard:hover .rivotReachMedia img {
+          transform: scale(1.045);
+        }
+
+        .rivotReachAnimated.isVisible .rivotReachCard:hover .rivotReachMedia img {
+          transform: scale(1.045);
+        }
+
         .rivotReachCharge .rivotReachMedia {
           margin-right: 18px;
+        }
+
+        @media (min-width: 1001px) {
+          .rivotReachCard {
+            display: block;
+            min-height: clamp(390px, 31vw, 500px);
+            isolation: isolate;
+          }
+
+          .rivotReachCard::after {
+            content: "";
+            position: absolute;
+            left: -90px;
+            top: -110px;
+            z-index: 0;
+            width: 310px;
+            height: 310px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(239, 116, 48, .13), transparent 70%);
+            pointer-events: none;
+          }
+
+          .rivotReachCharge::after {
+            background: radial-gradient(circle, rgba(37, 167, 93, .13), transparent 70%);
+          }
+
+          .rivotReachCopy {
+            width: 52%;
+            min-height: clamp(390px, 31vw, 500px);
+            justify-content: center;
+            padding: clamp(34px, 3.2vw, 52px) clamp(26px, 3vw, 48px);
+          }
+
+          .rivotReachCopy h2 {
+            font-size: clamp(36px, 2.8vw, 52px);
+          }
+
+          .rivotReachCharge .rivotReachCopy h2 {
+            font-size: clamp(34px, 2.55vw, 48px);
+          }
+
+          .rivotReachMedia,
+          .rivotReachCharge .rivotReachMedia {
+            position: absolute;
+            inset: 16px 16px 16px auto;
+            width: 51%;
+            min-height: 0;
+            margin: 0;
+            border-radius: 42% 20px 20px 42%;
+          }
+
+          .rivotReachStore .rivotReachMedia img {
+            object-position: 57% center;
+          }
+
+          .rivotReachCharge .rivotReachMedia img {
+            object-position: 55% center;
+          }
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReach {
@@ -4845,19 +4974,25 @@ export default function Home() {
           color: #f5f5f2;
         }
 
-        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachPanel,
-        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCard {
-          background: #111313;
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachPanel {
+          background: transparent;
         }
 
-        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachPanel {
-          box-shadow:
-            0 18px 46px rgba(0, 0, 0, .38),
-            inset 0 0 0 1px rgba(255, 255, 255, .12);
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCard {
+          border-color: transparent;
+          box-shadow: 0 22px 52px rgba(0, 0, 0, .34);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachStore {
+          background: linear-gradient(135deg, #111313 0%, #1c1511 100%);
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCharge {
-          border-left-color: rgba(255, 255, 255, .12);
+          background: linear-gradient(135deg, #111313 0%, #102018 100%);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachCharge {
+          border-left-color: transparent;
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotReachIcon {
@@ -6463,7 +6598,7 @@ export default function Home() {
           .rivotReachCard {
             grid-template-columns: 1fr;
             min-height: auto;
-            border: 1px solid rgba(17, 17, 17, .06);
+            border: 0;
             border-radius: 18px;
             box-shadow: 0 16px 38px rgba(17, 17, 17, .09);
           }
@@ -6474,7 +6609,7 @@ export default function Home() {
           }
 
           .rivotReachCharge {
-            border-left: 1px solid rgba(17, 17, 17, .06);
+            border-left: 0;
           }
 
           .rivotReachCopy {
@@ -6511,9 +6646,15 @@ export default function Home() {
           }
 
           .rivotReachArrow {
-            width: 42px;
-            height: 42px;
+            width: auto;
+            min-width: 170px;
+            height: 50px;
             margin-top: 20px;
+            padding: 0 14px 0 20px;
+          }
+
+          .rivotReachArrow b {
+            font-size: 13px;
           }
 
           .rivotReachMedia {
