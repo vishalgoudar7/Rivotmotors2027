@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getZaakpayEnvironment } from "@/lib/zaakpay";
 
 function siteBaseUrl(requestUrl: string) {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
@@ -10,17 +11,15 @@ function siteBaseUrl(requestUrl: string) {
 }
 
 async function handleCallback(request: Request, values: Record<string, FormDataEntryValue | string>) {
-  const callbackPayload = {
-    ...values,
-    paymentId: String(values.paymentId || values.pgTransId || ""),
-    responseCode: String(values.responseCode || ""),
-    orderId: String(values.orderId || ""),
-    checksum: String(values.checksum || ""),
-    cardhashid: String(values.cardhashid || values.cardhashId || ""),
-  };
+  // FormData/searchParams have already decoded the response once. Keep every
+  // field name and value unchanged so the V13 response signature can be rebuilt.
+  const callbackPayload = Object.fromEntries(
+    Object.entries(values).map(([key, value]) => [key, typeof value === "string" ? value : String(value)]),
+  );
 
-  const logOrderId = callbackPayload.orderId.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 40) || "unknown";
-  console.info(`Zaakpay callback received for order ${logOrderId}`);
+  const logOrderId = (callbackPayload.orderId || "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 40) || "unknown";
+  const isTest = getZaakpayEnvironment() === "staging";
+  console.info(`${isTest ? "[ZAAKPAY TEST] " : "[ZAAKPAY] "}Callback received for order ${logOrderId}`);
   const siteUrl = siteBaseUrl(request.url);
 
   const verification = await fetch(new URL("/api/booking/verify", siteUrl), {

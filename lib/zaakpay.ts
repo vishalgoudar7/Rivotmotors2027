@@ -10,7 +10,6 @@ export type ZaakpayCallbackFields = {
   cardScheme?: string;
   cardToken?: string;
   cardhashid?: string;
-  cardhashId?: string;
   doRedirect?: string;
   orderId?: string;
   paymentMethod?: string;
@@ -138,6 +137,17 @@ function withoutEmptyFields(fields: ZaakpayPaymentFields) {
   ) as ZaakpayPaymentFields;
 }
 
+export type ZaakpayEnvironment = "staging" | "production";
+
+export function getZaakpayEnvironment(): ZaakpayEnvironment {
+  const configured = process.env.ZAAKPAY_ENV?.trim().toLowerCase();
+  const environment = configured || (process.env.NODE_ENV === "production" ? "production" : "staging");
+  if (environment !== "staging" && environment !== "production") {
+    throw new Error('ZAAKPAY_ENV must be either "staging" or "production"');
+  }
+  return environment;
+}
+
 export function sanitizeZaakpayText(value: unknown, maxLength = 100) {
   return String(value ?? "")
     .replace(/[^\w\s.@,+/-]/g, "")
@@ -152,17 +162,25 @@ export function makeBookingOrderId() {
 }
 
 export function getZaakpayConfig(origin: string) {
+  const environment = getZaakpayEnvironment();
+  const gatewayOrigin = environment === "staging"
+    ? "https://zaakstaging.zaakpay.com"
+    : "https://api.zaakpay.com";
   const paymentUrl = configuredUrl(
     "ZAAKPAY_PAYMENT_URL",
-    "https://zaakstaging.zaakpay.com/api/paymentTransact/V13",
+    `${gatewayOrigin}/api/paymentTransact/V13`,
   );
-  const paymentOrigin = new URL(paymentUrl).origin;
+  if (new URL(paymentUrl).origin !== gatewayOrigin) {
+    throw new Error(`ZAAKPAY_PAYMENT_URL does not match ZAAKPAY_ENV=${environment}`);
+  }
   const siteUrl = configuredUrl("NEXT_PUBLIC_SITE_URL", origin);
   return {
+    environment,
+    isTest: environment === "staging",
     merchantIdentifier: requireEnv("ZAAKPAY_MERCHANT_IDENTIFIER"),
     secret: requireEnv("ZAAKPAY_SECRET"),
     paymentUrl,
-    statusUrl: configuredUrl("ZAAKPAY_STATUS_URL", `${paymentOrigin}/api/payments/v1/status`),
+    statusUrl: configuredUrl("ZAAKPAY_STATUS_URL", `${gatewayOrigin}/api/payments/v1/status`),
     returnUrl: configuredUrl(
       "ZAAKPAY_RETURN_URL",
       new URL("/api/booking/callback", siteUrl).toString(),
@@ -212,26 +230,41 @@ export function createZaakpayPaymentFields(args: {
     buyerState: sanitizeZaakpayText(args.buyerState, 30),
   });
   const paymentFields = withoutEmptyFields({ ...fields, ...optionalFields });
-  paymentFields.checksum = hmacSha256(checksumString(paymentFields, requestFieldOrder), args.secret);
-  return paymentFields;
+  const orderedFields = Object.fromEntries(
+    requestFieldOrder
+      .filter((key) => paymentFields[key] !== undefined && paymentFields[key] !== "")
+      .map((key) => [key, paymentFields[key]]),
+  ) as ZaakpayPaymentFields;
+  orderedFields.checksum = hmacSha256(checksumString(orderedFields, requestFieldOrder), args.secret);
+  return orderedFields;
 }
 
 export function verifyZaakpayCallback(fields: ZaakpayCallbackFields, secret: string) {
-  const checksum = String(fields.checksum || "");
-  const normalized: Record<string, string> = {};
-  responseFieldOrder.forEach((key) => {
-    const value = fields[key as keyof ZaakpayCallbackFields];
-    if (value !== undefined && value !== null && value !== "") {
-      normalized[key] = String(value);
-    }
-  });
+  return inspectZaakpayCallbackChecksum(fields, secret).valid;
+}
 
-  const calculated = hmacSha256(checksumString(normalized, responseFieldOrder), secret);
-  return Boolean(checksum) && timingSafeEqualText(checksum, calculated);
+export function inspectZaakpayCallbackChecksum(fields: ZaakpayCallbackFields, secret: string) {
+  const receivedChecksum = typeof fields.checksum === "string" ? fields.checksum : "";
+  const checksumSource = responseFieldOrder
+    .filter((key) => Object.prototype.hasOwnProperty.call(fields, key))
+    .map((key) => {
+      const value = fields[key as keyof ZaakpayCallbackFields];
+      return `${key}=${value === undefined || value === null ? "" : value}&`;
+    })
+    .join("");
+  const calculatedChecksum = hmacSha256(checksumSource, secret);
+
+  return {
+    valid: Boolean(receivedChecksum)
+      && timingSafeEqualText(receivedChecksum, calculatedChecksum),
+    checksumSource,
+    calculatedChecksum,
+    receivedChecksum,
+  };
 }
 
 export function classifyZaakpayStatus(responseCode?: string, txnStatus?: string): ZaakpayStatusResult["status"] {
-  if (responseCode === "100" || responseCode === "402" || txnStatus === "0") return "paid";
+  if (responseCode === "100" || txnStatus === "0") return "paid";
   if (txnStatus === "2") return "pending";
   if (!responseCode && !txnStatus) return "unknown";
   return "failed";

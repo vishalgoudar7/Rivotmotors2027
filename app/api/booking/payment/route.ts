@@ -67,7 +67,7 @@ export async function POST(request: Request) {
       return Response.json({ success: false, message: "Invalid booking amount." }, { status: 400 });
     }
 
-    console.info(`Zaakpay payment initiation requested for order ${gatewayOrderId}`);
+    console.info(`${config.isTest ? "[ZAAKPAY TEST] " : "[ZAAKPAY] "}Payment initiated for order ${gatewayOrderId}`);
 
     const fields = createZaakpayPaymentFields({
       merchantIdentifier: config.merchantIdentifier,

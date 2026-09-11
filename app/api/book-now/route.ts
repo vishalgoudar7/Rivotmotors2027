@@ -59,10 +59,11 @@ export async function POST(request: Request) {
     const price = configuredBookingPrice();
     const source = toStringValue(payload.source as FormDataEntryValue | string | null | undefined);
     const referralCode = toStringValue(payload.referralCode as FormDataEntryValue | string | null | undefined);
+    const termsAccepted = toStringValue(payload.terms as FormDataEntryValue | string | null | undefined) === "1";
 
-    if (!firstName || !mobile || !email || !pincode) {
+    if (!firstName || !mobile || !email || !pincode || !termsAccepted) {
       return Response.json(
-        { success: false, message: "Please fill all required booking details." },
+        { success: false, message: termsAccepted ? "Please fill all required booking details." : "Please accept the terms and conditions." },
         { status: 400 },
       );
     }
@@ -101,7 +102,7 @@ export async function POST(request: Request) {
       pincode,
       source,
       referralCode,
-      terms: toStringValue(payload.terms as FormDataEntryValue | string | null | undefined) ? "1" : "0",
+      terms: true,
     };
 
     const requiredColumns = [

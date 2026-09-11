@@ -4,7 +4,7 @@ import {
   checkZaakpayTransactionStatus,
   classifyZaakpayStatus,
   getZaakpayConfig,
-  verifyZaakpayCallback,
+  inspectZaakpayCallbackChecksum,
   type ZaakpayCallbackFields,
   type ZaakpayStatusResult,
 } from "@/lib/zaakpay";
@@ -42,7 +42,17 @@ export async function POST(request: Request) {
     return Response.json({ success: false, redirect: "/booking/payment-failed", message: "Payment verification is not configured." }, { status: 503 });
   }
 
-  if (!verifyZaakpayCallback(body, config.secret)) {
+  const checksumVerification = inspectZaakpayCallbackChecksum(body, config.secret);
+  if (config.isTest && process.env.ZAAKPAY_DEBUG_CHECKSUM === "true") {
+    console.log("[ZAAKPAY] response keys:", Object.keys(body));
+    console.log("[ZAAKPAY] orderId:", body.orderId);
+    console.log("[ZAAKPAY] responseCode:", body.responseCode);
+    console.log("[ZAAKPAY] checksum source:", checksumVerification.checksumSource);
+    console.log("[ZAAKPAY] calculated checksum:", checksumVerification.calculatedChecksum);
+    console.log("[ZAAKPAY] received checksum:", checksumVerification.receivedChecksum);
+  }
+
+  if (!checksumVerification.valid) {
     console.warn(`Zaakpay checksum mismatch for order ${logOrderId}`);
     const reason = "Zaakpay response checksum verification failed.";
     return Response.json({
@@ -51,7 +61,7 @@ export async function POST(request: Request) {
       message: reason,
     }, { status: 400 });
   }
-  console.info(`Zaakpay checksum verified for order ${logOrderId}`);
+  console.info(`${config.isTest ? "[ZAAKPAY TEST] " : "[ZAAKPAY] "}Checksum verified for order ${logOrderId}`);
 
   try {
     const columns = (await prisma.$queryRawUnsafe("SHOW COLUMNS FROM `orders`")) as Array<{ Field: string }>;
@@ -104,6 +114,7 @@ export async function POST(request: Request) {
         statusUrl: config.statusUrl,
         orderId: body.orderId,
       });
+      console.info(`${config.isTest ? "[ZAAKPAY TEST] " : "[ZAAKPAY] "}Transaction status: ${verifiedStatus.status.toUpperCase()} for order ${logOrderId}`);
       console.info(`Zaakpay status API result for order ${logOrderId}: verified=${verifiedStatus.verified}, status=${verifiedStatus.status}, responseCode=${verifiedStatus.responseCode || "none"}`);
     } catch (statusError) {
       console.error(`Zaakpay status check failed for order ${logOrderId}:`, statusError instanceof Error ? statusError.message : statusError);

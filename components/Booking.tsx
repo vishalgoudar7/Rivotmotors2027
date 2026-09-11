@@ -279,7 +279,7 @@ export function Booking() {
               <div className="rivotBookingField"><label htmlFor="booking-referral">Referral Code</label><input id="booking-referral" name="referralCode" placeholder="Referral Code" /></div>
             </div>
             <label className="rivotBookingTerms">
-              <input type="checkbox" required aria-invalid={Boolean(touchedFields.terms && fieldErrors.terms)} aria-describedby={touchedFields.terms && fieldErrors.terms ? "terms-error" : undefined} onChange={(event) => { setTouchedFields((current) => ({ ...current, terms: true })); setFieldErrors((current) => ({ ...current, terms: event.target.checked ? undefined : "Please accept the terms and conditions." })); }} />
+              <input name="terms" value="1" type="checkbox" required aria-invalid={Boolean(touchedFields.terms && fieldErrors.terms)} aria-describedby={touchedFields.terms && fieldErrors.terms ? "terms-error" : undefined} onChange={(event) => { setTouchedFields((current) => ({ ...current, terms: true })); setFieldErrors((current) => ({ ...current, terms: event.target.checked ? undefined : "Please accept the terms and conditions." })); }} />
               <span>I agree to the <Link href="/legal/terms-and-conditions">Terms &amp; Conditions</Link> for this booking.</span>
             </label>
             <FieldError field="terms" errors={fieldErrors} touched={touchedFields} />
@@ -289,7 +289,14 @@ export function Booking() {
             </div>
             <p className="rivotBookingAmount">Booking Amount: ₹499 Fully Refundable</p>
             <small className="rivotBookingFinePrint">Zaakpay may show the amount in paise format. ₹49900 means ₹499.00 only.</small>
-            <button className="rivotBookingSubmit" type="submit" disabled={loading}>{loading ? "Creating booking..." : "Continue"} <span aria-hidden="true">→</span></button>
+            <button className="rivotBookingSubmit" type="submit" disabled={loading} aria-busy={loading}>
+              {loading ? (
+                <>
+                  <span className="rivotBookingSpinner" aria-hidden="true" />
+                  Please wait...
+                </>
+              ) : "Continue"}
+            </button>
           </form>
         </div>
       </div>
@@ -2508,6 +2515,38 @@ export function Booking() {
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingPayment {
           border-top-color: rgba(255, 255, 255, .14) !important;
+        }
+
+        body:has(.rivotBooking) .rivotBookingSubmit {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingSubmit::after {
+          content: none;
+        }
+
+        body:has(.rivotBooking) .rivotBookingSubmit .rivotBookingSpinner {
+          display: inline-block;
+          width: 19px;
+          height: 19px;
+          margin: 0;
+          border: 2px solid rgba(255, 255, 255, .42);
+          border-top-color: #fff;
+          border-radius: 50%;
+          animation: rivotBookingSpin .7s linear infinite;
+        }
+
+        body:has(.rivotBooking) .rivotBookingSubmit:disabled {
+          cursor: wait;
+          opacity: .88;
+          transform: none;
+        }
+
+        @keyframes rivotBookingSpin {
+          to { transform: rotate(360deg); }
         }
 
         @media (max-width: 600px) {
