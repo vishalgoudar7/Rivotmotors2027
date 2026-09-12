@@ -16,7 +16,7 @@ import proSilverGreyView from "@/asset/models/pro/Silver grey1 (2).png";
 import { bookingColorValues } from "@/data/bookingColors";
 
 type Model = "sport" | "pro";
-type BookingField = "name" | "mobile" | "email" | "pincode" | "state" | "city" | "source";
+type BookingField = "model" | "color" | "name" | "mobile" | "email" | "pincode" | "state" | "city" | "source";
 type BookingErrors = Partial<Record<BookingField | "terms", string>>;
 
 const models = [
@@ -74,8 +74,8 @@ function FieldError({ field, errors, touched }: { field: BookingField | "terms";
 
 export function Booking() {
   const router = useRouter();
-  const [model, setModel] = useState<Model>(models[0].id);
-  const [color, setColor] = useState(models[0].colors[0]);
+  const [model, setModel] = useState<Model | "">("");
+  const [color, setColor] = useState("");
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [state, setState] = useState("");
   const [loading, setLoading] = useState(false);
@@ -86,8 +86,18 @@ export function Booking() {
 
   function chooseModel(nextModel: Model) {
     setModel(nextModel);
-    setColor(models.find((item) => item.id === nextModel)?.colors[0] ?? bookingColorValues[0]);
+    setTouchedFields((current) => ({ ...current, model: true }));
+    setFieldErrors((current) => ({ ...current, model: undefined }));
+    setColor("");
+    setTouchedFields((current) => ({ ...current, color: false }));
+    setFieldErrors((current) => ({ ...current, color: undefined }));
     setGalleryIndex(0);
+  }
+
+  function chooseColor(nextColor: string) {
+    setColor(nextColor);
+    setTouchedFields((current) => ({ ...current, color: true }));
+    setFieldErrors((current) => ({ ...current, color: undefined }));
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -95,7 +105,7 @@ export function Booking() {
     const formData = new FormData(event.currentTarget);
     const nextErrors = validateFields(formData, event.currentTarget.querySelector<HTMLInputElement>("input[type=checkbox]")?.checked ?? false);
     setFieldErrors(nextErrors);
-    setTouchedFields({ name: true, mobile: true, email: true, pincode: true, state: true, city: true, source: true, terms: true });
+    setTouchedFields({ model: true, color: true, name: true, mobile: true, email: true, pincode: true, state: true, city: true, source: true, terms: true });
     if (Object.keys(nextErrors).length > 0) return;
 
     setLoading(true);
@@ -129,6 +139,8 @@ export function Booking() {
 
   function validateFields(formData: FormData, termsAccepted: boolean): BookingErrors {
     const nextErrors: BookingErrors = {};
+    const modelValue = String(formData.get("model") || "").trim();
+    const colorValue = String(formData.get("color") || "").trim();
     const name = String(formData.get("name") || "").trim();
     const mobile = String(formData.get("mobile") || "").trim();
     const email = String(formData.get("email") || "").trim();
@@ -137,6 +149,8 @@ export function Booking() {
     const city = String(formData.get("city") || "").trim();
     const source = String(formData.get("source") || "").trim();
 
+    if (!modelValue) nextErrors.model = "Please choose a model.";
+    if (!colorValue) nextErrors.color = "Please choose a color.";
     if (!name) nextErrors.name = "Please enter your first name.";
     if (!/^\d{10}$/.test(mobile)) nextErrors.mobile = "Enter a valid 10-digit mobile number.";
     if (!/^\S+@\S+\.\S+$/.test(email)) nextErrors.email = "Enter a valid email address.";
@@ -220,33 +234,36 @@ export function Booking() {
         <div className="rivotBookingPanel">
           <div className="rivotBookingPanelHeader">
               <p>Choose Model</p>
-            <h2>{selectedModel.label}</h2>
+            <h2>{model ? selectedModel.label : "Select a model"}</h2>
           </div>
-          <div className="rivotBookingModels" role="tablist" aria-label="Choose model">
+          <div className="rivotBookingModels" role="radiogroup" aria-label="Choose model" aria-required="true" aria-invalid={Boolean(touchedFields.model && fieldErrors.model)}>
             {models.map((item) => (
-              <button key={item.id} type="button" className={model === item.id ? "active" : ""} onClick={() => chooseModel(item.id)}>
+              <button key={item.id} type="button" role="radio" aria-checked={model === item.id} className={model === item.id ? "active" : ""} onClick={() => chooseModel(item.id)}>
                 <span>{item.label}</span>
                 <small>{item.price}</small>
               </button>
             ))}
           </div>
+          <FieldError field="model" errors={fieldErrors} touched={touchedFields} />
 
           <div className="rivotBookingColors">
             <span>Color:</span>
-            <div role="radiogroup" aria-label="Select color">
+            <div role="radiogroup" aria-label="Select color" aria-required="true" aria-invalid={Boolean(touchedFields.color && fieldErrors.color)}>
               {selectedModel.colors.map((item) => (
                 <button
                   key={item}
                   type="button"
                   aria-label={`Select color ${item}`}
                   aria-checked={color === item}
+                  disabled={!model}
                   className={color === item ? "active" : ""}
                   style={{ backgroundColor: item }}
-                  onClick={() => setColor(item)}
+                  onClick={() => chooseColor(item)}
                 />
               ))}
             </div>
           </div>
+          <FieldError field="color" errors={fieldErrors} touched={touchedFields} />
 
             <p className="rivotBookingLead">Enter your details below and the RIVOT team will contact you for the next step.</p>
           {error ? <div className="rivotBookingError">{error}</div> : null}

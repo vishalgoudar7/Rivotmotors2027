@@ -1011,6 +1011,11 @@ export function SavingsCalculator() {
         }
 
         @media (max-width: 560px) {
+          .rivotSavingsHeader h2 {
+            font-size: 32px;
+            line-height: .94;
+          }
+
           .rivotSavingsMetricGrid {
             grid-template-columns: 1fr;
           }

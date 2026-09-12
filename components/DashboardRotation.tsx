@@ -151,7 +151,9 @@ export function DashboardRotation() {
     >
       <div className="rivotDashboardCopy">
         <p>Connectivity</p>
-        <h2 id="dashboard-title">Intelligence, always in view.</h2>
+        <h2 id="dashboard-title">
+          Intelligence, <span className="rivotDashboardTitleAccent">always in view.</span>
+        </h2>
         <span>Smart tech that keeps you in control, informed, and in sync.</span>
       </div>
 
@@ -244,6 +246,15 @@ export function DashboardRotation() {
           font-size: 15px;
           font-weight: 700;
           line-height: 1.45;
+        }
+
+        .rivotDashboardCopy h2 .rivotDashboardTitleAccent {
+          display: inline;
+          max-width: none;
+          margin: 0;
+          color: #ef7430;
+          font: inherit;
+          line-height: inherit;
         }
 
         .rivotDashboardModes {
@@ -386,6 +397,10 @@ export function DashboardRotation() {
           color: #f5f5f2 !important;
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDashboardCopy h2 .rivotDashboardTitleAccent {
+          color: #ef7430 !important;
+        }
+
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDashboardModes {
           background: rgba(255, 255, 255, .07) !important;
           border: 1px solid rgba(255, 255, 255, .1);
@@ -435,18 +450,43 @@ export function DashboardRotation() {
             padding-top: 36px;
           }
 
+          .rivotDashboardCopy h2 {
+            font-size: 32px;
+          }
+
           .rivotDashboardModes {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            width: min(100%, 320px);
-            padding: 10px;
-            border-radius: 22px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 6px;
+            width: 100%;
+            padding: 7px;
+            border-radius: 18px;
           }
 
           .rivotDashboardModes button {
+            min-width: 0;
             width: auto;
-            min-height: 76px;
-            border-radius: 16px;
+            min-height: 74px;
+            gap: 4px;
+            padding: 7px 3px;
+            border-radius: 13px;
+          }
+
+          .rivotDashboardModes i {
+            width: 24px;
+            height: 24px;
+            font-size: 13px;
+          }
+
+          .rivotDashboardModes b {
+            max-width: 100%;
+            overflow: hidden;
+            font-size: clamp(7px, 2.2vw, 10px);
+            white-space: nowrap;
+          }
+
+          .rivotDashboardModes small {
+            font-size: clamp(6px, 1.7vw, 8px);
           }
 
           .rivotDashboardStage {
@@ -481,17 +521,17 @@ const dashboardModes = [
   },
   {
     icon: "B",
-    title: "Brake Alert",
+    title: "Call Alerts",
     copy: "Signals hard braking.",
   },
   {
     icon: "C",
-    title: "Calls",
+    title: "Ride Alerts",
     copy: "Ride-aware alerts.",
   },
   {
     icon: "S",
-    title: "Sync",
+    title: "Phone Connect",
     copy: "Connected ride data.",
   },
 ];

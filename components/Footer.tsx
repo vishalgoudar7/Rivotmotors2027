@@ -17,11 +17,31 @@ const supportLinks = [
 ];
 
 const socialLinks = [
-  { label: "Facebook", mark: "f", href: "#" },
-  { label: "X", mark: "X", href: "#" },
-  { label: "Instagram", mark: "◎", href: "#" },
-  { label: "YouTube", mark: "▶", href: "#" },
-  { label: "LinkedIn", mark: "in", href: "#" },
+  {
+    label: "Facebook",
+    mark: "f",
+    href: "https://www.facebook.com/rivotmotors",
+  },
+  {
+    label: "X",
+    mark: "X",
+    href: "https://twitter.com/rivotmotors",
+  },
+  {
+    label: "Instagram",
+    mark: "◎",
+    href: "https://www.instagram.com/rivotmotors/",
+  },
+  {
+    label: "YouTube",
+    mark: "▶",
+    href: "https://www.youtube.com/c/rivotmotors",
+  },
+  {
+    label: "LinkedIn",
+    mark: "in",
+    href: "https://www.linkedin.com/company/rivotmotors",
+  },
 ];
 
 export function Footer() {

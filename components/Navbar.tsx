@@ -813,6 +813,10 @@ export function Navbar() {
     height: 48px;
   }
 
+  .rivotHeader.isHomeHeader .rivotBrandMark img {
+    filter: brightness(0) invert(1);
+  }
+
   .rivotHeader.isHomeHeader .rivotHeaderLinks {
     justify-self: center;
     gap: clamp(34px, 4vw, 54px);
