@@ -101,7 +101,7 @@ export function ProductDetailSupportSections() {
               <h3>Battery + Motor</h3>
               <p>Extended protection, zero worries.</p>
 
-              <Link href="/products" className="rivotBestFitPill">
+              <Link href="/legal/warranty" className="rivotBestFitPill">
                 Explore More
               </Link>
             </article>

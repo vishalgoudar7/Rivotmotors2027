@@ -3,6 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useState } from "react";
+import { ArrowRight, Bike, BriefcaseBusiness, Headphones, Home, Moon, Newspaper, ShoppingBag, Users } from "lucide-react";
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { usePathname } from "next/navigation";
 import modelPro from "@/asset/Model/Pro.png";
 import modelSport from "@/asset/Model/Sport_NX100.png";
 import navbarLogo from "@/asset/images/Newlogo.png";
@@ -41,7 +45,19 @@ const productModels = [
   },
 ];
 
+const mobileNavItems = [
+  { label: "Home", href: "/", icon: Home },
+  { label: "NX100 Pro", href: "/products/nx100-pro", icon: Bike },
+  { label: "NX100 Sport", href: "/products/nx100-sport", icon: Bike },
+  { label: "Merchandise", href: "/merchandise", icon: ShoppingBag },
+  { label: "Careers", href: "/careers", icon: BriefcaseBusiness },
+  { label: "Blog", href: "/blog", icon: Newspaper },
+  { label: "Forum", href: "/forum", icon: Users },
+  { label: "Support", href: "/support", icon: Headphones },
+];
+
 export function Navbar() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
@@ -243,35 +259,41 @@ export function Navbar() {
       </button>
 
       <nav className={`rivotMobileLinks${menuOpen ? " isOpen" : ""}`} aria-label="Mobile navigation">
+        <div className="rivotMobileNavItems">
+          {mobileNavItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = item.href === "/" ? pathname === "/" : pathname?.startsWith(item.href);
+            return (
+              <Link className={isActive ? "isActive" : ""} href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
+                <Icon aria-hidden="true" />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+
+        <Link className="rivotMobileTestRide" href="/test-ride" onClick={() => setMenuOpen(false)}>
+          <span>Book a Test Ride</span>
+          <ArrowRight aria-hidden="true" />
+        </Link>
+
+        <div className="rivotMobileSocials" aria-label="Social media links">
+          <a href="https://www.facebook.com/rivotmotors" target="_blank" rel="noreferrer" aria-label="Facebook"><FaFacebookF /></a>
+          <a href="https://twitter.com/rivotmotors" target="_blank" rel="noreferrer" aria-label="X"><FaXTwitter /></a>
+          <a href="https://www.instagram.com/rivotmotors/" target="_blank" rel="noreferrer" aria-label="Instagram"><FaInstagram /></a>
+          <a href="https://www.youtube.com/c/rivotmotors" target="_blank" rel="noreferrer" aria-label="YouTube"><FaYoutube /></a>
+          <a href="https://www.linkedin.com/company/rivotmotors" target="_blank" rel="noreferrer" aria-label="LinkedIn"><FaLinkedinIn /></a>
+        </div>
+
         <button
           className="rivotMobileThemeToggle"
           type="button"
           onClick={toggleTheme}
           aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
         >
-          <span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+          <span><Moon aria-hidden="true" /> Dark mode</span>
           <i aria-hidden="true" className={theme === "dark" ? "isDark" : ""} />
         </button>
-        {productModels.map((model) => (
-          <Link href={model.href} key={model.name} onClick={() => setMenuOpen(false)}>
-            {model.name}
-          </Link>
-        ))}
-        {navItems.map((item) => (
-          <Link href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
-            {item.label}
-          </Link>
-        ))}
-        {communityItems.map((item) => (
-          <Link href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
-            {item.label}
-          </Link>
-        ))}
-        {reachItems.map((item) => (
-          <Link href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
-            {item.label}
-          </Link>
-        ))}
       </nav>
 
       <style>{`
@@ -1153,85 +1175,149 @@ export function Navbar() {
     }
 
     .rivotMobileLinks {
-      position: absolute;
-      left: 14px;
-      right: 14px;
-      top: calc(100% + 8px);
-
-      display: grid;
+      position: fixed;
+      inset: 0 0 0 auto;
+      z-index: 1005;
+      display: flex;
+      width: min(82vw, 300px);
+      height: 100dvh;
+      flex-direction: column;
       visibility: hidden;
-
-      overflow: hidden;
-
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
-
-      background: rgba(10, 10, 10, 0.94);
-      backdrop-filter: blur(18px);
-
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
-
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 14px 12px 12px;
+      border: 1px solid rgba(255, 255, 255, .13);
+      border-radius: 22px 0 0 22px;
+      background: linear-gradient(145deg, #111415, #090b0c 72%);
+      box-shadow: -12px 0 34px rgba(0, 0, 0, .55), inset 1px 0 0 rgba(255,255,255,.06);
       opacity: 0;
-      transform: translateY(-8px);
-
+      transform: translateX(102%);
       transition:
-        opacity 0.2s ease,
-        transform 0.2s ease,
-        visibility 0.2s ease;
+        opacity .25s ease,
+        transform .3s cubic-bezier(.22, 1, .36, 1),
+        visibility .3s ease;
     }
 
     .rivotMobileLinks.isOpen {
       visibility: visible;
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(0);
     }
 
-    .rivotMobileLinks a {
-      padding: 15px 18px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    .rivotMobileNavItems {
+      display: grid;
+      gap: 2px;
+    }
 
-      color: #fff;
-      font-size: 15px;
-      font-weight: 800;
+    .rivotMobileNavItems a {
+      display: grid;
+      grid-template-columns: 23px 1fr;
+      gap: 12px;
+      align-items: center;
+      min-height: 43px;
+      padding: 7px 8px;
+      color: rgba(255,255,255,.88);
+      font-size: 13px;
+      font-weight: 500;
       text-decoration: none;
+      transition: color .2s ease, background-color .2s ease;
     }
 
-    .rivotMobileLinks a:last-child {
-      border-bottom: 0;
+    .rivotMobileNavItems a svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.8;
     }
 
-  .rivotMobileLinks a:hover {
-    color: #ef7430;
-  }
+    .rivotMobileNavItems a:hover,
+    .rivotMobileNavItems a.isActive {
+      color: #ff5b20;
+    }
+
+    .rivotMobileTestRide {
+      display: flex;
+      min-height: 50px;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin: 12px 0 16px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff7136, #ff4c19);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(255,79,25,.28);
+    }
+
+    .rivotMobileTestRide svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .rivotMobileSocials {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .rivotMobileSocials a {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 50%;
+      background: #202324;
+      color: rgba(255,255,255,.82);
+    }
+
+    .rivotMobileSocials svg {
+      width: 16px;
+      height: 16px;
+    }
 
   .rivotMobileThemeToggle {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 15px 18px;
+    min-height: 48px;
+    margin-top: auto;
+    padding: 9px 8px;
     border: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, .08);
     background: transparent;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 800;
+    color: rgba(255,255,255,.88);
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
+  }
+
+  .rivotMobileThemeToggle span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .rivotMobileThemeToggle span svg {
+    width: 19px;
+    height: 19px;
   }
 
   .rivotMobileThemeToggle i {
     position: relative;
-    width: 42px;
-    height: 24px;
+    width: 39px;
+    height: 22px;
     border-radius: 999px;
-    background: #555;
+    background: #4b4e50;
   }
 
   .rivotMobileThemeToggle i::after {
     content: "";
     position: absolute;
-    top: 3px;
-    left: 3px;
+    top: 2px;
+    left: 2px;
     width: 18px;
     height: 18px;
     border-radius: 50%;
@@ -1244,7 +1330,7 @@ export function Navbar() {
   }
 
   .rivotMobileThemeToggle i.isDark::after {
-    transform: translateX(18px);
+    transform: translateX(17px);
   }
   }
 

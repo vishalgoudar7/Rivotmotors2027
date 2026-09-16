@@ -14,6 +14,10 @@ export const legalPages = {
     title: "Subscriptions",
     file: "subscriptions.html",
   },
+  warranty: {
+    title: "Warranty",
+    file: "warranty.html",
+  },
   license: {
     title: "License Agreement",
     file: "license.html",

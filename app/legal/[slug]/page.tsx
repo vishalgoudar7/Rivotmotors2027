@@ -7,6 +7,7 @@ import {
   RefundPolicy,
   Subscriptions,
   TermsAndConditions,
+  Warranty,
 } from "@/components/Legal";
 import { isLegalSlug, legalPages } from "@/lib/legal";
 
@@ -20,6 +21,7 @@ const legalComponents = {
   "terms-and-conditions": TermsAndConditions,
   "refund-policy": RefundPolicy,
   subscriptions: Subscriptions,
+  warranty: Warranty,
   license: License,
   "privacy-policy": PrivacyPolicy,
   "cancellation-refund": CancellationRefund,

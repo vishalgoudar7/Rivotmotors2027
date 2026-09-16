@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { blogPosts } from "@/lib/blogPosts";
 import { formatDate, toJsonSafe } from "../_lib/response";
+import { requireAdmin } from "@/app/admin/_lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -209,6 +210,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   const input = (await request.json().catch(() => ({}))) as Record<string, unknown>;
   const { errors, data } = validateBlogInput(input);
 
@@ -248,6 +250,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
+  if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
 
@@ -328,6 +331,7 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
 

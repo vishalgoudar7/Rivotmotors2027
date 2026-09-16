@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { logoutAction } from "@/app/admin/actions";
 import { OrdersTable } from "@/components/Admin/OrdersTable";
 import { orderValue, type AdminOrder, type OrdersResult } from "@/app/admin/_lib/orders";
 
@@ -74,7 +75,10 @@ export function AdminDashboard({
           <Link href="/blog">Blog Management</Link>
           <Link href="/forum">Forum Management</Link>
           <span>System</span>
-          <Link href="/admin/dashboard">Settings</Link>
+          <Link href="/admin/settings">Settings</Link>
+          <span>Authentication</span>
+          <Link href="/admin/login">Login</Link>
+          <form action={logoutAction}><button type="submit">Logout</button></form>
         </nav>
       </aside>
 
@@ -123,7 +127,7 @@ export function AdminDashboard({
             <Link href="/book-now">Add Order</Link>
             <Link href="/admin/orders">Manage Orders</Link>
             <Link href="/blog">Blog Management</Link>
-            <Link href="/admin/dashboard">Settings</Link>
+            <Link href="/admin/settings">Settings</Link>
 
             <div className="miniStats">
               <span>
@@ -242,7 +246,8 @@ export function AdminDashboard({
         }
 
         .adminSidebar a,
-        .adminSidebar span {
+        .adminSidebar span,
+        .adminSidebar button {
           display: flex;
           align-items: center;
           min-height: 36px;
@@ -252,6 +257,14 @@ export function AdminDashboard({
           font-size: 13px;
           font-weight: 850;
           text-decoration: none;
+        }
+
+        .adminSidebar button {
+          width: 100%;
+          border: 0;
+          background: transparent;
+          cursor: pointer;
+          text-align: left;
         }
 
         .adminSidebar span {
@@ -264,7 +277,8 @@ export function AdminDashboard({
         }
 
         .adminSidebar a.isActive,
-        .adminSidebar a:hover {
+        .adminSidebar a:hover,
+        .adminSidebar button:hover {
           background: rgba(239, 116, 48, .14);
           color: #fff;
         }

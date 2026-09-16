@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { logoutAction } from "@/app/admin/actions";
 import { OrdersTable } from "@/components/Admin/OrdersTable";
 import type { OrdersResult } from "@/app/admin/_lib/orders";
 
@@ -24,7 +25,10 @@ export function AdminOrders({
           <Link href="/blog">Blog Management</Link>
           <Link href="/forum">Forum Management</Link>
           <span>System</span>
-          <Link href="/admin/dashboard">Settings</Link>
+          <Link href="/admin/settings">Settings</Link>
+          <span>Authentication</span>
+          <Link href="/admin/login">Login</Link>
+          <form action={logoutAction}><button type="submit">Logout</button></form>
         </nav>
       </aside>
 
@@ -84,7 +88,8 @@ export function AdminOrders({
         }
 
         .adminSidebar a,
-        .adminSidebar span {
+        .adminSidebar span,
+        .adminSidebar button {
           display: flex;
           align-items: center;
           min-height: 36px;
@@ -94,6 +99,14 @@ export function AdminOrders({
           font-size: 13px;
           font-weight: 850;
           text-decoration: none;
+        }
+
+        .adminSidebar button {
+          width: 100%;
+          border: 0;
+          background: transparent;
+          cursor: pointer;
+          text-align: left;
         }
 
         .adminSidebar span {
@@ -106,7 +119,8 @@ export function AdminOrders({
         }
 
         .adminSidebar a.isActive,
-        .adminSidebar a:hover {
+        .adminSidebar a:hover,
+        .adminSidebar button:hover {
           background: rgba(239, 116, 48, .14);
           color: #fff;
         }

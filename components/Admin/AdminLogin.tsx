@@ -10,23 +10,20 @@ export function AdminLogin({ error }: { error?: string }) {
           <p>Order management system</p>
         </div>
 
-        {error ? <div className="adminError">Invalid username or password.</div> : null}
+        {error ? <div className="adminError">Invalid email or password.</div> : null}
 
         <form action={loginAction}>
           <label>
-            Username
-            <input type="text" name="username" required />
+            Email
+            <input type="email" name="email" autoComplete="username" required />
           </label>
           <label>
             Password
-            <input type="password" name="password" required />
+            <input type="password" name="password" autoComplete="current-password" required />
           </label>
           <button type="submit">Login</button>
         </form>
 
-        <div className="adminHint">
-          Default login: <b>admin</b> / <b>admin123</b>
-        </div>
       </div>
 
       <style>{`

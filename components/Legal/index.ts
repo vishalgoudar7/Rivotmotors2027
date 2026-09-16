@@ -4,3 +4,4 @@ export { PrivacyPolicy } from "./PrivacyPolicy";
 export { RefundPolicy } from "./RefundPolicy";
 export { Subscriptions } from "./Subscriptions";
 export { TermsAndConditions } from "./TermsAndConditions";
+export { Warranty } from "./Warranty";

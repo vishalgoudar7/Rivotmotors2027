@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import logoWhite from "@/asset/images/Newlogo.png";
 
 const exploreLinks = [
@@ -17,31 +19,11 @@ const supportLinks = [
 ];
 
 const socialLinks = [
-  {
-    label: "Facebook",
-    mark: "f",
-    href: "https://www.facebook.com/rivotmotors",
-  },
-  {
-    label: "X",
-    mark: "X",
-    href: "https://twitter.com/rivotmotors",
-  },
-  {
-    label: "Instagram",
-    mark: "◎",
-    href: "https://www.instagram.com/rivotmotors/",
-  },
-  {
-    label: "YouTube",
-    mark: "▶",
-    href: "https://www.youtube.com/c/rivotmotors",
-  },
-  {
-    label: "LinkedIn",
-    mark: "in",
-    href: "https://www.linkedin.com/company/rivotmotors",
-  },
+  { label: "Facebook", icon: FaFacebookF, href: "https://www.facebook.com/rivotmotors" },
+  { label: "X", icon: FaXTwitter, href: "https://twitter.com/rivotmotors" },
+  { label: "Instagram", icon: FaInstagram, href: "https://www.instagram.com/rivotmotors/" },
+  { label: "YouTube", icon: FaYoutube, href: "https://www.youtube.com/c/rivotmotors" },
+  { label: "LinkedIn", icon: FaLinkedinIn, href: "https://www.linkedin.com/company/rivotmotors" },
 ];
 
 export function Footer() {
@@ -112,11 +94,14 @@ export function Footer() {
           <section className="rivotFooterColumn rivotFooterSubscribe" aria-labelledby="footer-connect-title">
             <h2 id="footer-connect-title">Connect With Us</h2>
             <div className="rivotFooterSocial" aria-label="Social links">
-              {socialLinks.map((link) => (
-                <a href={link.href} aria-label={link.label} key={link.label}>
-                  {link.mark}
-                </a>
-              ))}
+              {socialLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a href={link.href} target="_blank" rel="noreferrer" aria-label={link.label} key={link.label}>
+                    <Icon aria-hidden="true" />
+                  </a>
+                );
+              })}
             </div>
           </section>
         </div>
@@ -268,10 +253,9 @@ export function Footer() {
           transform: translateY(-1px);
         }
 
-        .rivotFooterSocial a:nth-child(5) {
-          font-size: 13px;
-          font-weight: 900;
-          letter-spacing: -.08em;
+        .rivotFooterSocial svg {
+          width: 15px;
+          height: 15px;
         }
 
         .rivotFooterSubscribe {

@@ -162,9 +162,6 @@ export function SafetyTech() {
           <article><i><SafetyIcon type="light" /></i><div><b>Walk Away Lights</b><small>Lights the way when needed.</small></div></article>
           <article><i><SafetyIcon type="theft" /></i><div><b>Anti Theft</b><small>Instant unauthorized movement alerts.</small></div></article>
         </div>
-        <button type="button" className="rivotSafetyMobileCta">
-          Explore all features <span aria-hidden="true">→</span>
-        </button>
       </div>
 
       <style jsx global>{`
@@ -405,34 +402,43 @@ export function SafetyTech() {
             font-weight: 900;
           }
 
-          .rivotSafetyMobileCta {
-            display: flex;
-            width: calc(100% - 16px);
-            min-height: 54px;
-            align-items: center;
-            justify-content: space-between;
-            margin: 0 8px 2px;
-            padding: 0 5px 0 24px;
-            border: 0;
-            border-radius: 999px;
-            background: #151515;
-            color: #fff;
-            font: inherit;
-            font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSafetyMobile {
+            background: #0a0c0d;
+            color: #f5f5f2;
           }
 
-          .rivotSafetyMobileCta span {
-            display: grid;
-            width: 46px;
-            height: 46px;
-            place-items: center;
-            border-radius: 50%;
-            background: #ff5f21;
-            font-size: 25px;
-            font-size: 18px;
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSafetyMobileCopy h2 {
+            color: #f5f5f2 !important;
           }
+
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSafetyMobileCopy h2 span,
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSafetyMobileCopy p {
+            color: #ef7430 !important;
+          }
+
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSafetyMobileCopy small {
+            color: #b5babd;
+          }
+
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSafetyMobileGrid article {
+            border-color: rgba(255,255,255,.12);
+            background: #151819;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+          }
+
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSafetyMobileGrid b {
+            color: #f2f3f1;
+          }
+
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSafetyMobileGrid small {
+            color: #a9afb2;
+          }
+
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSafetyMobileGrid article > i {
+            background: rgba(239,116,48,.14);
+            color: #ff8447;
+          }
+
         }
       `}</style>
     </section>
