@@ -1,6 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { LayoutDashboard, LogOut, Package, ShieldCheck, UserPlus, UserRound } from "lucide-react";
 import { logoutAction } from "@/app/admin/actions";
+import rivotLogo from "@/asset/images/Newlogo.png";
 
 export function AdminShell({ active, title, description, children }: { active: string; title: string; description: string; children: React.ReactNode }) {
   const item = (href: string, label: string, Icon: typeof LayoutDashboard, key: string) => (
@@ -10,7 +12,7 @@ export function AdminShell({ active, title, description, children }: { active: s
   return (
     <section className="adminSettingsPage">
       <aside className="adminSettingsSidebar">
-        <div className="adminSettingsMark">R</div>
+        <div className="adminSettingsMark"><Image src={rivotLogo} alt="RIVOT Motors" priority /></div>
         <nav>
           {item("/admin/dashboard", "Dashboard", LayoutDashboard, "dashboard")}
           {item("/admin/orders", "Orders", Package, "orders")}
@@ -29,7 +31,8 @@ export function AdminShell({ active, title, description, children }: { active: s
       <style>{`
         .adminSettingsPage{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr);background:#050505;color:#f7f3ee}
         .adminSettingsSidebar{position:sticky;top:0;height:100vh;padding:18px 14px;border-right:1px solid rgba(255,255,255,.14);background:#070707}
-        .adminSettingsMark{display:grid;width:44px;height:44px;margin-bottom:20px;place-items:center;border:1px solid rgba(239,116,48,.55);border-radius:10px;color:#ef7430;font-size:20px;font-weight:950}
+        .adminSettingsMark{display:flex;width:132px;height:44px;margin-bottom:20px;align-items:center}
+        .adminSettingsMark img{display:block;width:100%;height:auto;object-fit:contain}
         .adminSettingsSidebar nav{display:grid;gap:7px}.adminSettingsSidebar nav>span{padding:14px 8px 3px;color:#6f6f6f;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
         .adminSettingsSidebar a,.adminSettingsSidebar button{display:flex;width:100%;min-height:40px;align-items:center;gap:10px;padding:0 11px;border:0;border-radius:6px;background:transparent;color:rgba(255,255,255,.76);font:inherit;font-size:12px;font-weight:800;text-align:left;text-decoration:none;cursor:pointer}
         .adminSettingsSidebar svg{width:17px;height:17px}.adminSettingsSidebar a:hover,.adminSettingsSidebar a.isActive,.adminSettingsSidebar button:hover{background:rgba(239,116,48,.14);color:#fff}.adminSettingsSidebar a.isActive svg{color:#ef7430}

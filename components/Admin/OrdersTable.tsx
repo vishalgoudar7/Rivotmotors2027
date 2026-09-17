@@ -1,9 +1,23 @@
 import Link from "next/link";
 import { orderValue, type AdminOrder, type OrdersResult } from "@/app/admin/_lib/orders";
+import { OrdersActions, type OrderExportRow } from "@/components/Admin/OrdersActions";
 
 function formatAmount(value: string) {
   const amount = Number(value);
   return Number.isFinite(amount) ? `₹${amount.toLocaleString("en-IN", { maximumFractionDigits: 2 })}` : value;
+}
+
+function formatDate(value: string) {
+  if (!value || value === "N/A") return "N/A";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function getStatus(order: AdminOrder) {
@@ -24,14 +38,30 @@ function getOrderId(order: AdminOrder) {
 
 export function OrdersTable({
   result,
+  exportOrders,
   search,
   status,
 }: {
   result: OrdersResult;
+  exportOrders?: AdminOrder[];
   search: string;
   status: string;
 }) {
-  const rows = result.orders.map((order, index) => {
+  function pageHref(page: number) {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (status) params.set("status", status);
+    params.set("page", String(page));
+    return `/admin/orders?${params.toString()}`;
+  }
+
+  const firstPage = Math.max(1, Math.min(result.page - 2, result.totalPages - 4));
+  const pageNumbers = Array.from(
+    { length: Math.min(5, result.totalPages) },
+    (_, index) => firstPage + index,
+  );
+
+  const mapRows = (orders: AdminOrder[]): OrderExportRow[] => orders.map((order, index) => {
     const orderId = getOrderId(order) || `#${index + 1}`;
     const model = orderValue(order, ["model", "model_name", "product_name", "productName", "product"], "nx100");
     const productName = orderValue(order, ["product_name", "productName", "product", "model"], "nx100-Gray-Pro");
@@ -51,9 +81,15 @@ export function OrdersTable({
       description: orderValue(order, ["productDescription", "product_description"], productName),
       transactionId: orderValue(order, ["transaction_id", "payment_id", "txn_id"], "Not paid"),
       customer,
+      date: formatDate(orderValue(order, ["created_at", "createdAt", "booking_date", "date"], "N/A")),
+      mobile: orderValue(order, ["mobile", "phone", "phone_number", "buyer_phone"], "N/A"),
+      city: orderValue(order, ["city", "buyer_city"], "N/A"),
+      state: orderValue(order, ["state", "buyer_state"], "N/A"),
       status: statusValue,
     };
   });
+  const rows = mapRows(result.orders);
+  const allExportRows = mapRows(exportOrders || result.orders);
 
   return (
     <section className="ordersSection" id="orders">
@@ -63,14 +99,7 @@ export function OrdersTable({
           <h2>Orders</h2>
         </div>
 
-        <div className="ordersActions">
-          <button type="button" className="miniBtn">Copy</button>
-          <button type="button" className="miniBtn">CSV</button>
-          <button type="button" className="miniBtn">Excel</button>
-          <button type="button" className="miniBtn">PDF</button>
-          <button type="button" className="miniBtn">Print</button>
-          <Link href="/book-now" className="addBtn">+ Add New</Link>
-        </div>
+        <OrdersActions rows={allExportRows} />
       </div>
 
       <form className="orderFilterBar">
@@ -82,15 +111,6 @@ export function OrdersTable({
           <option value="payment_failed">Failed</option>
         </select>
         <button type="submit">Filter</button>
-        <div className="entriesBlock">
-          <span>Show</span>
-          <select defaultValue={String(result.perPage)} aria-label="Orders per page">
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-          <span>entries</span>
-        </div>
       </form>
 
       <div className="tableWrap">
@@ -109,6 +129,10 @@ export function OrdersTable({
               <th>Transaction ID</th>
               <th>Status</th>
               <th>Customer</th>
+              <th>Date</th>
+              <th>Mobile Number</th>
+              <th>City</th>
+              <th>State</th>
             </tr>
           </thead>
           <tbody>
@@ -129,16 +153,53 @@ export function OrdersTable({
                     <span className={`statusTag ${statusClass(row.status)}`}>{row.status}</span>
                   </td>
                   <td>{row.customer}</td>
+                  <td>{row.date}</td>
+                  <td>{row.mobile}</td>
+                  <td>{row.city}</td>
+                  <td>{row.state}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={12} className="emptyCell">No orders found.</td>
+                <td colSpan={16} className="emptyCell">No orders found.</td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
+
+      {result.totalPages > 1 ? (
+        <nav className="ordersPagination" aria-label="Orders pagination">
+          <Link
+            href={pageHref(result.page - 1)}
+            className={result.page === 1 ? "isDisabled" : ""}
+            aria-disabled={result.page === 1}
+            tabIndex={result.page === 1 ? -1 : undefined}
+          >
+            Previous
+          </Link>
+          {firstPage > 1 ? <span aria-hidden="true">…</span> : null}
+          {pageNumbers.map((page) => (
+            <Link
+              key={page}
+              href={pageHref(page)}
+              className={page === result.page ? "isActive" : ""}
+              aria-current={page === result.page ? "page" : undefined}
+            >
+              {page}
+            </Link>
+          ))}
+          {pageNumbers.at(-1) !== result.totalPages ? <span aria-hidden="true">…</span> : null}
+          <Link
+            href={pageHref(result.page + 1)}
+            className={result.page === result.totalPages ? "isDisabled" : ""}
+            aria-disabled={result.page === result.totalPages}
+            tabIndex={result.page === result.totalPages ? -1 : undefined}
+          >
+            Next
+          </Link>
+        </nav>
+      ) : null}
 
       <style>{`
         .ordersSection {
@@ -182,6 +243,7 @@ export function OrdersTable({
         }
 
         .ordersActions {
+          position: relative;
           display: flex;
           align-items: center;
           flex-wrap: wrap;
@@ -189,8 +251,22 @@ export function OrdersTable({
           gap: 8px;
         }
 
-        .miniBtn,
-        .addBtn {
+        .ordersActionMessage {
+          position: absolute;
+          top: calc(100% + 7px);
+          right: 0;
+          z-index: 3;
+          padding: 6px 10px;
+          border-radius: 6px;
+          background: #ef7430;
+          color: #fff;
+          font-size: 11px;
+          font-weight: 800;
+          white-space: nowrap;
+          box-shadow: 0 8px 20px rgba(0,0,0,.28);
+        }
+
+        .miniBtn {
           min-height: 36px;
           border-radius: 8px;
           border: 1px solid rgba(255,255,255,0.12);
@@ -203,12 +279,6 @@ export function OrdersTable({
           display: inline-flex;
           align-items: center;
           justify-content: center;
-        }
-
-        .addBtn {
-          background: linear-gradient(180deg, #f29a5b, #ea7d38);
-          border-color: rgba(255, 166, 102, 0.9);
-          color: #fff;
         }
 
         .orderFilterBar {
@@ -251,25 +321,6 @@ export function OrdersTable({
           cursor: pointer;
         }
 
-        .entriesBlock {
-          display: flex;
-          align-items: center;
-          margin-left: auto;
-          gap: 10px;
-          color: #f1e2d2;
-          font-weight: 700;
-        }
-
-        .entriesBlock select {
-          min-height: 30px;
-          min-width: 68px;
-          border-radius: 6px;
-          border: 1px solid rgba(255,255,255,0.1);
-          background: rgba(255,255,255,0.02);
-          color: #fff;
-          padding: 0 8px;
-        }
-
         .tableWrap {
           width: 100%;
           overflow-x: auto;
@@ -279,9 +330,36 @@ export function OrdersTable({
         }
 
         table {
-          width: 100%;
-          min-width: 1180px;
+          width: 1930px;
+          min-width: 1930px;
+          table-layout: fixed;
           border-collapse: collapse;
+        }
+
+        th:nth-child(12),
+        td:nth-child(12) {
+          width: 190px;
+          min-width: 190px;
+        }
+
+        th:nth-child(13),
+        td:nth-child(13) {
+          width: 120px;
+          min-width: 120px;
+        }
+
+        th:nth-child(14),
+        td:nth-child(14) {
+          width: 130px;
+          min-width: 130px;
+        }
+
+        th:nth-child(15),
+        td:nth-child(15),
+        th:nth-child(16),
+        td:nth-child(16) {
+          width: 150px;
+          min-width: 150px;
         }
 
         th, td {
@@ -291,6 +369,8 @@ export function OrdersTable({
           color: rgba(255,255,255,0.88);
           font-size: 0.88rem;
           white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         th {
@@ -359,6 +439,42 @@ export function OrdersTable({
           padding: 32px 18px;
         }
 
+        .ordersPagination {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 7px;
+          padding-top: 14px;
+        }
+
+        .ordersPagination a,
+        .ordersPagination span {
+          display: inline-flex;
+          min-width: 36px;
+          min-height: 36px;
+          align-items: center;
+          justify-content: center;
+          padding: 0 11px;
+          border: 1px solid rgba(255,255,255,.12);
+          border-radius: 7px;
+          color: rgba(255,255,255,.82);
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .ordersPagination a:hover,
+        .ordersPagination a.isActive {
+          border-color: #ef7430;
+          background: #ef7430;
+          color: #fff;
+        }
+
+        .ordersPagination a.isDisabled {
+          pointer-events: none;
+          opacity: .38;
+        }
+
         @media (max-width: 760px) {
           .ordersHeader {
             flex-direction: column;
@@ -368,6 +484,7 @@ export function OrdersTable({
           .ordersActions {
             justify-content: flex-start;
           }
+
         }
       `}</style>
     </section>

@@ -1,15 +1,19 @@
 import Link from "next/link";
+import Image from "next/image";
 import { logoutAction } from "@/app/admin/actions";
 import { OrdersTable } from "@/components/Admin/OrdersTable";
-import type { OrdersResult } from "@/app/admin/_lib/orders";
+import type { AdminOrder, OrdersResult } from "@/app/admin/_lib/orders";
+import rivotLogo from "@/asset/images/Newlogo.png";
 
 export function AdminOrders({
   result,
+  exportOrders,
   search,
   status,
   message,
 }: {
   result: OrdersResult;
+  exportOrders: AdminOrder[];
   search: string;
   status: string;
   message?: string;
@@ -17,17 +21,16 @@ export function AdminOrders({
   return (
     <section className="adminOrdersPage">
       <aside className="adminSidebar">
-        <div className="adminMark">R</div>
+        <div className="adminMark"><Image src={rivotLogo} alt="RIVOT Motors" priority /></div>
         <nav>
           <Link href="/admin/dashboard">Home</Link>
           <span>Manage</span>
           <Link className="isActive" href="/admin/orders">Orders</Link>
-          <Link href="/blog">Blog Management</Link>
-          <Link href="/forum">Forum Management</Link>
+          <button type="button" className="adminNavDisabled" disabled>Blog Management</button>
+          <button type="button" className="adminNavDisabled" disabled>Forum Management</button>
           <span>System</span>
           <Link href="/admin/settings">Settings</Link>
           <span>Authentication</span>
-          <Link href="/admin/login">Login</Link>
           <form action={logoutAction}><button type="submit">Logout</button></form>
         </nav>
       </aside>
@@ -48,7 +51,7 @@ export function AdminOrders({
         {message === "deleted" ? <div className="adminNotice">Order deleted successfully.</div> : null}
         {result.error ? <div className="adminNotice warning">{result.error}</div> : null}
 
-        <OrdersTable result={result} search={search} status={status} />
+        <OrdersTable result={result} exportOrders={exportOrders} search={search} status={status} />
       </main>
 
       <style>{`
@@ -70,16 +73,18 @@ export function AdminOrders({
         }
 
         .adminMark {
-          display: grid;
-          width: 42px;
+          display: flex;
+          width: 132px;
           height: 42px;
           margin-bottom: 18px;
-          place-items: center;
-          border: 1px solid rgba(239, 116, 48, .55);
-          border-radius: 10px;
-          color: #ef7430;
-          font-size: 19px;
-          font-weight: 950;
+          align-items: center;
+        }
+
+        .adminMark img {
+          display: block;
+          width: 100%;
+          height: auto;
+          object-fit: contain;
         }
 
         .adminSidebar nav {
@@ -107,6 +112,16 @@ export function AdminOrders({
           background: transparent;
           cursor: pointer;
           text-align: left;
+        }
+
+        .adminSidebar .adminNavDisabled {
+          color: rgba(255,255,255,.38);
+          cursor: not-allowed;
+        }
+
+        .adminSidebar .adminNavDisabled:hover {
+          background: transparent;
+          color: rgba(255,255,255,.38);
         }
 
         .adminSidebar span {

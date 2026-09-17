@@ -33,7 +33,7 @@ function pickColumn(columns: string[], names: string[]) {
 function buildWhere(columns: string[], search: string, status: string) {
   const where: string[] = [];
   const params: unknown[] = [];
-  const searchColumns = ["order_id", "orderId", "trackId", "buyer_email", "email", "buyer_first_name", "buyer_last_name", "name", "lastName"].filter((column) =>
+  const searchColumns = ["order_id", "orderId", "trackId", "buyer_email", "email", "buyer_first_name", "buyer_last_name", "name", "lastName", "mobile", "phone", "city", "state"].filter((column) =>
     columns.includes(column),
   );
 
@@ -56,7 +56,7 @@ function buildWhere(columns: string[], search: string, status: string) {
 
 export async function getOrders(search = "", status = "", page = 1, perPage = defaultPerPage): Promise<OrdersResult> {
   const columns = await getOrderColumns();
-  const safePage = Math.max(1, page);
+  const safePage = Number.isFinite(page) ? Math.max(1, Math.floor(page)) : 1;
 
   if (columns.length === 0) {
     return {
@@ -71,7 +71,6 @@ export async function getOrders(search = "", status = "", page = 1, perPage = de
 
   const { clause, params } = buildWhere(columns, search.trim(), status.trim());
   const sortColumn = pickColumn(columns, ["created_at", "createdAt", "id"]) || columns[0];
-  const offset = (safePage - 1) * perPage;
 
   const countRows = (await prisma.$queryRawUnsafe(
     `SELECT COUNT(*) as total FROM \`orders\` ${clause}`,
@@ -79,9 +78,11 @@ export async function getOrders(search = "", status = "", page = 1, perPage = de
   )) as Array<{ total: bigint | number }>;
   const totalRecords = Number(countRows[0]?.total || 0);
   const totalPages = Math.max(1, Math.ceil(totalRecords / perPage));
+  const currentPage = Math.min(safePage, totalPages);
+  const currentOffset = (currentPage - 1) * perPage;
 
   const orders = (await prisma.$queryRawUnsafe(
-    `SELECT * FROM \`orders\` ${clause} ORDER BY ${sqlIdentifier(sortColumn)} DESC LIMIT ${perPage} OFFSET ${offset}`,
+    `SELECT * FROM \`orders\` ${clause} ORDER BY ${sqlIdentifier(sortColumn)} DESC LIMIT ${perPage} OFFSET ${currentOffset}`,
     ...params,
   )) as AdminOrder[];
 
@@ -89,7 +90,7 @@ export async function getOrders(search = "", status = "", page = 1, perPage = de
     orders,
     totalRecords,
     totalPages,
-    page: safePage,
+    page: currentPage,
     perPage,
   };
 }

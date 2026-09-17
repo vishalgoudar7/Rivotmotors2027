@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { logoutAction } from "@/app/admin/actions";
 import { OrdersTable } from "@/components/Admin/OrdersTable";
 import { orderValue, type AdminOrder, type OrdersResult } from "@/app/admin/_lib/orders";
+import rivotLogo from "@/asset/images/Newlogo.png";
 
 function formatAmount(value: string) {
   const amount = Number(value);
@@ -19,11 +21,24 @@ function getOrderId(order: AdminOrder) {
 
 function isSuccess(status: string) {
   const normalized = status.toLowerCase();
-  return normalized.includes("success") || normalized.includes("confirm");
+  if (/(not[_\s-]?(paid|complete|completed)|pending|fail|cancel)/.test(normalized)) return false;
+  const statusWords = normalized.split(/[^a-z0-9]+/);
+  return statusWords.some((word) => ["success", "successful", "complete", "completed", "paid", "captured", "confirm", "confirmed"].includes(word));
 }
 
 function isFailed(status: string) {
   return status.toLowerCase().includes("fail");
+}
+
+function isToday(order: AdminOrder) {
+  const rawDate = orderValue(order, ["created_at", "createdAt", "booking_date", "date"], "");
+  if (!rawDate) return false;
+  const date = new Date(rawDate);
+  if (Number.isNaN(date.getTime())) return false;
+  const today = new Date();
+  return date.getFullYear() === today.getFullYear()
+    && date.getMonth() === today.getMonth()
+    && date.getDate() === today.getDate();
 }
 
 function statusClass(status: string) {
@@ -48,36 +63,42 @@ function modelStats(orders: AdminOrder[]) {
 
 export function AdminDashboard({
   result,
+  statsOrders,
   search,
   status,
   message,
 }: {
   result: OrdersResult;
+  statsOrders: AdminOrder[];
   search: string;
   status: string;
   message?: string;
 }) {
-  const successfulOrders = result.orders.filter((order) => isSuccess(getStatus(order)));
-  const failedOrders = result.orders.filter((order) => isFailed(getStatus(order)));
-  const pendingOrders = Math.max(0, result.totalRecords - successfulOrders.length - failedOrders.length);
-  const revenue = successfulOrders.reduce((sum, order) => sum + Number(orderValue(order, ["amount"], "0")), 0);
-  const models = modelStats(result.orders);
+  const successfulOrders = statsOrders.filter((order) => isSuccess(getStatus(order)));
+  const failedOrders = statsOrders.filter((order) => isFailed(getStatus(order)));
+  const pendingOrders = Math.max(0, statsOrders.length - successfulOrders.length - failedOrders.length);
+  const todayOrders = statsOrders.filter(isToday).length;
+  const successRate = statsOrders.length ? Math.round((successfulOrders.length / statsOrders.length) * 100) : 0;
+  const revenue = successfulOrders.reduce((sum, order) => {
+    const amount = Number(orderValue(order, ["amount"], "0").replace(/[^0-9.-]/g, ""));
+    return sum + (Number.isFinite(amount) ? amount : 0);
+  }, 0);
+  const models = modelStats(statsOrders);
   const maxModelCount = Math.max(1, ...models.map((model) => model.count));
 
   return (
     <section className="adminHome">
       <aside className="adminSidebar">
-        <div className="adminMark">R</div>
+        <div className="adminMark"><Image src={rivotLogo} alt="RIVOT Motors" priority /></div>
         <nav>
           <Link className="isActive" href="/admin/dashboard">Home</Link>
           <span>Manage</span>
           <Link href="/admin/orders">Orders</Link>
-          <Link href="/blog">Blog Management</Link>
-          <Link href="/forum">Forum Management</Link>
+          <button type="button" className="adminNavDisabled" disabled>Blog Management</button>
+          <button type="button" className="adminNavDisabled" disabled>Forum Management</button>
           <span>System</span>
           <Link href="/admin/settings">Settings</Link>
           <span>Authentication</span>
-          <Link href="/admin/login">Login</Link>
           <form action={logoutAction}><button type="submit">Logout</button></form>
         </nav>
       </aside>
@@ -90,7 +111,6 @@ export function AdminDashboard({
             <span>Monitor orders, payments, activity, and admin shortcuts from one place.</span>
           </div>
           <div className="adminTopActions">
-            <Link href="/book-now">Add Order</Link>
             <Link href="/admin/orders">Manage Orders</Link>
           </div>
         </header>
@@ -107,7 +127,7 @@ export function AdminDashboard({
           <article>
             <small>Successful Payments</small>
             <strong>{successfulOrders.length}</strong>
-            <span>{result.orders.length ? Math.round((successfulOrders.length / result.orders.length) * 100) : 0}% success rate</span>
+            <span>{successRate}% success rate</span>
           </article>
           <article>
             <small>Pending Payments</small>
@@ -124,19 +144,18 @@ export function AdminDashboard({
         <section className="adminGrid">
           <article className="adminPanel quick">
             <h2>Quick Actions</h2>
-            <Link href="/book-now">Add Order</Link>
             <Link href="/admin/orders">Manage Orders</Link>
-            <Link href="/blog">Blog Management</Link>
+            <button type="button" className="quickDisabledLink" disabled>Blog Management</button>
             <Link href="/admin/settings">Settings</Link>
 
             <div className="miniStats">
               <span>
-                <b>{result.orders.length}</b>
+                <b>{todayOrders}</b>
                 Today Orders
               </span>
               <span>
-                <b>{successfulOrders.length}</b>
-                Success Ratio
+                <b>{successRate}%</b>
+                Success Rate
               </span>
               <span>
                 <b>{pendingOrders}</b>
@@ -176,7 +195,7 @@ export function AdminDashboard({
                   Transactions that returned from gateway without success.
                 </span>
               </div>
-              <div>
+              <div className="revenueInsight">
                 <b>{formatAmount(String(revenue))}</b>
                 <span>
                   <strong>Recorded revenue</strong>
@@ -228,16 +247,18 @@ export function AdminDashboard({
         }
 
         .adminMark {
-          display: grid;
-          width: 42px;
+          display: flex;
+          width: 132px;
           height: 42px;
           margin-bottom: 18px;
-          place-items: center;
-          border: 1px solid rgba(239, 116, 48, .55);
-          border-radius: 10px;
-          color: #ef7430;
-          font-size: 19px;
-          font-weight: 950;
+          align-items: center;
+        }
+
+        .adminMark img {
+          display: block;
+          width: 100%;
+          height: auto;
+          object-fit: contain;
         }
 
         .adminSidebar nav {
@@ -265,6 +286,16 @@ export function AdminDashboard({
           background: transparent;
           cursor: pointer;
           text-align: left;
+        }
+
+        .adminSidebar .adminNavDisabled {
+          color: rgba(255,255,255,.38);
+          cursor: not-allowed;
+        }
+
+        .adminSidebar .adminNavDisabled:hover {
+          background: transparent;
+          color: rgba(255,255,255,.38);
         }
 
         .adminSidebar span {
@@ -330,6 +361,7 @@ export function AdminDashboard({
 
         .adminTopActions a,
         .quick > a,
+        .quick > button,
         .panelHeader a,
         .adminFilters button,
         .orderTable button {
@@ -437,6 +469,13 @@ export function AdminDashboard({
           min-height: 42px;
         }
 
+        .quick > button {
+          min-height: 42px;
+          background: transparent;
+          opacity: .45;
+          cursor: not-allowed;
+        }
+
         .miniStats {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -489,6 +528,16 @@ export function AdminDashboard({
 
         .insightList div:last-child {
           border-bottom: 0;
+        }
+
+        .insightList .revenueInsight {
+          grid-template-columns: 82px 1fr;
+        }
+
+        .insightList .revenueInsight > b {
+          padding: 0 7px;
+          font-size: 12px;
+          white-space: nowrap;
         }
 
         .insightList b {

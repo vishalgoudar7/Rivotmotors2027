@@ -19,11 +19,13 @@ export default async function AdminOrdersPage({
   const search = params?.search || "";
   const status = params?.status || "";
   const page = Number(params?.page || 1);
-  const result = await getOrders(search, status, page, 500);
+  const result = await getOrders(search, status, page, 50);
+  const exportResult = await getOrders(search, status, 1, Math.max(1, result.totalRecords));
 
   return (
     <AdminOrders
       result={result}
+      exportOrders={exportResult.orders}
       search={search}
       status={status}
       message={params?.message}

@@ -20,6 +20,7 @@ export default async function AdminDashboardPage({
   const status = params?.status || "";
   const page = Number(params?.page || 1);
   const result = await getOrders(search, status, page);
+  const statsResult = await getOrders(search, status, 1, Math.max(1, result.totalRecords));
 
-  return <AdminDashboard result={result} search={search} status={status} message={params?.message} />;
+  return <AdminDashboard result={result} statsOrders={statsResult.orders} search={search} status={status} message={params?.message} />;
 }

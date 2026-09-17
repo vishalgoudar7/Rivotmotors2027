@@ -842,7 +842,7 @@ export default function Home() {
       >
         <div className="rivotDesignCopy">
           <small>Make It Yours</small>
-          <h2 id="design-title">Choose<br />Your <span>Colour.</span></h2>
+          <h2 id="design-title">Choose Your <span>Colour.</span></h2>
           <p>Different shades. Same bold spirit.</p>
         </div>
 
@@ -2405,6 +2405,11 @@ export default function Home() {
           font-weight: 800;
           line-height: 1;
           letter-spacing: -.055em;
+          white-space: nowrap;
+        }
+
+        .rivotDesignCopy h2 span {
+          color: #ef7430;
         }
 
         .rivotDesignCopy p {
@@ -6400,11 +6405,11 @@ export default function Home() {
             width: 100%;
             max-width: 100%;
             margin: 0;
-            font-size: clamp(28px, 9vw, 38px);
+            font-size: clamp(25px, 8vw, 38px);
             line-height: .88;
             letter-spacing: -.05em;
             text-align: left;
-            white-space: normal;
+            white-space: nowrap;
           }
 
           .rivotDesignCopy h2 span {
@@ -7413,6 +7418,10 @@ export default function Home() {
           .rivotReachCopy h2,
           .rivotBestFitHeader h2 {
             font-size: 32px;
+          }
+
+          .rivotDesignCopy h2 {
+            font-size: clamp(25px, 8vw, 32px);
           }
 
         }
