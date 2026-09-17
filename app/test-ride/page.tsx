@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
+import testRideBackground from "@/asset/newimg/Testdrive.png";
 
 type FormValues = {
   name: string;
@@ -10,15 +11,10 @@ type FormValues = {
   state: string;
   city: string;
   date: string;
+  message: string;
 };
 
 type FormErrors = Partial<Record<keyof FormValues, string>>;
-
-const slides = [
-  { src: "/Story_page/11.webp", alt: "Test ride - feel the freedom", caption: "Feel the\nFreedom" },
-  { src: "/Story_page/12.webp", alt: "Test ride - urban performance", caption: "Urban\nPerformance" },
-  { src: "/Story_page/13.webp", alt: "Test ride - next generation ride", caption: "Next-Gen Ride" },
-] as const;
 
 const stateCities: Record<string, string[]> = {
   "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Kurnool"],
@@ -66,10 +62,10 @@ const initialValues: FormValues = {
   state: "",
   city: "",
   date: "",
+  message: "",
 };
 
 export default function TestRidePage() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,14 +74,6 @@ export default function TestRidePage() {
 
   const cityOptions = useMemo(() => stateCities[values.state] ?? [], [values.state]);
   const today = new Date().toISOString().split("T")[0];
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 8000);
-
-    return () => window.clearInterval(timer);
-  }, []);
 
   const validate = (nextValues: FormValues) => {
     const nextErrors: FormErrors = {};
@@ -133,130 +121,47 @@ export default function TestRidePage() {
 
   return (
     <section className="rivotTestRidePage">
+      <Image
+        className="rivotTestRideBackground"
+        src={testRideBackground}
+        alt="Rider with a RIVOT electric scooter at sunset"
+        fill
+        priority
+        placeholder="blur"
+        sizes="100vw"
+      />
+      <div className="rivotTestRideShade" aria-hidden="true" />
       <div className="rivotTestRideShell">
-        <div className="rivotTestRideLeft">
-          <div className="rivotTestRideContent">
-            <p>Book</p>
-            <h1>
-              Test <span>Ride</span>
-            </h1>
-            <strong>
-              Experience the thrill of our electric scooter firsthand. Fill out the form below to schedule your test ride at a location near you.
-            </strong>
-
-            <form className="rivotTestRideForm" onSubmit={onSubmit} noValidate>
-              <div className="rivotTestRideGrid">
-                <label>
-                  Name
-                  <input
-                    name="name"
-                    placeholder="Your Name"
-                    value={values.name}
-                    onChange={(event) => setValues((prev) => ({ ...prev, name: event.target.value }))}
-                  />
-                  {errors.name ? <small>{errors.name}</small> : null}
-                </label>
-
-                <label>
-                  Email
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="Email Address"
-                    value={values.email}
-                    onChange={(event) => setValues((prev) => ({ ...prev, email: event.target.value }))}
-                  />
-                  {errors.email ? <small>{errors.email}</small> : null}
-                </label>
-
-                <label>
-                  Phone Number
-                  <input
-                    name="mobile"
-                    inputMode="numeric"
-                    pattern="[0-9]{10}"
-                    maxLength={10}
-                    placeholder="Phone Number"
-                    value={values.mobile}
-                    onChange={(event) => setValues((prev) => ({ ...prev, mobile: event.target.value.replace(/\D/g, "") }))}
-                  />
-                  {errors.mobile ? <small>{errors.mobile}</small> : null}
-                </label>
-
-                <label>
-                  State
-                  <select
-                    name="state"
-                    value={values.state}
-                    onChange={(event) => setValues((prev) => ({ ...prev, state: event.target.value, city: "" }))}
-                  >
-                    <option value="">Choose State</option>
-                    {Object.keys(stateCities).map((stateName) => (
-                      <option value={stateName} key={stateName}>
-                        {stateName}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.state ? <small>{errors.state}</small> : null}
-                </label>
-
-                <label>
-                  City
-                  <select
-                    name="city"
-                    value={values.city}
-                    disabled={!values.state}
-                    onChange={(event) => setValues((prev) => ({ ...prev, city: event.target.value }))}
-                  >
-                    <option value="">Choose City</option>
-                    {cityOptions.map((cityName) => (
-                      <option value={cityName} key={cityName}>
-                        {cityName}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.city ? <small>{errors.city}</small> : null}
-                </label>
-
-                <label>
-                  Date
-                  <input
-                    name="date"
-                    type="date"
-                    min={today}
-                    value={values.date}
-                    onChange={(event) => setValues((prev) => ({ ...prev, date: event.target.value }))}
-                  />
-                  {errors.date ? <small>{errors.date}</small> : null}
-                </label>
-              </div>
-
-              {submitError ? <div className="rivotTestRideError">{submitError}</div> : null}
-
-              <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : "Book Test Ride"}
-              </button>
-            </form>
+        <div className="rivotTestRideStory">
+          <p className="rivotTestRideEyebrow">Experience RIVOT</p>
+          <h1>Test Ride<br /><span>A Brighter</span><br />Tomorrow</h1>
+          <p className="rivotTestRideIntro">Feel the performance. Experience the comfort. Discover why RIVOT is built for a cleaner, smarter future.</p>
+          <div className="rivotTestRideBenefits">
+            <div><b>⚡</b><p><strong>Real Performance</strong><span>Feel the power yourself</span></p></div>
+            <div><b>♧</b><p><strong>Zero Emissions</strong><span>A cleaner tomorrow</span></p></div>
+            <div><b>◇</b><p><strong>Safe &amp; Reliable</strong><span>Ride with confidence</span></p></div>
           </div>
         </div>
 
-        <div className="rivotTestRideRight" aria-hidden="true">
-          {slides.map((slide, index) => (
-            <div className={`rivotTestRideSlide${index === currentSlide ? " isActive" : ""}`} key={slide.src}>
-              <Image
-                src={slide.src}
-                alt={slide.alt}
-                fill
-                priority={index === 0}
-                sizes="(max-width: 980px) 100vw, 62vw"
-              />
-              <div className="rivotTestRideCaption">
-                {slide.caption.split("\n").map((line) => (
-                  <span key={line}>{line}</span>
-                ))}
-              </div>
+        <div className="rivotTestRideCard">
+          <div className="rivotTestRideCardHead">
+            <div><p><span /> Book your</p><h2>Test Ride</h2></div>
+            <p>Fill in your details and we&apos;ll arrange a test ride at a dealership near you.</p>
+          </div>
+          <form className="rivotTestRideForm" onSubmit={onSubmit} noValidate>
+            <div className="rivotTestRideGrid">
+              <label>Full Name <em>*</em><input name="name" autoComplete="name" placeholder="Enter your name" value={values.name} onChange={(event) => setValues((prev) => ({ ...prev, name: event.target.value }))} />{errors.name ? <small>{errors.name}</small> : null}</label>
+              <label>Email Address <em>*</em><input name="email" type="email" autoComplete="email" placeholder="Enter your email" value={values.email} onChange={(event) => setValues((prev) => ({ ...prev, email: event.target.value }))} />{errors.email ? <small>{errors.email}</small> : null}</label>
+              <label>Phone Number <em>*</em><input name="mobile" type="tel" autoComplete="tel" inputMode="numeric" pattern="[0-9]{10}" maxLength={10} placeholder="Enter your phone number" value={values.mobile} onChange={(event) => setValues((prev) => ({ ...prev, mobile: event.target.value.replace(/\D/g, "") }))} />{errors.mobile ? <small>{errors.mobile}</small> : null}</label>
+              <label>State <em>*</em><select name="state" value={values.state} onChange={(event) => setValues((prev) => ({ ...prev, state: event.target.value, city: "" }))}><option value="">Select state</option>{Object.keys(stateCities).map((stateName) => <option value={stateName} key={stateName}>{stateName}</option>)}</select>{errors.state ? <small>{errors.state}</small> : null}</label>
+              <label>City <em>*</em><select name="city" value={values.city} disabled={!values.state} onChange={(event) => setValues((prev) => ({ ...prev, city: event.target.value }))}><option value="">Select city</option>{cityOptions.map((cityName) => <option value={cityName} key={cityName}>{cityName}</option>)}</select>{errors.city ? <small>{errors.city}</small> : null}</label>
+              <label>Preferred Date <em>*</em><input name="date" type="date" min={today} value={values.date} onChange={(event) => setValues((prev) => ({ ...prev, date: event.target.value }))} />{errors.date ? <small>{errors.date}</small> : null}</label>
+              <label className="rivotTestRideMessage">Any Additional Message <span>(Optional)</span><textarea name="message" rows={2} placeholder="Tell us if you have any specific model or queries..." value={values.message} onChange={(event) => setValues((prev) => ({ ...prev, message: event.target.value }))} /></label>
             </div>
-          ))}
+            {submitError ? <div className="rivotTestRideError">{submitError}</div> : null}
+            <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Sending..." : "Book Test Ride  →"}</button>
+            <p className="rivotTestRidePrivacy">▣ &nbsp; Your information is safe with us. We will contact you to confirm your test ride.</p>
+          </form>
         </div>
       </div>
 
@@ -655,6 +560,371 @@ export default function TestRidePage() {
           .rivotTestRideGrid {
             grid-template-columns: 1fr;
           }
+        }
+
+        /* Full-bleed test ride composition */
+        body:has(.rivotTestRidePage) .rivotHeader {
+          background: linear-gradient(180deg, rgba(0, 0, 0, .72), transparent);
+        }
+
+        body:has(.rivotTestRidePage) .rivotBrand,
+        body:has(.rivotTestRidePage) .rivotHeaderLinks a,
+        body:has(.rivotTestRidePage) .rivotProductsButton,
+        body:has(.rivotTestRidePage) .rivotExploreButton {
+          color: #fff;
+        }
+
+        body:has(.rivotTestRidePage) .rivotBrandMark img { filter: brightness(0) invert(1); }
+
+        .rivotTestRidePage {
+          position: relative;
+          isolation: isolate;
+          min-height: 100svh;
+          display: grid;
+          place-items: center;
+          overflow: hidden;
+          padding: clamp(92px, 10vh, 116px) clamp(20px, 4vw, 64px) 34px;
+          background: #080808;
+          color: #fff;
+        }
+
+        .rivotTestRideBackground {
+          z-index: -3;
+          object-fit: cover;
+          object-position: center;
+        }
+
+        .rivotTestRideShade {
+          position: absolute;
+          inset: 0;
+          z-index: -2;
+          background: linear-gradient(90deg, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .38) 47%, rgba(0, 0, 0, .24) 100%);
+        }
+
+        .rivotTestRideShell {
+          width: min(100%, 1480px);
+          min-height: 0;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(480px, .86fr);
+          align-items: center;
+          gap: clamp(34px, 7vw, 112px);
+          overflow: visible;
+          border: 0;
+          border-radius: 0;
+          background: transparent;
+          box-shadow: none;
+        }
+
+        .rivotTestRideStory { max-width: 570px; }
+        .rivotTestRideEyebrow {
+          margin: 0 0 16px;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: .42em;
+          text-transform: uppercase;
+        }
+
+        .rivotTestRideStory h1 {
+          margin: 0;
+          font-size: clamp(48px, 5.7vw, 86px);
+          font-weight: 950;
+          line-height: .88;
+          letter-spacing: -.055em;
+          text-transform: uppercase;
+          text-shadow: 0 6px 28px rgba(0, 0, 0, .3);
+        }
+
+        .rivotTestRideStory h1 span { color: #f5762c; }
+        .rivotTestRideIntro {
+          max-width: 455px;
+          margin: 22px 0 25px;
+          color: rgba(255, 255, 255, .9);
+          font-size: 16px;
+          line-height: 1.45;
+        }
+
+        .rivotTestRideBenefits { display: grid; gap: 13px; }
+        .rivotTestRideBenefits > div { display: flex; align-items: center; gap: 13px; }
+        .rivotTestRideBenefits b {
+          width: 42px;
+          height: 42px;
+          display: grid;
+          place-items: center;
+          flex: 0 0 auto;
+          border: 1px solid rgba(255, 255, 255, .72);
+          border-radius: 50%;
+          color: #fff;
+          font-size: 18px;
+        }
+        .rivotTestRideBenefits p { display: grid; gap: 2px; margin: 0; }
+        .rivotTestRideBenefits strong { font-size: 13px; }
+        .rivotTestRideBenefits span { color: rgba(255, 255, 255, .74); font-size: 11px; }
+
+        .rivotTestRideCard {
+          width: 100%;
+          padding: clamp(24px, 3vw, 40px);
+          border: 1px solid rgba(255, 255, 255, .72);
+          border-radius: 22px;
+          background: rgba(250, 251, 252, .96);
+          color: #15191f;
+          box-shadow: 0 24px 70px rgba(0, 0, 0, .34);
+          backdrop-filter: blur(15px);
+        }
+
+        .rivotTestRideCardHead {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          align-items: end;
+          gap: 25px;
+          margin-bottom: 24px;
+        }
+        .rivotTestRideCardHead p { margin: 0; color: #4d555e; font-size: 12px; line-height: 1.45; }
+        .rivotTestRideCardHead > div > p { color: #68717b; font-size: 10px; font-weight: 800; letter-spacing: .32em; text-transform: uppercase; }
+        .rivotTestRideCardHead > div > p span { display: inline-block; width: 18px; height: 3px; margin-right: 10px; border-radius: 2px; background: #f5762c; vertical-align: middle; }
+        .rivotTestRideCardHead h2 { margin: 5px 0 0; font-size: clamp(34px, 3vw, 48px); line-height: .95; letter-spacing: -.045em; }
+
+        .rivotTestRideForm { margin: 0; }
+        .rivotTestRideGrid { gap: 15px 16px; }
+        .rivotTestRideForm label {
+          display: block;
+          color: #252a30;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0;
+          text-transform: none;
+        }
+        .rivotTestRideForm label em { color: #f5762c; font-style: normal; }
+        .rivotTestRideForm label > span { color: #737b84; font-weight: 600; }
+        .rivotTestRideForm input,
+        .rivotTestRideForm select,
+        .rivotTestRideForm textarea {
+          width: 100%;
+          min-height: 46px;
+          margin-top: 7px;
+          padding: 11px 13px;
+          border: 1px solid #dde1e5;
+          border-radius: 9px;
+          background: #fff;
+          color: #171b20;
+          font: inherit;
+          font-size: 13px;
+          resize: vertical;
+          box-shadow: 0 3px 12px rgba(26, 32, 38, .04);
+        }
+        .rivotTestRideForm textarea { min-height: 62px; }
+        .rivotTestRideForm input:focus,
+        .rivotTestRideForm select:focus,
+        .rivotTestRideForm textarea:focus { outline: none; border-color: #f5762c; box-shadow: 0 0 0 3px rgba(245, 118, 44, .14); }
+        .rivotTestRideForm small { display: block; margin-top: 4px; }
+        .rivotTestRideMessage { grid-column: 1 / -1; }
+        .rivotTestRideForm button {
+          min-height: 54px;
+          margin-top: 17px;
+          border-radius: 10px;
+          background: linear-gradient(90deg, #ff6428, #ff7729);
+          font-size: 15px;
+          letter-spacing: 0;
+          text-transform: none;
+          box-shadow: 0 12px 24px rgba(245, 118, 44, .24);
+        }
+        .rivotTestRidePrivacy { margin: 12px 0 0; color: #7b8289; font-size: 9px; text-align: center; }
+
+        html[data-rivot-theme="dark"] .rivotTestRidePage,
+        html[data-theme="dark"] .rivotTestRidePage { background: #080808; color: #fff; }
+        html[data-rivot-theme="dark"] .rivotTestRideCard,
+        html[data-theme="dark"] .rivotTestRideCard { background: rgba(250, 251, 252, .96); color: #15191f; }
+        html[data-rivot-theme="dark"] .rivotTestRideForm label,
+        html[data-theme="dark"] .rivotTestRideForm label { color: #252a30; }
+        html[data-rivot-theme="dark"] .rivotTestRideForm input,
+        html[data-rivot-theme="dark"] .rivotTestRideForm select,
+        html[data-rivot-theme="dark"] .rivotTestRideForm textarea,
+        html[data-theme="dark"] .rivotTestRideForm input,
+        html[data-theme="dark"] .rivotTestRideForm select,
+        html[data-theme="dark"] .rivotTestRideForm textarea { border-color: #dde1e5; background: #fff; color: #171b20; }
+
+        @media (max-width: 900px) {
+          .rivotTestRidePage { overflow: visible; padding: 104px 18px 40px; }
+          .rivotTestRideBackground { object-position: 35% center; }
+          .rivotTestRideShade { background: rgba(0, 0, 0, .55); }
+          .rivotTestRideShell { grid-template-columns: 1fr; gap: 34px; }
+          .rivotTestRideStory { padding: 42px 5px 0; }
+          .rivotTestRideStory h1 { font-size: clamp(46px, 12vw, 72px); }
+          .rivotTestRideCard { max-width: 650px; justify-self: center; }
+        }
+
+        @media (max-width: 560px) {
+          .rivotTestRidePage { padding: 88px 12px 28px; }
+          .rivotTestRideStory { padding-top: 24px; }
+          .rivotTestRideEyebrow { font-size: 9px; }
+          .rivotTestRideStory h1 { font-size: clamp(39px, 12vw, 56px); }
+          .rivotTestRideIntro { font-size: 14px; }
+          .rivotTestRideCard { padding: 22px 16px; border-radius: 16px; }
+          .rivotTestRideCardHead { grid-template-columns: 1fr; gap: 10px; }
+          .rivotTestRideGrid { grid-template-columns: 1fr; }
+          .rivotTestRideMessage { grid-column: auto; }
+          .rivotTestRideForm input,
+          .rivotTestRideForm select,
+          .rivotTestRideForm textarea { font-size: 16px; }
+        }
+
+        /* Final sizing and contrast corrections */
+        .rivotTestRideShell {
+          width: min(100%, 1420px);
+          grid-template-columns: minmax(0, 1fr) minmax(460px, 570px);
+          gap: clamp(32px, 5vw, 76px);
+        }
+
+        .rivotTestRideStory { max-width: 520px; }
+        .rivotTestRideStory h1 { font-size: clamp(44px, 4.35vw, 70px); }
+        .rivotTestRideIntro { max-width: 420px; font-size: 14px; }
+        .rivotTestRideBenefits { gap: 9px; }
+        .rivotTestRideBenefits b { width: 36px; height: 36px; font-size: 15px; }
+        .rivotTestRideBenefits strong { font-size: 12px; }
+        .rivotTestRideBenefits span { font-size: 10px; }
+
+        .rivotTestRideCard { padding: 26px 30px 22px; border-radius: 18px; }
+        .rivotTestRideCardHead { margin-bottom: 18px; }
+        .rivotTestRideCardHead h2 { color: #15191f; font-size: clamp(30px, 2.4vw, 40px); }
+        .rivotTestRideCardHead > p { color: #4d555e; }
+        .rivotTestRideCardHead > div > p { color: #68717b; }
+        .rivotTestRideGrid { gap: 11px 14px; }
+
+        .rivotTestRideCard .rivotTestRideForm label,
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm label,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm label {
+          color: #252a30;
+          font-size: 10px;
+        }
+
+        .rivotTestRideCard .rivotTestRideForm input,
+        .rivotTestRideCard .rivotTestRideForm select,
+        .rivotTestRideCard .rivotTestRideForm textarea,
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm input,
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm select,
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm textarea,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm input,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm select,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm textarea {
+          min-height: 42px;
+          margin-top: 5px;
+          padding: 9px 12px;
+          border-color: #d9dde2;
+          background: #fff;
+          color: #171b20;
+          font-size: 12px;
+        }
+
+        .rivotTestRideCard .rivotTestRideForm input::placeholder,
+        .rivotTestRideCard .rivotTestRideForm textarea::placeholder,
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm input::placeholder,
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm textarea::placeholder,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm input::placeholder,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm textarea::placeholder {
+          color: #7a828a;
+          opacity: 1;
+        }
+
+        .rivotTestRideCard .rivotTestRideForm select:disabled { color: #737b84; background: #f1f2f3; }
+        .rivotTestRideCard .rivotTestRideForm textarea { min-height: 54px; }
+        .rivotTestRideCard .rivotTestRideForm button { min-height: 46px; margin-top: 12px; font-size: 13px; }
+        .rivotTestRidePrivacy { color: #707880; margin-top: 9px; }
+
+        html[data-rivot-theme="dark"] .rivotTestRideShell,
+        html[data-theme="dark"] .rivotTestRideShell {
+          border: 0;
+          background: transparent;
+          box-shadow: none;
+        }
+
+        @media (max-height: 820px) and (min-width: 901px) {
+          .rivotTestRidePage { padding-top: 88px; padding-bottom: 18px; }
+          .rivotTestRideStory h1 { font-size: clamp(42px, 4vw, 62px); }
+          .rivotTestRideIntro { margin: 15px 0 17px; }
+          .rivotTestRideCard { padding-top: 20px; padding-bottom: 16px; }
+          .rivotTestRideCardHead { margin-bottom: 13px; }
+          .rivotTestRideGrid { gap: 8px 12px; }
+          .rivotTestRideCard .rivotTestRideForm input,
+          .rivotTestRideCard .rivotTestRideForm select { min-height: 38px; }
+          .rivotTestRideCard .rivotTestRideForm textarea { min-height: 46px; }
+        }
+
+        @media (max-width: 900px) {
+          .rivotTestRideShell { grid-template-columns: 1fr; }
+          .rivotTestRideStory { max-width: 560px; }
+          .rivotTestRideCard { width: min(100%, 620px); }
+        }
+
+        @media (max-width: 560px) {
+          .rivotTestRideStory h1 { font-size: clamp(38px, 11vw, 52px); }
+          .rivotTestRideCard { padding: 20px 15px; }
+          .rivotTestRideCard .rivotTestRideForm input,
+          .rivotTestRideCard .rivotTestRideForm select,
+          .rivotTestRideCard .rivotTestRideForm textarea { font-size: 16px; }
+        }
+
+        /* Test ride form dark theme */
+        html[data-rivot-theme="dark"] .rivotTestRideCard,
+        html[data-theme="dark"] .rivotTestRideCard {
+          border-color: rgba(255, 255, 255, .16) !important;
+          background: rgba(17, 18, 18, .96) !important;
+          color: #f7f7f5 !important;
+          box-shadow: 0 24px 70px rgba(0, 0, 0, .5) !important;
+        }
+
+        html[data-rivot-theme="dark"] .rivotTestRideCardHead h2,
+        html[data-theme="dark"] .rivotTestRideCardHead h2 {
+          color: #f7f7f5 !important;
+        }
+
+        html[data-rivot-theme="dark"] .rivotTestRideCardHead > p,
+        html[data-theme="dark"] .rivotTestRideCardHead > p,
+        html[data-rivot-theme="dark"] .rivotTestRideCardHead > div > p,
+        html[data-theme="dark"] .rivotTestRideCardHead > div > p {
+          color: #aeb5b9 !important;
+        }
+
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm label,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm label {
+          color: #eceeec !important;
+        }
+
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm label > span,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm label > span {
+          color: #9fa6aa !important;
+        }
+
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm input,
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm select,
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm textarea,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm input,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm select,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm textarea {
+          border-color: rgba(255, 255, 255, .17) !important;
+          background: #202222 !important;
+          color: #f7f7f5 !important;
+          color-scheme: dark;
+          box-shadow: none !important;
+        }
+
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm input::placeholder,
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm textarea::placeholder,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm input::placeholder,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm textarea::placeholder {
+          color: #9ca2a5 !important;
+          opacity: 1 !important;
+        }
+
+        html[data-rivot-theme="dark"] .rivotTestRideCard .rivotTestRideForm select:disabled,
+        html[data-theme="dark"] .rivotTestRideCard .rivotTestRideForm select:disabled {
+          background: #292b2b !important;
+          color: #858b8e !important;
+          opacity: 1;
+        }
+
+        html[data-rivot-theme="dark"] .rivotTestRidePrivacy,
+        html[data-theme="dark"] .rivotTestRidePrivacy {
+          color: #a3aaad !important;
         }
       `}</style>
     </section>

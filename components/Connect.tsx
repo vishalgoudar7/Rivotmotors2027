@@ -971,6 +971,71 @@ export function Connect() {
           transform: none;
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection {
+          background:
+            radial-gradient(circle at 92% 10%, rgba(239, 116, 48, .12), transparent 28%),
+            #080909;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnectSelection,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnectFormPage {
+          background: transparent !important;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :where(.rivotConnectHeader h1, .rivotConnectTitle, .rivotConnectName, .rivotConnectGroup label) {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :where(.rivotConnectHeader p, .rivotConnectSubtitle, .rivotConnectDescription, .rivotConnectDescriptionText) {
+          color: #aeb4b4 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnectCard {
+          border-color: rgba(255, 255, 255, .14) !important;
+          background: #111313 !important;
+          color: #f5f5f2 !important;
+          box-shadow: 0 20px 48px rgba(0, 0, 0, .28) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnectCard:hover,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnectCard:focus-visible {
+          border-color: #ef7430 !important;
+          box-shadow: 0 22px 52px rgba(239, 116, 48, .14) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnectIcon {
+          background: rgba(239, 116, 48, .14) !important;
+          color: #ff7b35;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :where(.rivotConnectBenefits, .rivotConnectFormContainer) {
+          border-color: rgba(255, 255, 255, .14);
+          background: #111313;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnectBenefits li {
+          color: #aeb4b4;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :where(.rivotConnectGroup input, .rivotConnectGroup select, .rivotConnectGroup textarea) {
+          border-color: rgba(255, 255, 255, .16) !important;
+          background: #111313 !important;
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnectGroup select option {
+          background: #111313;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotConnect) :where(.rivotHeader, .rivotBrand, .rivotHeaderLinks a, .rivotProductsButton, .rivotExploreButton) {
+          color: #f5f5f2;
+        }
+
         @media (max-width: 960px) {
           .rivotConnect {
             padding-top: 96px;

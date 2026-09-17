@@ -6927,10 +6927,10 @@ export default function Home() {
             gap: 5px;
             padding: 8px 5px;
             border-radius: 14px;
-            border: 1px solid rgba(255,255,255,.12);
-            background: #151717;
+            border: 1px solid rgba(17,17,17,.1);
+            background: #fff;
             text-align: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,.18);
+            box-shadow: 0 8px 24px rgba(17,17,17,.1);
             transition: background-color .25s ease, border-color .25s ease, box-shadow .25s ease, transform .25s ease;
           }
 
@@ -6954,7 +6954,7 @@ export default function Home() {
           }
 
           .rivotDetailsMobileFeatures b {
-            color: #f5f5f2;
+            color: #171919;
             font-size: 11px;
             font-weight: 800;
             line-height: 1.15;
@@ -6967,6 +6967,16 @@ export default function Home() {
 
           .rivotDetailsMobileFeatures > div.isActive b {
             color: #fff;
+          }
+
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDetailsMobileFeatures > div:not(.isActive) {
+            border-color: rgba(255,255,255,.12);
+            background: #151717;
+            box-shadow: 0 8px 24px rgba(0,0,0,.18);
+          }
+
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotDetailsMobileFeatures > div:not(.isActive) b {
+            color: #f5f5f2;
           }
 
           .rivotDetailsMiniCaption {

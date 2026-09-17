@@ -67,7 +67,7 @@ export function ProductModelExperience({ model }: { model: ProductModel }) {
   useEffect(() => {
     let cancelled = false;
 
-    if (window.innerWidth <= 768) {
+    if (window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches) {
       setLoaded(true);
       setLoadingProgress(100);
       return;
@@ -252,12 +252,12 @@ export function ProductModelExperience({ model }: { model: ProductModel }) {
           <div
             className="viewer"
             onMouseDown={(event) => {
-              if (window.innerWidth <= 768) return;
+              if (window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches) return;
               isDraggingRef.current = true;
               lastXRef.current = event.clientX;
             }}
             onMouseMove={(event) => {
-              if (!isDraggingRef.current || window.innerWidth <= 768) return;
+              if (!isDraggingRef.current || window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches) return;
               updateFrameFromX(event.clientX);
             }}
             onMouseUp={() => {
@@ -267,12 +267,12 @@ export function ProductModelExperience({ model }: { model: ProductModel }) {
               isDraggingRef.current = false;
             }}
             onTouchStart={(event) => {
-              if (window.innerWidth <= 768) return;
+              if (window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches) return;
               isDraggingRef.current = true;
               lastXRef.current = event.touches[0].clientX;
             }}
             onTouchMove={(event) => {
-              if (!isDraggingRef.current || window.innerWidth <= 768) return;
+              if (!isDraggingRef.current || window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches) return;
               updateFrameFromX(event.touches[0].clientX);
             }}
             onTouchEnd={() => {

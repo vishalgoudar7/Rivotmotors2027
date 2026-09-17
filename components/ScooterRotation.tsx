@@ -29,6 +29,16 @@ export function ScooterRotation({ className }: ScooterRotationProps) {
   useEffect(() => {
     let active = true;
 
+    // Retaining 120 decoded 3000x1800 frames can exceed iOS Safari's tab
+    // memory limit. Mobile/touch devices use the first frame as a static image.
+    if (window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches) {
+      loadedFrames.current = new Set([0]);
+      preloadedImages.current = [];
+      return () => {
+        active = false;
+      };
+    }
+
     preloadedImages.current = frames.map((src, index) => {
       const image = new window.Image();
 

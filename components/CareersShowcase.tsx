@@ -87,7 +87,9 @@ export function CareersShowcase() {
   const rightPanelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const checkViewport = () => setIsDesktop(window.innerWidth > 900);
+    const checkViewport = () => setIsDesktop(
+      window.innerWidth > 1024 && window.matchMedia("(pointer: fine)").matches,
+    );
     checkViewport();
     window.addEventListener("resize", checkViewport);
     return () => window.removeEventListener("resize", checkViewport);

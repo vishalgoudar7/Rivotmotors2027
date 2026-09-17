@@ -44,6 +44,25 @@ export function DashboardRotation() {
   useEffect(() => {
     let active = true;
 
+    const mobileOrTouch = window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches;
+    if (mobileOrTouch) {
+      const firstFrame = new window.Image();
+      frameImages.current = [firstFrame];
+      firstFrame.onload = () => {
+        if (active) {
+          loadedFrames.current = new Set([0]);
+          drawFrame(firstFrame);
+        }
+      };
+      firstFrame.src = frames[0];
+
+      return () => {
+        active = false;
+        firstFrame.onload = null;
+        frameImages.current = [];
+      };
+    }
+
     frameImages.current = frames.map((src, index) => {
       const image = new window.Image();
 
@@ -80,6 +99,10 @@ export function DashboardRotation() {
   }, [frames]);
 
   useEffect(() => {
+    if (window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches) {
+      return;
+    }
+
     let active = true;
 
     function animate(timestamp: number) {
