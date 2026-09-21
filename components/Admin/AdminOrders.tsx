@@ -26,7 +26,7 @@ export function AdminOrders({
           <Link href="/admin/dashboard">Home</Link>
           <span>Manage</span>
           <Link className="isActive" href="/admin/orders">Orders</Link>
-          <button type="button" className="adminNavDisabled" disabled>Blog Management</button>
+          <Link href="/admin/blogs">Blog Management</Link>
           <button type="button" className="adminNavDisabled" disabled>Forum Management</button>
           <span>System</span>
           <Link href="/admin/settings">Settings</Link>

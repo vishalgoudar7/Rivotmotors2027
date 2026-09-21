@@ -94,7 +94,7 @@ export function AdminDashboard({
           <Link className="isActive" href="/admin/dashboard">Home</Link>
           <span>Manage</span>
           <Link href="/admin/orders">Orders</Link>
-          <button type="button" className="adminNavDisabled" disabled>Blog Management</button>
+          <Link href="/admin/blogs">Blog Management</Link>
           <button type="button" className="adminNavDisabled" disabled>Forum Management</button>
           <span>System</span>
           <Link href="/admin/settings">Settings</Link>
@@ -145,7 +145,7 @@ export function AdminDashboard({
           <article className="adminPanel quick">
             <h2>Quick Actions</h2>
             <Link href="/admin/orders">Manage Orders</Link>
-            <button type="button" className="quickDisabledLink" disabled>Blog Management</button>
+            <Link href="/admin/blogs">Blog Management</Link>
             <Link href="/admin/settings">Settings</Link>
 
             <div className="miniStats">
