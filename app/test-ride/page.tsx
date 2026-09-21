@@ -134,7 +134,11 @@ export default function TestRidePage() {
       <div className="rivotTestRideShell">
         <div className="rivotTestRideStory">
           <p className="rivotTestRideEyebrow">Experience RIVOT</p>
-          <h1>Test Ride<br /><span>A Brighter</span><br />Tomorrow</h1>
+          <h1>
+            <span className="rivotTestRideTitleLine">Test Ride</span>
+            <span className="rivotTestRideTitleLine rivotTestRideTitleAccent">A Brighter</span>
+            <span className="rivotTestRideTitleLine">Tomorrow</span>
+          </h1>
           <p className="rivotTestRideIntro">Feel the performance. Experience the comfort. Discover why RIVOT is built for a cleaner, smarter future.</p>
           <div className="rivotTestRideBenefits">
             <div><b>⚡</b><p><strong>Real Performance</strong><span>Feel the power yourself</span></p></div>
@@ -626,16 +630,29 @@ export default function TestRidePage() {
         }
 
         .rivotTestRideStory h1 {
+          display: grid;
+          justify-items: start;
+          gap: .035em;
           margin: 0;
           font-size: clamp(48px, 5.7vw, 86px);
           font-weight: 950;
-          line-height: .88;
+          line-height: .86;
           letter-spacing: -.055em;
           text-transform: uppercase;
           text-shadow: 0 6px 28px rgba(0, 0, 0, .3);
         }
 
-        .rivotTestRideStory h1 span { color: #f5762c; }
+        .rivotTestRideTitleLine {
+          display: block;
+          width: max-content;
+          max-width: 100%;
+          color: #fff;
+          white-space: nowrap;
+        }
+
+        .rivotTestRideTitleAccent {
+          color: #f5762c;
+        }
         .rivotTestRideIntro {
           max-width: 455px;
           margin: 22px 0 25px;

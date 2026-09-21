@@ -1,10 +1,10 @@
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
-import detailImage from "@/asset/images/Details/Main detail photo.png";
 import bootImage from "@/asset/images/Details/Boot space with helmet.png";
 import floorImage from "@/asset/images/Details/Floorboard photo.png";
 import discImage from "@/asset/images/last/Disc.png";
 import motorImage from "@/asset/images/last/Motor-card.jpg";
+import sideFootrestImage from "@/asset/models/pro/Left side view.png";
 
 type DetailCard = {
   title: string;
@@ -27,10 +27,10 @@ const designDetails: DetailCard[] = [
     className: "wheel",
   },
   {
-    title: "Body coloured mirrors",
-    copy: "A cleaner look from every angle.",
-    image: detailImage,
-    className: "mirror",
+    title: "Side Footrest",
+    copy: "Added comfort and support for your passenger.",
+    image: sideFootrestImage,
+    className: "mirror footrest",
   },
   {
     title: "New grab handle",
@@ -59,7 +59,12 @@ export function ProductDesignDetails() {
       <div className="productDesignGrid">
         {designDetails.map((detail) => (
           <article className={`productDesignCard ${detail.className}`} key={detail.title}>
-            <Image src={detail.image} alt="" fill sizes="(max-width: 900px) 100vw, 28vw" />
+            <Image
+              src={detail.image}
+              alt={detail.className.includes("footrest") ? "RIVOT scooter side passenger footrest" : ""}
+              fill
+              sizes="(max-width: 900px) 100vw, 28vw"
+            />
             <div className="productDesignShade" aria-hidden="true" />
             <div>
               <h3>{detail.title}</h3>
@@ -181,6 +186,11 @@ export function ProductDesignDetails() {
 
         .productDesignCard:hover img {
           transform: scale(1.035);
+        }
+
+        .productDesignCard.footrest img {
+          object-fit: cover;
+          object-position: center 62%;
         }
 
         .productDesignShade {

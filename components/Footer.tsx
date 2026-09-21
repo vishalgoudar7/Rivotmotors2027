@@ -115,9 +115,11 @@ export function Footer() {
       <style>{`
         .rivotFooter {
           display: block;
+          width: 100%;
           padding: 0;
           border: 0;
-          background: #f5f5f2;
+          overflow: hidden;
+          background: #090a0a;
           color: #f4f4f4;
         }
 
@@ -125,13 +127,12 @@ export function Footer() {
           width: 100%;
           margin: 0;
           overflow: hidden;
-          border-radius: 16px;
+          border-top: 1px solid rgba(239, 116, 48, .42);
+          border-radius: 0;
           background:
             radial-gradient(circle at 100% 0%, rgba(255, 255, 255, .07), transparent 32%),
             linear-gradient(135deg, #151718 0%, #090a0a 100%);
-          box-shadow:
-            0 18px 50px rgba(0, 0, 0, .18),
-            inset 0 0 0 1px rgba(255, 255, 255, .08);
+          box-shadow: none;
         }
 
         .rivotFooterTop {
@@ -342,9 +343,8 @@ export function Footer() {
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFooterShell {
-          box-shadow:
-            0 18px 50px rgba(0, 0, 0, .28),
-            inset 0 0 0 1px rgba(255, 255, 255, .06);
+          border-top-color: rgba(239, 116, 48, .5);
+          box-shadow: none;
         }
 
         @media (max-width: 1080px) {
