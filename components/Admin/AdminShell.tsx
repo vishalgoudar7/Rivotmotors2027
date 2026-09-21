@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FileText, LayoutDashboard, LogOut, Package, ShieldCheck, UserPlus, UserRound } from "lucide-react";
+import { FileText, LayoutDashboard, LogOut, MessageSquare, Package, ShieldCheck, UserPlus, UserRound } from "lucide-react";
 import { logoutAction } from "@/app/admin/actions";
 import rivotLogo from "@/asset/images/Newlogo.png";
 
@@ -17,6 +17,9 @@ export function AdminShell({ active, title, description, children }: { active: s
           {item("/admin/dashboard", "Dashboard", LayoutDashboard, "dashboard")}
           {item("/admin/orders", "Orders", Package, "orders")}
           {item("/admin/blogs", "Blog Management", FileText, "blogs")}
+          {item("/admin/forum", "Forum Management", MessageSquare, "forum")}
+          {item("/admin/forum/categories", "Forum Categories", MessageSquare, "forum-categories")}
+          {item("/admin/forum/replies", "Forum Replies", MessageSquare, "forum-replies")}
           <span>Settings</span>
           {item("/admin/settings#users", "Add Users", UserPlus, "users")}
           {item("/admin/settings#account", "Name / Login Email", UserRound, "account")}

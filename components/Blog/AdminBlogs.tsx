@@ -76,7 +76,7 @@ export function AdminBlogs() {
 
   return <section className="blogAdminPage">
     <aside className="blogAdminSidebar"><div className="blogAdminMark"><Image src={rivotLogo} alt="RIVOT Motors" priority /></div><nav>
-      <Link href="/admin/dashboard">Home</Link><span>Manage</span><Link href="/admin/orders">Orders</Link><Link className="active" href="/admin/blogs">Blog Management</Link><span>System</span><Link href="/admin/settings">Settings</Link><span>Authentication</span><Link href="/admin/logout">Logout</Link>
+      <Link href="/admin/dashboard">Home</Link><span>Manage</span><Link href="/admin/orders">Orders</Link><Link className="active" href="/admin/blogs">Blog Management</Link><Link href="/admin/forum">Forum Management</Link><span>System</span><Link href="/admin/settings">Settings</Link><span>Authentication</span><Link href="/admin/logout">Logout</Link>
     </nav></aside>
     <main className="blogAdminMain">
       <header><div><p>RIVOT Admin</p><h1>Blog Management</h1><small>Create, publish, update, and remove website stories.</small></div><a href="#create-blog">Add New Blog Post</a></header>

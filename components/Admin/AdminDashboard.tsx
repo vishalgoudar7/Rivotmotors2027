@@ -95,7 +95,9 @@ export function AdminDashboard({
           <span>Manage</span>
           <Link href="/admin/orders">Orders</Link>
           <Link href="/admin/blogs">Blog Management</Link>
-          <button type="button" className="adminNavDisabled" disabled>Forum Management</button>
+          <Link href="/admin/forum">Forum Management</Link>
+          <Link href="/admin/forum/categories">Forum Categories</Link>
+          <Link href="/admin/forum/replies">Forum Replies</Link>
           <span>System</span>
           <Link href="/admin/settings">Settings</Link>
           <span>Authentication</span>

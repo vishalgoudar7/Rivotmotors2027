@@ -1,0 +1,1 @@
+import{redirect}from"next/navigation";import{requireAdmin}from"../../_lib/session";import{ForumCategories}from"@/components/Forum/ForumCategories";export const dynamic="force-dynamic";export default async function Page(){if(!await requireAdmin())redirect("/admin/login");return <ForumCategories/>}
