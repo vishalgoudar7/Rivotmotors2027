@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { orderValue, type AdminOrder, type OrdersResult } from "@/app/admin/_lib/orders";
 import { OrdersActions, type OrderExportRow } from "@/components/Admin/OrdersActions";
+import { AutoSubmitStatus } from "@/components/Admin/AutoSubmitStatus";
 
 function formatAmount(value: string) {
   const amount = Number(value);
@@ -104,12 +105,7 @@ export function OrdersTable({
 
       <form className="orderFilterBar">
         <input name="search" defaultValue={search} placeholder="Search orders" />
-        <select name="status" defaultValue={status}>
-          <option value="">All statuses</option>
-          <option value="order_not_completed">Pending</option>
-          <option value="payment_completed">Completed</option>
-          <option value="payment_failed">Failed</option>
-        </select>
+        <AutoSubmitStatus defaultValue={status} />
         <button type="submit">Filter</button>
       </form>
 
@@ -305,6 +301,15 @@ export function OrdersTable({
           font-weight: 700;
         }
 
+        .orderFilterBar select {
+          color-scheme: dark;
+        }
+
+        .orderFilterBar select option {
+          background: #171717;
+          color: #fff;
+        }
+
         .orderFilterBar input {
           flex: 1 1 220px;
         }
@@ -330,9 +335,9 @@ export function OrdersTable({
         }
 
         table {
-          width: 1930px;
-          min-width: 1930px;
-          table-layout: fixed;
+          width: max-content;
+          min-width: 100%;
+          table-layout: auto;
           border-collapse: collapse;
         }
 
@@ -369,8 +374,8 @@ export function OrdersTable({
           color: rgba(255,255,255,0.88);
           font-size: 0.88rem;
           white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          overflow: visible;
+          text-overflow: clip;
         }
 
         th {

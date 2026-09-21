@@ -23,6 +23,7 @@ export function AdminBlogs() {
   const [editing, setEditing] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all"|Status>("all");
   const [notice, setNotice] = useState<{kind:"success"|"error"; text:string}|null>(null);
@@ -52,7 +53,7 @@ export function AdminBlogs() {
       const payload = await response.json();
       if (!response.ok || !payload.success) throw new Error(errorText(payload, "Unable to save blog post."));
       setNotice({kind:"success", text:editing ? "Blog post updated successfully." : "Blog post created successfully."});
-      reset(); await load();
+      reset(); setShowCreate(false); await load();
     } catch (error) {
       setNotice({kind:"error", text:error instanceof Error ? error.message : "Unable to save blog post."});
     } finally { setSaving(false); }
@@ -79,19 +80,19 @@ export function AdminBlogs() {
       <Link href="/admin/dashboard">Home</Link><span>Manage</span><Link href="/admin/orders">Orders</Link><Link className="active" href="/admin/blogs">Blog Management</Link><Link href="/admin/forum">Forum Management</Link><span>System</span><Link href="/admin/settings">Settings</Link><span>Authentication</span><Link href="/admin/logout">Logout</Link>
     </nav></aside>
     <main className="blogAdminMain">
-      <header><div><p>RIVOT Admin</p><h1>Blog Management</h1><small>Create, publish, update, and remove website stories.</small></div><a href="#create-blog">Add New Blog Post</a></header>
+      <header><div><p>RIVOT Admin</p><h1>Blog Management</h1><small>Create, publish, update, and remove website stories.</small></div><a href={showCreate ? "#" : "#create-blog"} onClick={()=>setShowCreate(value=>!value)}>{showCreate ? "Close Form" : "Add New Blog Post"}</a></header>
       {notice && <div className={`blogNotice ${notice.kind}`}>{notice.text}</div>}
-      <div className="blogAdminGrid">
+      {showCreate ? <div className="blogAdminGrid">
         <form className="blogEditor" id="create-blog" onSubmit={save}>
           <label>Title *<input value={form.title} onChange={(e)=>field("title",e.target.value)} maxLength={255} required /></label>
           <label>Excerpt *<textarea value={form.excerpt} onChange={(e)=>field("excerpt",e.target.value)} rows={3} placeholder="Brief description of the blog post" required /></label>
           <label>Content *<textarea value={form.content} onChange={(e)=>field("content",e.target.value)} rows={14} placeholder="Write the blog post here. HTML tags are supported." required /><small>HTML tags such as &lt;p&gt;, &lt;h3&gt;, &lt;ul&gt;, and &lt;li&gt; are supported.</small></label>
           <div className="blogEditorRow"><label>Image URL *<input value={form.image_url} onChange={(e)=>field("image_url",e.target.value)} maxLength={500} placeholder="/Story_page/blog-image.webp" required /></label><label>Author *<input value={form.author} onChange={(e)=>field("author",e.target.value)} maxLength={100} required /></label></div>
           <label>Status<select value={form.status} onChange={(e)=>field("status",e.target.value as Status)}><option value="draft">Draft</option><option value="published">Published</option></select></label>
-          <div className="blogFormActions"><button disabled={saving}>{saving ? "Saving…" : editing ? "Update Blog Post" : "Create Blog Post"}</button>{editing && <button className="secondary" type="button" onClick={reset}>Cancel edit</button>}</div>
+          <div className="blogFormActions"><button disabled={saving}>{saving ? "Saving…" : editing ? "Update Blog Post" : "Create Blog Post"}</button><button className="secondary" type="button" onClick={()=>{reset();setShowCreate(false)}}>Cancel</button></div>
         </form>
         <aside className="blogTips"><h2>Publishing tips</h2><ul><li>Use a clear, engaging title.</li><li>Keep the excerpt concise.</li><li>Use a high-quality image.</li><li>Save unfinished work as a draft.</li><li>Preview published posts before sharing.</li></ul></aside>
-      </div>
+      </div> : null}
       <section className="blogList"><div className="blogListHead"><div><p>Content library</p><h2>All Blog Posts</h2></div><strong>{filteredBlogs.length}</strong></div>
         <div className="blogFilters"><label>Search<input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by title or content..." /></label><label>Status<select value={statusFilter} onChange={e=>setStatusFilter(e.target.value as "all"|Status)}><option value="all">All Status</option><option value="draft">Draft</option><option value="published">Published</option></select></label></div>
         {loading ? <div className="empty">Loading blog posts…</div> : !filteredBlogs.length ? <div className="empty">No blog posts found. Adjust the filters or create a new post.</div> : <div className="blogTable"><table><thead><tr><th>Title</th><th>Author</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead><tbody>{filteredBlogs.map((blog)=><tr key={blog.id}><td><div className="blogTitleCell">{blog.image_url ? <img src={blog.image_url.startsWith("/") ? blog.image_url : `/${blog.image_url}`} alt="" /> : null}<span><b>{blog.title}</b><small>{blog.excerpt}</small></span></div></td><td>{blog.author}</td><td><BlogStatusToggle id={blog.id} status={blog.status} onUpdated={status=>setBlogs(current=>current.map(item=>item.id===blog.id?{...item,status}:item))} /></td><td>{blog.created_at ? new Date(blog.created_at).toLocaleDateString("en-IN") : "—"}</td><td><div className="rowActions"><Link href={`/admin/blogs/${blog.id}/preview`}>View</Link><Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link><button className="delete" onClick={()=>void remove(blog)}>Delete</button></div></td></tr>)}</tbody></table></div>}

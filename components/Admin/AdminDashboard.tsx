@@ -4,6 +4,7 @@ import { logoutAction } from "@/app/admin/actions";
 import { OrdersTable } from "@/components/Admin/OrdersTable";
 import { orderValue, type AdminOrder, type OrdersResult } from "@/app/admin/_lib/orders";
 import rivotLogo from "@/asset/images/Newlogo.png";
+import { FileText, LayoutDashboard, LogOut, MessageSquare, Package, Settings } from "lucide-react";
 
 function formatAmount(value: string) {
   const amount = Number(value);
@@ -91,17 +92,17 @@ export function AdminDashboard({
       <aside className="adminSidebar">
         <div className="adminMark"><Image src={rivotLogo} alt="RIVOT Motors" priority /></div>
         <nav>
-          <Link className="isActive" href="/admin/dashboard">Home</Link>
+          <Link className="isActive" href="/admin/dashboard"><LayoutDashboard aria-hidden="true" />Home</Link>
           <span>Manage</span>
-          <Link href="/admin/orders">Orders</Link>
-          <Link href="/admin/blogs">Blog Management</Link>
-          <Link href="/admin/forum">Forum Management</Link>
-          <Link href="/admin/forum/categories">Forum Categories</Link>
-          <Link href="/admin/forum/replies">Forum Replies</Link>
+          <Link href="/admin/orders"><Package aria-hidden="true" />Orders</Link>
+          <Link href="/admin/blogs"><FileText aria-hidden="true" />Blog Management</Link>
+          <Link href="/admin/forum"><MessageSquare aria-hidden="true" />Forum Management</Link>
+          <Link href="/admin/forum/categories"><MessageSquare aria-hidden="true" />Forum Categories</Link>
+          <Link href="/admin/forum/replies"><MessageSquare aria-hidden="true" />Forum Replies</Link>
           <span>System</span>
-          <Link href="/admin/settings">Settings</Link>
+          <Link href="/admin/settings"><Settings aria-hidden="true" />Settings</Link>
           <span>Authentication</span>
-          <form action={logoutAction}><button type="submit">Logout</button></form>
+          <form action={logoutAction}><button type="submit"><LogOut aria-hidden="true" />Logout</button></form>
         </nav>
       </aside>
 
@@ -280,6 +281,23 @@ export function AdminDashboard({
           font-size: 13px;
           font-weight: 850;
           text-decoration: none;
+        }
+
+        .adminSidebar a,
+        .adminSidebar button {
+          gap: 10px;
+        }
+
+        .adminSidebar a svg,
+        .adminSidebar button svg {
+          width: 17px;
+          height: 17px;
+          flex: 0 0 17px;
+          stroke-width: 1.8;
+        }
+
+        .adminSidebar a.isActive svg {
+          color: #ef7430;
         }
 
         .adminSidebar button {

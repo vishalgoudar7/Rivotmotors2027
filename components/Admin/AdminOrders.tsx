@@ -4,6 +4,7 @@ import { logoutAction } from "@/app/admin/actions";
 import { OrdersTable } from "@/components/Admin/OrdersTable";
 import type { AdminOrder, OrdersResult } from "@/app/admin/_lib/orders";
 import rivotLogo from "@/asset/images/Newlogo.png";
+import { FileText, LayoutDashboard, LogOut, MessageSquare, Package, Settings } from "lucide-react";
 
 export function AdminOrders({
   result,
@@ -23,27 +24,22 @@ export function AdminOrders({
       <aside className="adminSidebar">
         <div className="adminMark"><Image src={rivotLogo} alt="RIVOT Motors" priority /></div>
         <nav>
-          <Link href="/admin/dashboard">Home</Link>
+          <Link href="/admin/dashboard"><LayoutDashboard aria-hidden="true" />Home</Link>
           <span>Manage</span>
-          <Link className="isActive" href="/admin/orders">Orders</Link>
-          <Link href="/admin/blogs">Blog Management</Link>
-          <Link href="/admin/forum">Forum Management</Link>
-          <Link href="/admin/forum/categories">Forum Categories</Link>
-          <Link href="/admin/forum/replies">Forum Replies</Link>
+          <Link className="isActive" href="/admin/orders"><Package aria-hidden="true" />Orders</Link>
+          <Link href="/admin/blogs"><FileText aria-hidden="true" />Blog Management</Link>
+          <Link href="/admin/forum"><MessageSquare aria-hidden="true" />Forum Management</Link>
+          <Link href="/admin/forum/categories"><MessageSquare aria-hidden="true" />Forum Categories</Link>
+          <Link href="/admin/forum/replies"><MessageSquare aria-hidden="true" />Forum Replies</Link>
           <span>System</span>
-          <Link href="/admin/settings">Settings</Link>
+          <Link href="/admin/settings"><Settings aria-hidden="true" />Settings</Link>
           <span>Authentication</span>
-          <form action={logoutAction}><button type="submit">Logout</button></form>
+          <form action={logoutAction}><button type="submit"><LogOut aria-hidden="true" />Logout</button></form>
         </nav>
       </aside>
 
       <main className="adminOrdersMain">
         <header className="adminOrdersHeader">
-          <div>
-            <p>RIVOT Admin</p>
-            <h1>Orders</h1>
-            <span>View every booking order and payment status in one place.</span>
-          </div>
           <div className="adminOrdersActions">
             <Link href="/admin/dashboard">Dashboard</Link>
             <Link href="/book-now">Add Order</Link>
@@ -116,6 +112,23 @@ export function AdminOrders({
           text-align: left;
         }
 
+        .adminSidebar a,
+        .adminSidebar button {
+          gap: 10px;
+        }
+
+        .adminSidebar a svg,
+        .adminSidebar button svg {
+          width: 17px;
+          height: 17px;
+          flex: 0 0 17px;
+          stroke-width: 1.8;
+        }
+
+        .adminSidebar a.isActive svg {
+          color: #ef7430;
+        }
+
         .adminSidebar .adminNavDisabled {
           color: rgba(255,255,255,.38);
           cursor: not-allowed;
@@ -150,7 +163,7 @@ export function AdminOrders({
         .adminOrdersHeader {
           display: flex;
           align-items: flex-start;
-          justify-content: space-between;
+          justify-content: flex-end;
           gap: 20px;
           margin-bottom: 24px;
         }
