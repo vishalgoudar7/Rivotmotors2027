@@ -1,5 +1,4 @@
 import Image, { type StaticImageData } from "next/image";
-import Link from "next/link";
 import bootImage from "@/asset/images/Details/Boot space with helmet.png";
 import floorImage from "@/asset/images/Details/Floorboard photo.png";
 import discImage from "@/asset/images/last/Disc.png";
@@ -51,9 +50,8 @@ export function ProductDesignDetails() {
     <section className="productDesignDetails" id="details" aria-labelledby="product-design-details-title">
       <div className="productDesignIntro">
         <p><span>03</span> Design</p>
-        <h2 id="product-design-details-title">A closer look at what makes it unique.</h2>
+        <h2 id="product-design-details-title">A closer look at what makes it <span>unique.</span></h2>
         <small>Thoughtful details. Everyday comfort. Timeless RIVOT style.</small>
-        <Link href="/products#details">Explore Design <span aria-hidden="true">{"\u2192"}</span></Link>
       </div>
 
       <div className="productDesignGrid">
@@ -78,13 +76,13 @@ export function ProductDesignDetails() {
         .productDesignDetails {
           display: grid;
           grid-template-columns: minmax(270px, 380px) minmax(0, 1fr);
-          gap: clamp(34px, 5vw, 76px);
+          gap: clamp(40px, 5vw, 80px);
           align-items: center;
-          min-height: 100vh;
-          padding: clamp(76px, 8vw, 112px) clamp(26px, 6vw, 96px);
+          min-height: calc(100svh - 88px);
+          padding: clamp(64px, 7vw, 96px) clamp(26px, 6vw, 96px);
           background:
-            radial-gradient(circle at 12% 8%, rgba(239, 116, 48, .08), transparent 28%),
-            linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
+            radial-gradient(circle at 8% 18%, rgba(239, 116, 48, .1), transparent 25%),
+            linear-gradient(135deg, #fff 0%, #fafafa 54%, #f1f3f4 100%);
           color: #080808;
         }
 
@@ -98,8 +96,8 @@ export function ProductDesignDetails() {
           align-items: center;
           gap: 16px;
           margin: 0 0 28px;
-          color: #111;
-          font-size: 13px;
+          color: #ef7430;
+          font-size: 14px;
           font-weight: 800;
           letter-spacing: .18em;
           line-height: 1.2;
@@ -108,18 +106,18 @@ export function ProductDesignDetails() {
 
         .productDesignIntro p span {
           letter-spacing: 0;
-          color: #111;
+          color: inherit;
         }
 
         .productDesignIntro p::after {
           content: "";
-          width: 48px;
+          width: 70px;
           height: 1px;
           background: #ef7430;
         }
 
         .productDesignIntro h2 {
-          max-width: 340px;
+          max-width: 370px;
           margin: 0;
           color: #070707;
           font-size: 48px;
@@ -128,64 +126,49 @@ export function ProductDesignDetails() {
           letter-spacing: 0;
         }
 
+        .productDesignIntro h2 span {
+          color: #ef7430;
+        }
+
         .productDesignIntro small {
           display: block;
-          max-width: 290px;
-          margin-top: 20px;
-          color: #64717a;
-          font-size: 15px;
+          max-width: 330px;
+          margin-top: 24px;
+          color: #5f6b73;
+          font-size: 16px;
           font-weight: 500;
           line-height: 1.38;
-        }
-
-        .productDesignIntro a {
-          display: inline-flex;
-          align-items: center;
-          gap: 12px;
-          margin-top: 30px;
-          color: #111;
-          font-size: 14px;
-          font-weight: 700;
-          text-decoration: none;
-          transition: color .2s ease, transform .2s ease;
-        }
-
-        .productDesignIntro a:hover,
-        .productDesignIntro a:focus-visible {
-          color: #ef7430;
-          outline: none;
-          transform: translateX(3px);
         }
 
         .productDesignGrid {
           display: grid;
           grid-template-columns: repeat(6, minmax(0, 1fr));
-          grid-auto-rows: minmax(210px, 1fr);
-          gap: 14px;
+          grid-auto-rows: minmax(230px, 1fr);
+          gap: 16px;
           min-width: 0;
         }
 
         .productDesignCard {
           position: relative;
-          min-height: 220px;
+          min-height: 230px;
           overflow: hidden;
-          border: 1px solid rgba(17, 17, 17, .08);
-          border-radius: 8px;
-          background: #edf0f1;
-          box-shadow: 0 18px 42px rgba(17, 17, 17, .08);
+          border: 1px solid rgba(17, 17, 17, .1);
+          border-radius: 18px;
+          background: #171919;
+          box-shadow: 0 20px 44px rgba(17, 17, 17, .12);
           transform: none;
         }
 
         .productDesignCard img {
-          inset: -4% !important;
-          width: 108% !important;
-          height: 108% !important;
+          inset: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
           object-fit: cover;
-          transition: transform .35s ease;
+          transition: transform .45s ease;
         }
 
         .productDesignCard:hover img {
-          transform: scale(1.035);
+          transform: scale(1.045);
         }
 
         .productDesignCard.footrest img {
@@ -196,22 +179,35 @@ export function ProductDesignDetails() {
         .productDesignShade {
           position: absolute;
           inset: 0;
-          background: linear-gradient(110deg, rgba(255,255,255,.88), rgba(255,255,255,.26) 55%, rgba(0,0,0,.12));
+          background:
+            linear-gradient(180deg, rgba(0,0,0,.05) 22%, rgba(0,0,0,.82) 100%),
+            linear-gradient(90deg, rgba(0,0,0,.24), transparent 66%);
           z-index: 1;
         }
 
         .productDesignCard div:last-child {
-          position: relative;
+          position: absolute;
+          inset: auto 0 0;
           z-index: 2;
           padding: clamp(20px, 2vw, 28px);
-          color: #111;
+          color: #fff;
+        }
+
+        .productDesignCard div:last-child::before {
+          content: "";
+          display: block;
+          width: 38px;
+          height: 3px;
+          margin-bottom: 12px;
+          border-radius: 999px;
+          background: #ef7430;
         }
 
         .productDesignCard h3 {
           max-width: 210px;
           margin: 0;
-          color: #111;
-          font-size: clamp(20px, 1.55vw, 24px);
+          color: #fff;
+          font-size: clamp(21px, 1.55vw, 26px);
           font-weight: 800;
           line-height: 1.04;
           letter-spacing: 0;
@@ -220,8 +216,8 @@ export function ProductDesignDetails() {
         .productDesignCard p {
           max-width: 230px;
           margin: 9px 0 0;
-          color: #5d666d;
-          font-size: 15px;
+          color: rgba(255, 255, 255, .78);
+          font-size: 16px;
           font-weight: 500;
           line-height: 1.3;
         }
@@ -246,24 +242,6 @@ export function ProductDesignDetails() {
           grid-column: span 3;
         }
 
-        .productDesignCard.wheel .productDesignShade,
-        .productDesignCard.drive .productDesignShade {
-          background: linear-gradient(110deg, rgba(0,0,0,.48), rgba(0,0,0,.08) 56%, rgba(255,255,255,.08));
-        }
-
-        .productDesignCard.wheel h3,
-        .productDesignCard.wheel p,
-        .productDesignCard.drive h3,
-        .productDesignCard.drive p {
-          color: #fff;
-          text-shadow: 0 8px 18px rgba(0, 0, 0, .35);
-        }
-
-        .productDesignCard.wheel p,
-        .productDesignCard.drive p {
-          color: rgba(255, 255, 255, .78);
-        }
-
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignDetails {
           background:
             radial-gradient(circle at 12% 8%, rgba(239, 116, 48, .08), transparent 30%),
@@ -271,12 +249,16 @@ export function ProductDesignDetails() {
           color: #f5f5f2;
         }
 
-        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.productDesignIntro h2, .productDesignIntro a) {
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro h2 {
           color: #f5f5f2 !important;
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro h2 span {
+          color: #ef7430 !important;
+        }
+
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro p {
-          color: #aeb4b4 !important;
+          color: #ef7430 !important;
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro p span {
@@ -293,9 +275,10 @@ export function ProductDesignDetails() {
           box-shadow: 0 18px 42px rgba(0, 0, 0, .34);
         }
 
-        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignShade,
-        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.productDesignCard.wheel, .productDesignCard.drive) .productDesignShade {
-          background: linear-gradient(110deg, rgba(0, 0, 0, .68), rgba(0, 0, 0, .2) 56%, rgba(0, 0, 0, .34));
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignShade {
+          background:
+            linear-gradient(180deg, rgba(0,0,0,.08) 22%, rgba(0,0,0,.88) 100%),
+            linear-gradient(90deg, rgba(0,0,0,.3), transparent 66%);
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.productDesignCard h3, .productDesignCard p) {
@@ -348,12 +331,13 @@ export function ProductDesignDetails() {
           }
 
           .productDesignCard {
-            min-height: 240px;
+            min-height: 270px;
           }
 
           .productDesignIntro h2 {
             font-size: 42px;
           }
+
         }
       `}</style>
     </section>

@@ -1,35 +1,29 @@
-import Link from "next/link";
-
 type ProductPerformanceBandProps = {
   modelName: string;
 };
 
 const performanceCards = [
   {
-    label: "4.4 kWh",
-    title: "Battery",
-    copy: "Power built for long daily rides.",
+    label: "Up to 200 km",
+    title: "Real-World Range",
     tone: "orange",
     icon: "bolt",
   },
   {
-    label: "100 km/h",
-    title: "Top Speed",
-    copy: "Ready when the road opens up.",
+    label: "0–80% in 35 min",
+    title: "Fast Charging",
     tone: "blue",
     icon: "gauge",
   },
   {
-    label: "200 km",
-    title: "Range",
-    copy: "Go further between charges.",
+    label: "Smooth & Agile",
+    title: "City Ready",
     tone: "green",
     icon: "pin",
   },
   {
-    label: "35 min",
-    title: "Flash Charger",
-    copy: "Fast charging for quick daily turnarounds.",
+    label: "A Stronger Tomorrow",
+    title: "Built to Last",
     tone: "amber",
     icon: "bolt",
   },
@@ -82,7 +76,6 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
             Power. Speed. Range. <span>Safety.</span>
           </h2>
           <small>Ready. Set. Ride.</small>
-          <Link href="/test-ride">Feel the Difference <span aria-hidden="true">{"\u2192"}</span></Link>
           <b>Built for a bolder tomorrow.</b>
         </div>
 
@@ -96,7 +89,6 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
                 <h3>{card.label}</h3>
                 <p>{card.title}</p>
                 <i aria-hidden="true" />
-                <small>{card.copy}</small>
               </div>
             </article>
           ))}
@@ -202,33 +194,6 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
           font-size: 15px;
           font-weight: 500;
           line-height: 1.45;
-        }
-
-        .productPerformanceCopy a {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 14px;
-          width: fit-content;
-          min-height: 54px;
-          margin-top: 34px;
-          padding: 0 30px;
-          border: 1px solid #ef7430;
-          border-radius: 999px;
-          background: #ef7430;
-          color: #fff;
-          font-size: 15px;
-          font-weight: 700;
-          text-decoration: none;
-          transition: background .2s ease, border-color .2s ease, transform .2s ease;
-        }
-
-        .productPerformanceCopy a:hover,
-        .productPerformanceCopy a:focus-visible {
-          border-color: #ef7430;
-          background: #d96120;
-          outline: none;
-          transform: translateY(-2px);
         }
 
         .productPerformanceCopy b {
@@ -420,10 +385,6 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
 
           .productPerformanceCopy h2 {
             font-size: 48px;
-          }
-
-          .productPerformanceCopy a {
-            width: 100%;
           }
 
           .productPerformanceCopy b {
