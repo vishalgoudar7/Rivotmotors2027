@@ -66,64 +66,35 @@ export function ProductDetailSupportSections() {
       <section className="rivotBestFit" aria-labelledby="best-fit-title">
         <div className="rivotBestFitShell">
           <div className="rivotBestFitHeader">
-            <p>Keep Riding</p>
-            <h2 id="best-fit-title">Your Scooter. Our Support.</h2>
-            <small>Essential products and plans to keep you moving, always.</small>
+            <h2 id="best-fit-title">A best fit for your Scooter</h2>
+            <p>There&apos;s more under the hood.</p>
           </div>
 
           <div className="rivotBestFitGrid">
-            <article className="rivotBestFitCard">
-              <span className="rivotBestFitShield rivotBestFitShieldBlue" aria-hidden="true">
-                <svg viewBox="0 0 92 92" fill="none">
-                  <path d="M46 5L76 17V39C76 61.5 63.35 76.35 46 86C28.65 76.35 16 61.5 16 39V17L46 5Z" fill="currentColor" opacity=".1" />
-                  <path d="M46 18L66 26V41C66 56.1 57.8 66.4 46 73C34.2 66.4 26 56.1 26 41V26L46 18Z" fill="currentColor" opacity=".55" />
-                  <path d="M31 46H36L39 36H53L56 46H61" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M36 46V53M56 46V53" stroke="#fff" strokeWidth="4" strokeLinecap="round" />
-                  <circle cx="40" cy="54" r="3" fill="#fff" />
-                  <circle cx="52" cy="54" r="3" fill="#fff" />
-                </svg>
-              </span>
-              <p className="rivotBestFitEyebrow rivotBestFitBlueText">Roadside Assistance</p>
-              <h3>Available 24x7</h3>
-              <p>Help is just a call away</p>
-
-              <button className="rivotBestFitDisabled" type="button" disabled>Coming Soon</button>
-            </article>
-
-            <article className="rivotBestFitCard">
-              <span className="rivotBestFitShield rivotBestFitShieldGreen" aria-hidden="true">
-                <svg viewBox="0 0 92 92" fill="none">
-                  <path d="M46 5L76 17V39C76 61.5 63.35 76.35 46 86C28.65 76.35 16 61.5 16 39V17L46 5Z" fill="currentColor" opacity=".12" />
-                  <path d="M46 18L66 26V41C66 56.1 57.8 66.4 46 73C34.2 66.4 26 56.1 26 41V26L46 18Z" fill="currentColor" opacity=".68" />
-                  <path d="M45 35L48 30L52 34L58 34L57 40L61 45L56 49L55 55L49 55L45 60L41 55L35 55L34 49L29 45L33 40L32 34L38 34L41 30L45 35Z" stroke="#fff" strokeWidth="3.5" strokeLinejoin="round" />
-                  <path d="M40 45L44 49L51 41" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              <p className="rivotBestFitEyebrow rivotBestFitGreenText">Extended Warranty</p>
-              <h3>Battery + Motor</h3>
-              <p>Extended protection, zero worries.</p>
-
-              <Link href="/legal/warranty" className="rivotBestFitPill">
-                Explore More
+            <article className="rivotBestFitCard rivotBestFitAccessories">
+              <Image src="/images/shop/accessories.optimized.webp" alt="RIVOT scooter accessories" fill sizes="(max-width: 1000px) 100vw, 33vw" className="rivotBestFitCardImage" />
+              <h3>Accessories</h3>
+              <p>There&apos;s more under the hood.</p>
+              <Link href="/merchandise" className="rivotBestFitCta">
+                Shop accessories <span aria-hidden="true">{"\u2192"}</span>
               </Link>
             </article>
 
-            <article className="rivotBestFitCard rivotBestFitSubscription">
-              <span className="rivotBestFitShield rivotBestFitShieldBlue" aria-hidden="true">
-                <svg viewBox="0 0 92 92" fill="none">
-                  <path d="M46 5L76 17V39C76 61.5 63.35 76.35 46 86C28.65 76.35 16 61.5 16 39V17L46 5Z" fill="currentColor" opacity=".1" />
-                  <path d="M46 18L66 26V41C66 56.1 57.8 66.4 46 73C34.2 66.4 26 56.1 26 41V26L46 18Z" fill="currentColor" opacity=".62" />
-                  <path d="M46 56L35.5 46.3C29.6 40.6 38 32.3 43.8 38L46 40.2L48.2 38C54 32.3 62.4 40.6 56.5 46.3L46 56Z" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M61 27V20M61 27H68" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
-                </svg>
-              </span>
-              <p className="rivotBestFitEyebrow rivotBestFitBlueText">Subscription</p>
-              <h3>SMART CARE
-</h3>
-              <p>Extended coverage that keeps you moving with confidence.</p>
+            <Link href="/legal/warranty" className="rivotBestFitCard" aria-label="View RIVOT extended warranty">
+              <Image src="/images/shop/battery.optimized.webp" alt="Battery and motor extended warranty" fill sizes="(max-width: 1000px) 100vw, 33vw" className="rivotBestFitCardImage" />
+              <p className="rivotBestFitEyebrow rivotBestFitGreenText">Extended Warranty</p>
+              <h3>Battery + Motor</h3>
+              <p>Engineered for a longer, smarter ride.</p>
+              <span className="rivotBestFitCta">Explore more</span>
+            </Link>
 
-              <Link href="/products" className="rivotBestFitPill">
-                Explore More
+            <article className="rivotBestFitCard rivotBestFitSubscription">
+              <Image src="/images/shop/smart-care.optimized.webp" alt="Smart Care extended scooter coverage" fill sizes="(max-width: 1000px) 100vw, 33vw" className="rivotBestFitCardImage" />
+              <p className="rivotBestFitEyebrow rivotBestFitBlueText">Subscription</p>
+              <h3>Smart Care</h3>
+              <p>Extended Warranty &amp; Care for your Simple Scooters.</p>
+              <Link href="/legal/subscriptions" className="rivotBestFitCta">
+                Explore more
               </Link>
             </article>
           </div>
@@ -858,6 +829,166 @@ export function ProductDetailSupportSections() {
             border-radius: 14px 14px 0 0;
             order: -1;
           }
+        }
+
+        /* Keep the product-page shop section in sync with the home-page cards. */
+        .rivotBestFit {
+          min-height: calc(100svh - 88px);
+          display: flex;
+          align-items: center;
+          padding: clamp(22px, 3vh, 32px) clamp(16px, 4vw, 48px);
+          background: #f7f7f5;
+        }
+
+        .rivotBestFitShell { width: min(100%, 1320px); }
+
+        .rivotBestFitHeader h2 {
+          font-size: clamp(32px, 3.2vw, 44px);
+          line-height: .95;
+          letter-spacing: -.055em;
+        }
+
+        .rivotBestFitHeader > p {
+          display: block;
+          margin: 8px 0 0;
+          color: #777d84;
+          font-size: 15px;
+          font-weight: 750;
+          letter-spacing: 0;
+          line-height: 1.35;
+          text-transform: none;
+        }
+
+        .rivotBestFitHeader > p::before,
+        .rivotBestFitHeader > p::after { display: none; }
+
+        .rivotBestFitGrid { margin-top: clamp(22px, 3vh, 32px); }
+
+        .rivotBestFitCard,
+        .rivotBestFitSubscription {
+          position: relative;
+          display: flex;
+          height: clamp(390px, calc(100svh - 285px), 470px);
+          min-height: 0;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          padding: clamp(28px, 2.5vw, 40px);
+          border: 0;
+          border-radius: 14px;
+          background: #111313;
+          text-align: center;
+          overflow: hidden;
+          isolation: isolate;
+          box-shadow: 0 18px 40px rgba(17, 19, 19, .12);
+        }
+
+        .rivotBestFitCard::before,
+        .rivotBestFitAccessories::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: linear-gradient(180deg, rgba(5, 7, 8, .76) 0%, rgba(5, 7, 8, .42) 25%, rgba(5, 7, 8, .1) 52%, rgba(5, 7, 8, .62) 78%, rgba(5, 7, 8, .96) 100%);
+          pointer-events: none;
+        }
+
+        .rivotBestFitCardImage {
+          z-index: 0;
+          object-fit: cover;
+          object-position: center;
+          transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .rivotBestFitCard:hover {
+          transform: none;
+          border-color: transparent;
+          box-shadow: 0 18px 40px rgba(17, 19, 19, .12);
+        }
+
+        .rivotBestFitCard:hover .rivotBestFitCardImage { transform: scale(1.035); }
+
+        .rivotBestFitCard > *:not(.rivotBestFitCardImage) {
+          position: relative;
+          z-index: 2;
+          text-shadow: 0 2px 14px rgba(0, 0, 0, .72);
+        }
+
+        .rivotBestFitCard .rivotBestFitEyebrow,
+        .rivotBestFitSubscription .rivotBestFitEyebrow {
+          margin: 0 0 12px;
+          font-size: 12px;
+          line-height: 1.1;
+        }
+
+        .rivotBestFitCard h3,
+        .rivotBestFitSubscription h3 {
+          margin: 0;
+          color: #fff;
+          font-size: clamp(28px, 2.1vw, 36px);
+          letter-spacing: -.045em;
+        }
+
+        .rivotBestFitCard > p:not(.rivotBestFitEyebrow),
+        .rivotBestFitSubscription > p:not(.rivotBestFitEyebrow) {
+          max-width: 330px;
+          margin-top: 8px;
+          color: rgba(255,255,255,.78);
+          font-size: clamp(14px, 1vw, 16px);
+          line-height: 1.35;
+          text-align: center;
+        }
+
+        .rivotBestFitCta {
+          position: relative;
+          z-index: 2;
+          display: inline-flex;
+          min-width: 0;
+          min-height: 52px;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          margin-top: auto;
+          padding: 0 28px;
+          border: 1px solid #ef7430;
+          border-radius: 12px;
+          background: #ef7430;
+          color: #fff;
+          font-size: 15px;
+          font-weight: 850;
+          line-height: 1;
+        }
+
+        @media (max-width: 1000px) {
+          .rivotBestFit {
+            min-height: 0;
+            display: block;
+            padding: clamp(58px, 8vw, 88px) clamp(16px, 4vw, 48px);
+          }
+
+          .rivotBestFitGrid {
+            grid-template-columns: 1fr;
+            width: min(100%, 620px);
+            margin-inline: auto;
+          }
+
+          .rivotBestFitCard,
+          .rivotBestFitSubscription {
+            height: clamp(430px, 76vw, 540px);
+            min-height: clamp(430px, 76vw, 540px);
+          }
+        }
+
+        @media (max-width: 560px) {
+          .rivotBestFitCard,
+          .rivotBestFitSubscription {
+            height: 430px;
+            min-height: 430px;
+            padding: 26px 22px;
+            border-radius: 12px;
+          }
+
+          .rivotBestFitCta { width: 100%; }
         }
       `}</style>
     </>

@@ -8,24 +8,28 @@ const performanceCards = [
     title: "Real-World Range",
     tone: "orange",
     icon: "bolt",
+    image: rangeImage,
   },
   {
     label: "0–80% in 35 min",
     title: "Fast Charging",
     tone: "blue",
     icon: "gauge",
+    image: chargingImage,
   },
   {
     label: "Smooth & Agile",
     title: "City Ready",
     tone: "green",
     icon: "pin",
+    image: cityImage,
   },
   {
     label: "A Stronger Tomorrow",
     title: "Built to Last",
     tone: "amber",
     icon: "bolt",
+    image: durabilityImage,
   },
 ];
 
@@ -67,6 +71,8 @@ function PerformanceIcon({ icon }: { icon: string }) {
 }
 
 export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProps) {
+  const usePerformanceImages = modelName === "NX100 Pro";
+
   return (
     <section className="productPerformanceBand" id="performance" aria-label={`${modelName} performance highlights`}>
       <div className="productPerformanceScene">
@@ -81,14 +87,19 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
 
         <div className="productPerformanceMetricGrid">
           {performanceCards.map((card) => (
-            <article className="productPerformanceMetric" data-tone={card.tone} key={card.title}>
-              <span aria-hidden="true">
-                <PerformanceIcon icon={card.icon} />
-              </span>
-              <div>
-                <h3>{card.label}</h3>
-                <p>{card.title}</p>
-                <i aria-hidden="true" />
+            <article className={`productPerformanceMetric${usePerformanceImages ? " hasImage" : ""}`} data-tone={card.tone} key={card.title}>
+              {usePerformanceImages ? (
+                <Image className="productPerformanceMetricImage" src={card.image} alt="" fill sizes="(max-width: 760px) 100vw, 38vw" />
+              ) : null}
+              <div className="productPerformanceMetricContent">
+                <span aria-hidden="true">
+                  <PerformanceIcon icon={card.icon} />
+                </span>
+                <div>
+                  <h3>{card.label}</h3>
+                  <p>{card.title}</p>
+                  <i aria-hidden="true" />
+                </div>
               </div>
             </article>
           ))}
@@ -216,6 +227,7 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
         }
 
         .productPerformanceMetric {
+          position: relative;
           display: grid;
           grid-template-columns: 116px minmax(0, 1fr);
           gap: 28px;
@@ -229,13 +241,22 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
           box-shadow: 0 20px 38px rgba(17, 17, 17, .08);
           transform: skewX(-8deg);
           backdrop-filter: blur(18px);
+          overflow: hidden;
         }
 
-        .productPerformanceMetric > * {
+        .productPerformanceMetricContent {
+          display: contents;
+        }
+
+        .productPerformanceMetric:not(.hasImage) .productPerformanceMetricContent > * {
           transform: skewX(8deg);
         }
 
-        .productPerformanceMetric > span {
+        .productPerformanceMetric > *:not(.productPerformanceMetricImage) {
+          transform: skewX(8deg);
+        }
+
+        .productPerformanceMetricContent > span {
           display: grid;
           width: 96px;
           aspect-ratio: 1;
@@ -245,17 +266,17 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
           background: rgba(239, 116, 48, .13);
         }
 
-        .productPerformanceMetric[data-tone="blue"] > span {
+        .productPerformanceMetric[data-tone="blue"] .productPerformanceMetricContent > span {
           color: #2f85d8;
           background: rgba(47, 133, 216, .14);
         }
 
-        .productPerformanceMetric[data-tone="green"] > span {
+        .productPerformanceMetric[data-tone="green"] .productPerformanceMetricContent > span {
           color: #1d934d;
           background: rgba(29, 147, 77, .14);
         }
 
-        .productPerformanceMetric[data-tone="amber"] > span {
+        .productPerformanceMetric[data-tone="amber"] .productPerformanceMetricContent > span {
           color: #bd6a18;
           background: rgba(239, 166, 67, .18);
         }
@@ -299,6 +320,72 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
           font-weight: 500;
           line-height: 1.35;
         }
+
+        .productPerformanceMetric.hasImage {
+          min-height: clamp(190px, 15vw, 230px);
+          padding: 0;
+          border-color: rgba(255, 255, 255, .2);
+          background: #101214;
+          isolation: isolate;
+        }
+
+        .productPerformanceMetric.hasImage::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background:
+            linear-gradient(90deg, rgba(5, 7, 9, .9) 0%, rgba(5, 7, 9, .58) 44%, rgba(5, 7, 9, .08) 78%),
+            linear-gradient(0deg, rgba(5, 7, 9, .42), transparent 62%);
+          pointer-events: none;
+        }
+
+        .productPerformanceMetricImage {
+          z-index: 0;
+          object-fit: cover;
+          object-position: center;
+          transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .productPerformanceMetric.hasImage:hover .productPerformanceMetricImage {
+          transform: scale(1.035);
+        }
+
+        .productPerformanceMetric.hasImage .productPerformanceMetricContent {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          display: grid;
+          grid-template-columns: 58px minmax(0, 1fr);
+          gap: 16px;
+          align-items: end;
+          padding: 24px;
+          transform: skewX(8deg);
+        }
+
+        .productPerformanceMetric.hasImage .productPerformanceMetricContent > span {
+          width: 54px;
+          align-self: end;
+          color: #fff;
+          background: rgba(239, 116, 48, .92);
+          box-shadow: 0 10px 26px rgba(0, 0, 0, .24);
+        }
+
+        .productPerformanceMetric.hasImage[data-tone="blue"] .productPerformanceMetricContent > span { background: rgba(35, 106, 215, .94); }
+        .productPerformanceMetric.hasImage[data-tone="green"] .productPerformanceMetricContent > span { background: rgba(33, 161, 94, .94); }
+        .productPerformanceMetric.hasImage[data-tone="amber"] .productPerformanceMetricContent > span { background: rgba(208, 116, 25, .94); }
+
+        .productPerformanceMetric.hasImage svg { width: 28px; height: 28px; }
+
+        .productPerformanceMetric.hasImage h3,
+        .productPerformanceMetric.hasImage p {
+          color: #fff;
+          text-shadow: 0 2px 14px rgba(0, 0, 0, .75);
+        }
+
+        .productPerformanceMetric.hasImage h3 { font-size: clamp(21px, 1.65vw, 28px); }
+        .productPerformanceMetric.hasImage p { color: rgba(255, 255, 255, .88); }
+        .productPerformanceMetric.hasImage i { background: #fff; }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productPerformanceBand {
           background: #080909 !important;
@@ -370,12 +457,26 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
             transform: none;
           }
 
-          .productPerformanceMetric > * {
+          .productPerformanceMetric > *:not(.productPerformanceMetricImage) {
             transform: none;
           }
 
-          .productPerformanceMetric > span {
+          .productPerformanceMetric:not(.hasImage) .productPerformanceMetricContent > * {
+            transform: none;
+          }
+
+          .productPerformanceMetricContent > span {
             width: 72px;
+          }
+
+          .productPerformanceMetric.hasImage {
+            min-height: clamp(220px, 58vw, 310px);
+            transform: none;
+          }
+
+          .productPerformanceMetric.hasImage .productPerformanceMetricContent {
+            grid-template-columns: 54px minmax(0, 1fr);
+            transform: none;
           }
 
           .productPerformanceMetric svg {
@@ -396,3 +497,8 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
     </section>
   );
 }
+import Image from "next/image";
+import rangeImage from "@/asset/Model/Pro/rivot_performance_images_png/01_real_world_range.png";
+import chargingImage from "@/asset/Model/Pro/rivot_performance_images_png/02_fast_charging.png";
+import cityImage from "@/asset/Model/Pro/rivot_performance_images_png/03_smooth_agile_city.png";
+import durabilityImage from "@/asset/Model/Pro/rivot_performance_images_png/04_built_to_last.png";

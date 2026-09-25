@@ -20,8 +20,9 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
   return (
     <section className="productCustomMade" id="design" aria-labelledby={`${modelName.replace(/\s+/g, "-").toLowerCase()}-custom-title`}>
       <div className="productCustomCopy">
+        <span className="productCustomEyebrow">Make it yours</span>
         <h2 id={`${modelName.replace(/\s+/g, "-").toLowerCase()}-custom-title`}>
-          Custom made.<br />For you
+          Custom made.<br /><span>For you.</span>
         </h2>
         <p>Go glossy. Go matte. Choose your RIVOT vibe here.</p>
 
@@ -53,15 +54,15 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
         .productCustomMade {
           position: relative;
           display: grid;
-          grid-template-columns: minmax(260px, .58fr) minmax(360px, .82fr);
-          gap: clamp(24px, 4vw, 64px);
+          grid-template-columns: minmax(280px, .72fr) minmax(460px, 1.28fr);
+          gap: clamp(40px, 5vw, 80px);
           align-items: center;
-          min-height: 480px;
-          padding: clamp(46px, 5vw, 70px) clamp(22px, 7vw, 112px);
+          min-height: calc(100svh - 88px);
+          padding: clamp(54px, 6vw, 84px) clamp(22px, 6vw, 96px);
           overflow: hidden;
           background:
-            radial-gradient(circle at 84% 18%, rgba(239, 116, 48, .07), transparent 28%),
-            linear-gradient(180deg, #fff 0%, #f8f8f8 100%);
+            radial-gradient(circle at 10% 20%, rgba(239, 116, 48, .1), transparent 25%),
+            linear-gradient(135deg, #fff 0%, #fafafa 54%, #f1f3f4 100%);
           color: #111;
         }
 
@@ -81,64 +82,94 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
           z-index: 1;
         }
 
+        .productCustomEyebrow {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 24px;
+          color: #ef7430;
+          font-size: 14px;
+          font-weight: 800;
+          letter-spacing: .18em;
+          line-height: 1.2;
+          text-transform: uppercase;
+        }
+
+        .productCustomEyebrow::after {
+          content: "";
+          width: 70px;
+          height: 1px;
+          background: currentColor;
+          opacity: .72;
+        }
+
         .productCustomCopy h2 {
           margin: 0;
           color: #10161a;
-          font-size: clamp(38px, 3.4vw, 48px);
+          font-size: clamp(42px, 4vw, 58px);
           font-weight: 800;
-          line-height: 1.06;
+          line-height: .98;
           letter-spacing: 0;
+        }
+
+        .productCustomCopy h2 span {
+          color: #ef7430;
         }
 
         .productCustomCopy p {
           max-width: 430px;
           margin: 20px 0 0;
           color: #5f6b73;
-          font-size: 15px;
+          font-size: 16px;
           font-weight: 500;
           line-height: 1.55;
         }
 
         .productCustomPicker {
           display: inline-grid;
-          justify-items: center;
-          margin-top: clamp(34px, 4.6vw, 58px);
+          justify-items: start;
+          margin-top: clamp(34px, 4vw, 52px);
+          padding: 18px 20px 20px;
+          border: 1px solid rgba(17, 17, 17, .08);
+          border-radius: 18px;
+          background: rgba(255, 255, 255, .82);
+          box-shadow: 0 18px 40px rgba(17, 17, 17, .08);
+          backdrop-filter: blur(16px);
         }
 
         .productCustomPicker strong {
           display: block;
-          margin-bottom: 14px;
+          margin-bottom: 16px;
           color: #111;
-          font-size: 13px;
-          font-weight: 700;
+          font-size: 14px;
+          font-weight: 800;
           line-height: 1.2;
         }
 
         .productCustomPicker div {
           display: inline-flex;
           align-items: center;
-          gap: 14px;
-          padding: 18px;
+          gap: 16px;
+          padding: 4px;
           border-radius: 999px;
-          background: rgba(255, 255, 255, .86);
-          box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
-          backdrop-filter: blur(16px);
+          background: transparent;
+          box-shadow: none;
         }
 
         .productCustomPicker span {
           display: block;
-          width: 34px;
-          height: 34px;
+          width: 38px;
+          height: 38px;
           border: 0;
           border-radius: 50%;
-          box-shadow: 0 0 0 4px #fff, 0 10px 22px rgba(17, 17, 17, .18);
+          box-shadow: 0 0 0 3px #fff, 0 8px 18px rgba(17, 17, 17, .18);
           cursor: pointer;
           transition: transform .2s ease, outline-color .2s ease;
         }
 
         .productCustomPicker span.isSelected {
-          outline: 3px solid rgba(239, 116, 48, .32);
-          outline-offset: 3px;
+          outline: 2px solid #ef7430;
+          outline-offset: 4px;
         }
 
         .productCustomPicker span:hover,
@@ -149,40 +180,48 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
 
         .productCustomStage {
           display: grid;
-          min-height: 360px;
+          min-height: 470px;
           place-items: center;
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, .1);
+          border-radius: 24px;
+          background:
+            linear-gradient(132deg, transparent 0 58%, rgba(239, 116, 48, .18) 58.2% 58.65%, transparent 58.9%),
+            radial-gradient(circle at 72% 20%, rgba(239, 116, 48, .22), transparent 31%),
+            linear-gradient(145deg, #1b1e1e, #0c0e0e 72%);
+          box-shadow: 0 28px 60px rgba(17, 17, 17, .18);
         }
 
         .productCustomStage img {
           position: relative;
           z-index: 2;
-          width: min(86%, 560px);
+          width: min(82%, 620px);
           height: auto;
           object-fit: contain;
-          filter: drop-shadow(0 24px 28px rgba(17, 17, 17, .16));
-          transform: translateY(-10px);
+          filter: drop-shadow(0 28px 34px rgba(0, 0, 0, .48));
+          transform: translateY(-18px);
         }
 
         .productCustomGlow {
           position: absolute;
-          width: min(74%, 540px);
+          width: min(78%, 580px);
           aspect-ratio: 1.28;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(239, 116, 48, .12), rgba(255, 255, 255, 0) 62%);
+          background: radial-gradient(circle, rgba(239, 116, 48, .2), rgba(10, 12, 12, 0) 64%);
         }
 
         .productCustomPlinth {
           position: absolute;
-          left: 13%;
-          right: 9%;
-          bottom: 22px;
-          height: clamp(48px, 5.4vw, 78px);
-          border: 1px solid rgba(17, 17, 17, .08);
-          border-radius: 50% 50% 8px 8px / 42% 42% 8px 8px;
+          left: 10%;
+          right: 10%;
+          bottom: 38px;
+          height: clamp(42px, 4vw, 62px);
+          border: 1px solid rgba(255, 255, 255, .12);
+          border-radius: 50%;
           background:
-            linear-gradient(180deg, #fff, #eef0ef),
-            #fff;
-          box-shadow: 0 16px 34px rgba(17, 17, 17, .08);
+            radial-gradient(ellipse, rgba(239, 116, 48, .16), rgba(255, 255, 255, .04) 58%, rgba(0, 0, 0, .25)),
+            #181b1b;
+          box-shadow: 0 18px 38px rgba(0, 0, 0, .42);
         }
 
         .productCustomPlinth::after {
@@ -192,7 +231,7 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
           right: 6%;
           top: 14px;
           height: 1px;
-          background: rgba(17, 17, 17, .16);
+          background: rgba(239, 116, 48, .42);
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomMade {
@@ -212,13 +251,20 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
           color: #f5f5f2 !important;
         }
 
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomCopy h2 span,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomEyebrow {
+          color: #ef7430 !important;
+        }
+
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomCopy p {
           color: #aeb4b4 !important;
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPicker {
-          background: transparent !important;
+          border-color: rgba(255, 255, 255, .11);
+          background: rgba(24, 27, 27, .92) !important;
           color: #f5f5f2 !important;
+          box-shadow: 0 14px 34px rgba(0, 0, 0, .32);
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPicker strong {
@@ -226,9 +272,9 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPicker div {
-          border: 1px solid rgba(255, 255, 255, .11);
-          background: rgba(24, 27, 27, .92);
-          box-shadow: 0 14px 34px rgba(0, 0, 0, .32);
+          border: 0;
+          background: transparent;
+          box-shadow: none;
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPicker span {
@@ -245,7 +291,9 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productCustomPlinth {
           border-color: rgba(255, 255, 255, .12);
-          background: linear-gradient(180deg, #202323, #121414);
+          background:
+            radial-gradient(ellipse, rgba(239, 116, 48, .16), rgba(255, 255, 255, .04) 58%, rgba(0, 0, 0, .25)),
+            #181b1b;
           box-shadow: 0 18px 38px rgba(0, 0, 0, .42);
         }
 
@@ -264,7 +312,7 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
           }
 
           .productCustomStage {
-            min-height: 340px;
+            min-height: 420px;
           }
         }
 
@@ -292,11 +340,12 @@ export function ProductCustomMade({ modelName, image, imageAlt }: ProductCustomM
           }
 
           .productCustomStage {
-            min-height: 280px;
+            min-height: 320px;
+            border-radius: 18px;
           }
 
           .productCustomStage img {
-            width: 102%;
+            width: 94%;
           }
         }
       `}</style>

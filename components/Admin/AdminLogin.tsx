@@ -1,4 +1,24 @@
+"use client";
+
+import { useFormStatus } from "react-dom";
 import { loginAction } from "@/app/admin/actions";
+
+function LoginButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button type="submit" disabled={pending} aria-disabled={pending} aria-live="polite">
+      {pending ? (
+        <>
+          <span className="adminLoginSpinner" aria-hidden="true" />
+          <span>Logging in...</span>
+        </>
+      ) : (
+        "Login"
+      )}
+    </button>
+  );
+}
 
 export function AdminLogin({ error }: { error?: string }) {
   return (
@@ -21,7 +41,7 @@ export function AdminLogin({ error }: { error?: string }) {
             Password
             <input type="password" name="password" autoComplete="current-password" required />
           </label>
-          <button type="submit">Login</button>
+          <LoginButton />
         </form>
 
       </div>
@@ -112,6 +132,10 @@ export function AdminLogin({ error }: { error?: string }) {
         }
 
         .adminLoginCard button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
           height: 50px;
           border: 0;
           border-radius: 8px;
@@ -120,6 +144,30 @@ export function AdminLogin({ error }: { error?: string }) {
           font-weight: 950;
           cursor: pointer;
           box-shadow: 0 16px 34px rgba(239, 116, 48, .28);
+        }
+
+        .adminLoginCard button:disabled {
+          cursor: wait;
+          opacity: .82;
+        }
+
+        .adminLoginSpinner {
+          width: 18px;
+          height: 18px;
+          border: 2px solid rgba(255, 255, 255, .4);
+          border-top-color: #fff;
+          border-radius: 50%;
+          animation: adminLoginSpin .7s linear infinite;
+        }
+
+        @keyframes adminLoginSpin {
+          to { transform: rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .adminLoginSpinner {
+            animation-duration: 1.4s;
+          }
         }
 
         .adminHint {
