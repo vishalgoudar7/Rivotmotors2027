@@ -1,3 +1,12 @@
+"use client";
+
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import rangeImage from "@/asset/Model/Pro/rivot_performance_images_png/01_real_world_range.png";
+import chargingImage from "@/asset/Model/Pro/rivot_performance_images_png/02_fast_charging.png";
+import cityImage from "@/asset/Model/Pro/rivot_performance_images_png/03_smooth_agile_city.png";
+import durabilityImage from "@/asset/Model/Pro/rivot_performance_images_png/04_built_to_last.png";
+
 type ProductPerformanceBandProps = {
   modelName: string;
 };
@@ -72,9 +81,29 @@ function PerformanceIcon({ icon }: { icon: string }) {
 
 export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProps) {
   const usePerformanceImages = modelName === "NX100 Pro";
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.22 },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="productPerformanceBand" id="performance" aria-label={`${modelName} performance highlights`}>
+    <section ref={sectionRef} className={`productPerformanceBand${isVisible ? " isVisible" : ""}`} id="performance" aria-label={`${modelName} performance highlights`}>
       <div className="productPerformanceScene">
         <div className="productPerformanceCopy">
           <p>Performance</p>
@@ -344,7 +373,7 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
           z-index: 0;
           object-fit: cover;
           object-position: center;
-          transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+          transition: transform 1.25s cubic-bezier(.22, 1, .36, 1), filter 1.1s ease;
         }
 
         .productPerformanceMetric.hasImage:hover .productPerformanceMetricImage {
@@ -386,6 +415,54 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
         .productPerformanceMetric.hasImage h3 { font-size: clamp(21px, 1.65vw, 28px); }
         .productPerformanceMetric.hasImage p { color: rgba(255, 255, 255, .88); }
         .productPerformanceMetric.hasImage i { background: #fff; }
+
+        .productPerformanceCopy > *,
+        .productPerformanceMetric {
+          opacity: 0;
+          filter: blur(7px);
+          transition:
+            opacity 1.05s ease,
+            transform 1.35s cubic-bezier(.16, 1, .3, 1),
+            filter 1.05s ease;
+        }
+
+        .productPerformanceCopy > * { transform: translateX(-34px); }
+
+        .productPerformanceMetric {
+          transform: translateY(38px) skewX(-8deg) scale(.97);
+        }
+
+        .productPerformanceBand.isVisible .productPerformanceCopy > *,
+        .productPerformanceBand.isVisible .productPerformanceMetric {
+          opacity: 1;
+          filter: blur(0);
+        }
+
+        .productPerformanceBand.isVisible .productPerformanceCopy > * { transform: translateX(0); }
+        .productPerformanceBand.isVisible .productPerformanceMetric { transform: translateY(0) skewX(-8deg) scale(1); }
+
+        .productPerformanceCopy > p { transition-delay: .08s; }
+        .productPerformanceCopy > h2 { transition-delay: .22s; }
+        .productPerformanceCopy > small { transition-delay: .38s; }
+        .productPerformanceCopy > b { transition-delay: .54s; }
+        .productPerformanceMetric:nth-child(1) { transition-delay: .34s; }
+        .productPerformanceMetric:nth-child(2) { transition-delay: .58s; }
+        .productPerformanceMetric:nth-child(3) { transition-delay: .82s; }
+        .productPerformanceMetric:nth-child(4) { transition-delay: 1.06s; }
+
+        .productPerformanceBand:not(.isVisible) .productPerformanceMetricImage {
+          transform: scale(1.1);
+          filter: saturate(.72);
+        }
+
+        .productPerformanceBand.isVisible .productPerformanceMetricImage {
+          transform: scale(1);
+          filter: saturate(1);
+        }
+
+        .productPerformanceBand.isVisible .productPerformanceMetric.hasImage:hover .productPerformanceMetricImage {
+          transform: scale(1.035);
+        }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productPerformanceBand {
           background: #080909 !important;
@@ -457,6 +534,14 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
             transform: none;
           }
 
+          .productPerformanceBand:not(.isVisible) .productPerformanceMetric {
+            transform: translateY(30px) scale(.98);
+          }
+
+          .productPerformanceBand.isVisible .productPerformanceMetric {
+            transform: translateY(0) scale(1);
+          }
+
           .productPerformanceMetric > *:not(.productPerformanceMetricImage) {
             transform: none;
           }
@@ -493,12 +578,18 @@ export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProp
             font-size: 11px;
           }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+          .productPerformanceCopy > *,
+          .productPerformanceMetric,
+          .productPerformanceMetricImage {
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
+            transition: none !important;
+          }
+        }
       `}</style>
     </section>
   );
 }
-import Image from "next/image";
-import rangeImage from "@/asset/Model/Pro/rivot_performance_images_png/01_real_world_range.png";
-import chargingImage from "@/asset/Model/Pro/rivot_performance_images_png/02_fast_charging.png";
-import cityImage from "@/asset/Model/Pro/rivot_performance_images_png/03_smooth_agile_city.png";
-import durabilityImage from "@/asset/Model/Pro/rivot_performance_images_png/04_built_to_last.png";

@@ -37,7 +37,7 @@ export function ProductDetailHero({
   useEffect(() => {
     const heroImageInterval = window.setInterval(() => {
       setSelectedHeroImage((currentImage) => (currentImage + 1) % heroCarouselImages.length);
-    }, 5000);
+    }, 7500);
 
     return () => window.clearInterval(heroImageInterval);
   }, []);
@@ -160,7 +160,7 @@ export function ProductDetailHero({
           object-position: 68% center;
           opacity: 0;
           transform: scale(1.06);
-          transition: opacity 1s ease, transform 6s ease;
+          transition: opacity 1.6s ease, transform 8.5s cubic-bezier(.22, 1, .36, 1);
         }
 
         .productDetailHeroImage.isActive {
@@ -238,7 +238,7 @@ export function ProductDetailHero({
           border-radius: 999px;
           background: rgba(255, 255, 255, .34);
           box-shadow: inset 0 1px 0 rgba(255, 255, 255, .32);
-          transition: background .35s ease, width .35s ease, opacity .35s ease;
+          transition: background .6s ease, width .6s ease, opacity .6s ease;
         }
 
         .productDetailHeroPointers span.isActive {
