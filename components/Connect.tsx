@@ -1,7 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import connect20 from "@/asset/connect/20.webp";
 import connect21 from "@/asset/connect/21.webp";
 import connect25 from "@/asset/connect/25.webp";
@@ -351,6 +351,23 @@ export function Connect() {
   const [successId, setSuccessId] = useState<ConnectionId | null>(null);
   const [errorId, setErrorId] = useState<ConnectionId | null>(null);
 
+  useEffect(() => {
+    const syncPageFromHash = () => {
+      const hash = window.location.hash.slice(1).toLowerCase();
+      if (hash === "career-opportunities" || hash === "careers") {
+        setCurrentPage("careers");
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        window.requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        });
+      }
+    };
+
+    syncPageFromHash();
+    window.addEventListener("hashchange", syncPageFromHash);
+    return () => window.removeEventListener("hashchange", syncPageFromHash);
+  }, []);
+
   const goToForm = (connection: ConnectionOption) => {
     if (connection.url) {
       window.location.href = connection.url;
@@ -359,11 +376,15 @@ export function Connect() {
     setCurrentPage(connection.id);
     setSuccessId(null);
     setErrorId(null);
+    if (connection.id === "careers") {
+      window.history.replaceState(null, "", "/connect#career-opportunities");
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const goBackToSelection = () => {
     setCurrentPage("selection");
+    window.history.replaceState(null, "", "/connect");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
