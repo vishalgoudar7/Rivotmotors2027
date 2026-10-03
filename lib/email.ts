@@ -2,11 +2,15 @@ import nodemailer from "nodemailer";
 import { prisma } from "@/lib/db";
 
 const accent = "#CE6723";
+const smtpPort = Number(process.env.SMTP_PORT || 465);
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT || 465),
-  secure: true,
+  port: smtpPort,
+  secure: smtpPort === 465,
   auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
+  connectionTimeout: 10_000,
+  greetingTimeout: 10_000,
+  socketTimeout: 20_000,
 });
 
 type EmailData = Record<string, unknown>;
@@ -96,11 +100,15 @@ export async function sendContactSubmissionEmail(formType: string, data: EmailDa
   const title = formTitles[formType];
   if (!title) throw new Error("Invalid form type.");
   const admin = await getAdminEmail();
+  const configuredHrEmail = text(process.env.HR_EMAIL);
+  const recipient = formType === "careers" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configuredHrEmail)
+    ? configuredHrEmail
+    : admin;
   const rows = buildSubmissionDetails(data);
   if (attachment) rows.push({ label: "Attachment", value: `${attachment.filename} (attached to this email)` });
   rows.push({ label: "Submitted", value: new Date().toISOString() });
   rows.push({ label: "IP Address", value: text(data.ipAddress) || "Unknown" });
-  await sendEmail(`New ${title} Submission - RIVOT Motors`, admin, `New ${title}`, [{ heading: "Submission Details", rows }], text(data.email), attachment ? [attachment] : undefined, "This email was sent from the RIVOT Motors website connect form.");
+  await sendEmail(`New ${title} Submission - RIVOT Motors`, recipient, `New ${title}`, [{ heading: "Submission Details", rows }], text(data.email), attachment ? [attachment] : undefined, "This email was sent from the RIVOT Motors website connect form.");
 }
 
 function bookingSections(order: EmailData, payment: boolean) {

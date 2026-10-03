@@ -7,6 +7,12 @@ import connect21 from "@/asset/connect/21.webp";
 import connect25 from "@/asset/connect/25.webp";
 import connect26 from "@/asset/connect/26.webp";
 import connect27 from "@/asset/connect/27.webp";
+import vendorCardImage from "@/asset/newphotos/rivot_connect_section_images/cinematic_ev_powertrain_gears.png";
+import dealerCardImage from "@/asset/newphotos/rivot_connect_section_images/rivot_electric_mobility_showroom_at_sunset.png";
+import mediaCardImage from "@/asset/newphotos/rivot_connect_section_images/rivot_microphone_at_a_cinematic_press_event.png";
+import investorCardImage from "@/asset/newphotos/rivot_connect_section_images/sustainable_growth_at_sunrise.png";
+import careersCardImage from "@/asset/newphotos/rivot_connect_section_images/contemplating_the_sunset_skyline.png";
+import overseasCardImage from "@/asset/newphotos/rivot_connect_section_images/global_network_earth_from_space.png";
 
 type ConnectionId = "vendor" | "dealer" | "media" | "investor" | "careers" | "overseas";
 
@@ -47,6 +53,24 @@ const connectImages: Record<ConnectionId, StaticImageData> = {
   investor: connect26,
   careers: connect27,
   overseas: connect21,
+};
+
+const connectionCardImages: Record<ConnectionId, StaticImageData> = {
+  vendor: vendorCardImage,
+  dealer: dealerCardImage,
+  media: mediaCardImage,
+  investor: investorCardImage,
+  careers: careersCardImage,
+  overseas: overseasCardImage,
+};
+
+const connectionCtas: Record<ConnectionId, string> = {
+  vendor: "Explore",
+  dealer: "Join Now",
+  media: "Get in Touch",
+  investor: "Learn More",
+  careers: "View Openings",
+  overseas: "Connect",
 };
 
 const connections: ConnectionOption[] = [
@@ -427,6 +451,7 @@ export function Connect() {
               <div
                 key={connection.id}
                 className="rivotConnectCard"
+                data-connection={connection.id}
                 role="button"
                 tabIndex={0}
                 aria-label={`Select ${connection.name}`}
@@ -435,12 +460,22 @@ export function Connect() {
                   if (event.key === "Enter") goToForm(connection);
                 }}
               >
+                <Image
+                  className="rivotConnectCardImage"
+                  src={connectionCardImages[connection.id]}
+                  alt=""
+                  fill
+                  sizes="(max-width: 960px) 50vw, 33vw"
+                />
                 <div className="rivotConnectIcon" aria-hidden="true">
                   <ConnectionIcon id={connection.id} />
                 </div>
                 <div className="rivotConnectName">{connection.name}</div>
                 <p className="rivotConnectDescription">{connection.description}</p>
-                <div className="rivotConnectArrow" aria-hidden="true">&rarr;</div>
+                <div className="rivotConnectCta" aria-hidden="true">
+                  <span>{connectionCtas[connection.id]}</span>
+                  <span className="rivotConnectArrow">&rarr;</span>
+                </div>
               </div>
             ))}
           </div>
@@ -1057,6 +1092,363 @@ export function Connect() {
           color: #f5f5f2;
         }
 
+        /* Premium neutral landing page with image-led partnership cards. */
+        .rivotConnect.isSelection {
+          background: linear-gradient(180deg, #F7F4F2 0%, #FFFFFF 45%, #F5F5F3 100%) !important;
+          color: #111111 !important;
+        }
+
+        body:has(.rivotConnect.isSelection) .rivotHeader.isHomeHeader {
+          background: transparent !important;
+          color: #111111 !important;
+          box-shadow: none !important;
+        }
+
+        body:has(.rivotConnect.isSelection) :is(.rivotBrand, .rivotHeaderLinks a, .rivotProductsButton, .rivotCommunityButton, .rivotExploreButton, .rivotMenuButton) {
+          color: #111111 !important;
+        }
+
+        body:has(.rivotConnect.isSelection) .rivotBrandMark img { filter: brightness(0) !important; }
+
+        .rivotConnect.isSelection .rivotConnectHeader::before {
+          content: "PARTNER WITH PURPOSE";
+          display: block;
+          margin-bottom: 12px;
+          color: #5F6368;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: .34em;
+        }
+
+        .rivotConnect.isSelection .rivotConnectHeader h1 {
+          color: #111111 !important;
+          font-size: clamp(36px, 3vw, 48px);
+        }
+
+        .rivotConnect.isSelection .rivotConnectHeader .highlight { color: #FF6B35 !important; }
+        .rivotConnect.isSelection .rivotConnectHeader p { color: #5F6368 !important; }
+
+        .rivotConnect.isSelection .rivotConnectGrid {
+          max-width: 1180px;
+          gap: 16px;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard {
+          min-height: 260px;
+          padding: 24px;
+          align-content: end;
+          justify-items: start;
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, .42) !important;
+          border-radius: 18px;
+          background: #111820 !important;
+          color: #FFFFFF !important;
+          text-align: left;
+          box-shadow: 0 12px 30px rgba(17, 17, 17, .09) !important;
+          isolation: isolate;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: linear-gradient(180deg, rgba(4, 8, 12, .06) 8%, rgba(4, 8, 12, .38) 56%, rgba(4, 8, 12, .94) 100%);
+          pointer-events: none;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCardImage {
+          z-index: 0;
+          object-fit: cover;
+          object-position: center;
+          transition: transform .5s cubic-bezier(.22, 1, .36, 1), filter .3s ease;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard:hover .rivotConnectCardImage,
+        .rivotConnect.isSelection .rivotConnectCard:focus-visible .rivotConnectCardImage {
+          transform: scale(1.045);
+          filter: saturate(1.06);
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard > :not(.rivotConnectCardImage) {
+          position: relative;
+          z-index: 2;
+        }
+
+        .rivotConnect.isSelection .rivotConnectIcon,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectIcon {
+          width: 48px;
+          height: 48px;
+          margin: 0 0 18px;
+          background: rgba(255, 107, 53, .92) !important;
+          color: #FFFFFF !important;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, .16);
+        }
+
+        .rivotConnect.isSelection .rivotConnectIcon svg { width: 25px; height: 25px; }
+
+        .rivotConnect.isSelection .rivotConnectName,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectName {
+          margin-bottom: 7px;
+          color: #FFFFFF !important;
+          font-size: clamp(22px, 2vw, 29px);
+          text-shadow: 0 2px 12px rgba(0, 0, 0, .35);
+        }
+
+        .rivotConnect.isSelection .rivotConnectDescription,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectDescription {
+          max-width: 230px;
+          min-height: 0;
+          color: rgba(255, 255, 255, .86) !important;
+          font-size: 13px;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, .38);
+        }
+
+        .rivotConnect.isSelection .rivotConnectArrow {
+          position: absolute;
+          right: 20px;
+          bottom: 20px;
+          z-index: 3;
+          margin: 0;
+          border-color: rgba(255, 255, 255, .7);
+          background: rgba(9, 13, 16, .35);
+          color: #FFFFFF;
+          backdrop-filter: blur(8px);
+        }
+
+        /* Split-card treatment from the supplied UI reference. */
+        .rivotConnect.isSelection .rivotConnectCard,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard {
+          --connect-card-bg: #FFFAF6;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start;
+          padding: 22px;
+          border-color: #E8E3DF !important;
+          background: var(--connect-card-bg) !important;
+          color: #111111 !important;
+          box-shadow: 0 9px 24px rgba(17, 17, 17, .065) !important;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard[data-connection="dealer"] { --connect-card-bg: #F2F7FC; }
+        .rivotConnect.isSelection .rivotConnectCard[data-connection="media"] { --connect-card-bg: #F8F4FF; }
+        .rivotConnect.isSelection .rivotConnectCard[data-connection="investor"] { --connect-card-bg: #F1FAF4; }
+        .rivotConnect.isSelection .rivotConnectCard[data-connection="careers"] { --connect-card-bg: #FFF3F1; }
+        .rivotConnect.isSelection .rivotConnectCard[data-connection="overseas"] { --connect-card-bg: #F1F7FC; }
+
+        .rivotConnect.isSelection .rivotConnectCard::after {
+          z-index: 1;
+          background: linear-gradient(90deg, var(--connect-card-bg) 0%, var(--connect-card-bg) 43%, rgba(255, 255, 255, .78) 55%, transparent 72%);
+        }
+
+        .rivotConnect.isSelection .rivotConnectCardImage {
+          top: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          left: auto !important;
+          width: 58% !important;
+          height: 100% !important;
+          clip-path: polygon(24% 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .rivotConnect.isSelection .rivotConnectIcon,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectIcon {
+          width: 46px;
+          height: 46px;
+          margin-bottom: 16px;
+          background: rgba(255, 107, 53, .11) !important;
+          color: #FF6B35 !important;
+          box-shadow: none;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard[data-connection="media"] .rivotConnectIcon {
+          background: rgba(111, 54, 219, .1) !important;
+          color: #7138D7 !important;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard[data-connection="investor"] .rivotConnectIcon {
+          background: rgba(30, 154, 86, .1) !important;
+          color: #168A4A !important;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard[data-connection="overseas"] .rivotConnectIcon {
+          background: rgba(42, 105, 185, .1) !important;
+          color: #2869B8 !important;
+        }
+
+        .rivotConnect.isSelection .rivotConnectName,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectName {
+          flex: 0 0 auto;
+          max-width: 50%;
+          margin: 0 0 7px;
+          color: #111111 !important;
+          font-size: clamp(20px, 1.7vw, 25px);
+          text-shadow: none;
+        }
+
+        .rivotConnect.isSelection .rivotConnectDescription,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectDescription {
+          flex: 0 0 auto;
+          width: 48%;
+          max-width: 48%;
+          color: #5F6368 !important;
+          font-size: 12px;
+          line-height: 1.4;
+          margin: 0;
+          text-shadow: none;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCta {
+          position: relative;
+          z-index: 3;
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          margin-top: auto;
+          padding-top: 14px;
+          color: #FF6B35;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCta .rivotConnectArrow {
+          position: static;
+          width: 34px;
+          height: 34px;
+          margin: 0;
+          border: 0;
+          background: #FF6B35;
+          color: #FFFFFF;
+          backdrop-filter: none;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard:hover,
+        .rivotConnect.isSelection .rivotConnectCard:focus-visible,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard:hover,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard:focus-visible {
+          border-color: rgba(255, 107, 53, .5) !important;
+          box-shadow: 0 14px 32px rgba(17, 17, 17, .09) !important;
+        }
+
+        html body:has(.rivotConnect.isSelection) .rivotHeader.isHomeHeader :is(
+          .rivotHeaderLinks a,
+          .rivotProductsButton,
+          .rivotCommunityButton,
+          .rivotExploreButton
+        ) {
+          color: #111111 !important;
+          text-shadow: none !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection {
+          background: linear-gradient(180deg, #080A0B 0%, #101314 48%, #080A0B 100%) !important;
+          color: #F5F5F2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotConnect.isSelection) .rivotHeader.isHomeHeader {
+          background: transparent !important;
+          color: #FFFFFF !important;
+          box-shadow: none !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotConnect.isSelection) .rivotHeader.isHomeHeader :is(
+          .rivotBrand,
+          .rivotHeaderLinks a,
+          .rivotProductsButton,
+          .rivotCommunityButton,
+          .rivotExploreButton,
+          .rivotMenuButton
+        ) {
+          color: #FFFFFF !important;
+          text-shadow: 0 1px 10px rgba(0, 0, 0, .2) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotConnect.isSelection) .rivotBrandMark img {
+          filter: brightness(0) invert(1) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectHeader h1 {
+          color: #F5F5F2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectHeader::before,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectHeader p {
+          color: #ADB4B7 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard {
+          --connect-card-bg: #15191B;
+          border-color: rgba(255, 255, 255, .13) !important;
+          background: var(--connect-card-bg) !important;
+          color: #F5F5F2 !important;
+          box-shadow: 0 14px 34px rgba(0, 0, 0, .28) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard[data-connection="dealer"] { --connect-card-bg: #121A20; }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard[data-connection="media"] { --connect-card-bg: #191520; }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard[data-connection="investor"] { --connect-card-bg: #111B16; }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard[data-connection="careers"] { --connect-card-bg: #1D1514; }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard[data-connection="overseas"] { --connect-card-bg: #111923; }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard::after {
+          background: linear-gradient(90deg, var(--connect-card-bg) 0%, var(--connect-card-bg) 43%, rgba(15, 18, 20, .8) 57%, transparent 74%);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectName {
+          color: #F5F5F2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectDescription {
+          color: #B2B8BA !important;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard {
+          animation: rivotConnectCardEnter .64s cubic-bezier(.22, 1, .36, 1) backwards;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard:nth-child(1) { animation-delay: .08s; }
+        .rivotConnect.isSelection .rivotConnectCard:nth-child(2) { animation-delay: .16s; }
+        .rivotConnect.isSelection .rivotConnectCard:nth-child(3) { animation-delay: .24s; }
+        .rivotConnect.isSelection .rivotConnectCard:nth-child(4) { animation-delay: .32s; }
+        .rivotConnect.isSelection .rivotConnectCard:nth-child(5) { animation-delay: .4s; }
+        .rivotConnect.isSelection .rivotConnectCard:nth-child(6) { animation-delay: .48s; }
+
+        .rivotConnect.isSelection .rivotConnectIcon {
+          transition: transform .3s cubic-bezier(.22, 1, .36, 1), box-shadow .3s ease;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard:hover .rivotConnectIcon,
+        .rivotConnect.isSelection .rivotConnectCard:focus-visible .rivotConnectIcon {
+          transform: translateY(-3px) scale(1.06);
+          box-shadow: 0 8px 20px rgba(255, 107, 53, .16);
+        }
+
+        .rivotConnect.isSelection .rivotConnectCta .rivotConnectArrow {
+          transition: transform .3s cubic-bezier(.22, 1, .36, 1), background .2s ease;
+        }
+
+        .rivotConnect.isSelection .rivotConnectCard:hover .rivotConnectCta .rivotConnectArrow,
+        .rivotConnect.isSelection .rivotConnectCard:focus-visible .rivotConnectCta .rivotConnectArrow {
+          transform: translateX(5px);
+        }
+
+        @keyframes rivotConnectCardEnter {
+          from { opacity: 0; transform: translateY(28px) scale(.975); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotConnect.isSelection .rivotConnectCard {
+            animation: none !important;
+          }
+
+          .rivotConnect.isSelection :is(.rivotConnectCard, .rivotConnectCardImage, .rivotConnectIcon, .rivotConnectArrow) {
+            transition: none !important;
+          }
+        }
+
         @media (max-width: 960px) {
           .rivotConnect {
             padding-top: 96px;
@@ -1104,13 +1496,123 @@ export function Connect() {
             font-size: 40px;
           }
 
+          .rivotConnect.isSelection .rivotConnectHeader h1 {
+            font-size: clamp(25px, 7.4vw, 30px);
+            line-height: 1;
+            letter-spacing: -.035em;
+            white-space: nowrap;
+          }
+
+          .rivotConnect.isSelection .rivotConnectHeader .highlight {
+            display: inline;
+          }
+
+          .rivotConnect.isSelection .rivotConnectHeader p {
+            margin-top: 10px;
+            font-size: 11px;
+            line-height: 1.35;
+            white-space: nowrap;
+          }
+
           .rivotConnect.isSelection .rivotConnectGrid {
-            grid-template-columns: 1fr;
-            gap: 12px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
           }
 
           .rivotConnect.isSelection .rivotConnectCard {
-            min-height: 176px;
+            min-width: 0;
+            min-height: 178px;
+            padding: 14px 8px 12px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectIcon {
+            width: 44px;
+            height: 44px;
+            margin-bottom: 10px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectIcon svg {
+            width: 22px;
+            height: 22px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectName {
+            margin-bottom: 6px;
+            font-size: 14px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectDescription {
+            max-width: 138px;
+            min-height: 28px;
+            font-size: 10px;
+            line-height: 1.3;
+          }
+
+          .rivotConnect.isSelection .rivotConnectArrow {
+            width: 28px;
+            height: 28px;
+            margin-top: 12px;
+            font-size: 14px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectHeader::before {
+            margin-bottom: 9px;
+            font-size: 8px;
+            letter-spacing: .2em;
+          }
+
+          .rivotConnect.isSelection .rivotConnectCard,
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard {
+            min-height: 188px;
+            padding: 12px 9px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectCard::after {
+            background: linear-gradient(90deg, var(--connect-card-bg) 0%, var(--connect-card-bg) 45%, rgba(255, 255, 255, .68) 72%, transparent 100%);
+          }
+
+          html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect.isSelection .rivotConnectCard::after {
+            background: linear-gradient(90deg, var(--connect-card-bg) 0%, var(--connect-card-bg) 45%, rgba(15, 18, 20, .7) 72%, transparent 100%);
+          }
+
+          .rivotConnect.isSelection .rivotConnectCardImage {
+            width: 68% !important;
+            opacity: .62;
+            clip-path: polygon(38% 0, 100% 0, 100% 100%, 10% 100%);
+          }
+
+          .rivotConnect.isSelection .rivotConnectIcon {
+            width: 38px;
+            height: 38px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectIcon svg {
+            width: 19px;
+            height: 19px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectName,
+          .rivotConnect.isSelection .rivotConnectDescription {
+            position: relative;
+            z-index: 3;
+            width: 82%;
+            max-width: 82%;
+          }
+
+          .rivotConnect.isSelection .rivotConnectCta {
+            bottom: auto;
+            left: auto;
+            padding-top: 8px;
+          }
+
+          .rivotConnect.isSelection .rivotConnectCta > span:first-child {
+            display: none;
+          }
+
+          .rivotConnect.isSelection .rivotConnectCta .rivotConnectArrow {
+            width: 28px;
+            height: 28px;
+            margin: 0;
           }
 
           .rivotConnectCard {
@@ -1130,15 +1632,31 @@ export function Connect() {
           }
 
           .rivotConnectFormHeader {
-            margin: 0 -16px 34px;
-            padding: 18px 16px 24px;
+            margin: 0 -16px 28px;
+            padding: 14px 16px 22px;
+          }
+
+          .rivotConnectFormHeader .rivotConnectTitle {
+            font-size: clamp(25px, 7.5vw, 32px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            white-space: nowrap;
+          }
+
+          .rivotConnectFormHeader .rivotConnectSubtitle {
+            max-width: 330px;
+            margin-top: 12px;
+            font-size: 13px;
+            line-height: 1.4;
           }
 
           .rivotConnectBack {
-            min-width: 84px;
-            height: 46px;
+            min-width: 78px;
+            height: 42px;
             position: static;
-            margin-top: 20px;
+            margin-top: 16px;
+            border-radius: 8px;
+            font-size: 13px;
           }
 
           .rivotConnectDescriptionText {

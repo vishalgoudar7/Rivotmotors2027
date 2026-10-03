@@ -31,7 +31,35 @@ export async function POST(request: Request) {
     await sendContactSubmissionEmail(formType, data, attachment);
     return Response.json({ success: true, message: "Form submitted successfully." });
   } catch (error) {
-    console.error("Contact email failed:", error instanceof Error ? error.message : error);
+    const mailError = error as Error & { code?: string; command?: string };
+    console.error("Contact email failed:", {
+      name: mailError?.name,
+      code: mailError?.code,
+      command: mailError?.command,
+      message: mailError?.message,
+    });
+
+    if (mailError?.code === "EAUTH") {
+      return Response.json(
+        { success: false, message: "Email service authentication failed. Please check the SMTP username and password." },
+        { status: 503 },
+      );
+    }
+
+    if (["ECONNECTION", "ETIMEDOUT", "ECONNREFUSED", "ENOTFOUND"].includes(mailError?.code || "")) {
+      return Response.json(
+        { success: false, message: "The email service is currently unreachable. Please try again later." },
+        { status: 503 },
+      );
+    }
+
+    if (mailError?.message === "SMTP is not configured.") {
+      return Response.json(
+        { success: false, message: "Email service is not configured. Check the server SMTP environment variables." },
+        { status: 503 },
+      );
+    }
+
     return Response.json({ success: false, message: "Failed to send email. Please try again later." }, { status: 500 });
   }
 }
