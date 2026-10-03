@@ -114,7 +114,8 @@ export function Forum() {
         .rivotForumHeroContent {
           position: relative;
           z-index: 2;
-          max-width: 940px;
+          width: 100%;
+          max-width: 1240px;
           text-align: center;
           color: #fff;
         }
@@ -131,11 +132,12 @@ export function Forum() {
 
         .rivotForumHeroContent h1 {
           margin: 0;
-          font-size: clamp(44px, 8vw, 96px);
+          font-size: clamp(27px, 6vw, 88px);
           font-weight: 950;
           line-height: .95;
-          letter-spacing: -.04em;
+          letter-spacing: -.045em;
           text-transform: uppercase;
+          white-space: nowrap;
         }
 
         .rivotForumHeroContent span {
@@ -159,7 +161,7 @@ export function Forum() {
         }
 
         .rivotForumHeading {
-          max-width: 760px;
+          max-width: none;
           margin-bottom: 28px;
         }
 
@@ -171,6 +173,12 @@ export function Forum() {
           font-weight: 950;
           line-height: 1;
           letter-spacing: -.05em;
+        }
+
+        .rivotForumHeading h2 {
+          font-size: clamp(30px, 3vw, 44px);
+          letter-spacing: -.045em;
+          white-space: nowrap;
         }
 
         .rivotForumCategories {
@@ -396,6 +404,10 @@ export function Forum() {
         }
 
         @media (max-width: 920px) {
+          .rivotForumHeading h2 {
+            white-space: normal;
+          }
+
           .rivotForumCategories {
             grid-template-columns: 1fr;
           }

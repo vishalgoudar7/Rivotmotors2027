@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Gauge, Route, Zap } from "lucide-react";
 import sportModelImage from "@/asset/Model/Sport_NX100.png";
 import proModelImage from "@/asset/Model/Pro.png";
 import sportView1 from "@/asset/models/Sports/1.png";
@@ -13,7 +14,8 @@ import proFrontView from "@/asset/models/pro/Front view.png";
 import proLeftSideView from "@/asset/models/pro/Left side view.png";
 import proRearView from "@/asset/models/pro/Rear view.png";
 import proSilverGreyView from "@/asset/models/pro/Silver grey1 (2).png";
-import { bookingColorValues } from "@/data/bookingColors";
+import bookingBackground from "@/asset/newphotos/bookingimg1.png";
+import { bookingColors, bookingColorValues } from "@/data/bookingColors";
 
 type Model = "sport" | "pro";
 type BookingField = "model" | "color" | "name" | "mobile" | "email" | "pincode" | "state" | "city" | "source";
@@ -24,6 +26,7 @@ const models = [
     id: "pro" as const,
     label: "Pro",
     price: "₹ 1,29,000",
+    description: "Maximum range. Ultimate performance.",
     colors: bookingColorValues,
     image: proModelImage,
     gallery: [proFrontView, proLeftSideView, proRearView, proSilverGreyView],
@@ -32,6 +35,7 @@ const models = [
     id: "sport" as const,
     label: "Sport",
     price: "₹ 1,39,000",
+    description: "Sporty dynamics. Elevated style.",
     colors: bookingColorValues,
     image: sportModelImage,
     gallery: [sportView1, sportView2, sportView3, sportView4],
@@ -74,30 +78,39 @@ function FieldError({ field, errors, touched }: { field: BookingField | "terms";
 
 export function Booking() {
   const router = useRouter();
-  const [model, setModel] = useState<Model | "">("");
-  const [color, setColor] = useState("");
+  const [model, setModel] = useState<Model | "">("pro");
+  const [color, setColor] = useState<string>(bookingColors[0].value);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [hasSelectedGalleryView, setHasSelectedGalleryView] = useState(false);
   const [state, setState] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<BookingErrors>({});
   const [touchedFields, setTouchedFields] = useState<Partial<Record<BookingField | "terms", boolean>>>({});
   const selectedModel = models.find((item) => item.id === model) ?? models[0];
+  const selectedColor = bookingColors.find((item) => item.value === color) ?? bookingColors[0];
 
   function chooseModel(nextModel: Model) {
     setModel(nextModel);
     setTouchedFields((current) => ({ ...current, model: true }));
     setFieldErrors((current) => ({ ...current, model: undefined }));
-    setColor("");
+    setColor(bookingColors[0].value);
     setTouchedFields((current) => ({ ...current, color: false }));
     setFieldErrors((current) => ({ ...current, color: undefined }));
     setGalleryIndex(0);
+    setHasSelectedGalleryView(false);
   }
 
   function chooseColor(nextColor: string) {
     setColor(nextColor);
     setTouchedFields((current) => ({ ...current, color: true }));
     setFieldErrors((current) => ({ ...current, color: undefined }));
+  }
+
+  function showGalleryView(nextIndex: number) {
+    const totalViews = selectedModel.gallery.length;
+    setGalleryIndex((nextIndex + totalViews) % totalViews);
+    setHasSelectedGalleryView(true);
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -187,20 +200,21 @@ export function Booking() {
           <div className="rivotBookingIntro">
               <p>Reserve</p>
               <h1>
-                NX <span>100</span>
+                nx <span>100</span>
               </h1>
               <strong>Starting at {selectedModel.price}*</strong>
             <small>Booking amount Rs 499. Fully refundable.</small>
           </div>
           <div className="rivotRotationStage">
             <img
-              key={`${selectedModel.id}-${galleryIndex}`}
-              className="rivotBookingScooter"
-              src={(selectedModel.gallery[galleryIndex] ?? selectedModel.image).src}
+              key={`${selectedModel.id}-${hasSelectedGalleryView ? galleryIndex : "hero"}`}
+              className={`rivotBookingScooter ${hasSelectedGalleryView ? "isGalleryView" : "isHeroView"}`}
+              src={(hasSelectedGalleryView ? selectedModel.gallery[galleryIndex] : selectedModel.image).src}
               alt={`RIVOT NX100 ${selectedModel.label} scooter`}
               decoding="async"
             />
           </div>
+          <button className="rivotBookingGalleryNav rivotBookingGalleryPrev" type="button" aria-label="Show previous scooter view" onClick={() => showGalleryView(galleryIndex - 1)}>‹</button>
           <div className="rivotBookingGallery" aria-label={`${selectedModel.label} scooter gallery`}>
             {selectedModel.gallery.map((image, index) => (
               <button
@@ -209,22 +223,26 @@ export function Booking() {
                 className={galleryIndex === index ? "active" : ""}
                 aria-label={`Show ${selectedModel.label} view ${index + 1}`}
                 aria-pressed={galleryIndex === index}
-                onClick={() => setGalleryIndex(index)}
+                onClick={() => showGalleryView(index)}
               >
                 <img src={image.src} alt="" decoding="async" />
               </button>
             ))}
           </div>
+          <button className="rivotBookingGalleryNav rivotBookingGalleryNext" type="button" aria-label="Show next scooter view" onClick={() => showGalleryView(galleryIndex + 1)}>›</button>
           <div className="rivotBookingSpecs" aria-label="NX100 highlights">
             <div>
+              <Route aria-hidden="true" />
               <b>200 km</b>
               <span>Range</span>
             </div>
             <div>
+              <Gauge aria-hidden="true" />
               <b>100 km/h</b>
               <span>Top Speed</span>
             </div>
             <div>
+              <Zap aria-hidden="true" />
               <b>35 min</b>
               <span>Flash Charge</span>
             </div>
@@ -233,7 +251,7 @@ export function Booking() {
 
         <div className="rivotBookingPanel">
           <div className="rivotBookingPanelHeader">
-              <p>Choose Model</p>
+            <p>Choose Model</p>
             <h2>{model ? selectedModel.label : "Select a model"}</h2>
           </div>
           <div className="rivotBookingModels" role="radiogroup" aria-label="Choose model" aria-required="true" aria-invalid={Boolean(touchedFields.model && fieldErrors.model)}>
@@ -241,6 +259,7 @@ export function Booking() {
               <button key={item.id} type="button" role="radio" aria-checked={model === item.id} className={model === item.id ? "active" : ""} onClick={() => chooseModel(item.id)}>
                 <span>{item.label}</span>
                 <small>{item.price}</small>
+                <em>{item.description}</em>
               </button>
             ))}
           </div>
@@ -261,6 +280,10 @@ export function Booking() {
                   onClick={() => chooseColor(item)}
                 />
               ))}
+            </div>
+            <div className="rivotBookingColorName">
+              <b>{selectedColor.name === "White" ? "Arctic White" : selectedColor.name}</b>
+              <small>{selectedColor.name === "White" ? "Clean. Bold. Electric." : `NX100 ${selectedColor.name}`}</small>
             </div>
           </div>
           <FieldError field="color" errors={fieldErrors} touched={touchedFields} />
@@ -300,20 +323,22 @@ export function Booking() {
               <span>I agree to the <Link href="/legal/terms-and-conditions">Terms &amp; Conditions</Link> for this booking.</span>
             </label>
             <FieldError field="terms" errors={fieldErrors} touched={touchedFields} />
-            <div className="rivotBookingPayment">
-              <div><small>Due Today</small><strong>₹ 499</strong></div>
-              <span>Fully refundable deposit.</span>
+            <div className="rivotBookingCheckout">
+              <div className="rivotBookingPayment">
+                <div><small>Due Today</small><strong>₹ 499</strong></div>
+                <span>Fully refundable deposit.</span>
+              </div>
+              <p className="rivotBookingAmount">Booking Amount: ₹499 Fully Refundable</p>
+              <small className="rivotBookingFinePrint">Zaakpay may show the amount in paise format. ₹49900 means ₹499.00 only.</small>
+              <button className="rivotBookingSubmit" type="submit" disabled={loading} aria-busy={loading}>
+                {loading ? (
+                  <>
+                    <span className="rivotBookingSpinner" aria-hidden="true" />
+                    Please wait...
+                  </>
+                ) : <>Continue <span className="rivotBookingSubmitArrow" aria-hidden="true">→</span></>}
+              </button>
             </div>
-            <p className="rivotBookingAmount">Booking Amount: ₹499 Fully Refundable</p>
-            <small className="rivotBookingFinePrint">Zaakpay may show the amount in paise format. ₹49900 means ₹499.00 only.</small>
-            <button className="rivotBookingSubmit" type="submit" disabled={loading} aria-busy={loading}>
-              {loading ? (
-                <>
-                  <span className="rivotBookingSpinner" aria-hidden="true" />
-                  Please wait...
-                </>
-              ) : "Continue"}
-            </button>
           </form>
         </div>
       </div>
@@ -2573,6 +2598,1323 @@ export function Booking() {
           body:has(.rivotBooking) .rivotBookingIntro { grid-template-columns: 1fr; }
           body:has(.rivotBooking) .rivotBookingIntro h1 { font-size: clamp(54px, 18vw, 76px); }
           body:has(.rivotBooking) .rivotBookingIntro strong { width: fit-content; margin-top: 8px; white-space: normal; }
+        }
+
+        /* Cinematic booking layout */
+        body:has(.rivotBooking) .rivotBooking {
+          min-height: 100svh;
+          padding: 92px 20px 26px;
+          background-image: linear-gradient(90deg, rgba(2, 5, 7, .68) 0%, rgba(3, 7, 10, .34) 51%, rgba(5, 9, 13, .18) 100%), url("${bookingBackground.src}") !important;
+          background-position: center;
+          background-size: cover;
+          background-attachment: fixed;
+          color: #fff;
+        }
+
+        body:has(.rivotBooking) .rivotBookingShell {
+          width: min(100%, 1500px);
+          margin: 0 auto;
+        }
+
+        body:has(.rivotBooking) .rivotBookingLayout {
+          display: grid;
+          grid-template-columns: minmax(0, 1.28fr) minmax(500px, .82fr);
+          gap: clamp(24px, 3.2vw, 52px);
+          min-height: calc(100svh - 118px);
+          align-items: stretch;
+          overflow: visible;
+          background: transparent !important;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer {
+          width: 100%;
+          min-height: 720px;
+          padding: 24px 10px 8px;
+          display: grid;
+          grid-template-rows: auto minmax(290px, 1fr) auto auto;
+          align-items: center;
+          gap: 14px;
+          border: 0;
+          border-radius: 0;
+          background: transparent !important;
+          box-shadow: none !important;
+          color: #fff;
+        }
+
+        body:has(.rivotBooking) .rivotBookingIntro {
+          width: 100%;
+          margin: 0;
+          display: block;
+          color: #fff;
+          text-shadow: 0 3px 18px rgba(0, 0, 0, .42);
+        }
+
+        body:has(.rivotBooking) .rivotBookingIntro p {
+          margin: 0 0 7px;
+          color: #ff681d;
+          font-size: 13px;
+          font-weight: 900;
+          letter-spacing: .04em;
+        }
+
+        body:has(.rivotBooking) .rivotBookingIntro h1 {
+          margin: 0 0 5px;
+          color: #fff !important;
+          font-size: clamp(70px, 7vw, 112px);
+          font-weight: 900;
+          line-height: .84;
+          letter-spacing: -.075em;
+        }
+
+        body:has(.rivotBooking) .rivotBookingIntro h1 span { color: #ff681d; }
+        body:has(.rivotBooking) .rivotBookingIntro strong {
+          display: block;
+          margin: 14px 0 5px;
+          color: #fff !important;
+          font-size: clamp(18px, 1.5vw, 25px);
+        }
+        body:has(.rivotBooking) .rivotBookingIntro small {
+          color: rgba(255, 255, 255, .74) !important;
+          font-size: 13px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotRotationStage {
+          width: 100%;
+          height: 100%;
+          min-height: 300px;
+          margin: -18px 0 -12px;
+          display: grid;
+          place-items: center;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter {
+          width: min(92%, 710px);
+          height: min(46svh, 490px);
+          object-fit: contain;
+          filter: drop-shadow(0 30px 32px rgba(0, 0, 0, .62));
+        }
+
+        body:has(.rivotBooking) .rivotBookingGallery {
+          width: 100%;
+          height: 94px;
+          margin: 0;
+          gap: 12px;
+        }
+        body:has(.rivotBooking) .rivotBookingGallery button {
+          height: 94px;
+          border: 1px solid rgba(255, 255, 255, .18);
+          border-radius: 13px;
+          background: rgba(14, 18, 20, .52);
+          backdrop-filter: blur(12px);
+        }
+        body:has(.rivotBooking) .rivotBookingGallery button.active {
+          border-color: #ff681d;
+          box-shadow: inset 0 0 0 1px #ff681d, 0 8px 24px rgba(0, 0, 0, .2);
+        }
+        body:has(.rivotBooking) .rivotBookingGallery img { height: 88px; }
+
+        body:has(.rivotBooking) .rivotBookingSpecs {
+          width: 100%;
+          min-height: 72px;
+          margin: 0;
+          border: 1px solid rgba(255, 255, 255, .12);
+          border-radius: 14px;
+          background: rgba(8, 13, 16, .7) !important;
+          backdrop-filter: blur(16px);
+          box-shadow: 0 16px 38px rgba(0, 0, 0, .22);
+        }
+        body:has(.rivotBooking) .rivotBookingSpecs div {
+          min-height: 72px;
+          background: transparent !important;
+          border-color: rgba(255, 255, 255, .12);
+        }
+        body:has(.rivotBooking) .rivotBookingSpecs b { color: #fff !important; }
+        body:has(.rivotBooking) .rivotBookingSpecs span { color: rgba(255, 255, 255, .58) !important; }
+
+        body:has(.rivotBooking) .rivotBookingPanel {
+          width: 100%;
+          align-self: center;
+          padding: clamp(26px, 2.5vw, 40px);
+          border: 1px solid rgba(255, 255, 255, .7);
+          border-radius: 22px;
+          background: rgba(252, 252, 251, .94) !important;
+          box-shadow: 0 28px 80px rgba(0, 0, 0, .35) !important;
+          backdrop-filter: blur(24px);
+          color: #111;
+        }
+
+        body:has(.rivotBooking) .rivotBookingPanelHeader { margin-bottom: 14px; }
+        body:has(.rivotBooking) .rivotBookingPanelHeader p {
+          margin: 0;
+          color: #111 !important;
+          font-size: 18px;
+          font-weight: 900;
+        }
+        body:has(.rivotBooking) .rivotBookingPanelHeader p::before { content: "1. "; }
+        body:has(.rivotBooking) .rivotBookingPanelHeader h2 { display: none; }
+
+        body:has(.rivotBooking) .rivotBookingModels {
+          gap: 12px;
+          margin-bottom: 22px;
+        }
+        body:has(.rivotBooking) .rivotBookingModels button {
+          min-height: 88px;
+          padding: 14px 16px;
+          border: 1px solid #dfe1e1;
+          border-radius: 12px;
+          background: rgba(255, 255, 255, .78) !important;
+          color: #111 !important;
+          box-shadow: none;
+        }
+        body:has(.rivotBooking) .rivotBookingModels button.active {
+          border-color: #ff681d !important;
+          box-shadow: inset 0 0 0 1px #ff681d !important;
+        }
+        body:has(.rivotBooking) .rivotBookingModels button span { color: #111 !important; font-size: 18px; }
+        body:has(.rivotBooking) .rivotBookingModels button small { color: #51575a !important; font-size: 12px; }
+
+        body:has(.rivotBooking) .rivotBookingColors {
+          min-height: 86px;
+          margin-bottom: 20px;
+          padding: 34px 0 16px;
+          border-bottom-color: #e4e5e5;
+        }
+        body:has(.rivotBooking) .rivotBookingColors::before {
+          content: "2. Choose Color";
+          color: #111 !important;
+          font-size: 18px;
+          font-weight: 900;
+        }
+        body:has(.rivotBooking) .rivotBookingColors > span { display: none; }
+        body:has(.rivotBooking) .rivotBookingColors button { width: 38px; height: 38px; flex-basis: 38px; }
+
+        body:has(.rivotBooking) .rivotBookingLead {
+          margin: 0 0 14px;
+          color: transparent !important;
+          font-size: 0;
+        }
+        body:has(.rivotBooking) .rivotBookingLead::before {
+          content: "3. Your Details";
+          color: #111 !important;
+          font-size: 18px;
+          font-weight: 900;
+        }
+
+        body:has(.rivotBooking) .rivotBookingFields { gap: 9px 12px; }
+        body:has(.rivotBooking) .rivotBookingFields input,
+        body:has(.rivotBooking) .rivotBookingFields select {
+          min-height: 45px;
+          border: 1px solid #e3e5e5 !important;
+          border-radius: 10px;
+          background: #f0f2f2 !important;
+          color: #202527 !important;
+          font-size: 13px;
+          color-scheme: light !important;
+        }
+        body:has(.rivotBooking) .rivotBookingFields input::placeholder { color: #869094 !important; }
+        body:has(.rivotBooking) .rivotBookingTerms { color: #232728 !important; }
+        body:has(.rivotBooking) .rivotBookingTerms a { color: #ff5f16; }
+        body:has(.rivotBooking) .rivotBookingPayment {
+          border-top-color: #e4e5e5 !important;
+          margin-bottom: 13px;
+          padding-top: 14px;
+        }
+        body:has(.rivotBooking) .rivotBookingPayment div strong { color: #111 !important; }
+        body:has(.rivotBooking) .rivotBookingPayment > span { color: #6f777a !important; }
+        body:has(.rivotBooking) .rivotBookingAmount,
+        body:has(.rivotBooking) .rivotBookingFinePrint { display: none; }
+        body:has(.rivotBooking) .rivotBookingSubmit {
+          min-height: 52px;
+          border-radius: 9px;
+          background: linear-gradient(90deg, #ff4f0b, #ff7519);
+          box-shadow: 0 12px 28px rgba(255, 91, 18, .28);
+          text-transform: uppercase;
+          font-size: 15px;
+        }
+        body:has(.rivotBooking) .rivotBookingSubmit:hover { background: linear-gradient(90deg, #ec4506, #ef6510); }
+
+        @media (max-width: 1050px) {
+          body:has(.rivotBooking) .rivotBooking { padding: 88px 18px 36px; background-attachment: scroll; }
+          body:has(.rivotBooking) .rivotBookingLayout { grid-template-columns: 1fr; gap: 24px; }
+          body:has(.rivotBooking) .rivotBookingViewer { min-height: 680px; }
+          body:has(.rivotBooking) .rivotBookingPanel { width: min(100%, 720px); margin: 0 auto; }
+        }
+
+        @media (max-width: 600px) {
+          body:has(.rivotBooking) .rivotBooking { padding: 78px 12px 28px; }
+          body:has(.rivotBooking) .rivotBookingViewer { min-height: 570px; padding-inline: 0; }
+          body:has(.rivotBooking) .rivotBookingIntro h1 { font-size: 64px; }
+          body:has(.rivotBooking) .rivotBookingViewer .rivotRotationStage { min-height: 230px; margin-block: -8px; }
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter { height: 260px; }
+          body:has(.rivotBooking) .rivotBookingGallery { height: 68px; gap: 6px; }
+          body:has(.rivotBooking) .rivotBookingGallery button,
+          body:has(.rivotBooking) .rivotBookingGallery img { height: 68px; }
+          body:has(.rivotBooking) .rivotBookingPanel { padding: 22px 14px 18px; border-radius: 16px; }
+          body:has(.rivotBooking) .rivotBookingModels { grid-template-columns: 1fr 1fr; }
+          body:has(.rivotBooking) .rivotBookingModels button { min-height: 78px; }
+          body:has(.rivotBooking) .rivotBookingFields { grid-template-columns: 1fr; }
+        }
+
+        @media (min-width: 1051px) {
+          body:has(.rivotBooking) .rivotBooking {
+            height: 100svh;
+            min-height: 680px;
+            padding: 86px 18px 14px;
+            overflow: hidden;
+          }
+
+          body:has(.rivotBooking) .rivotBookingShell,
+          body:has(.rivotBooking) .rivotBookingLayout {
+            height: 100%;
+            min-height: 0;
+          }
+
+          body:has(.rivotBooking) .rivotBookingLayout {
+            grid-template-columns: minmax(0, 1.3fr) minmax(480px, .82fr);
+            gap: clamp(22px, 2.6vw, 44px);
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer {
+            height: 100%;
+            min-height: 0;
+            padding: 10px 8px 0;
+            grid-template-rows: auto minmax(170px, 1fr) 72px 66px;
+            gap: 8px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingIntro h1 {
+            font-size: clamp(62px, 5.5vw, 92px);
+          }
+
+          body:has(.rivotBooking) .rivotBookingIntro strong {
+            margin: 10px 0 4px;
+            font-size: clamp(16px, 1.25vw, 21px);
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotRotationStage {
+            min-height: 0;
+            margin: -14px 0 -8px;
+            overflow: hidden;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter {
+            width: min(88%, 580px);
+            height: min(34svh, 340px);
+          }
+
+          body:has(.rivotBooking) .rivotBookingGallery,
+          body:has(.rivotBooking) .rivotBookingGallery button,
+          body:has(.rivotBooking) .rivotBookingGallery img {
+            height: 72px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingSpecs,
+          body:has(.rivotBooking) .rivotBookingSpecs div {
+            min-height: 66px;
+            height: 66px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingPanel {
+            height: 100%;
+            max-height: none;
+            padding: clamp(18px, 2svh, 26px) clamp(22px, 2vw, 32px);
+            overflow: hidden;
+          }
+
+          body:has(.rivotBooking) .rivotBookingPanelHeader {
+            margin-bottom: 9px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingPanelHeader p,
+          body:has(.rivotBooking) .rivotBookingColors::before,
+          body:has(.rivotBooking) .rivotBookingLead::before {
+            font-size: clamp(15px, 1.25vw, 18px);
+          }
+
+          body:has(.rivotBooking) .rivotBookingModels {
+            gap: 10px;
+            margin-bottom: 12px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingModels button {
+            min-height: 62px;
+            padding: 9px 14px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingModels button span { font-size: 16px; }
+
+          body:has(.rivotBooking) .rivotBookingColors {
+            min-height: 63px;
+            margin-bottom: 10px;
+            padding: 25px 0 8px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingColors > div { gap: 12px; }
+          body:has(.rivotBooking) .rivotBookingColors button {
+            width: 32px;
+            height: 32px;
+            flex-basis: 32px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingLead {
+            margin-bottom: 8px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingLead::before {
+            margin-bottom: 0;
+          }
+
+          body:has(.rivotBooking) .rivotBookingFields {
+            gap: 6px 10px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingFields input,
+          body:has(.rivotBooking) .rivotBookingFields select {
+            min-height: 36px;
+            height: 36px;
+            padding-inline: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingFieldError {
+            min-height: 0;
+            margin-top: 2px;
+            font-size: 10px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingTerms {
+            margin: 9px 0 10px;
+            font-size: 11px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingTerms input {
+            width: 16px;
+            height: 16px;
+            flex-basis: 16px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingPayment {
+            margin-bottom: 8px;
+            padding-top: 9px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingPayment div strong { font-size: 25px; }
+          body:has(.rivotBooking) .rivotBookingPayment div small,
+          body:has(.rivotBooking) .rivotBookingPayment > span { font-size: 10px; }
+
+          body:has(.rivotBooking) .rivotBookingSubmit {
+            min-height: 40px;
+            height: 40px;
+            font-size: 13px;
+          }
+        }
+
+        @media (min-width: 1051px) and (max-height: 760px) {
+          body:has(.rivotBooking) .rivotBooking { padding-top: 76px; }
+          body:has(.rivotBooking) .rivotBookingViewer { grid-template-rows: auto minmax(120px, 1fr) 58px 54px; }
+          body:has(.rivotBooking) .rivotBookingIntro h1 { font-size: 58px; }
+          body:has(.rivotBooking) .rivotBookingIntro strong { margin-top: 6px; font-size: 15px; }
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter { height: min(29svh, 255px); }
+          body:has(.rivotBooking) .rivotBookingGallery,
+          body:has(.rivotBooking) .rivotBookingGallery button,
+          body:has(.rivotBooking) .rivotBookingGallery img { height: 58px; }
+          body:has(.rivotBooking) .rivotBookingSpecs,
+          body:has(.rivotBooking) .rivotBookingSpecs div { min-height: 54px; height: 54px; }
+          body:has(.rivotBooking) .rivotBookingPanel { padding-block: 12px; }
+          body:has(.rivotBooking) .rivotBookingModels button { min-height: 54px; }
+          body:has(.rivotBooking) .rivotBookingColors { min-height: 55px; padding-top: 22px; margin-bottom: 6px; }
+          body:has(.rivotBooking) .rivotBookingFields input,
+          body:has(.rivotBooking) .rivotBookingFields select { min-height: 32px; height: 32px; }
+          body:has(.rivotBooking) .rivotBookingTerms { margin-block: 6px; }
+          body:has(.rivotBooking) .rivotBookingPayment { padding-top: 6px; margin-bottom: 6px; }
+          body:has(.rivotBooking) .rivotBookingSubmit { min-height: 36px; height: 36px; }
+        }
+
+        @media (min-width: 1051px) and (min-height: 761px) and (max-height: 900px) {
+          body:has(.rivotBooking) .rivotBooking {
+            min-height: 0;
+            padding-top: 78px;
+            padding-bottom: 10px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingPanel {
+            height: 100%;
+            padding: 15px 26px 14px;
+            border-radius: 20px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingPanelHeader { margin-bottom: 7px; }
+          body:has(.rivotBooking) .rivotBookingModels { margin-bottom: 8px; }
+          body:has(.rivotBooking) .rivotBookingModels button {
+            min-height: 56px;
+            padding-block: 7px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingColors {
+            min-height: 56px;
+            margin-bottom: 6px;
+            padding: 22px 0 6px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingColors button {
+            width: 30px;
+            height: 30px;
+            flex-basis: 30px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingLead { margin-bottom: 5px; }
+          body:has(.rivotBooking) .rivotBookingFields { gap: 5px 10px; }
+          body:has(.rivotBooking) .rivotBookingFields input,
+          body:has(.rivotBooking) .rivotBookingFields select {
+            min-height: 34px;
+            height: 34px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingTerms { margin: 6px 0 7px; }
+          body:has(.rivotBooking) .rivotBookingPayment {
+            margin-bottom: 6px;
+            padding-top: 6px;
+          }
+          body:has(.rivotBooking) .rivotBookingPayment div strong { font-size: 23px; }
+          body:has(.rivotBooking) .rivotBookingSubmit {
+            min-height: 38px;
+            height: 38px;
+          }
+        }
+
+        @media (min-width: 1051px) and (max-height: 650px) {
+          body:has(.rivotBooking) .rivotBooking {
+            height: auto;
+            min-height: 100svh;
+            overflow-y: auto;
+          }
+          body:has(.rivotBooking) .rivotBookingLayout { min-height: 560px; }
+          body:has(.rivotBooking) .rivotBookingPanel { overflow-y: auto; }
+        }
+
+        /* Reference-card details */
+        body:has(.rivotBooking) .rivotBookingPanelHeader {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingCompare {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          color: #ff5f16;
+          font-size: 11px;
+          font-weight: 800;
+          text-decoration: none;
+        }
+
+        body:has(.rivotBooking) .rivotBookingCompare span { font-size: 17px; line-height: 1; }
+
+        body:has(.rivotBooking) .rivotBookingModels button {
+          position: relative;
+          display: grid;
+          grid-template-columns: 1fr auto;
+          align-content: center;
+          text-align: left;
+        }
+
+        body:has(.rivotBooking) .rivotBookingModels button::after {
+          content: "";
+          grid-column: 2;
+          grid-row: 1;
+          width: 16px;
+          height: 16px;
+          border: 1px solid #cbd0d2;
+          border-radius: 50%;
+          background: #fff;
+        }
+
+        body:has(.rivotBooking) .rivotBookingModels button.active::after {
+          border: 5px solid #ff681d;
+        }
+
+        body:has(.rivotBooking) .rivotBookingModels button > span,
+        body:has(.rivotBooking) .rivotBookingModels button > small,
+        body:has(.rivotBooking) .rivotBookingModels button > em {
+          grid-column: 1;
+        }
+
+        body:has(.rivotBooking) .rivotBookingModels button > span { grid-row: 1; }
+        body:has(.rivotBooking) .rivotBookingModels button > small { grid-row: 2; margin-top: 2px; }
+        body:has(.rivotBooking) .rivotBookingModels button > em {
+          grid-row: 3;
+          margin-top: 5px;
+          color: #6f777a;
+          font-size: 10px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 1.2;
+        }
+
+        body:has(.rivotBooking) .rivotBookingColors {
+          justify-content: space-between;
+          gap: 18px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingColorName {
+          display: grid;
+          margin-left: auto;
+          text-align: right;
+          line-height: 1.25;
+        }
+
+        body:has(.rivotBooking) .rivotBookingColorName b { color: #17191a; font-size: 12px; }
+        body:has(.rivotBooking) .rivotBookingColorName small { color: #737c80; font-size: 10px; }
+
+        body:has(.rivotBooking) .rivotBookingCheckout {
+          padding: 10px;
+          border-radius: 11px;
+          background: rgba(240, 242, 242, .78);
+        }
+
+        body:has(.rivotBooking) .rivotBookingCheckout .rivotBookingPayment {
+          margin: 0 2px 8px;
+          padding: 0;
+          border: 0 !important;
+        }
+
+        body:has(.rivotBooking) .rivotBookingSubmitArrow {
+          margin-left: 8px !important;
+          font-size: 18px !important;
+          line-height: 1;
+        }
+
+        @media (min-width: 1051px) {
+          body:has(.rivotBooking) .rivotBookingModels button { min-height: 70px; }
+          body:has(.rivotBooking) .rivotBookingCheckout { padding: 8px; }
+          body:has(.rivotBooking) .rivotBookingCheckout .rivotBookingSubmit { width: 100%; }
+        }
+
+        @media (min-width: 1051px) and (max-height: 900px) {
+          body:has(.rivotBooking) .rivotBookingModels button { min-height: 64px; }
+          body:has(.rivotBooking) .rivotBookingModels button > em { margin-top: 3px; font-size: 9px; }
+          body:has(.rivotBooking) .rivotBookingCheckout { padding: 6px 8px; }
+          body:has(.rivotBooking) .rivotBookingCheckout .rivotBookingPayment { margin-bottom: 5px; }
+        }
+
+        @media (max-width: 600px) {
+          body:has(.rivotBooking) .rivotBookingCompare { font-size: 10px; }
+          body:has(.rivotBooking) .rivotBookingModels button > em { display: none; }
+          body:has(.rivotBooking) .rivotBookingColorName { display: none; }
+        }
+
+        /* Final type scale: matches the compact reference form */
+        body:has(.rivotBooking) .rivotBookingPanelHeader p,
+        body:has(.rivotBooking) .rivotBookingColors::before,
+        body:has(.rivotBooking) .rivotBookingLead::before {
+          font-size: 15px !important;
+          line-height: 1.15 !important;
+          letter-spacing: -.02em;
+        }
+
+        body:has(.rivotBooking) .rivotBookingCompare {
+          font-size: 9px !important;
+          line-height: 1;
+        }
+        body:has(.rivotBooking) .rivotBookingCompare span { font-size: 14px; }
+
+        body:has(.rivotBooking) .rivotBookingModels button span {
+          font-size: 14px !important;
+          line-height: 1.1;
+        }
+        body:has(.rivotBooking) .rivotBookingModels button small {
+          font-size: 10px !important;
+          line-height: 1.15;
+        }
+        body:has(.rivotBooking) .rivotBookingModels button > em {
+          font-size: 8px !important;
+          line-height: 1.15;
+        }
+        body:has(.rivotBooking) .rivotBookingModels button::after {
+          box-sizing: border-box;
+          width: 14px;
+          height: 14px;
+        }
+        body:has(.rivotBooking) .rivotBookingModels button.active::after {
+          border-width: 4px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingColors > div { gap: 10px; }
+        body:has(.rivotBooking) .rivotBookingColors button {
+          width: 30px !important;
+          height: 30px !important;
+          flex-basis: 30px !important;
+        }
+        body:has(.rivotBooking) .rivotBookingColorName b { font-size: 10px; }
+        body:has(.rivotBooking) .rivotBookingColorName small { font-size: 8px; }
+
+        body:has(.rivotBooking) .rivotBookingFields input,
+        body:has(.rivotBooking) .rivotBookingFields select {
+          font-size: 11px !important;
+          font-weight: 500;
+        }
+
+        body:has(.rivotBooking) .rivotBookingTerms {
+          font-size: 9px !important;
+          line-height: 1.25;
+        }
+        body:has(.rivotBooking) .rivotBookingTerms input {
+          width: 14px !important;
+          height: 14px !important;
+          flex-basis: 14px !important;
+        }
+
+        body:has(.rivotBooking) .rivotBookingPayment div small { font-size: 8px !important; }
+        body:has(.rivotBooking) .rivotBookingPayment div strong { font-size: 23px !important; }
+        body:has(.rivotBooking) .rivotBookingPayment > span { font-size: 8px !important; }
+        body:has(.rivotBooking) .rivotBookingSubmit { font-size: 12px !important; }
+        body:has(.rivotBooking) .rivotBookingSubmitArrow { font-size: 15px !important; }
+
+        /* Center the product media group inside the left configurator column. */
+        body:has(.rivotBooking) .rivotBookingViewer {
+          width: 100% !important;
+          justify-items: center;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingIntro {
+          width: 100%;
+          justify-self: stretch;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotRotationStage {
+          width: 100% !important;
+          justify-self: stretch;
+          place-items: center;
+          overflow: visible;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter {
+          transform: translateY(8px) scale(1.45);
+          transform-origin: center;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery {
+          width: min(100%, 680px) !important;
+          margin: 0 auto !important;
+          justify-self: center;
+          gap: 14px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery button {
+          display: grid;
+          place-items: center;
+          overflow: hidden;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery img {
+          box-sizing: border-box;
+          width: 100%;
+          height: 100% !important;
+          padding: 6px;
+          border: 0 !important;
+          border-radius: 0;
+          background: transparent !important;
+          box-shadow: none !important;
+          object-fit: contain;
+          object-position: center;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingSpecs {
+          width: min(100%, 680px) !important;
+          margin: 0 auto !important;
+          justify-self: center;
+        }
+
+        @media (max-width: 1050px) {
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter {
+            transform: translateY(4px) scale(1.2);
+          }
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery,
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingSpecs {
+            width: min(100%, 620px) !important;
+          }
+        }
+
+        @media (max-width: 600px) {
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter {
+            transform: scale(1.08);
+          }
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery { gap: 7px; }
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery img { padding: 3px; }
+        }
+
+        @media (min-width: 1051px) {
+          body:has(.rivotBooking) .rivotBookingViewer {
+            position: relative;
+            align-self: stretch;
+            padding-bottom: 156px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotRotationStage {
+            position: relative;
+            padding-bottom: 18px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: 0;
+            transform: translate(-50%, -52%) scale(1.22);
+            transform-origin: center;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery {
+            position: absolute;
+            left: 50%;
+            bottom: 78px;
+            z-index: 3;
+            transform: translateX(-50%);
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingSpecs {
+            position: absolute;
+            left: 50%;
+            bottom: 4px;
+            z-index: 2;
+            transform: translateX(-50%);
+          }
+        }
+
+        @media (max-width: 1050px) {
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter {
+            position: static;
+            margin: auto;
+          }
+        }
+
+        @media (min-width: 1051px) {
+          body:has(.rivotBooking) .rivotBookingViewer {
+            height: calc(100svh - 100px) !important;
+            min-height: calc(100svh - 100px) !important;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotRotationStage {
+            position: static !important;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter {
+            top: 48%;
+            left: 50%;
+            z-index: 1;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter.isHeroView {
+            width: min(82%, 760px);
+            height: min(52svh, 540px);
+            transform: translate(-50%, -50%) scale(1.18);
+            filter: drop-shadow(0 30px 30px rgba(0, 0, 0, .48));
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter.isGalleryView {
+            width: min(80%, 700px);
+            height: min(48svh, 500px);
+            transform: translate(-50%, -50%) scale(1.08);
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery img {
+            transform: scale(.86);
+            transform-origin: center;
+          }
+        }
+
+        @media (max-width: 1050px) {
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter.isHeroView {
+            width: min(100%, 650px);
+            height: min(52vw, 470px);
+            transform: scale(1.18);
+          }
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter.isGalleryView {
+            transform: scale(1.05);
+          }
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery img {
+          width: calc(100% - 18px) !important;
+          height: calc(100% - 12px) !important;
+          max-width: calc(100% - 18px) !important;
+          max-height: calc(100% - 12px) !important;
+          margin: auto !important;
+          padding: 0 !important;
+          object-fit: contain !important;
+          object-position: center !important;
+          transform: scale(.5) !important;
+          transform-origin: center !important;
+          filter: drop-shadow(0 5px 5px rgba(0, 0, 0, .18));
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery button {
+          position: relative;
+          border-color: rgba(255, 255, 255, .2) !important;
+          background: rgba(255, 255, 255, .08) !important;
+          box-shadow: 0 8px 22px rgba(0, 0, 0, .12);
+          backdrop-filter: blur(12px);
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery button:hover {
+          background: rgba(255, 255, 255, .14) !important;
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery button.active {
+          border-color: #ff681d !important;
+          background: rgba(255, 255, 255, .12) !important;
+          box-shadow: inset 0 0 0 1px #ff681d, 0 8px 22px rgba(255, 104, 29, .18);
+        }
+
+        body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery img {
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          width: 160% !important;
+          height: 160% !important;
+          max-width: none !important;
+          max-height: none !important;
+          margin: 0 !important;
+          transform: translate(-50%, -50%) scale(.56) !important;
+          transform-origin: center !important;
+        }
+
+        body:has(.rivotBooking) .rivotBookingGalleryNav {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          padding: 0 0 4px;
+          border: 1px solid rgba(255, 255, 255, .22);
+          border-radius: 50%;
+          background: rgba(9, 12, 13, .78);
+          color: #fff;
+          font-size: 30px;
+          font-weight: 300;
+          line-height: 1;
+          box-shadow: 0 10px 24px rgba(0, 0, 0, .24);
+          backdrop-filter: blur(12px);
+          cursor: pointer;
+          transition: transform 200ms ease, border-color 200ms ease, background 200ms ease;
+        }
+
+        body:has(.rivotBooking) .rivotBookingGalleryNav:hover {
+          border-color: #ff681d;
+          background: #ff681d;
+          transform: translateY(-1px);
+        }
+
+        @media (min-width: 1051px) {
+          body:has(.rivotBooking) .rivotBookingGalleryNav {
+            position: absolute;
+            bottom: 94px;
+            z-index: 5;
+            display: flex;
+          }
+          body:has(.rivotBooking) .rivotBookingGalleryPrev { left: calc(50% - 390px); }
+          body:has(.rivotBooking) .rivotBookingGalleryNext { right: calc(50% - 390px); }
+        }
+
+        @media (min-width: 1051px) and (max-width: 1450px) {
+          body:has(.rivotBooking) .rivotBookingGalleryPrev { left: 4px; }
+          body:has(.rivotBooking) .rivotBookingGalleryNext { right: 4px; }
+        }
+
+        body:has(.rivotBooking) .rivotBookingSpecs div {
+          display: grid;
+          grid-template-columns: 42px auto;
+          grid-template-rows: auto auto;
+          place-content: center;
+          align-items: center;
+          column-gap: 13px;
+          padding: 10px 18px;
+        }
+
+        body:has(.rivotBooking) .rivotBookingSpecs svg {
+          grid-column: 1;
+          grid-row: 1 / 3;
+          width: 30px;
+          height: 30px;
+          justify-self: center;
+          color: #ff681d;
+          stroke-width: 1.8;
+          filter: drop-shadow(0 0 9px rgba(255, 104, 29, .3));
+        }
+
+        body:has(.rivotBooking) .rivotBookingSpecs b {
+          grid-column: 2;
+          grid-row: 1;
+          align-self: end;
+          text-align: left;
+          line-height: 1.05;
+        }
+
+        body:has(.rivotBooking) .rivotBookingSpecs span {
+          grid-column: 2;
+          grid-row: 2;
+          align-self: start;
+          text-align: left;
+          letter-spacing: .15em;
+        }
+
+        @media (max-width: 600px) {
+          body:has(.rivotBooking) .rivotBookingSpecs div {
+            grid-template-columns: 24px auto;
+            column-gap: 6px;
+            padding-inline: 4px;
+          }
+          body:has(.rivotBooking) .rivotBookingSpecs svg { width: 18px; height: 18px; }
+        }
+
+        @media (max-width: 600px) {
+          html, body { max-width: 100%; overflow-x: hidden; }
+
+          body:has(.rivotBooking) .rivotBooking {
+            width: 100%;
+            max-width: 100vw;
+            padding: 76px 12px 28px;
+            overflow-x: hidden;
+            background-position: 43% center;
+          }
+
+          body:has(.rivotBooking) .rivotBookingShell,
+          body:has(.rivotBooking) .rivotBookingLayout,
+          body:has(.rivotBooking) .rivotBookingViewer,
+          body:has(.rivotBooking) .rivotBookingPanel {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+          }
+
+          body:has(.rivotBooking) .rivotBookingLayout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 24px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer {
+            min-height: 670px;
+            padding: 8px 0 0;
+            grid-template-rows: auto minmax(270px, 1fr) 64px 76px;
+            gap: 10px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingIntro h1 {
+            font-size: clamp(54px, 18vw, 72px);
+          }
+          body:has(.rivotBooking) .rivotBookingIntro strong { font-size: 16px; }
+          body:has(.rivotBooking) .rivotBookingIntro small { font-size: 10px; }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotRotationStage {
+            width: 100% !important;
+            height: 280px;
+            min-height: 280px;
+            margin: -8px 0 0;
+            overflow: visible;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter.isHeroView {
+            width: min(100%, 430px);
+            height: 300px;
+            transform: translateY(8px) scale(1.36);
+            transform-origin: center;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter.isGalleryView {
+            width: min(100%, 400px);
+            height: 280px;
+            transform: translateY(6px) scale(1.2);
+            transform-origin: center;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery {
+            position: static;
+            width: 100% !important;
+            height: 64px;
+            margin: 0 auto !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 7px;
+            transform: none;
+          }
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery button { height: 64px; border-radius: 10px; }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingSpecs {
+            position: static;
+            display: grid !important;
+            width: 100% !important;
+            min-height: 76px;
+            height: 76px;
+            margin: 0 auto !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            transform: none;
+            border-radius: 14px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingSpecs div {
+            min-width: 0;
+            min-height: 76px;
+            height: 76px;
+            grid-template-columns: 18px minmax(0, auto);
+            grid-template-rows: auto auto;
+            column-gap: 5px;
+            padding: 8px 4px;
+          }
+          body:has(.rivotBooking) .rivotBookingSpecs svg { width: 16px; height: 16px; }
+          body:has(.rivotBooking) .rivotBookingSpecs b {
+            font-size: clamp(12px, 3.5vw, 16px);
+            white-space: nowrap;
+          }
+          body:has(.rivotBooking) .rivotBookingSpecs span {
+            font-size: 6px;
+            letter-spacing: .1em;
+            white-space: nowrap;
+          }
+
+          body:has(.rivotBooking) .rivotBookingGalleryNav { display: none !important; }
+          body:has(.rivotBooking) .rivotBookingPanel { margin: 0; }
+          body:has(.rivotBooking) .rivotBookingFields { grid-template-columns: minmax(0, 1fr); }
+
+          /* Compact mobile type scale matching the RIVOT visual language. */
+          body:has(.rivotBooking) .rivotBookingViewer {
+            font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          }
+
+          body:has(.rivotBooking) .rivotBookingIntro p {
+            margin: 0 0 5px;
+            font-size: 9px;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: .015em;
+            text-transform: uppercase;
+          }
+
+          body:has(.rivotBooking) .rivotBookingIntro h1 {
+            margin: 0;
+            font-size: clamp(44px, 14.5vw, 54px);
+            line-height: .9;
+            font-weight: 900;
+            letter-spacing: -.065em;
+          }
+
+          body:has(.rivotBooking) .rivotBookingIntro h1 span {
+            display: inline-block;
+            margin-left: .04em;
+          }
+
+          body:has(.rivotBooking) .rivotBookingIntro strong {
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.15;
+            font-weight: 800;
+            letter-spacing: -.025em;
+          }
+
+          body:has(.rivotBooking) .rivotBookingIntro small {
+            margin-top: 4px;
+            font-size: 8px;
+            line-height: 1.25;
+            font-weight: 650;
+            letter-spacing: -.01em;
+          }
+
+          body:has(.rivotBooking) .rivotBookingSpecs b {
+            font-size: clamp(13px, 4vw, 15px);
+            line-height: 1;
+            font-weight: 850;
+            letter-spacing: -.025em;
+          }
+
+          body:has(.rivotBooking) .rivotBookingSpecs span {
+            margin-top: 3px;
+            font-size: 6px;
+            line-height: 1;
+            font-weight: 750;
+            letter-spacing: .08em;
+          }
+
+          body:has(.rivotBooking) .rivotBookingIntro {
+            animation: rivotMobileIntro .55s cubic-bezier(.22, 1, .36, 1) both;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingScooter.isHeroView {
+            animation: rivotMobileScooter .75s .08s cubic-bezier(.22, 1, .36, 1) both;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingGallery {
+            animation: rivotMobileRise .55s .2s cubic-bezier(.22, 1, .36, 1) both;
+          }
+
+          body:has(.rivotBooking) .rivotBookingViewer .rivotBookingSpecs {
+            animation: rivotMobileRise .55s .3s cubic-bezier(.22, 1, .36, 1) both;
+          }
+
+          body:has(.rivotBooking) .rivotBookingGallery button:active {
+            transform: scale(.94);
+          }
+        }
+
+        @keyframes rivotMobileIntro {
+          from { opacity: 0; transform: translateY(-12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes rivotMobileScooter {
+          from { opacity: 0; transform: translateY(28px) scale(1.12); }
+          to { opacity: 1; transform: translateY(8px) scale(1.36); }
+        }
+
+        @keyframes rivotMobileRise {
+          from { opacity: 0; transform: translateY(18px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        body:has(.rivotBooking) .rivotBookingPanel {
+          animation: rivotBookingPanelEnter .78s cubic-bezier(.22, 1, .36, 1) both;
+        }
+
+        body:has(.rivotBooking) .rivotBookingPanel > :is(
+          .rivotBookingPanelHeader,
+          .rivotBookingModels,
+          .rivotBookingColors,
+          .rivotBookingLead,
+          .rivotBookingError,
+          form
+        ) {
+          animation: rivotBookingFormSectionEnter .52s cubic-bezier(.22, 1, .36, 1) both;
+        }
+
+        body:has(.rivotBooking) .rivotBookingPanel > .rivotBookingPanelHeader { animation-delay: .18s; }
+        body:has(.rivotBooking) .rivotBookingPanel > .rivotBookingModels { animation-delay: .26s; }
+        body:has(.rivotBooking) .rivotBookingPanel > .rivotBookingColors { animation-delay: .34s; }
+        body:has(.rivotBooking) .rivotBookingPanel > .rivotBookingLead { animation-delay: .42s; }
+        body:has(.rivotBooking) .rivotBookingPanel > .rivotBookingError { animation-delay: .46s; }
+        body:has(.rivotBooking) .rivotBookingPanel > form { animation-delay: .5s; }
+
+        @keyframes rivotBookingPanelEnter {
+          from { opacity: 0; transform: translateX(42px) scale(.985); }
+          to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        @keyframes rivotBookingFormSectionEnter {
+          from { opacity: 0; transform: translateY(13px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Keep the same booking artwork in both themes. */
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBooking {
+          background-color: #080b0f !important;
+          background-image: linear-gradient(90deg, rgba(2, 5, 7, .68) 0%, rgba(3, 7, 10, .34) 51%, rgba(5, 9, 13, .18) 100%), url("${bookingBackground.src}") !important;
+          background-position: center !important;
+          background-size: cover !important;
+          background-repeat: no-repeat !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) :is(.rivotBookingLayout, .rivotBookingViewer) {
+          background: transparent !important;
+        }
+
+        /* Booking configurator dark theme. */
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingPanel {
+          border-color: rgba(255, 255, 255, .12) !important;
+          background: rgba(12, 14, 16, .94) !important;
+          color: #f7f7f4 !important;
+          box-shadow: 0 24px 70px rgba(0, 0, 0, .42) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) :is(
+          .rivotBookingPanelHeader,
+          .rivotBookingPanelHeader p,
+          .rivotBookingPanelHeader h2,
+          .rivotBookingLead,
+          .rivotBookingColors,
+          .rivotBookingColorName b,
+          .rivotBookingTerms,
+          .rivotBookingPayment strong
+        ) {
+          color: #f7f7f4 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) :is(
+          .rivotBookingColorName small,
+          .rivotBookingPayment > span,
+          .rivotBookingFinePrint,
+          .rivotBookingAmount
+        ) {
+          color: #aeb5b7 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingModels button {
+          border-color: rgba(255, 255, 255, .14) !important;
+          background: #181b1d !important;
+          color: #f7f7f4 !important;
+          box-shadow: none !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingModels button.active {
+          border-color: #ff681d !important;
+          background: linear-gradient(145deg, rgba(255, 104, 29, .15), #181b1d 62%) !important;
+          box-shadow: 0 10px 28px rgba(255, 104, 29, .1) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingModels button :is(span, small, em) {
+          color: inherit !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingModels button :is(small, em) {
+          color: #aeb5b7 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingFields :is(input, select) {
+          border-color: rgba(255, 255, 255, .12) !important;
+          background: #181b1d !important;
+          color: #f7f7f4 !important;
+          color-scheme: dark;
+          box-shadow: none !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingFields :is(input, select):focus {
+          border-color: #ff681d !important;
+          box-shadow: 0 0 0 3px rgba(255, 104, 29, .14) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingFields input::placeholder {
+          color: #899194 !important;
+          opacity: 1;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingFields select:disabled {
+          color: #747c7f !important;
+          opacity: .72;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) :is(.rivotBookingColors, .rivotBookingLead, .rivotBookingCheckout) {
+          border-color: rgba(255, 255, 255, .1) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingCheckout {
+          background: #141719 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotBooking) .rivotBookingTerms input {
+          border-color: rgba(255, 255, 255, .42) !important;
+          background: #181b1d !important;
+          color-scheme: dark;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          body:has(.rivotBooking) .rivotBookingIntro,
+          body:has(.rivotBooking) .rivotBookingScooter,
+          body:has(.rivotBooking) .rivotBookingGallery,
+          body:has(.rivotBooking) .rivotBookingSpecs,
+          body:has(.rivotBooking) .rivotBookingPanel,
+          body:has(.rivotBooking) .rivotBookingPanel > * {
+            animation: none !important;
+          }
         }
       `}</style>
     </section>
