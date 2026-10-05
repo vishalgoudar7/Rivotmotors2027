@@ -3,3 +3,4 @@ node_modules
 .env
 .env.local
 *.log
+git rm --cached TODAY_WORK_REPORT.mdgit statusgit add .gitignore

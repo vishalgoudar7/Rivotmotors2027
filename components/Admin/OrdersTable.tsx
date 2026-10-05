@@ -70,6 +70,8 @@ export function OrdersTable({
     const color = orderValue(order, ["color", "colour"], "N/A");
     const customer = `${orderValue(order, ["buyer_first_name", "name", "first_name"], "")} ${orderValue(order, ["buyer_last_name", "lastName", "last_name"], "")}`.trim() || "N/A";
     const statusValue = getStatus(order);
+    const transactionId = orderValue(order, ["transaction_id", "payment_id", "txn_id"], "Not paid");
+    const payment = transactionId.toLowerCase() === "not paid" ? "Not Paid" : "Paid";
 
     return {
       id: index + 1,
@@ -78,9 +80,10 @@ export function OrdersTable({
       model,
       color,
       productName,
+      payment,
       trackId: orderValue(order, ["track_id", "tracking_id", "trackId"], `NX100-PRO-${index + 1}`),
       description: orderValue(order, ["productDescription", "product_description"], productName),
-      transactionId: orderValue(order, ["transaction_id", "payment_id", "txn_id"], "Not paid"),
+      transactionId,
       customer,
       date: formatDate(orderValue(order, ["created_at", "createdAt", "booking_date", "date"], "N/A")),
       mobile: orderValue(order, ["mobile", "phone", "phone_number", "buyer_phone"], "N/A"),
@@ -118,14 +121,15 @@ export function OrdersTable({
               <th>Price</th>
               <th>Model</th>
               <th>Color</th>
-              <th>Product Name</th>
+              <th>Product</th>
+              <th>Payment</th>
+              <th>Booking Date</th>
               <th>Track ID</th>
               <th>Order ID</th>
               <th>Product Description</th>
               <th>Transaction ID</th>
               <th>Status</th>
               <th>Customer</th>
-              <th>Date</th>
               <th>Mobile Number</th>
               <th>City</th>
               <th>State</th>
@@ -141,6 +145,8 @@ export function OrdersTable({
                   <td>{row.model}</td>
                   <td>{row.color}</td>
                   <td>{row.productName}</td>
+                  <td><span className={`paymentTag ${row.payment === "Paid" ? "paid" : "notPaid"}`}>{row.payment}</span></td>
+                  <td>{row.date}</td>
                   <td>{row.trackId}</td>
                   <td>{row.orderId}</td>
                   <td>{row.description}</td>
@@ -149,7 +155,6 @@ export function OrdersTable({
                     <span className={`statusTag ${statusClass(row.status)}`}>{row.status}</span>
                   </td>
                   <td>{row.customer}</td>
-                  <td>{row.date}</td>
                   <td>{row.mobile}</td>
                   <td>{row.city}</td>
                   <td>{row.state}</td>
@@ -157,7 +162,7 @@ export function OrdersTable({
               ))
             ) : (
               <tr>
-                <td colSpan={16} className="emptyCell">No orders found.</td>
+                <td colSpan={17} className="emptyCell">No orders found.</td>
               </tr>
             )}
           </tbody>
@@ -341,28 +346,28 @@ export function OrdersTable({
           border-collapse: collapse;
         }
 
-        th:nth-child(12),
-        td:nth-child(12) {
+        th:nth-child(14),
+        td:nth-child(14) {
           width: 190px;
           min-width: 190px;
         }
 
-        th:nth-child(13),
-        td:nth-child(13) {
+        th:nth-child(8),
+        td:nth-child(8) {
           width: 120px;
           min-width: 120px;
         }
 
-        th:nth-child(14),
-        td:nth-child(14) {
+        th:nth-child(15),
+        td:nth-child(15) {
           width: 130px;
           min-width: 130px;
         }
 
-        th:nth-child(15),
-        td:nth-child(15),
         th:nth-child(16),
-        td:nth-child(16) {
+        td:nth-child(16),
+        th:nth-child(17),
+        td:nth-child(17) {
           width: 150px;
           min-width: 150px;
         }
@@ -436,6 +441,40 @@ export function OrdersTable({
         .statusTag.pending {
           background: rgba(255,255,255,0.08);
           color: #f0f0f0;
+        }
+
+
+        .paymentTag {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          min-height: 26px;
+          padding: 0 12px;
+          border: 1px solid;
+          border-radius: 999px;
+          font-size: 0.72rem;
+          font-weight: 800;
+        }
+
+        .paymentTag::before {
+          content: "";
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: currentColor;
+          box-shadow: 0 0 8px currentColor;
+        }
+
+        .paymentTag.paid {
+          border-color: #13a83f;
+          background: rgba(0, 135, 45, .38);
+          color: #72f39a;
+        }
+
+        .paymentTag.notPaid {
+          border-color: #ef3038;
+          background: rgba(187, 20, 28, .34);
+          color: #ff858a;
         }
 
         .emptyCell {

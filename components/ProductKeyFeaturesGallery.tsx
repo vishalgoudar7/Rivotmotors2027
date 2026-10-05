@@ -54,7 +54,7 @@ export function ProductKeyFeaturesGallery() {
       </header>
 
       <div className="productKeyFeaturesRail">
-        {features.map((feature, index) => (
+        {features.map((feature) => (
           <article className="productKeyFeatureCard" key={feature.title}>
             <Image
               src={feature.image}
@@ -65,7 +65,6 @@ export function ProductKeyFeaturesGallery() {
             />
             <div className="productKeyFeatureShade" aria-hidden="true" />
             <div className="productKeyFeatureCopy">
-              <span>0{index + 1}</span>
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
             </div>
@@ -196,24 +195,6 @@ export function ProductKeyFeaturesGallery() {
           bottom: 0;
           left: 0;
           padding: clamp(22px, 2vw, 32px);
-        }
-
-        .productKeyFeatureCopy > span {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 12px;
-          color: #ef7430;
-          font-size: 12px;
-          font-weight: 850;
-          letter-spacing: .15em;
-        }
-
-        .productKeyFeatureCopy > span::after {
-          content: "";
-          width: 34px;
-          height: 2px;
-          background: currentColor;
         }
 
         .productKeyFeatures.productKeyFeatures .productKeyFeatureCopy h3 {

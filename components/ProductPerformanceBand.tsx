@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import rangeImage from "@/asset/Model/Pro/rivot_performance_images_png/01_real_world_range.png";
-import chargingImage from "@/asset/Model/Pro/rivot_performance_images_png/02_fast_charging.png";
+import chargingImage from "@/asset/Model/Pro/rivot_performance_images_png/02_fast_charging .png";
 import cityImage from "@/asset/Model/Pro/rivot_performance_images_png/03_smooth_agile_city.png";
 import durabilityImage from "@/asset/Model/Pro/rivot_performance_images_png/04_built_to_last.png";
 
@@ -80,7 +80,7 @@ function PerformanceIcon({ icon }: { icon: string }) {
 }
 
 export function ProductPerformanceBand({ modelName }: ProductPerformanceBandProps) {
-  const usePerformanceImages = modelName === "NX100 Pro";
+  const usePerformanceImages = modelName === "NX100 Pro" || modelName === "NX100 Sport";
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 

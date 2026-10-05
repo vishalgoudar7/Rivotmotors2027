@@ -483,6 +483,62 @@ export function ProductDetailHero({
           line-height: 1.2;
         }
 
+        .productDetailEyebrow,
+        .productDetailHeroTitle,
+        .productDetailHeroContent > h2,
+        .productDetailHeroCopy,
+        .productDetailHeroButtons,
+        .productDetailHeroNotes {
+          opacity: 0;
+          animation: productHeroReveal .72s cubic-bezier(.22, 1, .36, 1) forwards;
+        }
+
+        .productDetailEyebrow { animation-delay: .12s; }
+        .productDetailHeroTitle { animation-delay: .22s; }
+        .productDetailHeroContent > h2 { animation-delay: .34s; }
+        .productDetailHeroCopy { animation-delay: .44s; }
+        .productDetailHeroButtons { animation-delay: .78s; }
+        .productDetailHeroNotes { animation-delay: .88s; }
+
+        .productDetailHeroBadge {
+          animation: productHeroBadgeIn .72s cubic-bezier(.22, 1, .36, 1) .4s both;
+        }
+
+        .productDetailHeroSpecs > div {
+          opacity: 0;
+          animation: productHeroSpecIn .62s cubic-bezier(.22, 1, .36, 1) forwards;
+        }
+
+        .productDetailHeroSpecs > div:nth-child(1) { animation-delay: .48s; }
+        .productDetailHeroSpecs > div:nth-child(2) { animation-delay: .57s; }
+        .productDetailHeroSpecs > div:nth-child(3) { animation-delay: .66s; }
+        .productDetailHeroSpecs > div:nth-child(4) { animation-delay: .75s; }
+
+        .productDetailHeroPointers {
+          opacity: 0;
+          animation: productHeroFadeIn .7s ease 1s forwards;
+        }
+
+        @keyframes productHeroReveal {
+          from { opacity: 0; transform: translateY(24px); filter: blur(5px); }
+          to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        @keyframes productHeroBadgeIn {
+          from { opacity: 0; transform: translateX(16px) scale(.86); }
+          to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        @keyframes productHeroSpecIn {
+          from { opacity: 0; transform: translateY(18px) scale(.96); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes productHeroFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
         @media (max-width: 980px) {
           .productDetailHero {
             min-height: 760px;
@@ -677,6 +733,33 @@ export function ProductDetailHero({
 
           .productDetailHeroNotes span:last-child {
             display: none;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .productDetailEyebrow,
+          .productDetailHeroTitle,
+          .productDetailHeroBadge,
+          .productDetailHeroContent > h2,
+          .productDetailHeroCopy,
+          .productDetailHeroSpecs > div,
+          .productDetailHeroButtons,
+          .productDetailHeroNotes {
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
+            animation: none !important;
+            transition: none !important;
+          }
+
+          .productDetailHeroImage {
+            transition: none !important;
+          }
+
+          .productDetailHeroPointers {
+            opacity: 1 !important;
+            animation: none !important;
+            transition: none !important;
           }
         }
       `}</style>

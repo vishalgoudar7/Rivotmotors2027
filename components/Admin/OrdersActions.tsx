@@ -8,6 +8,7 @@ export type OrderExportRow = {
   model: string;
   color: string;
   productName: string;
+  payment: string;
   trackId: string;
   orderId: string;
   description: string;
@@ -25,14 +26,15 @@ const columns: Array<{ key: keyof OrderExportRow; label: string }> = [
   { key: "price", label: "Price" },
   { key: "model", label: "Model" },
   { key: "color", label: "Color" },
-  { key: "productName", label: "Product Name" },
+  { key: "productName", label: "Product" },
+  { key: "payment", label: "Payment" },
+  { key: "date", label: "Booking Date" },
   { key: "trackId", label: "Track ID" },
   { key: "orderId", label: "Order ID" },
   { key: "description", label: "Product Description" },
   { key: "transactionId", label: "Transaction ID" },
   { key: "status", label: "Status" },
   { key: "customer", label: "Customer" },
-  { key: "date", label: "Date" },
   { key: "mobile", label: "Mobile Number" },
   { key: "city", label: "City" },
   { key: "state", label: "State" },

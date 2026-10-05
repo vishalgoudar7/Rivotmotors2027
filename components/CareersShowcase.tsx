@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight, Gauge, Lightbulb, MapPin, Users } from "lucide-react";
 import careerHeroImage from "@/asset/Career/range.jpeg";
+import careerMeetingImage from "@/asset/Career/meet.png";
+import careerWorkshopImage from "@/asset/Career/work.webp";
 import { useEffect, useRef } from "react";
 
 const values = [
@@ -70,8 +72,8 @@ export function CareersShowcase() {
         </div>
         <div className="careerGallery">
           <figure className="careerGalleryMain"><Image src="/Story_page/15.webp" alt="RIVOT team collaborating at a launch event" fill sizes="(max-width: 760px) 100vw, 62vw" /><figcaption><span>One team</span><b>Make it together.</b></figcaption></figure>
-          <figure className="careerGalleryTall"><Image src="/Story_page/13.webp" alt="RIVOT colleagues spending time together outdoors" fill sizes="(max-width: 760px) 100vw, 32vw" /><figcaption><span>People first</span><b>Room to be you.</b></figcaption></figure>
-          <figure className="careerGalleryWide"><Image src="/Story_page/14.webp" alt="RIVOT team exploring mobility ideas with virtual reality" fill sizes="(max-width: 760px) 100vw, 62vw" /><figcaption><span>Think forward</span><b>Prototype the impossible.</b></figcaption></figure>
+          <figure className="careerGalleryTall"><Image src={careerMeetingImage} alt="RIVOT colleagues collaborating in a team meeting" fill sizes="(max-width: 760px) 100vw, 32vw" /><figcaption><span>People first</span><b>Room to be you.</b></figcaption></figure>
+          <figure className="careerGalleryWide"><Image src={careerWorkshopImage} alt="RIVOT technicians working together on an electric scooter" fill sizes="(max-width: 760px) 100vw, 62vw" /><figcaption><span>Think forward</span><b>Prototype the impossible.</b></figcaption></figure>
         </div>
       </section>
 
@@ -115,6 +117,15 @@ export function CareersShowcase() {
         @media(max-width:980px){.careerHero{min-height:820px;padding-top:132px}.careerHeroCopy{max-width:700px}.careerHeroImage{object-position:60% center}.careerHeroShade{background:linear-gradient(90deg,rgba(6,7,7,.9),rgba(6,7,7,.62) 58%,rgba(6,7,7,.18)),linear-gradient(180deg,rgba(6,7,7,.3),rgba(6,7,7,.4))}.careerLocation{margin-top:40px}.careerLifeHeading,.careerValues{grid-template-columns:1fr}.careerValueList{margin-top:6px}}
         @media(max-width:700px){.careerHero{min-height:760px;padding:118px 20px 54px;align-items:flex-end}.careerHeroImage{object-position:64% center}.careerHeroShade{background:linear-gradient(180deg,rgba(6,7,7,.2),rgba(6,7,7,.5) 36%,rgba(6,7,7,.95) 100%)}.careerHero h1{font-size:clamp(58px,19vw,86px)}.careerHeroActions{align-items:flex-start;flex-direction:column;gap:20px}.careerStatement{padding:68px 20px;grid-template-columns:1fr;gap:28px}.careerStatement .careerSectionIndex{padding-top:0}.careerStatement p{font-size:clamp(38px,11vw,54px)}.careerLife,.careerValues{padding-inline:16px}.careerLifeHeading{gap:28px;margin-bottom:38px}.careerGallery{grid-template-columns:1fr;grid-template-rows:310px 420px 300px}.careerGalleryTall{grid-row:auto}.careerGallery figure{border-radius:19px}.careerValues{gap:38px}.careerValueList article{grid-template-columns:46px 1fr;gap:6px 12px}.careerValueIcon{width:42px;height:42px}.careerFinalCta{min-height:680px}.careerFinalImage{object-position:58% center}}
         @keyframes careerTextIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}@keyframes careerImageIn{from{opacity:.55;transform:scale(1.035)}to{opacity:1;transform:scale(1)}}@keyframes careerAccentPulse{0%,100%{color:#ef7430;text-shadow:0 0 0 rgba(239,116,48,0);transform:translateY(0)}50%{color:#ff8a4a;text-shadow:0 0 22px rgba(239,116,48,.34);transform:translateY(-2px)}}@keyframes careerCueBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+        body:has(.careerPage) .rivotHeader .rivotBrand,
+        body:has(.careerPage) .rivotHeader .rivotHeaderLinks > *,
+        body:has(.careerPage) .rivotHeader .rivotHeaderActions,
+        body:has(.careerPage) .rivotHeader .rivotMenuButton{animation:none!important}
+        .careerPage,
+        .careerPage *,
+        .careerPage *::before,
+        .careerPage *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+        .careerPage.isAnimationReady .careerAnimateText{opacity:1!important;transform:none!important;filter:none!important}
         @media(prefers-reduced-motion:reduce){.careerGallery figure img,.careerPrimary,.careerFinalContent a{transition:none}.careerHeroImage,.careerStatement em,.careerScrollCue i{animation:none!important}.careerPage.isAnimationReady .careerAnimateText{opacity:1!important;transform:none!important;transition:none!important}}
       `}</style>
     </main>
