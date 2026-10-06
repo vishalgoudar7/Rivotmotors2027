@@ -13,6 +13,10 @@ import mediaCardImage from "@/asset/newphotos/rivot_connect_section_images/rivot
 import investorCardImage from "@/asset/newphotos/rivot_connect_section_images/sustainable_growth_at_sunrise.png";
 import careersCardImage from "@/asset/newphotos/rivot_connect_section_images/contemplating_the_sunset_skyline.png";
 import overseasCardImage from "@/asset/newphotos/rivot_connect_section_images/global_network_earth_from_space.png";
+import mediaInquiryBackground from "@/asset/connect/Connect/Golden Hour Electric Scooter Ride.png";
+import vendorInquiryBackground from "@/asset/connect/Connect/vender.png";
+import investorInquiryBackground from "@/asset/connect/Connect/invest.png";
+import careerInquiryBackground from "@/asset/connect/Connect/Golden Forest Ride Break.png";
 
 type ConnectionId = "vendor" | "dealer" | "media" | "investor" | "careers" | "overseas";
 
@@ -436,7 +440,7 @@ export function Connect() {
   };
 
   return (
-    <section className={`rivotConnect ${currentPage === "selection" ? "isSelection" : "isForm"}`}>
+    <section className={`rivotConnect ${currentPage === "selection" ? "isSelection" : "isForm"}${currentPage === "media" || currentPage === "vendor" || currentPage === "investor" || currentPage === "overseas" || currentPage === "careers" ? " isShowcaseForm" : ""}`}>
       {currentPage === "selection" ? (
         <div className="rivotConnectSelection">
           <div className="rivotConnectHeader">
@@ -1025,6 +1029,477 @@ export function Connect() {
           opacity: .72;
           cursor: not-allowed;
           transform: none;
+        }
+
+        .rivotMediaInquiry {
+          display: grid;
+          grid-template-columns: minmax(0, 1.12fr) minmax(500px, .88fr);
+          grid-template-rows: minmax(380px, 49vh) auto;
+          min-height: calc(100vh - 104px);
+          max-width: none;
+          margin: 0 auto;
+          overflow: hidden;
+          border: 0;
+          border-radius: 0;
+          background: #fff;
+          box-shadow: none;
+        }
+
+        .rivotConnect.isShowcaseForm { padding: 104px 0 0; }
+
+        .rivotMediaVisual {
+          position: relative;
+          display: flex;
+          min-height: 0;
+          padding: clamp(30px, 3.8vw, 54px);
+          align-items: center;
+          overflow: hidden;
+          isolation: isolate;
+          color: #fff;
+        }
+
+        .rivotMediaVisualImage {
+          z-index: -2;
+          object-fit: cover;
+          object-position: 58% center;
+        }
+
+        .rivotMediaVisual::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          background: linear-gradient(180deg, rgba(7, 8, 8, .08), rgba(7, 8, 8, .2) 40%, rgba(7, 8, 8, .9));
+        }
+
+        .rivotMediaVisual::before {
+          content: "";
+          position: absolute;
+          top: -8%;
+          right: -64px;
+          z-index: 2;
+          width: 125px;
+          height: 116%;
+          background: #fff;
+          transform: skewX(-14deg);
+          pointer-events: none;
+        }
+
+        .rivotMediaVisualContent { max-width: 360px; }
+        .rivotMediaEyebrow,
+        .rivotMediaFormKicker {
+          margin: 0 0 14px;
+          color: #ff6b35;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: .28em;
+          text-transform: uppercase;
+        }
+
+        .rivotMediaVisual h2 {
+          max-width: 430px;
+          margin: 0;
+          color: #fff;
+          font-size: clamp(38px, 3vw, 50px);
+          font-weight: 900;
+          line-height: .96;
+          letter-spacing: -.055em;
+        }
+
+        .rivotMediaVisual h2 span { color: #ff6b35; }
+        .rivotMediaVisualContent > p:not(.rivotMediaEyebrow) {
+          max-width: 440px;
+          margin: 16px 0 24px;
+          color: rgba(255, 255, 255, .84);
+          font-size: 12px;
+          line-height: 1.55;
+        }
+
+        .rivotMediaResources {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 0;
+        }
+
+        .rivotMediaResources span {
+          min-height: 42px;
+          padding: 8px 10px;
+          border: 0;
+          border-left: 1px solid rgba(255, 255, 255, .35);
+          border-radius: 0;
+          background: transparent;
+          color: #fff;
+          font-size: 9px;
+          font-weight: 800;
+          line-height: 1.2;
+          text-align: center;
+        }
+
+        .rivotMediaAssets {
+          grid-column: 1;
+          grid-row: 2;
+          padding: 18px clamp(30px, 3.8vw, 54px) 22px;
+          background: linear-gradient(145deg, #fff, #faf8f6);
+        }
+
+        .rivotMediaAssets > p {
+          margin: 0 0 6px;
+          color: #5f6368;
+          font-size: 9px;
+          font-weight: 900;
+          letter-spacing: .25em;
+          text-transform: uppercase;
+        }
+
+        .rivotMediaAssets h3 {
+          margin: 0 0 12px;
+          color: #111;
+          font-size: 24px;
+          line-height: 1;
+        }
+
+        .rivotMediaAssets h3 span { color: #ff6b35; }
+        .rivotMediaAssetGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .rivotMediaAssetCard {
+          display: grid;
+          grid-template-columns: 34px minmax(0, 1fr) 26px;
+          gap: 10px;
+          align-items: center;
+          min-height: 54px;
+          padding: 8px 10px;
+          border: 1px solid #eadfd8;
+          border-radius: 10px;
+          background: #fff;
+        }
+
+        .rivotMediaAssetCard i,
+        .rivotMediaAssetCard em {
+          display: grid;
+          place-items: center;
+          border-radius: 50%;
+          background: #fff1ea;
+          color: #ff6b35;
+          font-style: normal;
+          font-weight: 900;
+        }
+
+        .rivotMediaAssetCard i { width: 34px; height: 34px; }
+        .rivotMediaAssetCard em { width: 26px; height: 26px; }
+        .rivotMediaAssetCard b { display: block; color: #111; font-size: 11px; }
+        .rivotMediaAssetCard small { display: block; margin-top: 3px; color: #6b7074; font-size: 9px; line-height: 1.25; }
+
+        .rivotMediaFormPanel {
+          position: relative;
+          grid-column: 2;
+          grid-row: 1 / 3;
+          padding: clamp(28px, 2.8vw, 44px);
+          background:
+            radial-gradient(circle at 100% 0%, rgba(255, 107, 53, .09), transparent 30%),
+            linear-gradient(145deg, #fff, #faf7f4);
+        }
+
+        .rivotMediaFormPanel .rivotConnectBack {
+          position: absolute;
+          top: 18px;
+          right: 22px;
+          min-width: 72px;
+          height: 38px;
+          margin: 0;
+          border-radius: 999px;
+          font-size: 12px;
+        }
+
+        .rivotMediaFormPanel h1 {
+          margin: 0;
+          color: #111;
+          font-size: clamp(34px, 2.8vw, 46px);
+          line-height: .98;
+          letter-spacing: -.045em;
+        }
+
+        .rivotMediaFormPanel h1 span { color: #ff6b35; }
+        .rivotMediaFormIntro {
+          max-width: 620px;
+          margin: 10px 0 16px;
+          color: #5f6368;
+          font-size: 13px;
+          line-height: 1.55;
+        }
+
+        .rivotMediaFormPanel .rivotConnectFormContainer {
+          padding: 16px;
+          border: 1px solid rgba(17, 17, 17, .08);
+          border-radius: 16px;
+          background: rgba(255, 255, 255, .88);
+          box-shadow: 0 18px 48px rgba(20, 20, 20, .07);
+        }
+
+        .rivotMediaFormPanel form {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px 12px;
+        }
+
+        .rivotMediaFormPanel .rivotConnectGroup { position: relative; margin: 0; }
+        .rivotMediaFormPanel .rivotConnectGroup:last-of-type { grid-column: 1 / -1; }
+        .rivotMediaFormPanel .rivotConnectGroup label { margin-bottom: 5px; font-size: 11px; }
+        .rivotRequiredMark { margin-left: 2px; color: #e53935 !important; }
+        .rivotMediaFormPanel .rivotConnectGroup :is(input, select) { min-height: 38px; padding: 7px 10px; font-size: 11px; }
+        .rivotMediaFormPanel .rivotConnectGroup textarea { min-height: 78px; padding: 8px 10px; font-size: 11px; }
+        .rivotMediaFormPanel .rivotConnectGroup .rivotMediaFieldIcon + :is(input, select, textarea) { padding-left: 34px; }
+        .rivotMediaFieldIcon {
+          position: absolute;
+          z-index: 1;
+          left: 11px;
+          top: 29px;
+          width: 14px;
+          height: 14px;
+          color: #666d72;
+          pointer-events: none;
+        }
+        .rivotMediaFieldIcon svg { display: block; width: 100%; height: 100%; }
+        .rivotMediaFormPanel .rivotConnectGroup[data-field="message"] textarea { padding-right: 12px; padding-bottom: 22px; }
+        .rivotMediaCharacterCount {
+          position: absolute;
+          right: 10px;
+          bottom: 7px;
+          color: #74797d;
+          font-size: 9px;
+          line-height: 1;
+        }
+        .rivotMediaFormPanel .rivotConnectSubmit {
+          min-height: 40px;
+          font-size: 12px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+        }
+        .rivotMediaFormPanel .rivotConnectSubmit span { font-size: 18px; font-weight: 400; line-height: 1; }
+        .rivotMediaPrivacy {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          margin: 10px 0 0;
+          color: #777d80;
+          font-size: 8px;
+          line-height: 1.35;
+          text-align: center;
+        }
+        .rivotMediaPrivacy span { font-size: 9px; }
+
+        html:is([data-theme="light"], [data-rivot-theme="light"]) body:has(.rivotConnect.isShowcaseForm) .rivotHeader.isHomeHeader,
+        html:is([data-theme="light"], [data-rivot-theme="light"]) body:has(.rivotConnect.isShowcaseForm) .rivotHeader.isHomeHeader :is(
+          .rivotBrand,
+          .rivotHeaderLinks a,
+          .rivotProductsButton,
+          .rivotCommunityButton,
+          .rivotExploreButton,
+          .rivotMenuButton
+        ) {
+          color: #111 !important;
+          text-shadow: none !important;
+        }
+
+        html:is([data-theme="light"], [data-rivot-theme="light"]) body:has(.rivotConnect.isShowcaseForm) .rivotHeader.isHomeHeader {
+          background: #fff !important;
+          box-shadow: none !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+        }
+
+        html:is([data-theme="light"], [data-rivot-theme="light"]) body:has(.rivotConnect.isShowcaseForm) .rivotBrandMark img {
+          filter: brightness(0) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotConnect.isShowcaseForm) .rivotHeader.isHomeHeader,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotConnect.isShowcaseForm) .rivotHeader.isHomeHeader :is(
+          .rivotBrand,
+          .rivotHeaderLinks a,
+          .rivotProductsButton,
+          .rivotCommunityButton,
+          .rivotExploreButton,
+          .rivotMenuButton
+        ) {
+          color: #fff !important;
+          text-shadow: 0 1px 10px rgba(0, 0, 0, .3) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) body:has(.rivotConnect.isShowcaseForm) .rivotBrandMark img {
+          filter: brightness(0) invert(1) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaInquiry {
+          background: #0b0d0e;
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaVisual::before {
+          background: #0d0f10;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaAssets {
+          background: linear-gradient(145deg, #101213, #0b0d0e);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaAssets > p {
+          color: #aeb5b7;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaAssets h3,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaAssetCard b {
+          color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaAssetCard {
+          border-color: rgba(255, 255, 255, .12);
+          background: #171a1b;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaAssetCard small {
+          color: #aeb5b7;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaFormPanel {
+          background:
+            radial-gradient(circle at 100% 0%, rgba(255, 107, 53, .1), transparent 30%),
+            linear-gradient(145deg, #121516, #0b0d0e);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaFormPanel h1,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaFormPanel .rivotConnectGroup label {
+          color: #f5f5f2 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaFormIntro {
+          color: #b4babc;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaFormPanel .rivotConnectFormContainer {
+          border-color: rgba(255, 255, 255, .12);
+          background: rgba(24, 27, 28, .94);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, .28);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaFormPanel .rivotConnectGroup :is(input, select, textarea) {
+          border-color: rgba(255, 255, 255, .16);
+          background: #0f1213 !important;
+          color: #f5f5f2 !important;
+          color-scheme: dark;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotMediaFormPanel .rivotConnectGroup :is(input, textarea)::placeholder {
+          color: #7f888b;
+        }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotMediaFieldIcon, .rivotMediaCharacterCount, .rivotMediaPrivacy) {
+          color: #9ba3a6;
+        }
+        .rivotMediaFormPanel .rivotConnectSubmit { grid-column: 1 / -1; background: #ff6b35; }
+
+        .rivotMediaVisualImage { animation: rivotMediaImageIn 1.15s cubic-bezier(.22,1,.36,1) both; }
+        .rivotMediaVisualContent > *,
+        .rivotMediaAssets > p,
+        .rivotMediaAssets > h3,
+        .rivotMediaAssetCard,
+        .rivotMediaFormPanel > .rivotMediaFormKicker,
+        .rivotMediaFormPanel > h1,
+        .rivotMediaFormIntro,
+        .rivotMediaFormPanel .rivotConnectFormContainer,
+        .rivotMediaFormPanel .rivotConnectBack {
+          opacity: 0;
+          animation: rivotMediaReveal .68s cubic-bezier(.22,1,.36,1) forwards;
+        }
+        .rivotMediaVisualContent > :nth-child(1) { animation-delay: .12s; }
+        .rivotMediaVisualContent > :nth-child(2) { animation-delay: .22s; }
+        .rivotMediaVisualContent > :nth-child(3) { animation-delay: .34s; }
+        .rivotMediaVisualContent > :nth-child(4) { animation-delay: .46s; }
+        .rivotMediaAssets > p { animation-delay: .42s; }
+        .rivotMediaAssets > h3 { animation-delay: .5s; }
+        .rivotMediaAssetCard:nth-child(1) { animation-delay: .58s; }
+        .rivotMediaAssetCard:nth-child(2) { animation-delay: .66s; }
+        .rivotMediaAssetCard:nth-child(3) { animation-delay: .74s; }
+        .rivotMediaAssetCard:nth-child(4) { animation-delay: .82s; }
+        .rivotMediaFormPanel .rivotConnectBack { animation-delay: .2s; }
+        .rivotMediaFormPanel > .rivotMediaFormKicker { animation-delay: .18s; }
+        .rivotMediaFormPanel > h1 { animation-delay: .28s; }
+        .rivotMediaFormIntro { animation-delay: .4s; }
+        .rivotMediaFormPanel .rivotConnectFormContainer { animation-delay: .52s; }
+        .rivotMediaFormPanel .rivotConnectGroup { animation: rivotMediaFieldIn .5s cubic-bezier(.22,1,.36,1) both; }
+        .rivotMediaFormPanel .rivotConnectGroup:nth-child(1) { animation-delay: .62s; }
+        .rivotMediaFormPanel .rivotConnectGroup:nth-child(2) { animation-delay: .68s; }
+        .rivotMediaFormPanel .rivotConnectGroup:nth-child(3) { animation-delay: .74s; }
+        .rivotMediaFormPanel .rivotConnectGroup:nth-child(4) { animation-delay: .8s; }
+        .rivotMediaFormPanel .rivotConnectGroup:nth-child(5) { animation-delay: .86s; }
+        .rivotMediaFormPanel .rivotConnectGroup:nth-child(6) { animation-delay: .92s; }
+        .rivotMediaFormPanel .rivotConnectGroup:nth-child(7) { animation-delay: .98s; }
+        .rivotMediaFormPanel .rivotConnectSubmit { animation: rivotMediaFieldIn .5s cubic-bezier(.22,1,.36,1) 1.04s both; }
+
+        @keyframes rivotMediaImageIn {
+          from { opacity: .35; transform: scale(1.08); filter: saturate(.7); }
+          to { opacity: 1; transform: scale(1); filter: saturate(1); }
+        }
+        @keyframes rivotMediaReveal {
+          from { opacity: 0; transform: translateY(22px); filter: blur(4px); }
+          to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        @keyframes rivotMediaFieldIn {
+          from { opacity: 0; transform: translateY(14px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotMediaInquiry,
+          .rivotMediaInquiry *,
+          .rivotMediaInquiry *::before,
+          .rivotMediaInquiry *::after {
+            opacity: 1 !important;
+            filter: none !important;
+            animation: none !important;
+            transition: none !important;
+          }
+        }
+
+        @media (max-width: 1040px) {
+          .rivotMediaInquiry { grid-template-columns: 1fr; grid-template-rows: auto; }
+          .rivotMediaVisual { min-height: 520px; }
+          .rivotMediaVisual::before { display: none; }
+          .rivotMediaAssets,
+          .rivotMediaFormPanel { grid-column: 1; grid-row: auto; }
+          .rivotMediaFormPanel { padding: 44px clamp(28px, 6vw, 64px); }
+          .rivotMediaFormPanel .rivotConnectFormContainer { max-width: 760px; }
+        }
+
+        @media (max-width: 620px) {
+          .rivotConnect.isShowcaseForm { padding-top: 104px; overflow: visible; }
+          .rivotMediaInquiry { width: 100%; border-radius: 0; }
+          .rivotMediaVisual { min-height: 500px; padding: 34px 20px; }
+          .rivotMediaVisualImage { object-position: 63% center; }
+          .rivotMediaVisualContent { width: 100%; max-width: 330px; }
+          .rivotMediaVisual h2 { font-size: clamp(36px, 11vw, 46px); }
+          .rivotMediaVisualContent > p:not(.rivotMediaEyebrow) { max-width: 315px; font-size: 11px; }
+          .rivotMediaResources span { padding-inline: 5px; font-size: 8px; }
+          .rivotMediaAssets { padding: 24px 16px 28px; }
+          .rivotMediaAssets h3 { font-size: 25px; }
+          .rivotMediaAssetGrid { grid-template-columns: 1fr; }
+          .rivotMediaFormPanel { padding: 66px 16px 30px; }
+          .rivotMediaFormPanel h1 { font-size: clamp(34px, 11vw, 44px); }
+          .rivotMediaFormIntro { font-size: 12px; }
+          .rivotMediaFormPanel .rivotConnectFormContainer { width: 100%; padding: 15px; }
+          .rivotMediaFormPanel form { grid-template-columns: 1fr; }
+          .rivotMediaFormPanel .rivotConnectGroup { min-width: 0; }
+          .rivotMediaFormPanel .rivotConnectGroup :is(input, select, textarea) { min-width: 0; }
+          .rivotMediaFormPanel .rivotConnectGroup:last-of-type,
+          .rivotMediaFormPanel .rivotConnectSubmit { grid-column: auto; }
+          .rivotMediaFormPanel .rivotConnectBack { top: 16px; right: 16px; }
+        }
+
+        @media (max-width: 390px) {
+          .rivotMediaVisual { min-height: 470px; }
+          .rivotMediaVisual h2 { font-size: 35px; }
+          .rivotMediaResources { grid-template-columns: 1fr; }
+          .rivotMediaResources span { min-height: 30px; border-left: 0; border-top: 1px solid rgba(255, 255, 255, .28); }
+          .rivotMediaFormPanel h1 { font-size: 34px; }
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotConnect,
@@ -1695,6 +2170,145 @@ type ConnectFormProps = {
 };
 
 function ConnectForm({ id, config, submitting, success, error, onBack, onSubmit }: ConnectFormProps) {
+  const [messageLength, setMessageLength] = useState(0);
+  const isShowcaseForm = id === "media" || id === "vendor" || id === "investor" || id === "overseas" || id === "careers";
+  const showcasePlaceholders: Record<string, string> = {
+    name: "Your full name",
+    outlet: "Publication or media outlet",
+    company: id === "investor" ? "Company or fund name" : "Your company name",
+    contact: "Full name",
+    cv: "Upload your CV",
+    email: id === "media" ? "you@publication.com" : "you@company.com",
+    phone: "+91 98765 43210",
+    message: id === "vendor" ? "Tell us about your company, products, capabilities, and partnership goals..." : id === "investor" ? "Tell us about your investment interest, focus, and any questions for our team..." : id === "overseas" ? "Tell us about your business, market reach, and distribution capabilities..." : id === "careers" ? "Tell us why you would like to join RIVOT and what you can bring to the team..." : "Tell us about your inquiry, interview request, or any specific information you need...",
+  };
+  const formFields = config.fields.map((field) => (
+    <div className="rivotConnectGroup" data-field={field.name} key={field.name}>
+      <label htmlFor={field.name}>
+        {field.label.replace(" *", "")}
+        {field.required ? <span className="rivotRequiredMark" aria-hidden="true">*</span> : null}
+      </label>
+      {isShowcaseForm ? <span className="rivotMediaFieldIcon" aria-hidden="true"><MediaFieldIcon name={field.name} /></span> : null}
+      {field.type === "select" ? (
+        <select id={field.name} name={field.name} required={field.required} defaultValue="">
+          <option value="" disabled>Select {field.label.replace(" *", "")}</option>
+          {field.options?.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+        </select>
+      ) : field.type === "textarea" ? (
+        <>
+          <textarea
+            id={field.name}
+            name={field.name}
+            required={field.required}
+            placeholder={isShowcaseForm ? showcasePlaceholders[field.name] : undefined}
+            maxLength={isShowcaseForm && field.name === "message" ? 1000 : undefined}
+            onChange={isShowcaseForm && field.name === "message" ? (event) => setMessageLength(event.currentTarget.value.length) : undefined}
+          />
+          {isShowcaseForm && field.name === "message" ? <small className="rivotMediaCharacterCount">{messageLength}/1000</small> : null}
+        </>
+      ) : (
+        <input id={field.name} name={field.name} type={field.type} required={field.required} placeholder={isShowcaseForm ? showcasePlaceholders[field.name] : undefined} accept={field.type === "file" ? ".pdf,.doc,.docx" : undefined} />
+      )}
+    </div>
+  ));
+
+  const formFeedback = (
+    <>
+      {success ? <div className="rivotConnectSuccess">{config.successMessage}</div> : null}
+      {error ? <div className="rivotConnectSuccess" style={{ color: "#a33", borderColor: "#d99" }}>Unable to send your request. Please try again.</div> : null}
+    </>
+  );
+
+  if (id === "media" || id === "vendor" || id === "investor" || id === "overseas" || id === "careers") {
+    const isVendor = id === "vendor";
+    const isInvestor = id === "investor";
+    const isOverseas = id === "overseas";
+    const isCareers = id === "careers";
+    const heroItems = isVendor
+      ? ["Trusted Supply Network", "Long-Term Growth", "Shared Innovation"]
+      : isInvestor
+        ? ["High-Growth Market", "Technology Leadership", "Sustainable Returns"]
+      : isOverseas
+        ? ["Regional Exclusivity", "Market Support", "Global Mobility"]
+      : isCareers
+        ? ["Purposeful Work", "Engineering Culture", "Career Growth"]
+      : ["Press Releases", "High-Resolution Assets", "Expert Interviews"];
+    const resourceCards = isVendor
+      ? [
+          ["Quality Partnership", "Trusted standards and dependable collaboration."],
+          ["Growing Ecosystem", "New opportunities in electric mobility."],
+          ["Product Development", "Collaborate on components and technology."],
+          ["Sustainable Impact", "Responsible manufacturing and supply."],
+        ]
+      : isInvestor
+        ? [
+            ["Market Opportunity", "Participate in the accelerating electric mobility market."],
+            ["Product Innovation", "Back differentiated technology and engineering."],
+            ["Experienced Team", "Partner with a focused electric mobility team."],
+            ["Sustainable Growth", "Support scalable, responsible transportation."],
+          ]
+      : isOverseas
+        ? [
+            ["Exclusive Territories", "Build RIVOT's presence in your regional market."],
+            ["Launch Support", "Access product, training, and marketing assistance."],
+            ["Competitive Partnership", "Grow with attractive international terms."],
+            ["Future-Ready Products", "Bring innovative electric mobility to new customers."],
+          ]
+      : isCareers
+        ? [
+            ["Meaningful Impact", "Help shape cleaner, smarter everyday mobility."],
+            ["Innovative Work", "Solve ambitious engineering and design challenges."],
+            ["Grow Together", "Learn alongside a driven multidisciplinary team."],
+            ["People First", "Build your career in an inclusive, hands-on culture."],
+          ]
+      : [
+          ["Press Releases", "Latest news and company updates."],
+          ["Media Kit", "Images, videos and brand assets."],
+          ["Executive Interviews", "Expert interviews and commentary."],
+          ["Product Resources", "Specifications and demonstration opportunities."],
+        ];
+    return (
+      <div className="rivotMediaInquiry">
+        <section className="rivotMediaVisual">
+          <Image className="rivotMediaVisualImage" src={isVendor ? vendorInquiryBackground : isInvestor || isOverseas ? investorInquiryBackground : isCareers ? careerInquiryBackground : mediaInquiryBackground} alt={isVendor ? "RIVOT vendor manufacturing partnership" : isInvestor ? "RIVOT electric mobility investment opportunity" : isOverseas ? "RIVOT international electric mobility partnership" : isCareers ? "RIVOT team taking a break during a forest ride" : "RIVOT electric scooter rider at golden hour"} fill priority sizes="(max-width: 1040px) 100vw, 52vw" />
+          <div className="rivotMediaVisualContent">
+            <p className="rivotMediaEyebrow">{isVendor ? "Vendor partnership" : isInvestor ? "Investment opportunity" : isOverseas ? "Overseas partnership" : isCareers ? "Careers at RIVOT" : "Media inquiry"}</p>
+            <h2>{isVendor ? <>Build the future, <span>together.</span></> : isInvestor ? <>Invest in a <span>cleaner future.</span></> : isOverseas ? <>Take mobility <span>beyond borders.</span></> : isCareers ? <>Build what <span>moves next.</span></> : <>Stories that drive a <span>cleaner tomorrow.</span></>}</h2>
+            <p>{isVendor ? "Partner with RIVOT as a trusted supplier and help build the next generation of electric mobility." : isInvestor ? "Join RIVOT in shaping the next generation of electric mobility through technology, scale, and sustainable growth." : isOverseas ? "Bring RIVOT electric mobility to customers worldwide as a trusted international distribution partner." : isCareers ? "Join the dreamers, engineers, makers, and doers reimagining everyday mobility." : "For press releases, interviews, product information and media resources, connect with our media relations team."}</p>
+            <div className="rivotMediaResources" aria-label={isVendor ? "Vendor partnership advantages" : isInvestor ? "Investment highlights" : isOverseas ? "International partnership highlights" : isCareers ? "Career highlights" : "Available media resources"}>
+              {heroItems.map((item) => <span key={item}>{item}</span>)}
+            </div>
+          </div>
+        </section>
+
+        <section className="rivotMediaAssets">
+          <p>{isVendor ? "Partner advantages" : isInvestor ? "Investor highlights" : isOverseas ? "Global advantages" : isCareers ? "Life at RIVOT" : "Media resources"}</p>
+          <h3>{isVendor ? <>Partnerships built to <span>grow</span></> : isInvestor ? <>Opportunity built to <span>scale</span></> : isOverseas ? <>Reach built to <span>expand</span></> : isCareers ? <>Work that helps you <span>grow</span></> : <>Assets to <span>tell our story</span></>}</h3>
+          <div className="rivotMediaAssetGrid">
+            {resourceCards.map(([title, copy], index) => (
+              <div className="rivotMediaAssetCard" key={title}><i>{index + 1}</i><span><b>{title}</b><small>{copy}</small></span><em>→</em></div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rivotMediaFormPanel">
+          <button type="button" className="rivotConnectBack" onClick={onBack}>Back</button>
+          <p className="rivotMediaFormKicker">{isVendor ? "Partner with purpose" : isInvestor ? "Invest in progress" : isOverseas ? "Expand with purpose" : isCareers ? "Join the journey" : "Get in touch"}</p>
+          <h1>{isVendor ? <>Vendor <span>Partnership</span></> : isInvestor ? <>Investment <span>Opportunity</span></> : isOverseas ? <>Overseas <span>Partnership</span></> : isCareers ? <>Career <span>Opportunities</span></> : <>Media <span>Inquiry</span></>}</h1>
+          <p className="rivotMediaFormIntro">{config.description}</p>
+          <div className="rivotConnectFormContainer">
+            {formFeedback}
+            <form onSubmit={onSubmit}>
+              {formFields}
+              <button type="submit" className="rivotConnectSubmit" disabled={submitting}>{submitting ? "Sending..." : config.submitLabel}{!submitting ? <span aria-hidden="true">→</span> : null}</button>
+            </form>
+            <p className="rivotMediaPrivacy"><span aria-hidden="true">🔒</span>{isVendor ? "Your information will be shared only with our vendor partnerships team." : isInvestor ? "Your information will be shared only with our investment relations team." : isOverseas ? "Your information will be shared only with our international partnerships team." : isCareers ? "Your information will be shared only with our recruitment team." : "Your information will be shared only with our media relations team."}</p>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="rivotConnectFormPage">
       <div className="rivotConnectFormHeader">
@@ -1726,37 +2340,10 @@ function ConnectForm({ id, config, submitting, success, error, onBack, onSubmit 
         </div>
 
         <div className="rivotConnectFormContainer">
-          {success ? <div className="rivotConnectSuccess">{config.successMessage}</div> : null}
-          {error ? <div className="rivotConnectSuccess" style={{ color: "#a33", borderColor: "#d99" }}>Unable to send your request. Please try again.</div> : null}
+          {formFeedback}
 
           <form onSubmit={onSubmit}>
-            {config.fields.map((field) => (
-              <div className="rivotConnectGroup" key={field.name}>
-                <label htmlFor={field.name}>{field.label}</label>
-                {field.type === "select" ? (
-                  <select id={field.name} name={field.name} required={field.required} defaultValue="">
-                    <option value="" disabled>
-                      Select {field.label.replace(" *", "")}
-                    </option>
-                    {field.options?.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                ) : field.type === "textarea" ? (
-                  <textarea id={field.name} name={field.name} required={field.required} />
-                ) : (
-                  <input
-                    id={field.name}
-                    name={field.name}
-                    type={field.type}
-                    required={field.required}
-                    accept={field.type === "file" ? ".pdf,.doc,.docx" : undefined}
-                  />
-                )}
-              </div>
-            ))}
+            {formFields}
 
             <button type="submit" className="rivotConnectSubmit" disabled={submitting}>
               {submitting ? "Sending..." : config.submitLabel}
@@ -1766,6 +2353,30 @@ function ConnectForm({ id, config, submitting, success, error, onBack, onSubmit 
       </div>
     </div>
   );
+}
+
+function MediaFieldIcon({ name }: { name: string }) {
+  const props = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+
+  if (name === "name" || name === "contact") return <svg {...props}><circle cx="12" cy="8" r="3" /><path d="M6.5 19c.5-3.4 2.4-5.2 5.5-5.2s5 1.8 5.5 5.2" /></svg>;
+  if (name === "outlet" || name === "company") return <svg {...props}><path d="M6 21V4h12v17M9 8h2m2 0h2M9 12h2m2 0h2M9 16h2m2 0h2M4 21h16" /></svg>;
+  if (name === "email") return <svg {...props}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg>;
+  if (name === "phone") return <svg {...props}><path d="M7.2 3.8 10 7.6 8.3 10c1.2 2.5 3.2 4.5 5.7 5.7l2.4-1.7 3.8 2.8-.7 3c-.2.8-.9 1.3-1.7 1.2C10.2 20.1 3.9 13.8 3 6.2c-.1-.8.4-1.5 1.2-1.7l3-.7Z" /></svg>;
+  if (name === "type" || name === "category" || name === "business") return <svg {...props}><path d="M9 6h11M9 12h11M9 18h11" /><circle cx="4.5" cy="6" r=".8" fill="currentColor" stroke="none" /><circle cx="4.5" cy="12" r=".8" fill="currentColor" stroke="none" /><circle cx="4.5" cy="18" r=".8" fill="currentColor" stroke="none" /></svg>;
+  if (name === "range") return <svg {...props}><path d="M4 19h16M6 16l4-4 3 2 5-7" /><path d="M14 7h4v4" /></svg>;
+  if (name === "country") return <svg {...props}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c3 3.3 3 14.7 0 18M12 3c-3 3.3-3 14.7 0 18" /></svg>;
+  if (name === "experience") return <svg {...props}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>;
+  if (name === "position") return <svg {...props}><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7V4h8v3M3 12h18M10 12v2h4v-2" /></svg>;
+  if (name === "cv") return <svg {...props}><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4M12 17V10m-3 3 3-3 3 3" /></svg>;
+  if (name === "deadline") return <svg {...props}><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4m10-4v4M3 10h18" /></svg>;
+  return <svg {...props}><path d="M6 3h9l3 3v15H6z" /><path d="M15 3v4h4M9 11h6m-6 4h6" /></svg>;
 }
 
 function ConnectionIcon({ id }: { id: ConnectionId }) {
