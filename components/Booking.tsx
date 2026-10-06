@@ -3906,6 +3906,22 @@ export function Booking() {
           color-scheme: dark;
         }
 
+        /* Keep the booking hero clear of the shared compact mobile navbar. */
+        @media (max-width: 768px) {
+          body:has(.rivotBooking) .rivotBooking {
+            width: 100%;
+            max-width: 100%;
+            padding-top: calc(80px + env(safe-area-inset-top)) !important;
+            overflow-x: clip;
+          }
+        }
+
+        @media (max-width: 430px) {
+          body:has(.rivotBooking) .rivotBooking {
+            padding-top: calc(78px + env(safe-area-inset-top)) !important;
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           body:has(.rivotBooking) .rivotBookingIntro,
           body:has(.rivotBooking) .rivotBookingScooter,

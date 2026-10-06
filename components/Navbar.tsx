@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { ArrowRight, Bike, BriefcaseBusiness, Headphones, Home, Moon, Newspaper, ShoppingBag, Users } from "lucide-react";
+import { ArrowRight, Bike, BriefcaseBusiness, Headphones, Home, Newspaper, ShoppingBag, Users } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
@@ -285,15 +285,6 @@ export function Navbar() {
           <a href="https://www.linkedin.com/company/rivotmotors" target="_blank" rel="noreferrer" aria-label="LinkedIn"><FaLinkedinIn /></a>
         </div>
 
-        <button
-          className="rivotMobileThemeToggle"
-          type="button"
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-        >
-          <span><Moon aria-hidden="true" /> Dark mode</span>
-          <i aria-hidden="true" className={theme === "dark" ? "isDark" : ""} />
-        </button>
       </nav>
 
       <style>{`
@@ -1277,61 +1268,6 @@ export function Navbar() {
       height: 16px;
     }
 
-  .rivotMobileThemeToggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    min-height: 48px;
-    margin-top: auto;
-    padding: 9px 8px;
-    border: 0;
-    border-top: 1px solid rgba(255, 255, 255, .08);
-    background: transparent;
-    color: rgba(255,255,255,.88);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-
-  .rivotMobileThemeToggle span {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .rivotMobileThemeToggle span svg {
-    width: 19px;
-    height: 19px;
-  }
-
-  .rivotMobileThemeToggle i {
-    position: relative;
-    width: 39px;
-    height: 22px;
-    border-radius: 999px;
-    background: #4b4e50;
-  }
-
-  .rivotMobileThemeToggle i::after {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #fff;
-    transition: transform .2s ease;
-  }
-
-  .rivotMobileThemeToggle i.isDark {
-    background: #ef7430;
-  }
-
-  .rivotMobileThemeToggle i.isDark::after {
-    transform: translateX(17px);
-  }
   }
 
   @media (max-width: 380px) {
@@ -1474,39 +1410,132 @@ export function Navbar() {
     }
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 768px) {
     .rivotHeader.isHomeHeader {
       grid-template-columns: auto 1fr auto;
-      height: 104px;
-      align-items: start;
-      padding: 10px 30px 0;
-      background: transparent;
+      z-index: 2000 !important;
+      width: 100% !important;
+      height: calc(62px + env(safe-area-inset-top)) !important;
+      min-height: calc(62px + env(safe-area-inset-top)) !important;
+      align-items: center !important;
+      padding: env(safe-area-inset-top) 16px 0 !important;
+      box-sizing: border-box;
     }
 
     .rivotHeader.isHomeHeader .rivotBrand {
-      align-self: start;
+      align-self: center;
     }
 
     .rivotHeader.isHomeHeader .rivotBrandMark {
-      width: 208px;
-      height: 64px;
+      width: 110px !important;
+      height: 38px !important;
     }
 
-    .rivotHeader.isHomeHeader .rivotHeaderActions,
+    .rivotHeader.isHomeHeader .rivotHeaderActions {
+      position: absolute;
+      top: calc(env(safe-area-inset-top) + 16px);
+      right: 66px;
+      display: flex !important;
+      width: 58px;
+      height: 30px;
+      z-index: 2010;
+    }
+
     .rivotHeader.isHomeHeader .rivotThemeToggle {
+      position: relative;
+      inset: auto;
+      display: inline-block !important;
+      width: 58px !important;
+      min-width: 58px !important;
+      height: 30px !important;
+      padding: 0 !important;
+      overflow: hidden;
+      border: 1px solid rgba(178, 198, 224, .58) !important;
+      border-radius: 999px !important;
+      background: rgba(5, 12, 21, .82) !important;
+      color: #fff !important;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .04), 0 8px 22px rgba(0, 0, 0, .2) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      transition: transform .18s ease, box-shadow .18s ease !important;
+    }
+
+    .rivotHeader.isHomeHeader .rivotThemeToggle span {
+      position: absolute !important;
+      top: 50% !important;
+      left: 8px !important;
+      right: auto !important;
+      display: grid;
+      place-items: center;
+      width: 15px !important;
+      height: 15px !important;
+      color: #fff !important;
+      transform: translateY(-50%) !important;
+    }
+
+    .rivotHeader.isHomeHeader .rivotThemeToggle svg {
+      width: 15px !important;
+      height: 15px !important;
+    }
+
+    .rivotHeader.isHomeHeader .rivotThemeToggle b {
       display: none !important;
     }
 
+    .rivotHeader.isHomeHeader .rivotThemeToggle i {
+      position: absolute !important;
+      top: 4px !important;
+      right: 4px !important;
+      bottom: auto !important;
+      left: auto !important;
+      display: block !important;
+      width: 22px !important;
+      height: 22px !important;
+      border-radius: 50% !important;
+      background: linear-gradient(145deg, #ffb331, #ff6900) !important;
+      box-shadow: 0 0 18px rgba(255, 118, 8, .72), inset 0 1px 2px rgba(255, 255, 255, .35) !important;
+      transition: left .22s ease, right .22s ease, transform .18s ease !important;
+    }
+
+    .rivotHeader.isHomeHeader .rivotThemeToggle i::before {
+      display: none !important;
+    }
+
+    html[data-rivot-theme="dark"] .rivotHeader.isHomeHeader .rivotThemeToggle span {
+      right: 8px !important;
+      left: auto !important;
+    }
+
+    html[data-rivot-theme="dark"] .rivotHeader.isHomeHeader .rivotThemeToggle i {
+      right: auto !important;
+      left: 4px !important;
+    }
+
+    .rivotHeader.isHomeHeader .rivotThemeToggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, .78) !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, .26) !important;
+    }
+
+    .rivotHeader.isHomeHeader .rivotThemeToggle:active {
+      transform: scale(.94);
+    }
+
     .rivotHeader.isHomeHeader .rivotMenuButton {
+      position: absolute;
       display: grid;
-      width: 58px;
-      height: 58px;
+      place-items: center;
+      top: calc(env(safe-area-inset-top) + 11px);
+      right: 16px;
+      z-index: 2010;
+      width: 40px;
+      height: 40px;
       border: 0;
-      border-radius: 0;
+      border-radius: 8px;
       background: transparent;
       color: #fff;
       padding: 8px;
-      gap: 7px;
+      gap: 4px;
     }
 
     html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotMenuButton {
@@ -1515,8 +1544,8 @@ export function Navbar() {
     }
 
     .rivotHeader.isHomeHeader .rivotMenuButton span {
-      width: 42px;
-      height: 5px;
+      width: 24px;
+      height: 3px;
       border-radius: 999px;
       background: currentColor;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .28);
@@ -1525,24 +1554,13 @@ export function Navbar() {
 
   @media (max-width: 420px) {
     .rivotHeader.isHomeHeader {
-      height: 92px;
-      padding: 8px 22px 0;
+      height: calc(62px + env(safe-area-inset-top)) !important;
+      padding: env(safe-area-inset-top) 16px 0 !important;
     }
 
     .rivotHeader.isHomeHeader .rivotBrandMark {
-      width: 154px;
-      height: 48px;
-    }
-
-    .rivotHeader.isHomeHeader .rivotMenuButton {
-      width: 48px;
-      height: 48px;
-      gap: 6px;
-    }
-
-    .rivotHeader.isHomeHeader .rivotMenuButton span {
-      width: 34px;
-      height: 4px;
+      width: 108px !important;
+      height: 36px !important;
     }
   }
 `}</style>
