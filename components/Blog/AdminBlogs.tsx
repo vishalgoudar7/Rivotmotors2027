@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import rivotLogo from "@/asset/images/Newlogo.png";
 import { BlogStatusToggle } from "./BlogStatusToggle";
+import { resolveBlogImageSrc } from "@/lib/blogImages";
 
 type Status = "draft" | "published";
 type Blog = { id:number; title:string; excerpt:string; content:string; image_url:string; author:string; status:Status; created_at?:string; updated_at?:string };
@@ -95,7 +96,7 @@ export function AdminBlogs() {
       </div> : null}
       <section className="blogList"><div className="blogListHead"><div><p>Content library</p><h2>All Blog Posts</h2></div><strong>{filteredBlogs.length}</strong></div>
         <div className="blogFilters"><label>Search<input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by title or content..." /></label><label>Status<select value={statusFilter} onChange={e=>setStatusFilter(e.target.value as "all"|Status)}><option value="all">All Status</option><option value="draft">Draft</option><option value="published">Published</option></select></label></div>
-        {loading ? <div className="empty">Loading blog posts…</div> : !filteredBlogs.length ? <div className="empty">No blog posts found. Adjust the filters or create a new post.</div> : <div className="blogTable"><table><thead><tr><th>Title</th><th>Author</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead><tbody>{filteredBlogs.map((blog)=><tr key={blog.id}><td><div className="blogTitleCell">{blog.image_url ? <img src={blog.image_url.startsWith("/") ? blog.image_url : `/${blog.image_url}`} alt="" /> : null}<span><b>{blog.title}</b><small>{blog.excerpt}</small></span></div></td><td>{blog.author}</td><td><BlogStatusToggle id={blog.id} status={blog.status} onUpdated={status=>setBlogs(current=>current.map(item=>item.id===blog.id?{...item,status}:item))} /></td><td>{blog.created_at ? new Date(blog.created_at).toLocaleDateString("en-IN") : "—"}</td><td><div className="rowActions"><Link href={`/admin/blogs/${blog.id}/preview`}>View</Link><Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link><button className="delete" onClick={()=>void remove(blog)}>Delete</button></div></td></tr>)}</tbody></table></div>}
+        {loading ? <div className="empty">Loading blog posts…</div> : !filteredBlogs.length ? <div className="empty">No blog posts found. Adjust the filters or create a new post.</div> : <div className="blogTable"><table><thead><tr><th>Title</th><th>Author</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead><tbody>{filteredBlogs.map((blog)=><tr key={blog.id}><td><div className="blogTitleCell"><img src={resolveBlogImageSrc(blog.title, blog.image_url)} alt="" /><span><b>{blog.title}</b><small>{blog.excerpt}</small></span></div></td><td>{blog.author}</td><td><BlogStatusToggle id={blog.id} status={blog.status} onUpdated={status=>setBlogs(current=>current.map(item=>item.id===blog.id?{...item,status}:item))} /></td><td>{blog.created_at ? new Date(blog.created_at).toLocaleDateString("en-IN") : "—"}</td><td><div className="rowActions"><Link href={`/admin/blogs/${blog.id}/preview`}>View</Link><Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link><button className="delete" onClick={()=>void remove(blog)}>Delete</button></div></td></tr>)}</tbody></table></div>}
       </section>
     </main>
     <style>{`

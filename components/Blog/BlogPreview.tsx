@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { resolveBlogImageSrc } from "@/lib/blogImages";
 
 type Blog = { id:number; title:string; excerpt:string; content:string; image_url:string; author:string; status:"draft"|"published"; created_at?:string; updated_at?:string };
 const showDate = (value?:string, detailed=false) => value ? new Date(value).toLocaleString("en-IN", detailed ? {dateStyle:"medium",timeStyle:"short"} : {dateStyle:"medium"}) : "Not available";
@@ -19,7 +20,7 @@ export function BlogPreview({ id }: { id:string }) {
 
   if(loading)return <main className="previewState">Loading blog preview...</main>;
   if(!blog)return <main className="previewState"><p>{error||"Blog post not found."}</p><Link href="/admin/blogs">Back to Blog Management</Link></main>;
-  const image=blog.image_url.startsWith("/")?blog.image_url:`/${blog.image_url}`;
+  const image=resolveBlogImageSrc(blog.title, blog.image_url);
 
   return <main className="blogPreviewPage"><header><h1>Blog Post Preview</h1><div><Link className="accent" href={`/admin/blogs/${blog.id}/edit`}>Edit</Link><Link href="/admin/blogs">Back</Link></div></header><div className="previewGrid">
     <article className="previewCard mainPreview"><h2>{blog.title}</h2><div className="previewMeta"><span>By {blog.author}</span><span>{showDate(blog.created_at)}</span><i className={blog.status}>{blog.status}</i></div>{blog.image_url&&<img className="previewImage" src={image} alt={blog.title}/>} {blog.excerpt&&<div className="previewExcerpt">{blog.excerpt}</div>}<div className="previewContent" dangerouslySetInnerHTML={{__html:blog.content}}/></article>

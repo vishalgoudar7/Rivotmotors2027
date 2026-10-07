@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { StaticImageData } from "next/image";
 import Link from "next/link";
 
 type BlogPost = {
@@ -6,7 +7,7 @@ type BlogPost = {
   excerpt: string;
   author: string;
   date: string | null;
-  image: string;
+  image: string | StaticImageData;
   readTime?: string;
   contentHtml?: string;
   sections?: Array<{

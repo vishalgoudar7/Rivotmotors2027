@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { resolveBlogImage } from "@/lib/blogImages";
 
 type ApiBlog = {
   id: number | string;
@@ -117,7 +118,7 @@ export default function BlogPage() {
           {blogs.map((post) => (
             <article className="rivotBlogCard" key={post.id}>
               <Link href={`/single-blog?id=${post.id}`} className="rivotBlogCardImage" aria-label={post.title}>
-                <Image src={imageSrc(post.image_url)} alt={post.title} fill sizes="(max-width: 760px) 100vw, 33vw" />
+                <Image src={resolveBlogImage(post.title, imageSrc(post.image_url))} alt={post.title} fill sizes="(max-width: 760px) 100vw, 33vw" />
               </Link>
               <div className="rivotBlogCardBody">
                 <div className="rivotBlogMeta">

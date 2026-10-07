@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { BlogArticle } from "@/components/BlogArticle";
+import { resolveBlogImage } from "@/lib/blogImages";
 
 type ApiBlog = {
   id: number | string;
@@ -88,7 +89,7 @@ function SingleBlogContent() {
         excerpt: post.excerpt,
         author: post.author,
         date: post.created_at,
-        image: imageSrc(post.image_url),
+        image: resolveBlogImage(post.title, imageSrc(post.image_url)),
         contentHtml: post.content,
       }}
     />
