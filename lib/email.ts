@@ -1,17 +1,8 @@
+import "server-only";
 import nodemailer from "nodemailer";
 import { prisma } from "@/lib/db";
 
 const accent = "#CE6723";
-const smtpPort = Number(process.env.SMTP_PORT || 465);
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: smtpPort,
-  secure: smtpPort === 465,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
-  connectionTimeout: 10_000,
-  greetingTimeout: 10_000,
-  socketTimeout: 20_000,
-});
 
 type EmailData = Record<string, unknown>;
 type Attachment = { filename: string; content: Buffer; contentType?: string };
@@ -36,6 +27,43 @@ const customLabels: Record<string, string> = {
 
 function text(value: unknown) {
   return value === null || value === undefined ? "" : String(value).trim();
+}
+
+function smtpConfig() {
+  const host = text(process.env.SMTP_HOST);
+  const user = text(process.env.SMTP_USER);
+  const password = process.env.SMTP_PASSWORD || "";
+  const from = text(process.env.SMTP_FROM);
+  const port = Number(process.env.SMTP_PORT);
+
+  if (!host || !user || !password || !from) throw new Error("SMTP is not configured.");
+  if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error("SMTP port is invalid.");
+  if (from.toLowerCase() !== user.toLowerCase()) throw new Error("SMTP sender must match the authenticated account.");
+
+  return { host, port, secure: port === 465, user, password, from };
+}
+
+function createSmtpTransporter() {
+  const config = smtpConfig();
+  return nodemailer.createTransport({
+    host: config.host,
+    port: config.port,
+    secure: config.secure,
+    auth: { user: config.user, pass: config.password },
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 20_000,
+  });
+}
+
+export function safeSmtpError(error: unknown) {
+  const mailError = error as Error & { code?: string; command?: string; responseCode?: number };
+  return {
+    name: mailError?.name || "Error",
+    code: mailError?.code || "UNKNOWN",
+    command: mailError?.command || "unknown",
+    responseCode: mailError?.responseCode,
+  };
 }
 
 function escapeHtml(value: unknown) {
@@ -81,13 +109,24 @@ function plain(title: string, sections: Array<{ heading: string; rows: Array<{ l
 async function sendEmail(subject: string, to: string, title: string, sections: Array<{ heading: string; rows: Array<{ label: string; value: string }> }>, replyTo?: string, attachments?: Attachment[], footer?: string) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) throw new Error("Invalid email recipient.");
   if (replyTo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(replyTo)) throw new Error("Invalid reply-to email.");
-  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD || !process.env.SMTP_FROM) throw new Error("SMTP is not configured.");
+  const config = smtpConfig();
   const bodyFooter = footer || "This email was sent from the RIVOT Motors website.";
-  await transporter.sendMail({
-    from: { address: process.env.SMTP_FROM, name: process.env.SMTP_FROM_NAME || "RIVOT Motors" },
-    to, ...(replyTo ? { replyTo } : {}), subject, html: layout(title, sections, bodyFooter), text: plain(title, sections, bodyFooter), attachments,
-  });
-  console.info(`Email sent: ${subject} to ${to}`);
+  try {
+    await createSmtpTransporter().sendMail({
+      from: { address: config.from, name: process.env.SMTP_FROM_NAME || "RIVOT Motors" },
+      to, ...(replyTo ? { replyTo } : {}), subject, html: layout(title, sections, bodyFooter), text: plain(title, sections, bodyFooter), attachments,
+    });
+    console.info("Email sent successfully", { subject });
+  } catch (error) {
+    console.error("SMTP send failed", { subject, ...safeSmtpError(error) });
+    throw error;
+  }
+}
+
+export async function verifySmtpConnection() {
+  const config = smtpConfig();
+  await createSmtpTransporter().verify();
+  return { host: config.host, port: config.port, secure: config.secure };
 }
 
 export async function sendTestRideEmail(data: EmailData) {
