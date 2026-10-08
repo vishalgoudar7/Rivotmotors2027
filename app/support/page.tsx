@@ -1,5 +1,5 @@
-import { Support } from "@/components/Support";
+import { SupportShowcase } from "@/components/SupportShowcase";
 
 export default function SupportPage() {
-  return <Support />;
+  return <SupportShowcase />;
 }
