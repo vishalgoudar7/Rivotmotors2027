@@ -22,6 +22,10 @@ The verified callback must send Zaakpay response fields including `responseCode`
 
 Open http://localhost:3000
 
+## Test-ride requests
+
+See [README-TEST-RIDE.md](README-TEST-RIDE.md) for the form-to-database-to-email flow and field mapping.
+
 ## Folders
 - app/ = pages and API routes
 - components/ = reusable UI

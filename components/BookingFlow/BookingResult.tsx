@@ -12,14 +12,18 @@ function value(booking: Booking, keys: string[], fallback = "Not available") {
 
 function formatAmount(booking: Booking) {
   const amount = value(booking, ["amount"], "499");
-  return amount.startsWith("Rs") || amount.startsWith("\u20b9") ? amount : `Rs ${amount}`;
+  if (amount.startsWith("Rs") || amount.startsWith("\u20b9")) return amount;
+  const numericAmount = Number(amount);
+  return Number.isFinite(numericAmount)
+    ? new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(numericAmount)
+    : `\u20b9${amount}`;
 }
 
 function formatDate(raw: string) {
   if (!raw || raw === "Not available") return raw;
   const date = new Date(raw);
   if (Number.isNaN(date.getTime())) return raw;
-  return date.toLocaleString();
+  return date.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
 }
 
 function CheckIcon() {
@@ -112,32 +116,57 @@ export function BookingResult({ orderId, failed = false, reason = "" }: { orderI
     value(loadedBooking, ["state"], ""),
     value(loadedBooking, ["pincode"], ""),
   ].filter(Boolean).join(", ");
+  const product = value(loadedBooking, ["product_name", "product"], "NX100");
+  const model = value(loadedBooking, ["model"], "Pro");
+  const color = value(loadedBooking, ["color"], "Selected");
+  const email = value(loadedBooking, ["email"], "Not available");
+  const phone = value(loadedBooking, ["phone", "mobile"], "Not available");
+  const paymentDate = formatDate(value(loadedBooking, ["payment_date", "updated_at", "created_at"], "Not available"));
 
   return (
     <main className="bookingResultPage">
       <section className="bookingResultCard">
-        <div className="bookingResultIcon bookingResultSuccessIcon"><CheckIcon /></div>
-        <p className="bookingResultEyebrow">RIVOT MOTORS / {isConfirmed ? "BOOKING CONFIRMED" : "BOOKING STATUS"}</p>
-        <h1>{isConfirmed ? "Booking Successful!" : "Booking Under Verification"}</h1>
-        <p className="bookingResultMessage">
-          {isConfirmed
-            ? "Thank you for booking your RIVOT nx100. Your payment has been processed successfully and your booking is confirmed. You will receive a confirmation email shortly with all the details."
-            : "We are checking the payment status for your RIVOT nx100 booking. Your booking will be confirmed only after successful gateway verification."}
-        </p>
+        <header className="bookingResultHero">
+          <div className="bookingResultIcon bookingResultSuccessIcon"><CheckIcon /></div>
+          <h1>{isConfirmed ? "Your Booking is Confirmed!" : "Booking Under Verification"}</h1>
+          <p className="bookingResultMessage">
+            {isConfirmed
+              ? "Thank you for being a part of the RIVOT movement."
+              : `We are verifying the payment for your RIVOT ${product} booking.`}
+          </p>
+        </header>
 
-        <div className="bookingResultDetails">
-          <h2>Booking Details</h2>
-          <div><span>Payment ID</span><strong>{loading ? "Loading..." : value(loadedBooking, ["payment_id"], error ? "Error loading" : "N/A")}</strong></div>
-          <div><span>Order ID</span><strong>{value(loadedBooking, ["order_id"], orderId || "N/A")}</strong></div>
-          <div><span>Amount Paid</span><strong>{formatAmount(loadedBooking)}</strong></div>
-          <div><span>Status</span><strong className={isConfirmed ? "confirmed" : ""}>{statusText}</strong></div>
-          <div><span>Customer Name</span><strong>{customerName || "Not available"}</strong></div>
-          <div><span>Model</span><strong>{value(loadedBooking, ["model"], "NX100")}</strong></div>
-          <div><span>Color</span><strong>{value(loadedBooking, ["color"], "Selected")}</strong></div>
-          <div><span>Email</span><strong>{value(loadedBooking, ["email"], "Not available")}</strong></div>
-          <div><span>Phone</span><strong>{value(loadedBooking, ["phone"], "Not available")}</strong></div>
-          <div><span>Address</span><strong>{address || "Not available"}</strong></div>
-          <div><span>Booking Date</span><strong>{formatDate(value(loadedBooking, ["created_at"], "Not available"))}</strong></div>
+        <section className="bookingInfoCard bookingInfoWide">
+          <h2><span className="bookingSectionIcon">▣</span>Booking Details</h2>
+          <div className="bookingInfoGrid bookingInfoGridFour">
+            <div><span>Order ID</span><strong>{value(loadedBooking, ["order_id"], orderId || "N/A")}</strong></div>
+            <div><span>Payment Status</span><strong className={`bookingStatus ${isConfirmed ? "confirmed" : ""}`}><i>✓</i>{isConfirmed ? "Payment Successful" : statusText}</strong></div>
+            <div><span>Payment ID</span><strong>{loading ? "Loading..." : value(loadedBooking, ["payment_id"], error ? "Error loading" : "N/A")}</strong></div>
+            <div><span>Payment Date</span><strong>{paymentDate}</strong></div>
+            <div><span>Amount Paid</span><strong>{formatAmount(loadedBooking)}</strong></div>
+          </div>
+        </section>
+
+        <div className="bookingInfoColumns">
+          <section className="bookingInfoCard">
+            <h2><span className="bookingSectionIcon">◆</span>Vehicle Details</h2>
+            <div className="bookingInfoGrid">
+              <div><span>Product</span><strong>{product}</strong></div>
+              <div><span>Model</span><strong>{model}</strong></div>
+              <div><span>Color</span><strong><i className="bookingColorSwatch" style={{ backgroundColor: color.toLowerCase() }} />{color}</strong></div>
+            </div>
+          </section>
+
+          <section className="bookingInfoCard">
+            <h2><span className="bookingSectionIcon">♙</span>Customer Details</h2>
+            <div className="bookingInfoGrid">
+              <div><span>Name</span><strong>{customerName || "Not available"}</strong></div>
+              <div><span>Email</span><strong><a href={`mailto:${email}`}>{email}</a></strong></div>
+              <div><span>Mobile</span><strong>{phone}</strong></div>
+              <div><span>Address</span><strong>{address || "Not available"}</strong></div>
+              <div><span>Source</span><strong>{value(loadedBooking, ["source"], "Website")}</strong></div>
+            </div>
+          </section>
         </div>
 
         {error ? <p className="bookingResultError">Could not load full booking details: {error}</p> : null}
@@ -153,28 +182,71 @@ export function BookingResult({ orderId, failed = false, reason = "" }: { orderI
 }
 
 const styles = `
-.bookingResultPage { min-height: 100vh; display: grid; place-items: center; padding: 132px 20px 70px; background: radial-gradient(circle at 50% 0%, rgba(206,103,35,.14), transparent 34%), #050606; color: #fff; font-family: inherit; }
-.bookingResultCard { width: min(100%, 650px); margin: auto; padding: clamp(26px, 6vw, 48px); text-align: center; border: 1px solid rgba(255,255,255,.11); border-radius: 15px; background: rgba(255,255,255,.055); box-shadow: 0 24px 70px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05); backdrop-filter: blur(18px); }
-.bookingResultIcon { width: 80px; height: 80px; margin: 0 auto 20px; display: grid; place-items: center; border-radius: 50%; background: #31864b; color: #fff; font-size: 42px; font-weight: 700; animation: bookingSuccessBounce 2s ease infinite; }
-.bookingResultSuccessIcon { background: transparent; color: #4caf50; filter: drop-shadow(0 0 24px rgba(76,175,80,.28)); }
-.bookingResultSuccessIcon svg { width: 80px; height: 80px; display: block; }
+.bookingResultPage { min-height: 100vh; display:block; padding: 94px 20px 64px; background: linear-gradient(180deg,#fffaf7 0%,#fff 52%,#fff9f5 100%); color: #161616; font-family: inherit; }
+.bookingResultCard { width:min(100%,920px);margin:0 auto;text-align:left; }
+.bookingResultHero { margin-bottom:16px;padding:22px 28px 20px;text-align:center;border-radius:18px;background:radial-gradient(circle at 50% -15%,rgba(255,102,24,.20),transparent 38%),linear-gradient(120deg,#fff1e8,#fff8f3);box-shadow:0 10px 32px rgba(89,48,22,.07); }
+.bookingResultIcon { width:56px;height:56px;margin:0 auto 10px;display:grid;place-items:center;border-radius:50%;background:#ff5a12;color:#fff;font-size:30px;font-weight:700; }
+.bookingResultSuccessIcon { background: transparent; color: #ff5a12; filter: drop-shadow(0 8px 14px rgba(255,90,18,.22)); }
+.bookingResultSuccessIcon svg { width:56px;height:56px;display:block; }
 .bookingResultFailed .bookingResultIcon { background: #9f3d32; }
+.bookingResultFailed { max-width:650px;padding:36px;text-align:center;border:1px solid #eee7e2;border-radius:16px;background:#fff;box-shadow:0 12px 36px rgba(73,42,23,.08); }
+.bookingResultFailed .bookingResultMessage { max-width:540px;margin:0 auto; }
 .bookingResultEyebrow { margin: 0; color: #ef7430; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-.bookingResultCard h1 { margin: 12px 0 18px; color: #ce6723; font-size: clamp(28px, 4.4vw, 38px); font-weight: 700; letter-spacing: 0; }
-.bookingResultMessage { max-width: 540px; margin: 0 auto; color: #c8ccc7; font-size: clamp(15px, 2vw, 18px); line-height: 1.65; }
-.bookingResultDetails { margin: 30px 0 0; padding: 20px; border-radius: 10px; text-align: left; background: rgba(255,255,255,.09); }
-.bookingResultDetails h2 { margin: 0 0 14px; color: #ce6723; font-size: 18px; font-weight: 800; letter-spacing: 0; }
-.bookingResultDetails div { display: flex; justify-content: space-between; gap: 18px; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
-.bookingResultDetails div:last-child { border: 0; }
-.bookingResultDetails span { color: #999; font-size: 14px; font-weight: 700; }
-.bookingResultDetails strong { max-width: 62%; color: #fff; text-align: right; overflow-wrap: anywhere; font-size: 14px; font-weight: 650; }
-.confirmed { color: #55c676 !important; }
+.bookingResultCard h1 { margin:0 0 5px;color:#111;font-size:clamp(27px,3vw,34px);line-height:1.12;font-weight:800;letter-spacing:-.035em; }
+.bookingResultMessage { margin:0;color:#555;font-size:14px;line-height:1.5; }
+.bookingInfoCard { padding:20px;border:1px solid #eee7e2;border-radius:15px;background:rgba(255,255,255,.96);box-shadow:0 8px 24px rgba(73,42,23,.065); }
+.bookingInfoWide { margin-bottom: 16px; }
+.bookingInfoCard h2 { display:flex;align-items:center;gap:10px;margin:0 0 16px;color:#171717;font-size:16px;line-height:1.2;font-weight:800;letter-spacing:-.02em; }
+.bookingSectionIcon { width:32px;height:32px;display:inline-grid;place-items:center;border-radius:8px;background:#ff5a12;color:#fff;font-size:15px;box-shadow:0 6px 12px rgba(255,90,18,.20); }
+.bookingInfoColumns { display:grid;grid-template-columns:1fr 1.25fr;gap:16px; }
+.bookingInfoGrid { display:grid;gap:10px; }
+.bookingInfoGridFour { grid-template-columns:1fr 1fr;column-gap:38px; }
+.bookingInfoGrid div { min-width:0;display:grid;grid-template-columns:115px minmax(0,1fr);gap:10px;align-items:start; }
+.bookingInfoGrid span { color:#77808b;font-size:12.5px;line-height:1.45;font-weight:600; }
+.bookingInfoGrid strong { position:relative;min-width:0;color:#282828;font-size:12.5px;font-weight:700;line-height:1.45;overflow-wrap:anywhere; }
+.bookingInfoGrid strong:before { content:":";position:absolute;left:-22px;color:#b7b7b7; }
+.bookingInfoGrid a { color:#1683e4;text-underline-offset:2px; }
+.bookingStatus { display:inline-flex;align-items:center;max-width:100%;width:fit-content;padding:4px 9px;border-radius:999px;background:#fff1db;color:#a46300!important; }
+.bookingStatus.confirmed { background:#dcf8e7;color:#159447!important; }
+.bookingStatus i { flex:none;display:inline-grid;width:15px;height:15px;place-items:center;margin-right:5px;border-radius:50%;background:#a46300;color:#fff;font-size:10px;font-style:normal; }
+.bookingStatus.confirmed i { background:#159447; }
+.bookingColorSwatch { display:inline-block;width:18px;height:18px;margin-right:6px;border:1px solid #adb4ba;border-radius:50%;vertical-align:-4px; }
+.bookingResultDetails { margin: 30px 0 0; padding: 20px; border-radius: 10px; text-align: left; background: #fff; }
+.bookingResultDetails div { display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-bottom:1px solid #eee; }
+.bookingResultDetails strong { max-width:62%;text-align:right;overflow-wrap:anywhere; }
 .bookingResultError { margin: 14px 0 0; color: #ffb08b; font-size: 13px; font-weight: 700; }
-.bookingResultActions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
-.bookingResultButton, .bookingResultSecondary { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; padding: 0 24px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 800; transition: background .2s ease, color .2s ease, transform .2s ease; }
-.bookingResultButton { border: 1px solid #ce6723; background: #ce6723; color: #fff; }
-.bookingResultSecondary { border: 1px solid #ce6723; color: #ce6723; }
-.bookingResultButton:hover, .bookingResultSecondary:hover { background: #e07a3a; border-color: #e07a3a; color: #fff; transform: translateY(-1px); }
-@keyframes bookingSuccessBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
-@media (max-width: 520px) { .bookingResultPage { padding: 102px 14px 42px; align-items: start; } .bookingResultCard { padding: 24px 18px; } .bookingResultDetails { padding: 18px; } .bookingResultDetails div { flex-direction: column; gap: 5px; } .bookingResultDetails strong { max-width: 100%; text-align: left; } .bookingResultActions { display: grid; grid-template-columns: 1fr; } .bookingResultButton, .bookingResultSecondary { width: 100%; } }
+.bookingResultActions { display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px; }
+.bookingResultButton,.bookingResultSecondary { display:inline-flex;min-width:190px;min-height:48px;align-items:center;justify-content:center;padding:0 24px;border-radius:7px;text-decoration:none;font-size:14px;font-weight:800;transition:.2s ease; }
+.bookingResultButton { border:1px solid #ff5a12;background:#ff5a12;color:#fff;box-shadow:0 8px 18px rgba(255,90,18,.20); }
+.bookingResultSecondary { border:1px solid #ff5a12;color:#ff5a12;background:#fff; }
+.bookingResultButton:hover,.bookingResultSecondary:hover { background:#e94d08;border-color:#e94d08;color:#fff;transform:translateY(-1px); }
+body:has(.bookingResultPage) .rivotHeader.isHomeHeader { position:absolute;background:transparent!important;color:#151515!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important; }
+body:has(.bookingResultPage) .rivotHeader.isHomeHeader .rivotBrandMark img { filter:brightness(0)!important; }
+body:has(.bookingResultPage) .rivotHeader.isHomeHeader :is(.rivotBrand,.rivotHeaderLinks a,.rivotProductsButton,.rivotCommunityButton,.rivotExploreButton) { color:#252525!important; }
+body:has(.bookingResultPage) .rivotHeader.isHomeHeader :is(.rivotHeaderLinks a,.rivotProductsButton,.rivotCommunityButton,.rivotExploreButton):hover { color:#ff5a12!important; }
+body:has(.bookingResultPage) .rivotHeader.isHomeHeader :is(.rivotCommunityMenu,.rivotExploreMenu,.rivotProductsMenuInner) { border-color:rgba(30,30,30,.10);background:rgba(255,255,255,.94);box-shadow:0 18px 42px rgba(0,0,0,.11); }
+body:has(.bookingResultPage) .rivotHeader.isHomeHeader :is(.rivotCommunityMenu a,.rivotExploreMenu a,.rivotProductsMenuInner h2,.rivotProductCard,.rivotProductCard span) { color:#171717!important; }
+body:has(.bookingResultPage) .rivotHeader.isHomeHeader .rivotProductCard { border-color:#ebe5df;background:#fff; }
+body:has(.bookingResultPage) .rivotHeader.isHomeHeader .rivotProductTagline { color:#6e7478!important; }
+html[data-theme="dark"] .bookingResultPage { background:radial-gradient(circle at 50% 5%,rgba(255,90,18,.12),transparent 31%),#0b0c0c!important;color:#f5f5f2!important; }
+html[data-theme="dark"] .bookingResultCard { background:transparent!important;color:#f5f5f2!important;border-color:transparent!important; }
+html[data-theme="dark"] .bookingResultHero { background:radial-gradient(circle at 50% -15%,rgba(255,105,35,.24),transparent 40%),linear-gradient(120deg,#211711,#141515);box-shadow:0 14px 42px rgba(0,0,0,.3); }
+html[data-theme="dark"] .bookingInfoCard,html[data-theme="dark"] .bookingResultFailed { background:#151717!important;color:#f5f5f2!important;border-color:rgba(255,255,255,.10)!important;box-shadow:0 14px 38px rgba(0,0,0,.26); }
+html[data-theme="dark"] .bookingResultPage :is(h1,h2) { color:#f5f5f2!important; }
+html[data-theme="dark"] .bookingResultPage p { color:#b9bcb8!important; }
+html[data-theme="dark"] .bookingInfoGrid span { color:#999f9f; }
+html[data-theme="dark"] .bookingInfoGrid strong { color:#f3f3f0; }
+html[data-theme="dark"] .bookingInfoGrid strong:before { color:#666b69; }
+html[data-theme="dark"] .bookingResultSecondary { background:#151717;color:#ff7433; }
+html[data-theme="dark"] body:has(.bookingResultPage) .rivotHeader.isHomeHeader { background:transparent!important;color:#f5f5f2!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important; }
+html[data-theme="dark"] body:has(.bookingResultPage) .rivotHeader.isHomeHeader .rivotBrandMark img { filter:none!important; }
+html[data-theme="dark"] body:has(.bookingResultPage) .rivotHeader.isHomeHeader :is(.rivotBrand,.rivotHeaderLinks a,.rivotProductsButton,.rivotCommunityButton,.rivotExploreButton) { color:#f5f5f2!important; }
+html[data-theme="dark"] body:has(.bookingResultPage) .rivotHeader.isHomeHeader :is(.rivotCommunityMenu,.rivotExploreMenu,.rivotProductsMenuInner) { border-color:rgba(255,255,255,.12);background:rgba(18,20,20,.96); }
+html[data-theme="dark"] body:has(.bookingResultPage) .rivotHeader.isHomeHeader :is(.rivotCommunityMenu a,.rivotExploreMenu a,.rivotProductsMenuInner h2,.rivotProductCard,.rivotProductCard span) { color:#f5f5f2!important; }
+html[data-theme="dark"] body:has(.bookingResultPage) .rivotHeader.isHomeHeader .rivotProductCard { border-color:rgba(255,255,255,.10);background:#1b1d1d; }
+html[data-theme="dark"] body:has(.bookingResultPage) .rivotHeader.isHomeHeader .rivotProductTagline { color:#aeb3b0!important; }
+@media(max-width:680px){body:has(.bookingResultPage) .rivotHeader.isHomeHeader .rivotMenuButton{color:#171717!important}html[data-theme="dark"] body:has(.bookingResultPage) .rivotHeader.isHomeHeader .rivotMenuButton{color:#fff!important}}
+@media (max-width:760px){.bookingInfoColumns,.bookingInfoGridFour{grid-template-columns:1fr}.bookingResultPage{padding:calc(78px + env(safe-area-inset-top)) 14px 42px}.bookingResultHero{padding:20px 16px}.bookingInfoCard{padding:18px}.bookingInfoGrid div{grid-template-columns:100px minmax(0,1fr)} }
+@media (max-width:480px){.bookingResultPage{padding-right:12px;padding-left:12px}.bookingResultHero{margin-bottom:12px;padding:18px 14px;border-radius:15px}.bookingResultIcon,.bookingResultSuccessIcon svg{width:50px;height:50px}.bookingResultCard h1{font-size:clamp(24px,7.5vw,30px);line-height:1.16}.bookingResultHero h1{font-size:clamp(13px,4.7vw,22px);letter-spacing:-.045em;white-space:nowrap}.bookingResultMessage{font-size:13px}.bookingInfoWide{margin-bottom:12px}.bookingInfoColumns{gap:12px}.bookingInfoCard{padding:16px 14px;border-radius:13px}.bookingInfoCard h2{margin-bottom:14px;font-size:15px}.bookingSectionIcon{width:30px;height:30px}.bookingInfoGrid{gap:11px}.bookingInfoGrid div{grid-template-columns:minmax(74px,30%) minmax(0,1fr);gap:14px}.bookingInfoGrid span,.bookingInfoGrid strong{font-size:12.5px}.bookingInfoGrid strong:before{left:-12px}.bookingResultActions{display:grid;grid-template-columns:1fr;margin-top:18px}.bookingResultButton,.bookingResultSecondary{width:100%;min-width:0}.bookingResultDetails div{flex-direction:column;gap:5px}.bookingResultDetails strong{max-width:100%;text-align:left}.bookingResultFailed{padding:24px 18px} }
+@media (max-width:360px){.bookingInfoCard{padding:15px 12px}.bookingInfoGrid div{grid-template-columns:minmax(68px,29%) minmax(0,1fr);gap:12px}.bookingInfoGrid strong:before{left:-10px}.bookingResultFailed h1{font-size:24px} }
 `;

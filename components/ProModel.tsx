@@ -1,4 +1,5 @@
 import { Faqs } from "@/components/Faqs";
+import { BackToTopButton } from "@/components/BackToTopButton";
 import { ProductCustomMade } from "@/components/ProductCustomMade";
 import { ProductDesignDetails } from "@/components/ProductDesignDetails";
 import { ProductDetailHero } from "@/components/ProductDetailHero";
@@ -34,6 +35,8 @@ export function ProModel() {
       <ProductDetailSupportSections />
 
       <Faqs />
+
+      <BackToTopButton />
 
       <style>{`
         body:has(.proPage) .rivotHeader,

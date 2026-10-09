@@ -65,15 +65,28 @@ const initialValues: FormValues = {
   message: "",
 };
 
+function todayInIndia() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const part = (type: string) => parts.find((item) => item.type === type)?.value || "";
+  return `${part("year")}-${part("month")}-${part("day")}`;
+}
+
 export default function TestRidePage() {
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [notificationDelayed, setNotificationDelayed] = useState(false);
+  const [confirmationEmailDelayed, setConfirmationEmailDelayed] = useState(false);
 
   const cityOptions = useMemo(() => stateCities[values.state] ?? [], [values.state]);
-  const today = new Date().toISOString().split("T")[0];
+  const today = todayInIndia();
 
   const validate = (nextValues: FormValues) => {
     const nextErrors: FormErrors = {};
@@ -83,7 +96,7 @@ export default function TestRidePage() {
     if (!/^\d{10}$/.test(nextValues.mobile.trim())) nextErrors.mobile = "Please enter a valid 10-digit mobile number.";
     if (!nextValues.state) nextErrors.state = "Please select a state.";
     if (!nextValues.city) nextErrors.city = "Please select a city.";
-    if (!nextValues.date) nextErrors.date = "Please select a date.";
+    if (!nextValues.date || nextValues.date < today) nextErrors.date = "Please select today or a future date.";
 
     return nextErrors;
   };
@@ -103,12 +116,14 @@ export default function TestRidePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
-      const payload = (await response.json()) as { success?: boolean; message?: string };
+      const payload = (await response.json()) as { success?: boolean; emailSent?: boolean; confirmationEmailSent?: boolean; message?: string };
 
       if (!response.ok || !payload.success) {
         throw new Error(payload.message || "Failed to submit test ride request.");
       }
 
+      setNotificationDelayed(payload.emailSent === false);
+      setConfirmationEmailDelayed(payload.emailSent !== false && payload.confirmationEmailSent === false);
       setSubmitSuccess(true);
       setValues(initialValues);
       setErrors({});
@@ -154,13 +169,13 @@ export default function TestRidePage() {
           </div>
           <form className="rivotTestRideForm" onSubmit={onSubmit} noValidate>
             <div className="rivotTestRideGrid">
-              <label>Full Name <em>*</em><input name="name" autoComplete="name" placeholder="Enter your name" value={values.name} onChange={(event) => setValues((prev) => ({ ...prev, name: event.target.value }))} />{errors.name ? <small>{errors.name}</small> : null}</label>
-              <label>Email Address <em>*</em><input name="email" type="email" autoComplete="email" placeholder="Enter your email" value={values.email} onChange={(event) => setValues((prev) => ({ ...prev, email: event.target.value }))} />{errors.email ? <small>{errors.email}</small> : null}</label>
+              <label>Full Name <em>*</em><input name="name" autoComplete="name" maxLength={100} placeholder="Enter your name" value={values.name} onChange={(event) => setValues((prev) => ({ ...prev, name: event.target.value }))} />{errors.name ? <small>{errors.name}</small> : null}</label>
+              <label>Email Address <em>*</em><input name="email" type="email" autoComplete="email" maxLength={150} placeholder="Enter your email" value={values.email} onChange={(event) => setValues((prev) => ({ ...prev, email: event.target.value }))} />{errors.email ? <small>{errors.email}</small> : null}</label>
               <label>Phone Number <em>*</em><input name="mobile" type="tel" autoComplete="tel" inputMode="numeric" pattern="[0-9]{10}" maxLength={10} placeholder="Enter your phone number" value={values.mobile} onChange={(event) => setValues((prev) => ({ ...prev, mobile: event.target.value.replace(/\D/g, "") }))} />{errors.mobile ? <small>{errors.mobile}</small> : null}</label>
               <label>State <em>*</em><select name="state" value={values.state} onChange={(event) => setValues((prev) => ({ ...prev, state: event.target.value, city: "" }))}><option value="">Select state</option>{Object.keys(stateCities).map((stateName) => <option value={stateName} key={stateName}>{stateName}</option>)}</select>{errors.state ? <small>{errors.state}</small> : null}</label>
               <label>City <em>*</em><select name="city" value={values.city} disabled={!values.state} onChange={(event) => setValues((prev) => ({ ...prev, city: event.target.value }))}><option value="">Select city</option>{cityOptions.map((cityName) => <option value={cityName} key={cityName}>{cityName}</option>)}</select>{errors.city ? <small>{errors.city}</small> : null}</label>
               <label>Preferred Date <em>*</em><input name="date" type="date" min={today} value={values.date} onChange={(event) => setValues((prev) => ({ ...prev, date: event.target.value }))} />{errors.date ? <small>{errors.date}</small> : null}</label>
-              <label className="rivotTestRideMessage">Any Additional Message <span>(Optional)</span><textarea name="message" rows={2} placeholder="Tell us if you have any specific model or queries..." value={values.message} onChange={(event) => setValues((prev) => ({ ...prev, message: event.target.value }))} /></label>
+              <label className="rivotTestRideMessage">Any Additional Message <span>(Optional)</span><textarea name="message" rows={2} maxLength={5000} placeholder="Tell us if you have any specific model or queries..." value={values.message} onChange={(event) => setValues((prev) => ({ ...prev, message: event.target.value }))} /></label>
             </div>
             {submitError ? <div className="rivotTestRideError">{submitError}</div> : null}
             <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Sending..." : "Book Test Ride  →"}</button>
@@ -175,7 +190,11 @@ export default function TestRidePage() {
             <h2>
               Thank <span>You!</span>
             </h2>
-            <p>Your test ride request has been received. Our representative will contact you shortly to confirm your appointment.</p>
+            <p>{notificationDelayed
+              ? "Your test ride request has been saved, but the email notification is delayed. Please contact our support team if your request is urgent."
+              : confirmationEmailDelayed
+                ? "Your test ride request has been saved, but we could not send the confirmation email. Our team will assist you with the next steps."
+                : "Thank you for choosing RIVOT Motors. We have received your test ride request. You can visit the nearest RIVOT showroom to explore the vehicle and experience a test ride. Our showroom team will assist you with the next steps."}</p>
             <button type="button" onClick={() => setSubmitSuccess(false)}>Close</button>
           </div>
         </div>

@@ -33,6 +33,7 @@ export function ProductDetailHero({
 }: ProductDetailHeroProps) {
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
   const modelVariant = modelName.replace(/^NX100\s*/i, "").trim().toUpperCase();
+  const startingPrice = modelName === "NX100 Pro" ? "₹1,29,000" : "₹1,39,000";
 
   useEffect(() => {
     const heroImageInterval = window.setInterval(() => {
@@ -136,7 +137,7 @@ export function ProductDetailHero({
         </div>
 
         <div className="productDetailHeroNotes">
-          <strong>Starting at just ₹1,29,000*</strong>
+          <strong>Starting at just {startingPrice}*</strong>
           <span>EMI starting at Rs 3,999/month*</span>
           <span>Easy Financing Options</span>
         </div>

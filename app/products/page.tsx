@@ -2,9 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ModelComparison } from "@/components/ModelComparison";
 import { ProductFeatureSections } from "@/components/ProductFeatureSections";
+import { BackToTopButton } from "@/components/BackToTopButton";
 import modelPro from "@/asset/Model/Pro.png";
 import modelSport from "@/asset/Model/Sport_NX100.png";
 import { modelComparisonModels, modelComparisonRows } from "@/data/modelComparison";
+import "./products.css";
 
 const products = [
   {
@@ -24,28 +26,36 @@ const products = [
 export default function Products() {
   return (
     <>
-      <section className="page">
-        <p className="eyebrow">RIVOT MOTORS</p>
-        <h1>Our Products</h1>
-        <div className="cards">
-          {products.map((product) => (
-            <article key={product.name}>
-              <div className="vehicle small">
-                <Image src={product.image} alt={product.name} sizes="(max-width: 800px) 90vw, 360px" />
-              </div>
-              <h2>{product.name}</h2>
-              <p>{product.description}</p>
-              <Link href={product.href} className="text">
-                View Product
-              </Link>
-            </article>
-          ))}
+      <section className="rivotProductsPage">
+        <div className="rivotProductsShell">
+          <div className="rivotProductsIntro">
+            <p>RIVOT MOTORS</p>
+            <h1>Our Products</h1>
+          </div>
+          <div className="rivotProductsGrid">
+            {products.map((product, index) => (
+              <article className="rivotProductsCard" key={product.name}>
+                <div className="rivotProductsVisual">
+                  <Image src={product.image} alt={product.name} fill priority={index === 0} sizes="(max-width: 760px) calc(100vw - 56px), (max-width: 1440px) 44vw, 650px" />
+                </div>
+                <div className="rivotProductsCopy">
+                  <h2>{product.name}</h2>
+                  <p>{product.description}</p>
+                  <Link href={product.href}>
+                    View Product <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
       <ModelComparison rows={modelComparisonRows} models={modelComparisonModels} />
 
       <ProductFeatureSections />
+
+      <BackToTopButton />
     </>
   );
 }
