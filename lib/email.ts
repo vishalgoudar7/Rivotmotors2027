@@ -208,13 +208,18 @@ export async function sendContactSubmissionEmail(formType: string, data: EmailDa
   if (!title) throw new Error("Invalid form type.");
   const admin = await getAdminEmail();
   const configuredHrEmail = text(process.env.HR_EMAIL);
-  const recipient = formType === "careers" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configuredHrEmail)
+  const configuredSupportEmail = text(process.env.SUPPORT_EMAIL);
+  const validHrEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configuredHrEmail);
+  const validSupportEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configuredSupportEmail);
+  const routesToSupport = ["support", "contact", "vendor", "media", "investor", "overseas"].includes(formType);
+  const recipient = formType === "careers" && validHrEmail
     ? configuredHrEmail
-    : admin;
+    : routesToSupport && validSupportEmail
+      ? configuredSupportEmail
+      : admin;
   const rows = buildSubmissionDetails(data);
   if (attachment) rows.push({ label: "Attachment", value: `${attachment.filename} (attached to this email)` });
   rows.push({ label: "Submitted", value: new Date().toISOString() });
-  rows.push({ label: "IP Address", value: text(data.ipAddress) || "Unknown" });
   await sendEmail(`New ${title} Submission - RIVOT Motors`, recipient, `New ${title}`, [{ heading: "Submission Details", rows }], text(data.email), attachment ? [attachment] : undefined, "This email was sent from the RIVOT Motors website connect form.");
 }
 

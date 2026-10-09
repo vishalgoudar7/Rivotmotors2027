@@ -27,7 +27,6 @@ export async function POST(request: Request) {
       if (!(file instanceof File) || file.size <= 0 || file.size > 10 * 1024 * 1024 || !/\.(pdf|docx?)$/i.test(file.name)) return Response.json({ success: false, message: "CV must be a non-empty PDF, DOC, or DOCX file up to 10MB." }, { status: 400 });
       attachment = { filename: file.name.replace(/[^A-Za-z0-9._-]/g, "_"), content: Buffer.from(await file.arrayBuffer()), contentType: file.type || undefined };
     }
-    data.ipAddress = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "Unknown";
     await sendContactSubmissionEmail(formType, data, attachment);
     return Response.json({ success: true, message: "Form submitted successfully." });
   } catch (error) {

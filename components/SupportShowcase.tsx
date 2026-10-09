@@ -25,7 +25,30 @@ const supportTypes = [
 
 export function SupportShowcase() {
   const [sent, setSent] = useState(false);
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); setSent(true); event.currentTarget.reset(); window.setTimeout(() => setSent(false), 5000); };
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    formData.set("formType", "support");
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/contact", { method: "POST", body: formData });
+      const result = await response.json() as { success?: boolean; message?: string };
+      if (!response.ok || !result.success) throw new Error(result.message || "Unable to send your message.");
+      setSent(true);
+      form.reset();
+      window.setTimeout(() => setSent(false), 5000);
+    } catch (submissionError) {
+      setError(submissionError instanceof Error ? submissionError.message : "Unable to send your message.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <section className="supportPage">
@@ -66,6 +89,7 @@ export function SupportShowcase() {
           </div>
           <form onSubmit={handleSubmit}>
             {sent ? <div className="supportSuccess"><Check /> Thank you for contacting RIVOT Support. We&apos;ll get back to you within 24 hours.</div> : null}
+            {error ? <div className="supportError" role="alert">{error}</div> : null}
             <div className="supportFields">
               <label>Full Name *<input name="name" type="text" placeholder="Enter your full name" required /></label>
               <label>Email Address *<input name="email" type="email" placeholder="Enter your email address" required /></label>
@@ -73,7 +97,7 @@ export function SupportShowcase() {
               <label>Subject *<select name="subject" required defaultValue=""><option value="" disabled>Select a topic</option><option value="technical">Technical Support</option><option value="billing">Billing & Payments</option><option value="warranty">Warranty Claims</option><option value="service">Service Center</option><option value="general">General Inquiry</option><option value="feedback">Feedback</option></select></label>
             </div>
             <label className="supportMessage">Message *<textarea name="message" placeholder="Type your message here..." required /></label>
-            <button type="submit"><Send /> Send Message <ArrowRight /></button>
+            <button type="submit" disabled={submitting}><Send /> {submitting ? "Sending..." : "Send Message"} <ArrowRight /></button>
           </form>
         </section>
       </div>
@@ -122,6 +146,8 @@ export function SupportShowcase() {
         .supportFormSection input,.supportFormSection select,.supportFormSection textarea { width:100%; min-height:48px; padding:12px 14px; border:1px solid #e3e3e0; border-radius:8px; outline:none; background:#fafafa; color:#191919; font:inherit; font-size:15px; font-weight:600; transition:border-color .2s,box-shadow .2s; } .supportFormSection :is(input,select,textarea):focus { border-color:rgba(255,91,24,.65); box-shadow:0 0 0 3px rgba(255,91,24,.1); }
         .supportMessage { margin-top:15px; } .supportFormSection textarea { min-height:100px; resize:vertical; } .supportFormSection button { display:flex; align-items:center; justify-content:center; gap:9px; width:100%; min-height:48px; margin-top:15px; border:0; border-radius:8px; background:linear-gradient(90deg,#ff762b,#ff4e0b); color:#fff; font:inherit; font-size:15px; font-weight:900; cursor:pointer; box-shadow:0 8px 18px rgba(255,91,24,.2); } .supportFormSection button svg { width:16px; height:16px; }
         .supportSuccess { display:flex; align-items:center; gap:7px; margin-bottom:10px; padding:9px 11px; border-radius:7px; background:#e9f9ee; color:#168247; font-size:10px; font-weight:800; } .supportSuccess svg { width:14px; height:14px; }
+        .supportError { margin-bottom:10px; padding:10px 12px; border-radius:7px; background:#fff0ed; color:#b9371f; font-size:12px; font-weight:800; }
+        .supportFormSection button:disabled { cursor:wait; opacity:.7; }
         html:is([data-theme="dark"],[data-rivot-theme="dark"]) body:has(.supportPage) .rivotHeader.isHomeHeader { border:0; background:transparent!important; color:#fff!important; }
         html:is([data-theme="dark"],[data-rivot-theme="dark"]) body:has(.supportPage) .rivotHeader.isHomeHeader :is(.rivotBrand,.rivotHeaderLinks a,.rivotProductsButton,.rivotCommunityButton,.rivotExploreButton) { color:#f7f6f3!important; }
         html:is([data-theme="dark"],[data-rivot-theme="dark"]) body:has(.supportPage) .rivotHeader.isHomeHeader .rivotBrandMark img { filter:brightness(0) invert(1)!important; }
