@@ -850,6 +850,16 @@ export default function Home() {
           <ScooterRotation className="rivotDesignImage" />
         </div>
 
+        <div className="rivotDesign360Badge" aria-hidden="true">
+          <strong>360°</strong>
+          <svg viewBox="0 0 104 38" fill="none">
+            <path d="M22 6C11 9 5 14 5 19C5 27 24 33 51 33" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+            <path d="M44 26L52 33L45 38" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M62 33C84 30 99 25 99 18C99 13 93 9 83 6" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+            <path d="M89 2L82 6L87 13" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+
         <div className="rivotDesignControls" aria-label="Scooter color options">
           <div className="rivotColorPicker" aria-label="Color option">
             <p aria-live="polite">{selectedDesignColor.name}</p>
@@ -2465,6 +2475,33 @@ export default function Home() {
           filter: blur(16px);
           transform: translateX(-50%);
           z-index: -1;
+        }
+
+        .rivotDesign360Badge {
+          position: absolute;
+          left: clamp(32px, 6vw, 112px);
+          bottom: clamp(58px, 9vh, 104px);
+          z-index: 4;
+          display: grid;
+          justify-items: center;
+          color: #111;
+          pointer-events: none;
+          filter: drop-shadow(0 2px 3px rgba(255, 255, 255, .9));
+          transform: scale(.5);
+          transform-origin: center;
+        }
+
+        .rivotDesign360Badge strong {
+          font-size: clamp(28px, 2.3vw, 38px);
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: -.04em;
+        }
+
+        .rivotDesign360Badge svg {
+          width: clamp(88px, 7.5vw, 116px);
+          height: auto;
+          margin-top: 2px;
         }
 
         .rivotDesignImage {
@@ -6465,6 +6502,19 @@ export default function Home() {
 
           .rivotDesignScooter::after {
             display: none;
+          }
+
+          .rivotDesign360Badge {
+            left: 18px;
+            bottom: 118px;
+          }
+
+          .rivotDesign360Badge strong {
+            font-size: 19px;
+          }
+
+          .rivotDesign360Badge svg {
+            width: 62px;
           }
 
           .rivotDesignControls {

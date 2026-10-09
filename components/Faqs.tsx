@@ -45,7 +45,7 @@ const faqs = [
   {
     category: "Generic",
     question: "Who can I contact for support?",
-    answer: "You can reach RIVOT support at support@rivotmotors.com or call +91 8988984646.",
+    answer: "You can reach RIVOT support at support@rivotmotors.com or call +91 898-898-4646.",
   },
   {
     category: "Pricing",

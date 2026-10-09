@@ -20,7 +20,7 @@ const performanceCards = [
     image: rangeImage,
   },
   {
-    label: "0–80% in 35 min",
+    label: "0–95% in 35 min",
     title: "Fast Charging",
     tone: "blue",
     icon: "gauge",

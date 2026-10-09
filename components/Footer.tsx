@@ -87,7 +87,7 @@ export function Footer() {
                   <path d="M8.5 5.5L10.5 9.5L8.8 10.8C9.9 13.1 10.9 14.1 13.2 15.2L14.5 13.5L18.5 15.5V18.2C18.5 19.2 17.7 20 16.7 20C9.7 20 4 14.3 4 7.3C4 6.3 4.8 5.5 5.8 5.5H8.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
                 </svg>
               </span>
-              <a href="tel:+918988984646">+91 8988984646</a>
+              <a href="tel:+918988984646">+91 898-898-4646</a>
             </p>
           </section>
 
